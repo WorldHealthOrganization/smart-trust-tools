@@ -12,7 +12,7 @@
     "fhir-harness"
   ],
   "overrides": {
-    "expo": "57.0.29"
+    "expo": "57.0.26"
   },
   "_overrides_comment": "Copied from litlfred/smart-trust (2026-10-15): fhir-harness's fhirclient reaches expo through an optional dependency whose latest peer does not resolve; pinned to the version folio-assistant's bun.lock resolves.",
   "scripts": {

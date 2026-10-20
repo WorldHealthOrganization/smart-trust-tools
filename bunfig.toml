@@ -11,3 +11,7 @@
 # processes:render:check could not find them).
 [install]
 linker = "hoisted"
+# Supply chain: resolve only releases at least 14 days old (seconds), and
+# install from the committed bun.lock. Dependencies' lifecycle scripts stay
+# blocked (bun's default; no trustedDependencies are declared).
+minimumReleaseAge = 1209600

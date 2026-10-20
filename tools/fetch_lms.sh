@@ -23,6 +23,7 @@ fhirVersion: 5.0.0
 FSHOnly: true
 YAML
 
-npx --yes fsh-sushi@3.21.0 build "$work/build"
+. "$root/tools/node_tools.sh"
+sushi build "$work/build"
 cp "$work"/build/fsh-generated/resources/StructureDefinition-DVCMin*.json "$root/models/fhir/"
 echo "updated models/fhir from smart-trust-phw@$sha; update SOURCE.yaml if the sha changed"

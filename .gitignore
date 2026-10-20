@@ -1,7 +1,6 @@
 __pycache__/
 *.pyc
 node_modules/
-bun.lock
 /site/
 .gradle/
 build/
