@@ -162,6 +162,19 @@
         "local": {
           "at": "."
         }
+      },
+      "site": {
+        "build": {
+          "home": "docs/index.md",
+          "pre": [
+            "check:req-nodes"
+          ],
+          "sourceSteps": [],
+          "siteSteps": [
+            "site:viewers"
+          ],
+          "profile": "folio"
+        }
       }
     }
   ]
