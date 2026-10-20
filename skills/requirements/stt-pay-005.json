@@ -1,0 +1,42 @@
+{
+  "id": "req:stt-pay-005",
+  "title": "Subjects with no identity document",
+  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; QR Code Generation, 12.1 Scenario.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-pay-001"
+  ],
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Subjects with no identity document",
+      "conformance": "SHALL",
+      "requirement": "The DVCMin model SHALL allow id and dt to be absent and SHALL support gn (parent or guardian) for subjects such as newborns.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-PAY-005",
+    "derivation": "direct",
+    "steps": [
+      "step-2"
+    ],
+    "sources": [
+      {
+        "src": "qr-3",
+        "quote": "id is optional precisely because many certificate subjects have no identification document."
+      },
+      {
+        "src": "qr-12.1"
+      }
+    ]
+  }
+}

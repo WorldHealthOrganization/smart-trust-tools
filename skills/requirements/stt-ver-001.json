@@ -1,0 +1,46 @@
+{
+  "id": "req:stt-ver-001",
+  "title": "Verification order",
+  "description": "Restates QR Code Generation, 1. The pipeline at a glance; QR Code Generation, 11. Verifying: the same steps upwards.",
+  "status": "proposed",
+  "derivedFrom": [
+    "http://smart.who.int/trust/Requirements/UtilizeVDHC#UtilizeVDHC-reveive",
+    "http://smart.who.int/trust/Requirements/UtilizeVDHC#UtilizeVDHC-validate-hash"
+  ],
+  "actors": [
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Verification order",
+      "conformance": "SHALL",
+      "requirement": "The verifier SHALL run the QR Code Generation section 11 sequence in order: prefix, Base45, inflate, COSE parse, header validation, trust lookup by kid, signature verification, EKU check, CWT decode and time checks, subclaim dispatch, business rules.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-VER-001",
+    "derivation": "direct",
+    "steps": [
+      "step-verify"
+    ],
+    "api": [
+      "api-verifier"
+    ],
+    "sources": [
+      {
+        "src": "qr-1",
+        "quote": "A verifier runs the same list upwards."
+      },
+      {
+        "src": "qr-11"
+      }
+    ]
+  }
+}

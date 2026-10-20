@@ -1,0 +1,42 @@
+{
+  "id": "req:stt-cwt-003",
+  "title": "Expiry is mandatory on issuance",
+  "description": "Engineering consequence of QR Code Generation, 4. Step 3 — Build the CWT claim set; HCERT Specification, 6.1 HCERT Signature Validity Time.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Expiry is mandatory on issuance",
+      "conformance": "SHALL",
+      "requirement": "The issuer API SHALL require an explicit validity (exp, or a validity period) and SHALL have no default of \"never expires\". exp is the only revocation mechanism.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-CWT-003",
+    "derivation": "derived",
+    "steps": [
+      "step-3"
+    ],
+    "api": [
+      "api-issuer"
+    ],
+    "sources": [
+      {
+        "src": "qr-4",
+        "quote": "exp is the only revocation mechanism this specification offers"
+      },
+      {
+        "src": "hcert-6.1"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "_comment": "smart-trust-tools takes the smart-hiv shape, as litlfred/smart-trust does: index.config.json pins the harness layers it needs (fhir-harness and the layers below it); they are laid down from index.lock.json and gitignored. Only the workspaces are declared here.",
+  "name": "@litlfred/smart-trust-tools",
+  "private": true,
+  "type": "module",
+  "_workspaces_comment": "The mounted code layers, as workspaces, as litlfred/smart-trust lists them: they import each other by package name and nothing publishes those packages.",
+  "workspaces": [
+    "bootstrap-tools",
+    "cat-harness",
+    "cat-harness-tools",
+    "folio-assistant-core",
+    "fhir-harness"
+  ],
+  "overrides": {
+    "expo": "57.0.29"
+  },
+  "_overrides_comment": "Copied from litlfred/smart-trust (2026-10-15): fhir-harness's fhirclient reaches expo through an optional dependency whose latest peer does not resolve; pinned to the version folio-assistant's bun.lock resolves.",
+  "scripts": {
+    "cat": "bun cat-harness-tools/scripts/run-script.ts",
+    "check:req-nodes": "bun tools/check_req_nodes.ts",
+    "site:viewers": "bash tools/site_viewers.sh"
+  }
+}

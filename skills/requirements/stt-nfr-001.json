@@ -1,0 +1,38 @@
+{
+  "id": "req:stt-nfr-001",
+  "title": "Versioning and spec traceability",
+  "description": "Engineering consequence of Change Log, v1.7.5; QR Code Generation, 9. Step 8 — Prefix the context identifier.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-gen-007"
+  ],
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Versioning and spec traceability",
+      "conformance": "SHALL",
+      "requirement": "Releases SHALL follow semantic versioning. A change to the wire format or to subclaim defaults SHALL be a major or minor version change, as documented in a changelog that cites the smart-trust change (changes.md entry) it implements.",
+      "category": "non-functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "non-functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-NFR-001",
+    "derivation": "derived",
+    "sources": [
+      {
+        "src": "changes-1.7.5"
+      },
+      {
+        "src": "qr-9"
+      }
+    ]
+  }
+}

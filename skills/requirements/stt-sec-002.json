@@ -1,0 +1,32 @@
+{
+  "id": "req:stt-sec-002",
+  "title": "Vetted crypto backends",
+  "description": "Engineering consequence of HCERT Specification, 6.2 Key Management.",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Vetted crypto backends",
+      "conformance": "SHALL",
+      "requirement": "Cryptography SHALL use platform or vetted libraries: JCA/BouncyCastle or Android Keystore for Kotlin JVM/Android, RustCrypto (p256, rsa, sha2) or ring/aws-lc-rs for Rust. Signature verification SHALL be constant-time where the backend allows. The libraries SHALL NOT contain their own implementations of cryptographic primitives.",
+      "category": "security"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "security",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-SEC-002",
+    "derivation": "derived",
+    "sources": [
+      {
+        "src": "hcert-6.2"
+      }
+    ]
+  }
+}

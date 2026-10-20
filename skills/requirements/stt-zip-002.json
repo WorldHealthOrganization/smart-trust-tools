@@ -1,0 +1,56 @@
+{
+  "id": "req:stt-zip-002",
+  "title": "Decompression bomb protection",
+  "description": "Engineering consequence of HCERT Specification, 6.3 Input Data Validation.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-zip-001"
+  ],
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Decompression bomb protection",
+      "conformance": "SHALL",
+      "requirement": "Inflation SHALL stop with a typed error once the output exceeds a configurable limit (DecodeLimits.maxInflatedBytes).",
+      "category": "security",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        },
+        {
+          "key": "stt-tst-006",
+          "criterion": "Fuzzing of decoders (req:stt-tst-006) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "security",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-ZIP-002",
+    "derivation": "derived",
+    "steps": [
+      "step-6",
+      "step-verify"
+    ],
+    "api": [
+      "api-zlib",
+      "api-limits"
+    ],
+    "sources": [
+      {
+        "src": "hcert-6.3"
+      }
+    ]
+  }
+}

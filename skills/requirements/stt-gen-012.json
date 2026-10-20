@@ -1,0 +1,43 @@
+{
+  "id": "req:stt-gen-012",
+  "title": "Synchronous core with no I/O",
+  "description": "Engineering consequence of WIT, WebAssembly Component Model IDL; QR Code Generation, 2.2 Choosing between a DVC and a VHL.",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Synchronous core with no I/O",
+      "conformance": "SHALL",
+      "requirement": "The pipeline core SHALL do no network or file I/O and SHALL NOT read an ambient clock. Trust material SHALL be loaded into a trust store by the host, and the current time SHALL be passed as an argument. Fetching, caching and refreshing trust lists SHALL live in separate, platform-specific modules.",
+      "category": "architecture"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "architecture",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-GEN-012",
+    "derivation": "derived",
+    "api": [
+      "api-trust-provider",
+      "api-clock"
+    ],
+    "issues": [
+      "OI-15"
+    ],
+    "sources": [
+      {
+        "src": "std-wit"
+      },
+      {
+        "src": "qr-2.2",
+        "quote": "Works fully offline — Yes — verifier needs only the trust list"
+      }
+    ]
+  }
+}

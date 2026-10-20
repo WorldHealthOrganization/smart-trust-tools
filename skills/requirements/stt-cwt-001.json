@@ -1,0 +1,56 @@
+{
+  "id": "req:stt-cwt-001",
+  "title": "Integer claim keys",
+  "description": "Restates QR Code Generation, 4. Step 3 — Build the CWT claim set; QR Code Generation, 5. Step 4 — Serialise as CBOR; QR Code Generation, 12.4 The payload; HCERT Specification, 3.2.1 CWT Structure Overview.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Integer claim keys",
+      "conformance": "SHALL",
+      "requirement": "The CWT claim set SHALL use the integer keys 1 (iss), 6 (iat), 4 (exp) and -260 (hcert). The hcert map SHALL use integer subclaim keys. The quoted keys in the documentation (\"1\", \"-260\", \"-6\") are JSON notation only and SHALL NOT be emitted as text keys.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-001",
+          "criterion": "PR 129 example as a conformance vector (req:stt-tst-001) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-CWT-001",
+    "derivation": "direct",
+    "steps": [
+      "step-3"
+    ],
+    "api": [
+      "api-cwt"
+    ],
+    "sources": [
+      {
+        "src": "qr-4",
+        "quote": "Place the payload under its subclaim, inside the hcert claim, inside a CWT claim set"
+      },
+      {
+        "src": "qr-5",
+        "quote": "The JSON shown throughout this page and in the logical models is schema notation only"
+      },
+      {
+        "src": "qr-12.4"
+      },
+      {
+        "src": "hcert-3.2.1"
+      }
+    ]
+  }
+}

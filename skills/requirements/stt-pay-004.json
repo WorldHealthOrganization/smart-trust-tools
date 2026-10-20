@@ -1,0 +1,46 @@
+{
+  "id": "req:stt-pay-004",
+  "title": "Issuer-or-clinician invariant",
+  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-pay-002"
+  ],
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Issuer-or-clinician invariant",
+      "conformance": "SHALL",
+      "requirement": "Validation SHALL fail a DVCMin whose vx has neither is nor cn (invariant must-have-issuer-or-clinician-name). The issuer SHALL NOT sign a payload that fails validation.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-PAY-004",
+    "derivation": "direct",
+    "steps": [
+      "step-2"
+    ],
+    "sources": [
+      {
+        "src": "qr-3",
+        "quote": "At least one of is or cn must be present"
+      }
+    ]
+  }
+}

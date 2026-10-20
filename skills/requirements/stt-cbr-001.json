@@ -1,0 +1,54 @@
+{
+  "id": "req:stt-cbr-001",
+  "title": "Deterministic CBOR on encode",
+  "description": "Engineering consequence of QR Code Generation, 5. Step 4 — Serialise as CBOR; Reference generation script generate_dvc_qr.py; RFC 8949 CBOR (obsoletes RFC 7049).",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Deterministic CBOR on encode",
+      "conformance": "SHALL",
+      "requirement": "The encoder SHALL produce deterministic CBOR (RFC 8949 section 4.2.1 core deterministic encoding). For the HCERT key sets this matches the RFC 7049 canonical ordering the reference script uses. Same input gives same bytes, in both languages.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-002",
+          "criterion": "Byte-exact CBOR vector (req:stt-tst-002) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-CBR-001",
+    "derivation": "derived",
+    "steps": [
+      "step-4"
+    ],
+    "api": [
+      "api-cbor"
+    ],
+    "issues": [
+      "OI-05"
+    ],
+    "sources": [
+      {
+        "src": "qr-5"
+      },
+      {
+        "src": "doc-qr-script"
+      },
+      {
+        "src": "std-rfc8949"
+      }
+    ]
+  }
+}

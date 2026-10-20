@@ -1,0 +1,43 @@
+{
+  "id": "req:stt-cos-006",
+  "title": "Signer abstraction, no private keys required in-process",
+  "description": "Engineering consequence of HCERT Specification, 6.2 Key Management; QR Code Generation, 13. Reference script.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Signer abstraction, no private keys required in-process",
+      "conformance": "SHALL",
+      "requirement": "Signing SHALL go through a Signer interface (algorithm, DSC, sign(bytes)). The issuer SHALL NOT need access to private key material, so HSM, KMS, PKCS#11 and Android Keystore signers can be used. A software signer SHALL be provided for tests only, in the testkit module.",
+      "category": "security"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "security",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-COS-006",
+    "derivation": "derived",
+    "steps": [
+      "step-5"
+    ],
+    "api": [
+      "api-signer"
+    ],
+    "sources": [
+      {
+        "src": "hcert-6.2",
+        "quote": "Use of HSMs for signing health certificates is highly encouraged."
+      },
+      {
+        "src": "qr-13",
+        "quote": "a real issuer holds its private keys in an HSM"
+      }
+    ]
+  }
+}

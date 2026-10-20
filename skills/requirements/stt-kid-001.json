@@ -1,0 +1,50 @@
+{
+  "id": "req:stt-kid-001",
+  "title": "kid derivation",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, A.1 The Key Identifier (`kid`s).",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "kid derivation",
+      "conformance": "SHALL",
+      "requirement": "kid SHALL be the first 8 bytes of SHA-256 over the DER-encoded DSC. The issuer SHALL derive it from the Signer's DSC, not take it from the caller.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-001",
+          "criterion": "PR 129 example as a conformance vector (req:stt-tst-001) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-KID-001",
+    "derivation": "direct",
+    "steps": [
+      "step-5",
+      "step-trust"
+    ],
+    "api": [
+      "api-kid"
+    ],
+    "sources": [
+      {
+        "src": "qr-6",
+        "quote": "take the DER encoding of the DSC and use the first 8 bytes of its SHA-256 fingerprint"
+      },
+      {
+        "src": "hcert-A.1"
+      }
+    ]
+  }
+}

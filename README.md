@@ -3,7 +3,8 @@ tools for the smart-trust repo
 
 ## Viewers
 
-The site is built by `.github/workflows/pages.yml` and published on GitHub Pages:
+The site is built and pushed to the `gh-pages` branch with `tools/publish_site.sh` (run by
+hand, not by a workflow) and served by GitHub Pages:
 **https://litlfred.github.io/smart-trust-tools/**. It includes the graph explorer, the
 traceability matrix, the requirements, the WIT API contract with its TypeScript reference, and
 the wire and payload models. Build it locally with `tools/build_site.sh` (needs Python and
@@ -17,6 +18,7 @@ Node.js).
 - [`models/`](models/): payload models derived from the WHO SMART FHIR
   logical models: JSON-LD context, SHACL shapes and CDDL.
 - [`vectors/`](vectors/): conformance vectors (the PR 129 DVC example).
+- [`kotlin/`](kotlin/): the Kotlin Multiplatform API skeleton generated from the WIT.
 - [`requirements/`](requirements/): requirements knowledge graph for the
   SMART Trust HCERT API libraries (Kotlin first, Rust second), derived from
   the WHO SMART Trust IG. Start with

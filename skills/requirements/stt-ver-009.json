@@ -1,0 +1,45 @@
+{
+  "id": "req:stt-ver-009",
+  "title": "Fully offline verification",
+  "description": "Engineering consequence of QR Code Generation, 2.2 Choosing between a DVC and a VHL; QR Code Generation, 12.1 Scenario.",
+  "status": "proposed",
+  "actors": [
+    "receiver",
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Fully offline verification",
+      "conformance": "SHALL",
+      "requirement": "Given a cached or static trust list, verification SHALL need no network access.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-VER-009",
+    "derivation": "derived",
+    "steps": [
+      "step-verify",
+      "step-trust"
+    ],
+    "api": [
+      "api-static-trust",
+      "api-trust-provider"
+    ],
+    "sources": [
+      {
+        "src": "qr-2.2",
+        "quote": "Works fully offline — Yes — verifier needs only the trust list"
+      },
+      {
+        "src": "qr-12.1"
+      }
+    ]
+  }
+}

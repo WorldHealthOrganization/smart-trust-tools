@@ -1,0 +1,53 @@
+{
+  "id": "req:stt-ver-005",
+  "title": "Time checks with an injected clock",
+  "description": "Restates QR Code Generation, 11. Verifying: the same steps upwards; HCERT Specification, 3.2.5 Expiration Time; HCERT Specification, 3.2.6 Issued At.",
+  "status": "proposed",
+  "actors": [
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Time checks with an injected clock",
+      "conformance": "SHALL",
+      "requirement": "The verifier SHALL reject a certificate whose exp is in the past. It SHALL flag an iat in the future, beyond a configurable clock-skew tolerance. Time SHALL come from an injected Clock. Extra iat-based policies (for example a maximum age) MAY be configured.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-VER-005",
+    "derivation": "direct",
+    "steps": [
+      "step-verify"
+    ],
+    "api": [
+      "api-clock"
+    ],
+    "sources": [
+      {
+        "src": "qr-11",
+        "quote": "Decode the CBOR payload and check exp and iat against the current time."
+      },
+      {
+        "src": "hcert-3.2.5",
+        "quote": "after which a Verifier MUST reject the Payload as expired"
+      },
+      {
+        "src": "hcert-3.2.6"
+      }
+    ]
+  }
+}

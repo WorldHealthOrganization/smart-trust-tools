@@ -1,0 +1,43 @@
+{
+  "id": "req:stt-sel-006",
+  "title": "Trust domain codes come from the value set",
+  "description": "Engineering consequence of QR Code Generation, 2.1 Subclaims defined in this guide; Trust Domains; GDHCN Trust Domain value set.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Trust domain codes come from the value set",
+      "conformance": "SHALL",
+      "requirement": "Trust domain codes (currently DDCC, IPS-PILGRIMAGE, PH4H, ICVP) SHALL be treated as data loaded from, or checked against, the GDHCN Trust Domain value set. They SHALL NOT be a closed enum.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-SEL-006",
+    "derivation": "derived",
+    "steps": [
+      "step-1",
+      "step-trust"
+    ],
+    "sources": [
+      {
+        "src": "qr-2.1",
+        "quote": "The registered production trust domains are DDCC, IPS-PILGRIMAGE, PH4H and ICVP."
+      },
+      {
+        "src": "doc-trust-domains"
+      },
+      {
+        "src": "doc-vs-domains"
+      }
+    ]
+  }
+}

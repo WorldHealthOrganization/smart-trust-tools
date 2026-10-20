@@ -1,0 +1,36 @@
+{
+  "id": "req:stt-gen-008",
+  "title": "CBOR is the wire format; JSON is optional",
+  "description": "Restates QR Code Generation, 5. Step 4 — Serialise as CBOR; HCERT Specification, 3.2.7 Health Certificate Claim.",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "CBOR is the wire format; JSON is optional",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL work entirely on in-memory structures and CBOR. It SHALL NOT need a JSON representation to issue or verify. A JSON view of payloads MAY be provided for display and debugging.",
+      "category": "architecture"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "architecture",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-GEN-008",
+    "derivation": "direct",
+    "sources": [
+      {
+        "src": "qr-5",
+        "quote": "the wire format is CBOR, and an implementation need never produce the JSON form at all."
+      },
+      {
+        "src": "hcert-3.2.7"
+      }
+    ]
+  }
+}

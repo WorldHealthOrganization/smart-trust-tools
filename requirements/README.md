@@ -17,7 +17,7 @@ and FHIR `Requirements` resources.
 
 | Path | What it holds |
 |---|---|
-| `kg/requirements.yaml` | The library requirements (`STT-<AREA>-nnn`), the source of truth |
+| [`../skills/requirements/`](../skills/requirements/) | The library requirements, one cat-harness `req:` node per `STT-<AREA>-nnn` (below) |
 | `kg/sources.yaml` | smart-trust documents and sections, pinned commits, URL tiers; external standards; stakeholder directives |
 | `kg/upstream.yaml` | smart-trust FHIR `Requirements` statements and actors that library requirements `satisfy` |
 | `kg/steps.yaml` | The 9-step HCERT QR pipeline, plus verification and trust-list steps |
@@ -26,7 +26,7 @@ and FHIR `Requirements` resources.
 | `generated/kg.ttl`, `generated/kg.jsonld` | The graph as RDF (Turtle and JSON-LD; same triples) |
 | `generated/REQUIREMENTS.md` | Human-readable rendering with traceability tables |
 
-Do not edit `generated/` by hand. Edit the YAML, then run:
+Do not edit `generated/` by hand. Edit the requirement nodes or the YAML, then run:
 
 ```sh
 pip install pyyaml
@@ -38,6 +38,25 @@ python3 tools/build_kg.py --check-links   # probe every URL (after deploy)
 The build fails on duplicate ids, dangling references, requirements with no
 source, unknown conformance, category or derivation values, and pipeline steps
 that no requirement covers.
+
+## Requirement nodes
+
+Each requirement is a file `skills/requirements/stt-<area>-<nnn>.json` holding a
+cat-harness `req:` node (bootstrap `RequirementSchema`), so the harness's
+requirement tooling reads it:
+
+| `STT` field | In the `req:` node |
+|---|---|
+| `id` | `id` = `req:stt-<area>-<nnn>`, the file name; `stt.id` keeps the original |
+| `title`, `statement`, `conformance`, `category` | `title`; one statement, key `statement`, with `label`, `requirement`, `conformance`, `category` |
+| `refines` | `derivedFrom` entries `req:stt-…` |
+| `satisfies` | `derivedFrom` entries `http://smart.who.int/trust/Requirements/<id>[#<statement-key>]` |
+| `verified_by` | the statement's `successCriteria`, one per test requirement, `verification: test` |
+| actors | `issuer` / `receiver` from the steps and the satisfied smart-trust statements; otherwise `implementer` |
+| `derivation`, `targets`, `steps`, `api`, `issues`, `derived_from` | the `stt` block (`derived_from` as `stt.sources`) |
+
+`description` names the derivation and the source sections; `status` is
+`proposed` until the requirement set is signed off.
 
 ## Graph model
 

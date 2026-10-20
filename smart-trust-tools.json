@@ -1,0 +1,41 @@
+{
+  "$schema": "cat-harness-declaration/1.0.0",
+  "name": "smart-trust-tools",
+  "version": "0.1.0",
+  "repository": "litlfred/smart-trust-tools",
+  "iriBase": "https://litlfred.github.io/smart-trust-tools/",
+  "title": "SMART Trust HCERT library tools",
+  "description": "Requirements, API contract (WIT), wire format (CDDL) and payload models for the Kotlin and Rust HCERT libraries, derived from the WHO SMART Trust implementation guide.",
+  "needs": [
+    "fhir-harness"
+  ],
+  "mountApprovers": [
+    "litlfred"
+  ],
+  "assets": [
+    {
+      "id": "agent-instructions",
+      "src": "AGENTS.md",
+      "role": "agent-instructions",
+      "title": "AGENTS.md — smart-trust-tools",
+      "description": "Cold start for work here: what is source, what is generated and by which tool, and where the library requirements come from."
+    },
+    {
+      "id": "instance-readme",
+      "src": "README.md",
+      "role": "instance-readme",
+      "title": "SMART Trust HCERT library tools",
+      "description": "Requirements, API contract, wire format and payload models for the Kotlin and Rust HCERT libraries, and where they are published."
+    }
+  ],
+  "directories": [
+    {
+      "id": "stt-skills",
+      "path": "skills/",
+      "description": "The HCERT library requirements: one cat-harness req: node per STT requirement under skills/requirements/, derived from the WHO SMART Trust IG (QR Code Generation, HCERT specification, DID trust list) and its FHIR Requirements. tools/build_kg.py renders them, with the sources, steps, API elements and issues in requirements/kg/, into requirements/generated/.",
+      "graphTypologies": [
+        "skills"
+      ]
+    }
+  ]
+}

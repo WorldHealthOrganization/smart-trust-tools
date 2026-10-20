@@ -1,0 +1,36 @@
+{
+  "id": "req:stt-gen-007",
+  "title": "HCERT Specification is authoritative",
+  "description": "Restates QR Code Generation, Generating a QR Code; Change Log, v1.7.5.",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "HCERT Specification is authoritative",
+      "conformance": "SHALL",
+      "requirement": "Where the QR Code Generation walkthrough and the HCERT Specification differ, the library SHALL follow the HCERT Specification. Each release SHALL state which HCERT Specification version and which smart-trust IG version it implements (currently 1.1.1 and 1.7.5).",
+      "category": "non-functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "non-functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-GEN-007",
+    "derivation": "direct",
+    "sources": [
+      {
+        "src": "qr-intro",
+        "quote": "Where this page and the HCERT Specification appear to differ, the HCERT Specification is authoritative."
+      },
+      {
+        "src": "changes-1.7.5"
+      }
+    ]
+  }
+}

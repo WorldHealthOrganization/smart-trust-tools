@@ -2442,6 +2442,31 @@
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7493> .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-014>
+    a stt:Requirement ;
+    dcterms:identifier "STT-GEN-014" ;
+    dcterms:title "Kotlin API skeleton generated from the WIT" ;
+    stt:statement "The Kotlin API (types and interfaces, no behaviour) SHALL be generated from the WIT contract by tools/wit2kotlin.py, following the WIT to Kotlin mapping rules in api/README.md, into a Kotlin Multiplatform module targeting the JVM and Node.js. Kotlin implementations SHALL implement the generated interfaces. CI SHALL fail when the generated skeleton is out of date with the WIT or does not compile." ;
+    stt:conformance "SHALL" ;
+    stt:category "architecture" ;
+    stt:derivationType "directive" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-014/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-014/derivation/2> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-010> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-004> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-014/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-014/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-001>
     a stt:Requirement ;
     dcterms:identifier "STT-SEL-001" ;

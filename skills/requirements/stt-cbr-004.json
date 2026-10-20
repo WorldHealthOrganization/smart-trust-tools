@@ -1,0 +1,61 @@
+{
+  "id": "req:stt-cbr-004",
+  "title": "Wire format specified in CDDL",
+  "description": "Engineering consequence of Stakeholder directive: open standards for types and schemas; QR Code Generation, 5. Step 4 — Serialise as CBOR; HCERT Specification, 3.2.1 CWT Structure Overview; RFC 8610 Concise Data Definition Language (CDDL); RFC 9052 COSE: Structures and Process.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Wire format specified in CDDL",
+      "conformance": "SHALL",
+      "requirement": "The CBOR wire format (COSE_Sign1, protected header, CWT claim set, hcert map and payloads) SHALL be specified in CDDL (RFC 8610), and encoders SHALL produce data that validates against it. The envelope SHALL be hand-written from the HCERT Specification; payload rules SHALL be generated from the logical models (STT-PAY-010).",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-008",
+          "criterion": "Schema checks against the vectors (req:stt-tst-008) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-CBR-004",
+    "derivation": "derived",
+    "steps": [
+      "step-3",
+      "step-4",
+      "step-5"
+    ],
+    "issues": [
+      "OI-19",
+      "OI-20"
+    ],
+    "sources": [
+      {
+        "src": "dir-open-standards"
+      },
+      {
+        "src": "qr-5",
+        "quote": "The JSON shown throughout this page and in the logical models is schema notation only — the wire format is CBOR"
+      },
+      {
+        "src": "hcert-3.2.1"
+      },
+      {
+        "src": "std-rfc8610"
+      },
+      {
+        "src": "std-rfc9052"
+      }
+    ]
+  }
+}

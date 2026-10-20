@@ -54,6 +54,7 @@
 }
 
 * { box-sizing: border-box; }
+[id] { scroll-margin-top: 72px; }
 html, body { background: var(--bg); color: var(--fg); }
 body { margin: 0; font-family: var(--font-body); font-size: var(--step-0); line-height: 1.55; }
 a { color: var(--link); text-underline-offset: 2px; }

@@ -1,0 +1,42 @@
+{
+  "id": "req:stt-sel-002",
+  "title": "Registry is extensible",
+  "description": "Engineering consequence of HCERT Specification, 3.2.7.1 Subclaims.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-sel-001"
+  ],
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Registry is extensible",
+      "conformance": "SHALL",
+      "requirement": "Integrators SHALL be able to register more subclaims and their codecs, and override the defaults, at runtime, without forking the library.",
+      "category": "api"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "api",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-SEL-002",
+    "derivation": "derived",
+    "steps": [
+      "step-1"
+    ],
+    "api": [
+      "api-subclaim-registry"
+    ],
+    "sources": [
+      {
+        "src": "hcert-3.2.7.1",
+        "quote": "subclaims for negative integer values are for development purposes and are free to use"
+      }
+    ]
+  }
+}

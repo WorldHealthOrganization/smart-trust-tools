@@ -1,4 +1,5 @@
-/* Graph explorer: Cytoscape view of the requirements knowledge graph. */
+/* Graph explorer: an overview of grouped nodes, drill-down into a group or a
+   node's neighbourhood with readable labels, and an optional full graph. */
 (function () {
   "use strict";
   var S = window.STT, esc = S.esc;
@@ -16,17 +17,95 @@
   var SHAPE_NOTE = [
     ["round-rectangle", "requirement"], ["rectangle", "source section"], ["cut-rectangle", "document or standard"],
     ["star", "stakeholder directive"], ["diamond", "smart-trust FHIR requirement"], ["hexagon", "pipeline step"],
-    ["ellipse", "API element"], ["triangle", "open issue"]
+    ["ellipse", "API element or module"], ["triangle", "open issue"]
   ];
-  var COLUMN = { directive: 0, standard: 0, document: 0, section: 1, upstream: 1, requirement: 2, step: 3, api: 3, issue: 4 };
+  var COLUMN = { directive: 0, standard: 0, document: 0, section: 0, upstream: 0, requirement: 1, step: 2, api: 2, issue: 2 };
+  var KIND_ORDER = { directive: 0, document: 1, section: 1, standard: 2, upstream: 3, requirement: 0, step: 0, api: 1, issue: 2 };
+  var COLUMN_TITLE = ["Sources and smart-trust requirements", "Library requirements", "Pipeline steps · API · open issues"];
+  var CARD_W = 230, COL_GAP = 300;
   var REL_LABEL = {
     derivedFrom: ["Derived from", "Source for"], satisfies: ["Satisfies (smart-trust)", "Satisfied by"],
     refines: ["Refines", "Refined by"], verifiedBy: ["Verified by", "Verifies"],
     implementsStep: ["Pipeline steps", "Requirements"], constrainsApi: ["API elements", "Constrained by"],
     affectedBy: ["Open issues", "Affects"], concerns: ["Concerns", "Raised by"], partOf: ["Part of", "Contains"]
   };
+  var DOC_GROUPS = {
+    "ext-dvcmin": "grp:phw", "ext-dvcmin-vx": "grp:phw", "ext-dvcmin-prequal": "grp:phw", "ext-phw-aliases": "grp:phw",
+    "ext-dvc-vaccines-vs": "grp:other-igs", "ext-mtl-min": "grp:other-igs", "ext-ddcc": "grp:other-igs", "ext-icvp": "grp:other-igs",
+    "doc-qr-example-json": "grp:pr129-artefacts", "doc-qr-example-pem": "grp:pr129-artefacts", "doc-qr-script": "grp:pr129-artefacts",
+    "doc-sd-hcert": "grp:st-artefacts", "doc-sd-cwtpayload": "grp:st-artefacts", "doc-vs-domains": "grp:st-artefacts",
+    "doc-vs-keyusage": "grp:st-artefacts", "doc-vs-participants": "grp:st-artefacts", "doc-fhir-requirements": "grp:st-artefacts"
+  };
+  var GROUP_LABEL = {
+    "grp:standards": "Standards (IETF, W3C, ITU-T, HL7)", "grp:directives": "Stakeholder directives",
+    "grp:phw": "smart-trust-phw logical models", "grp:other-igs": "Other WHO SMART IGs",
+    "grp:st-artefacts": "smart-trust logical models & value sets", "grp:pr129-artefacts": "PR 129 example & script",
+    "grp:issues-up": "Open issues to fix upstream", "grp:issues-local": "Open issues in this project"
+  };
 
-  var G, cy, layoutMode = "layered", hidden = {}, areaFilter = "";
+  var G, cy, groups = {}, groupOf = {}, hidden = {}, stack = [], view = null;
+
+  /* ---------------- grouping ---------------- */
+
+  function groupKey(n) {
+    switch (n.kind) {
+      case "requirement": return "area:" + n.area;
+      case "section": return docGroupKey(n.doc);
+      case "document": return docGroupKey(n.id);
+      case "standard": return "grp:standards";
+      case "directive": return "grp:directives";
+      case "upstream": return "up:" + (n.parent || n.id);
+      case "step": return "step:" + n.id;
+      case "api": return "mod:" + n.module;
+      case "issue": return n.upstream ? "grp:issues-up" : "grp:issues-local";
+    }
+    return "grp:other";
+  }
+
+  function docGroupKey(docId) { return DOC_GROUPS[docId] || "doc:" + docId; }
+
+  function areaTitle(a) {
+    for (var i = 0; i < G.areas.length; i++) if (G.areas[i][0] === a) return G.areas[i][1];
+    return a;
+  }
+
+  function areaRank(a) {
+    for (var i = 0; i < G.areas.length; i++) if (G.areas[i][0] === a) return i;
+    return 99;
+  }
+
+  function buildGroups() {
+    G.nodes.forEach(function (n) {
+      var k = groupKey(n);
+      groupOf[n.id] = k;
+      if (!groups[k]) groups[k] = { id: k, members: [] };
+      groups[k].members.push(n.id);
+    });
+    Object.keys(groups).forEach(function (k) {
+      var g = groups[k], first = G.byId[g.members[0]], kind = k.split(":")[0], rest = k.slice(kind.length + 1);
+      g.fam = first.fam;
+      if (kind === "area") {
+        g.label = rest + " · " + areaTitle(rest).replace(/^Step \d: /, "");
+        g.shape = "round-rectangle"; g.col = 1; g.order = areaRank(rest);
+      } else if (kind === "doc") {
+        var d = G.byId[rest];
+        g.label = d ? d.title : rest; g.shape = "cut-rectangle"; g.col = 0; g.order = 10;
+      } else if (kind === "up") {
+        g.label = rest + " (smart-trust)"; g.shape = "diamond"; g.col = 0; g.order = 30;
+      } else if (kind === "step") {
+        g.label = first.label; g.shape = "hexagon"; g.col = 2; g.order = first.order;
+      } else if (kind === "mod") {
+        g.label = "API module: " + rest; g.shape = "ellipse"; g.col = 2; g.order = 100;
+      } else {
+        g.label = GROUP_LABEL[k] || rest;
+        g.shape = k.indexOf("issues") >= 0 ? "triangle" : (k === "grp:directives" ? "star" : "cut-rectangle");
+        g.col = k.indexOf("issues") >= 0 ? 2 : 0;
+        g.order = k.indexOf("issues") >= 0 ? 200 : (k === "grp:directives" ? 0 : (k === "grp:standards" ? 20 : 15));
+      }
+    });
+  }
+
+  /* ---------------- styling ---------------- */
 
   function shapeSvg(shape, color) {
     var p = {
@@ -46,8 +125,8 @@
     return {
       requirement: S.cssVar("--fam-requirement"), source: S.cssVar("--fam-source"),
       realization: S.cssVar("--fam-realization"), issue: S.cssVar("--status-warning"),
-      fg: S.cssVar("--fg"), fg2: S.cssVar("--fg-2"), line: S.cssVar("--line"), accent: S.cssVar("--accent"),
-      surface: S.cssVar("--surface"), bg: S.cssVar("--bg")
+      fg: S.cssVar("--fg"), fg2: S.cssVar("--fg-2"), fg3: S.cssVar("--fg-3"), line: S.cssVar("--line"),
+      accent: S.cssVar("--accent"), surface: S.cssVar("--surface"), bg: S.cssVar("--bg")
     };
   }
 
@@ -55,144 +134,309 @@
     var c = colors();
     return [
       { selector: "node", style: {
-        "background-color": function (n) { return c[n.data("fam")]; },
-        "shape": function (n) { return SHAPE[n.data("kind")]; },
-        "width": function (n) { return n.data("kind") === "requirement" ? 26 : 18; },
-        "height": function (n) { return n.data("kind") === "requirement" ? 16 : 18; },
+        "background-color": function (n) { return c[n.data("fam")] || c.fg3; },
+        "shape": "data(shape)", "width": "data(w)", "height": "data(h)",
         "border-width": 1.5, "border-color": c.bg,
-        "label": "data(label)", "font-family": "Public Sans, system-ui, sans-serif", "font-size": 9,
-        "color": c.fg, "text-valign": "bottom", "text-margin-y": 3, "min-zoomed-font-size": 7,
-        "text-background-color": c.bg, "text-background-opacity": 0.75, "text-background-padding": 1
+        "label": "data(label)", "font-family": "Public Sans, system-ui, sans-serif", "font-size": "data(fs)",
+        "color": c.fg, "text-wrap": "wrap", "text-max-width": "data(tw)",
+        "text-valign": "center", "text-halign": "right", "text-margin-x": 6, "min-zoomed-font-size": 6
+      } },
+      { selector: "node.card", style: {
+        "shape": "round-rectangle", "background-color": c.surface, "background-opacity": 1, "border-width": 2,
+        "border-color": function (n) { return c[n.data("fam")] || c.fg3; },
+        "text-halign": "center", "text-margin-x": 0, "text-justification": "left"
+      } },
+      { selector: "node.card.member", style: { "border-width": 3.5, "font-weight": 600 } },
+      { selector: "node.header", style: {
+        "background-opacity": 0, "border-width": 0, "font-weight": 700, "color": c.fg2, "font-size": 13,
+        "text-halign": "center", "text-margin-x": 0, "events": "no"
       } },
       { selector: "edge", style: {
-        "width": 1, "line-color": c.line, "curve-style": "haystack", "haystack-radius": 0, "opacity": 0.9
+        "width": "data(width)", "line-color": c.fg3, "opacity": "data(op)", "curve-style": "unbundled-bezier",
+        "control-point-distances": [0], "control-point-weights": [0.5],
+        "source-endpoint": "outside-to-node", "target-endpoint": "outside-to-node"
       } },
-      { selector: ".faded", style: { "opacity": 0.12, "text-opacity": 0 } },
-      { selector: "edge.hl", style: { "line-color": c.accent, "width": 2, "opacity": 1, "z-index": 9 } },
-      { selector: "node.hl", style: { "border-color": c.fg, "border-width": 2, "z-index": 10, "font-weight": 600 } },
-      { selector: "node:selected", style: { "border-color": c.accent, "border-width": 3.5 } }
+      { selector: ".faded", style: { "opacity": 0.12, "text-opacity": 0.25 } },
+      { selector: "edge.hl", style: { "line-color": c.accent, "opacity": 0.95, "z-index": 9 } },
+      { selector: "node.hl", style: { "border-color": c.accent, "z-index": 10 } },
+      { selector: "node:selected", style: { "border-color": c.accent, "border-width": 4 } }
     ];
   }
 
-  function elements() {
-    var els = [];
-    G.nodes.forEach(function (n) {
-      els.push({ group: "nodes", data: { id: n.id, label: n.label, fam: n.fam, kind: n.kind, area: n.area || "" } });
-    });
-    G.edges.forEach(function (e, i) {
-      if (G.byId[e.s] && G.byId[e.t]) els.push({ group: "edges", data: { id: "e" + i, source: e.s, target: e.t, rel: e.rel } });
-    });
-    return els;
+  function trunc(s, n) { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+
+  function nodeLabel(n, compact) {
+    if (compact) return n.label;
+    if (n.kind === "requirement") return n.id + "\n" + trunc(n.title, 38);
+    if (n.kind === "section") return n.label + "\n" + trunc(n.title, 38);
+    if (n.kind === "issue") return n.id + "\n" + trunc(n.title, 38);
+    if (n.kind === "api") return n.label + (n.wit ? "\n" + n.wit : "");
+    if (n.kind === "upstream") return n.label + "\n" + trunc(n.title, 34);
+    return trunc(n.title || n.label, 44);
   }
 
-  function areaRank(a) {
-    for (var i = 0; i < G.areas.length; i++) if (G.areas[i][0] === a) return i;
-    return 99;
-  }
+  /* ---------------- views ---------------- */
 
-  function layeredPositions(nodes) {
-    var cols = [[], [], [], [], []];
-    nodes.forEach(function (n) { cols[COLUMN[n.data("kind")]].push(n); });
-    var key = function (n) {
-      var d = G.byId[n.id()];
-      if (d.kind === "requirement") return [areaRank(d.area), d.id];
-      if (d.kind === "section") return [d.doc, d.label];
-      if (d.kind === "step") return [0, ("0" + d.order).slice(-2)];
-      if (d.kind === "api") return [1, d.module + d.label];
-      return [d.kind, d.label];
-    };
-    var tallest = Math.max.apply(null, cols.map(function (c) { return c.length; }));
-    var height = Math.max(400, tallest * 26);
-    var pos = {};
-    cols.forEach(function (col, ci) {
-      col.sort(function (a, b) {
-        var ka = key(a), kb = key(b);
-        return ka[0] < kb[0] ? -1 : ka[0] > kb[0] ? 1 : ka[1] < kb[1] ? -1 : ka[1] > kb[1] ? 1 : 0;
+  function columnLayout(items, colOf, keyOf, gapY, gapX) {
+    var cols = {};
+    items.forEach(function (it) { var c = colOf(it); (cols[c] = cols[c] || []).push(it); });
+    var pos = {}, tallest = 0;
+    Object.keys(cols).forEach(function (c) { tallest = Math.max(tallest, cols[c].length); });
+    Object.keys(cols).forEach(function (c) {
+      var col = cols[c].sort(function (a, b) {
+        var ka = keyOf(a), kb = keyOf(b);
+        for (var i = 0; i < ka.length; i++) {
+          var d = String(ka[i]).localeCompare(String(kb[i]), undefined, { numeric: true });
+          if (d) return d;
+        }
+        return 0;
       });
-      var gap = col.length > 1 ? height / (col.length - 1) : 0;
-      col.forEach(function (n, i) { pos[n.id()] = { x: ci * 360, y: col.length > 1 ? i * gap : height / 2 }; });
+      var offset = (tallest - col.length) * gapY / 2;
+      col.forEach(function (it, i) { pos[it.id] = { x: Number(c) * gapX, y: offset + i * gapY }; });
     });
     return pos;
   }
 
-  function runLayout(eles, fit) {
-    var visible = eles.filter(":visible");
-    if (layoutMode === "layered") {
-      var pos = layeredPositions(visible.nodes());
-      visible.nodes().layout({ name: "preset", positions: function (n) { return pos[n.id()]; }, fit: fit, padding: 40, animate: false }).run();
-    } else {
-      visible.layout({ name: "cose", animate: false, fit: fit, padding: 40, nodeRepulsion: 9000, idealEdgeLength: 60,
-        randomize: true, componentSpacing: 60, nodeDimensionsIncludeLabels: false }).run();
+  function nodeEl(n, opts) {
+    if (opts.compact) {
+      var req = n.kind === "requirement";
+      return { group: "nodes", data: { id: n.id, label: n.label, fam: n.fam, kind: n.kind, shape: SHAPE[n.kind],
+        w: req ? 26 : 18, h: req ? 16 : 18, fs: 9, tw: 120 } };
     }
+    return { group: "nodes", classes: "card" + (opts.member ? " member" : ""), data: {
+      id: n.id, label: nodeLabel(n), fam: n.fam, kind: n.kind, shape: "round-rectangle",
+      w: CARD_W, h: 38, fs: 11.5, tw: CARD_W - 18 } };
   }
 
-  function applyFilters() {
-    cy.batch(function () {
-      cy.nodes().forEach(function (n) {
-        var d = n.data();
-        var show = !hidden[d.fam] && (!areaFilter || d.kind !== "requirement" || d.area === areaFilter);
-        n.style("display", show ? "element" : "none");
-      });
-      if (areaFilter) {
-        // With an area chosen, hide nodes that no visible requirement touches.
-        var reqs = cy.nodes('[kind = "requirement"]').filter(":visible");
-        var keep = reqs.union(reqs.neighborhood().nodes());
-        keep = keep.union(keep.filter('[kind = "section"], [kind = "upstream"]').outgoers('edge[rel = "partOf"]').targets());
-        cy.nodes().not(keep).style("display", "none");
+  function headers(pos, cols) {
+    var minY = Infinity;
+    Object.keys(pos).forEach(function (k) { minY = Math.min(minY, pos[k].y); });
+    return cols.map(function (c) {
+      return { group: "nodes", classes: "header", position: { x: c * COL_GAP, y: minY - 44 },
+        data: { id: "hdr" + c, label: COLUMN_TITLE[c], shape: "round-rectangle", w: CARD_W, h: 20, fs: 13, tw: CARD_W } };
+    });
+  }
+
+  function usedCols(items, colOf) {
+    var seen = {};
+    items.forEach(function (it) { seen[colOf(it)] = true; });
+    return Object.keys(seen).map(Number);
+  }
+
+  function sortKey(n) {
+    var k = KIND_ORDER[n.kind];
+    if (n.kind === "requirement") return [k, areaRank(n.area), n.id];
+    if (n.kind === "section") return [k, n.doc, n.label];
+    if (n.kind === "step") return [k, "", ("0" + n.order).slice(-2)];
+    if (n.kind === "api") return [k, n.module, n.label];
+    return [k, n.kind, n.id];
+  }
+
+  function showOverview() {
+    var gs = Object.keys(groups).map(function (k) { return groups[k]; })
+      .filter(function (g) { return !hidden[g.fam]; });
+    var shown = {};
+    gs.forEach(function (g) { shown[g.id] = true; });
+    var weights = {};
+    G.edges.forEach(function (e) {
+      var a = groupOf[e.s], b = groupOf[e.t];
+      if (!a || !b || a === b || !shown[a] || !shown[b]) return;
+      if (a.indexOf("area:") !== 0 && b.indexOf("area:") !== 0) return;
+      var key = a < b ? a + "|" + b : b + "|" + a;
+      weights[key] = (weights[key] || 0) + 1;
+    });
+    var maxW = 1;
+    Object.keys(weights).forEach(function (k) { maxW = Math.max(maxW, weights[k]); });
+    var colOf = function (g) { return g.col; };
+    var pos = columnLayout(gs, colOf, function (g) { return [g.order, g.label]; }, 36, COL_GAP);
+    var els = gs.map(function (g) {
+      return { group: "nodes", classes: "card", position: pos[g.id], data: {
+        id: g.id, label: trunc(g.label, 34) + "  (" + g.members.length + ")", fam: g.fam, shape: "round-rectangle",
+        isGroup: true, w: CARD_W, h: 28, fs: 12, tw: CARD_W - 16
+      } };
+    }).concat(headers(pos, usedCols(gs, colOf)));
+    Object.keys(weights).forEach(function (k, i) {
+      var p = k.split("|"), w = weights[k];
+      els.push({ group: "edges", data: { id: "ov" + i, source: p[0], target: p[1], weight: w,
+        width: 1 + 7 * Math.sqrt(w / maxW), op: 0.18 + 0.4 * (w / maxW) } });
+    });
+    render(els, { name: "preset" });
+    setCount(gs.length + " groups · " + Object.keys(weights).length + " grouped links. Click a group to open it.");
+  }
+
+  function neighbourhood(memberIds) {
+    var set = {}, members = {};
+    memberIds.forEach(function (id) { set[id] = true; members[id] = true; });
+    G.edges.forEach(function (e) {
+      if (members[e.s] && G.byId[e.t]) set[e.t] = true;
+      if (members[e.t] && G.byId[e.s]) set[e.s] = true;
+    });
+    return { set: set, members: members };
+  }
+
+  var FOCUS_LIMIT = 45;
+
+  function showFocus(memberIds) {
+    var nb = neighbourhood(memberIds);
+    var nodes = Object.keys(nb.set).map(function (id) { return G.byId[id]; })
+      .filter(function (n) { return nb.members[n.id] || !hidden[n.fam]; });
+    if (nodes.length > FOCUS_LIMIT) return showFocusGrouped(memberIds, nb);
+    var vis = {};
+    nodes.forEach(function (n) { vis[n.id] = true; });
+    var colOf = function (n) { return COLUMN[n.kind]; };
+    var pos = columnLayout(nodes, colOf, sortKey, 46, COL_GAP);
+    var els = nodes.map(function (n) {
+      var el = nodeEl(n, { member: nb.members[n.id] });
+      el.position = pos[n.id];
+      return el;
+    }).concat(headers(pos, usedCols(nodes, colOf)));
+    G.edges.forEach(function (e, i) {
+      if (vis[e.s] && vis[e.t] && (nb.members[e.s] || nb.members[e.t] || e.rel === "partOf")) {
+        els.push({ group: "edges", data: { id: "f" + i, source: e.s, target: e.t, rel: e.rel, width: 1.2, op: 0.55 } });
       }
     });
-    updateCount();
-    runLayout(cy.elements(), true);
+    render(els, { name: "preset" });
+    if (cy.zoom() > 1.15) { cy.zoom(1.15); cy.center(); }
+    setCount(nodes.length + " nodes · " + cy.edges().length + " links");
   }
 
-  function updateCount() {
-    var n = cy.nodes(":visible").length, e = cy.edges(":visible").length;
-    document.getElementById("ex-count").textContent = n + " nodes · " + e + " links shown";
+  /* Too many neighbours to read: keep the members as cards and fold each
+     neighbour into its group, with link counts. */
+  function showFocusGrouped(memberIds, nb) {
+    var items = [], weights = {}, gcol = {};
+    memberIds.forEach(function (id) {
+      var n = G.byId[id];
+      items.push({ id: id, col: COLUMN[n.kind], key: sortKey(n), node: n });
+    });
+    G.edges.forEach(function (e) {
+      var m = nb.members[e.s] ? e.s : (nb.members[e.t] ? e.t : null);
+      if (!m) return;
+      var other = m === e.s ? e.t : e.s;
+      if (nb.members[other] || !G.byId[other] || hidden[G.byId[other].fam]) return;
+      var g = groupOf[other];
+      gcol[g] = COLUMN[G.byId[other].kind];
+      var k = m + "|" + g;
+      weights[k] = (weights[k] || 0) + 1;
+    });
+    Object.keys(gcol).forEach(function (g) {
+      var col = gcol[g];
+      if (items.length && col === items[0].col) col = col === 1 ? 2 : 1;
+      items.push({ id: g, col: col, key: [9, groups[g].order, groups[g].label], group: groups[g] });
+    });
+    var colOf = function (it) { return it.col; };
+    var pos = columnLayout(items, colOf, function (it) { return it.key; }, 46, COL_GAP);
+    var maxW = 1;
+    Object.keys(weights).forEach(function (k) { maxW = Math.max(maxW, weights[k]); });
+    var els = items.map(function (it) {
+      if (it.node) { var el = nodeEl(it.node, { member: true }); el.position = pos[it.id]; return el; }
+      return { group: "nodes", classes: "card", position: pos[it.id], data: {
+        id: it.id, label: trunc(it.group.label, 34) + "  (" + it.group.members.length + ")", fam: it.group.fam,
+        shape: "round-rectangle", isGroup: true, w: CARD_W, h: 28, fs: 12, tw: CARD_W - 16 } };
+    }).concat(headers(pos, usedCols(items, colOf)));
+    Object.keys(weights).forEach(function (k, i) {
+      var p = k.split("|"), w = weights[k];
+      els.push({ group: "edges", data: { id: "fg" + i, source: p[0], target: p[1], weight: w,
+        width: 1 + 5 * Math.sqrt(w / maxW), op: 0.25 + 0.4 * (w / maxW) } });
+    });
+    render(els, { name: "preset" });
+    if (cy.zoom() > 1.15) { cy.zoom(1.15); cy.center(); }
+    setCount(memberIds.length + " members, with " + Object.keys(gcol).length +
+      " connected groups. Click a member for details, or a group to open it.");
   }
 
-  function clearHighlight() {
-    cy.elements().removeClass("faded hl");
+  function showFull() {
+    var nodes = G.nodes.filter(function (n) { return !hidden[n.fam]; });
+    var vis = {};
+    nodes.forEach(function (n) { vis[n.id] = true; });
+    var pos = columnLayout(nodes, function (n) { return COLUMN[n.kind]; }, sortKey, 16, 420);
+    var els = nodes.map(function (n) { var el = nodeEl(n, { compact: true }); el.position = pos[n.id]; return el; });
+    G.edges.forEach(function (e, i) {
+      if (vis[e.s] && vis[e.t]) els.push({ group: "edges", data: { id: "a" + i, source: e.s, target: e.t, width: 0.8, op: 0.25 } });
+    });
+    render(els, { name: "preset" });
+    setCount(nodes.length + " nodes · " + cy.edges().length + " links. Zoom in to read labels, or use the overview.");
   }
 
-  function highlight(node) {
-    var hood = node.closedNeighborhood();
+  function render(els, layout) {
     cy.batch(function () {
-      cy.elements().addClass("faded").removeClass("hl");
-      hood.removeClass("faded").addClass("hl");
+      cy.elements().remove();
+      cy.add(els);
+    });
+    cy.layout(Object.assign({ fit: true, padding: 40, animate: false }, layout)).run();
+  }
+
+  function setCount(t) { document.getElementById("ex-count").textContent = t; }
+
+  /* ---------------- navigation ---------------- */
+
+  function viewLabel(v) {
+    if (v.type === "overview") return "Overview";
+    if (v.type === "full") return "Full graph";
+    if (v.type === "group") return groups[v.id].label;
+    return v.id;
+  }
+
+  function encodeHash(v) {
+    if (v.type === "group") return "grp-" + v.id.replace(":", "--");
+    if (v.type === "node") return v.id;
+    if (v.type === "full") return "full";
+    return "";
+  }
+
+  function go(v, push) {
+    if (push) stack.push(v); else stack = [v];
+    view = v;
+    draw();
+  }
+
+  function draw() {
+    if (view.type === "overview") showOverview();
+    else if (view.type === "full") showFull();
+    else if (view.type === "group") showFocus(groups[view.id].members);
+    else showFocus([view.id]);
+    document.getElementById("view-overview").setAttribute("aria-pressed", view.type !== "full");
+    document.getElementById("view-full").setAttribute("aria-pressed", view.type === "full");
+    renderCrumbs();
+    if (view.type === "node") { var n = cy.getElementById(view.id); n.select(); renderDetail(view.id); }
+    else if (view.type === "group") renderGroupDetail(view.id);
+    try { history.replaceState(null, "", "#" + encodeHash(view)); } catch (e) { /* sandboxed */ }
+  }
+
+  function renderCrumbs() {
+    var el = document.getElementById("ex-crumbs");
+    var parts = stack.map(function (v, i) {
+      var label = esc(trunc(viewLabel(v), 48));
+      return i === stack.length - 1 ? '<span class="here">' + label + "</span>"
+        : '<button type="button" data-crumb="' + i + '">' + label + "</button>";
+    });
+    var hint = view.type === "overview" ? "Click a group to open it"
+      : view.type === "full" ? "Everything at once"
+      : "Click a node for details · double-click to centre on it";
+    el.innerHTML = parts.join('<span class="sep">›</span>') + '<span class="hint small">' + hint + "</span>";
+    Array.prototype.forEach.call(el.querySelectorAll("[data-crumb]"), function (b) {
+      b.onclick = function () {
+        var i = Number(b.getAttribute("data-crumb"));
+        stack = stack.slice(0, i + 1);
+        view = stack[i];
+        draw();
+      };
     });
   }
 
-  function isolate(node, depth) {
-    var set = node.closedNeighborhood();
-    for (var i = 1; i < depth; i++) set = set.closedNeighborhood();
-    cy.batch(function () {
-      cy.elements().style("display", "none");
-      set.style("display", "element");
-    });
-    clearHighlight();
-    var dist = {};
-    var bfs = set.bfs({ roots: node, directed: false, visit: function (v, e, u, i, d) { dist[v.id()] = d; } });
-    set.layout({ name: "concentric", concentric: function (n) { return 10 - (dist[n.id()] || 0); },
-      levelWidth: function () { return 1; }, minNodeSpacing: 50, animate: false, fit: true, padding: 60 }).run();
-    if (cy.zoom() > 1.3) { cy.zoom(1.3); cy.center(set); }
-    node.select();
-    updateCount();
-    setIsolated(true);
+  function openNode(id) {
+    var n = G.byId[id];
+    if (!n) return;
+    if (view && view.type === "node" && view.id === id) return;
+    var base = [{ type: "overview" }];
+    var gk = groupOf[id];
+    if (stack.length && stack[stack.length - 1].type === "group") base = stack.slice();
+    else if (gk) base.push({ type: "group", id: gk });
+    stack = base.concat([{ type: "node", id: id }]);
+    view = stack[stack.length - 1];
+    draw();
   }
 
-  var isolated = false;
-  function setIsolated(on) {
-    isolated = on;
-    var b = document.getElementById("btn-reset");
-    if (b) b.hidden = !on;
-  }
-
-  function resetView() {
-    setIsolated(false);
-    applyFilters();
-  }
-
-  /* ---- Details panel ---- */
+  /* ---------------- details ---------------- */
 
   function nodeLink(n) {
     return '<button type="button" class="d-link" data-goto="' + esc(n.id) + '">' + esc(n.label) + "</button>";
@@ -204,10 +448,8 @@
     var title = REL_LABEL[rel][dir === "in" ? 1 : 0];
     var lis = items.map(function (x) {
       var n = x.node, extra = "";
-      if (n.kind === "requirement") extra = ' <span class="muted">' + esc(n.title) + "</span>";
-      else if (n.kind === "section" || n.kind === "upstream" || n.kind === "issue" || n.kind === "step")
-        extra = ' <span class="muted">' + esc(n.title) + "</span>";
-      else if (n.kind === "api" && n.wit) extra = ' <span class="muted mono">' + esc(n.wit) + "</span>";
+      if (n.kind === "api" && n.wit) extra = ' <span class="muted mono">' + esc(n.wit) + "</span>";
+      else if (n.title && n.title !== n.label) extra = ' <span class="muted">' + esc(n.title) + "</span>";
       var q = x.edge.quote ? '<span class="d-quote">“' + esc(x.edge.quote) + "”</span>" : "";
       var urls = (rel === "derivedFrom" || rel === "concerns") && dir !== "in" ? '<span class="d-urls">' + S.urlList(n.urls) + "</span>" : "";
       return "<li><span>" + nodeLink(n) + extra + "</span>" + q + urls + "</li>";
@@ -217,9 +459,30 @@
 
   function badge(text, cls) { return '<span class="badge ' + (cls || "") + '">' + esc(text) + "</span>"; }
 
+  function wireLinks(el) {
+    Array.prototype.forEach.call(el.querySelectorAll("[data-goto]"), function (b) {
+      b.onclick = function () { openNode(b.getAttribute("data-goto")); };
+    });
+  }
+
+  function renderGroupDetail(gid) {
+    var g = groups[gid], c = colors();
+    var members = g.members.map(function (id) { return G.byId[id]; });
+    var h = ['<div class="d-head"><span class="d-kind eyebrow">' + shapeSvg(g.shape, c[g.fam]) + "Group</span>",
+      '<span class="d-title">' + esc(g.label) + "</span>",
+      '<span class="small muted">' + members.length + " member" + (members.length === 1 ? "" : "s") +
+      ", shown with everything directly connected to them (outlined nodes are the members).</span></div>"];
+    h.push('<div class="d-sec"><h4>Members</h4><ul class="d-list">' + members.map(function (n) {
+      return "<li><span>" + nodeLink(n) + (n.title && n.title !== n.label ? ' <span class="muted">' + esc(n.title) + "</span>" : "") + "</span></li>";
+    }).join("") + "</ul></div>");
+    var el = document.getElementById("detail");
+    el.innerHTML = h.join("");
+    el.scrollTop = 0;
+    wireLinks(el);
+  }
+
   function renderDetail(id) {
-    var n = G.byId[id], h = [];
-    var c = colors();
+    var n = G.byId[id], h = [], c = colors();
     h.push('<div class="d-head"><span class="d-kind eyebrow">' + shapeSvg(SHAPE[n.kind], c[n.fam]) + esc(S.KIND_LABEL[n.kind]) + "</span>");
     h.push('<span class="mono small">' + esc(n.id) + '</span><span class="d-title">' + esc(n.title) + "</span></div>");
     if (n.kind === "requirement") {
@@ -252,122 +515,114 @@
       if (n.status === "pending-merge") h.push('<div class="chips"><span class="chip">in smart-trust PR 129, not yet merged</span></div>');
       if (n.note) h.push('<p class="small muted">' + esc(n.note) + "</p>");
       if (n.urls) h.push('<p class="d-urls">' + S.urlList(n.urls) + "</p>");
-      h.push(relSection(id, "partOf", "out"));
-      h.push(relSection(id, "partOf", "in"));
+      ["partOf"].forEach(function (r) { h.push(relSection(id, r, "out")); h.push(relSection(id, r, "in")); });
       h.push(relSection(id, "derivedFrom", "in"));
       h.push(relSection(id, "satisfies", "in"));
       h.push(relSection(id, "concerns", "in"));
     }
-    h.push('<div class="d-actions"><button type="button" id="btn-iso1">Isolate neighbours</button><button type="button" id="btn-iso2">Two hops</button><button type="button" id="btn-reset"' + (isolated ? "" : " hidden") + ">Show whole graph</button></div>");
     var el = document.getElementById("detail");
     el.innerHTML = h.join("");
     el.scrollTop = 0;
-    document.getElementById("btn-iso1").onclick = function () { isolate(cy.getElementById(id), 1); };
-    document.getElementById("btn-iso2").onclick = function () { isolate(cy.getElementById(id), 2); };
-    document.getElementById("btn-reset").onclick = resetView;
+    wireLinks(el);
   }
 
-  function select(id, opts) {
-    var node = cy.getElementById(id);
-    if (!node.length) return;
-    if (node.style("display") === "none") {
-      hidden[node.data("fam")] = false;
-      syncFamilyButtons();
-      areaFilter = ""; document.getElementById("ex-area").value = "";
-      applyFilters();
-    }
-    cy.$(":selected").unselect();
-    node.select();
-    if (!isolated) highlight(node);
-    renderDetail(id);
-    if (opts && opts.center) cy.animate({ center: { eles: node }, zoom: Math.max(cy.zoom(), 1.1) }, { duration: 250 });
-    try { history.replaceState(null, "", "#" + id); } catch (e) { /* sandboxed */ }
-  }
+  /* ---------------- controls ---------------- */
 
-  function syncFamilyButtons() {
-    FAMILIES.forEach(function (f) {
-      var b = document.getElementById("fam-" + f.id);
-      if (b) b.setAttribute("aria-pressed", hidden[f.id] ? "false" : "true");
+  function highlight(node) {
+    cy.batch(function () {
+      cy.elements().addClass("faded").removeClass("hl");
+      node.closedNeighborhood().removeClass("faded").addClass("hl");
     });
   }
+
+  function clearHighlight() { cy.elements().removeClass("faded hl"); }
 
   function buildControls() {
     var counts = {};
     G.nodes.forEach(function (n) { counts[n.fam] = (counts[n.fam] || 0) + 1; });
-    var famBox = document.getElementById("ex-families");
-    var c = colors();
+    var famBox = document.getElementById("ex-families"), c = colors();
     FAMILIES.forEach(function (f) {
       var b = document.createElement("button");
       b.type = "button"; b.className = "fam-btn"; b.id = "fam-" + f.id; b.setAttribute("aria-pressed", "true");
       b.innerHTML = '<span class="swatch" style="background:' + c[f.id] + '"></span><span>' + esc(f.label) + '</span><span class="num muted">' + (counts[f.id] || 0) + "</span>";
-      b.onclick = function () { hidden[f.id] = !hidden[f.id]; syncFamilyButtons(); setIsolated(false); applyFilters(); };
+      b.onclick = function () { hidden[f.id] = !hidden[f.id]; b.setAttribute("aria-pressed", hidden[f.id] ? "false" : "true"); draw(); };
       famBox.appendChild(b);
     });
     var area = document.getElementById("ex-area");
     G.areas.forEach(function (a) {
       var o = document.createElement("option"); o.value = a[0]; o.textContent = a[0] + " — " + a[1]; area.appendChild(o);
     });
-    area.onchange = function () { areaFilter = area.value; setIsolated(false); applyFilters(); };
+    area.onchange = function () {
+      if (!area.value) return;
+      stack = [{ type: "overview" }]; go({ type: "group", id: "area:" + area.value }, true); area.value = "";
+    };
     var dl = document.getElementById("ex-ids");
-    G.nodes.forEach(function (n) {
-      var o = document.createElement("option"); o.value = n.id; o.label = n.title; dl.appendChild(o);
-    });
+    G.nodes.forEach(function (n) { var o = document.createElement("option"); o.value = n.id; o.label = n.title; dl.appendChild(o); });
     var search = document.getElementById("ex-search");
     search.addEventListener("change", function () { find(search.value); });
     search.addEventListener("keydown", function (e) { if (e.key === "Enter") find(search.value); });
-    var shapes = document.getElementById("ex-shapes");
-    shapes.innerHTML = SHAPE_NOTE.map(function (s) {
-      return '<li style="grid-template-columns:16px 1fr;display:grid;gap:6px;align-items:center">' + shapeSvg(s[0], c.fg2) + "<span>" + esc(s[1]) + "</span></li>";
+    document.getElementById("ex-shapes").innerHTML = SHAPE_NOTE.map(function (s) {
+      return "<li>" + shapeSvg(s[0], c.fg2) + "<span>" + esc(s[1]) + "</span></li>";
     }).join("");
-    document.getElementById("lay-layered").onclick = function () { setLayout("layered"); };
-    document.getElementById("lay-force").onclick = function () { setLayout("force"); };
+    document.getElementById("view-overview").onclick = function () { go({ type: "overview" }); };
+    document.getElementById("view-full").onclick = function () { go({ type: "full" }); };
     document.getElementById("z-in").onclick = function () { cy.zoom({ level: cy.zoom() * 1.3, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); };
     document.getElementById("z-out").onclick = function () { cy.zoom({ level: cy.zoom() / 1.3, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); };
-    document.getElementById("z-fit").onclick = function () { cy.fit(cy.elements(":visible"), 40); };
-  }
-
-  function setLayout(mode) {
-    layoutMode = mode;
-    document.getElementById("lay-layered").setAttribute("aria-pressed", mode === "layered");
-    document.getElementById("lay-force").setAttribute("aria-pressed", mode === "force");
-    setIsolated(false);
-    applyFilters();
+    document.getElementById("z-fit").onclick = function () { cy.fit(cy.elements(), 40); };
   }
 
   function find(q) {
     q = (q || "").trim();
     if (!q) return;
     var exact = G.byId[q] || G.byId[q.toUpperCase()];
-    if (exact) return select(exact.id, { center: true });
+    if (exact) return openNode(exact.id);
     var lq = q.toLowerCase();
     var hit = G.nodes.find(function (n) {
       return n.label.toLowerCase().indexOf(lq) >= 0 || (n.title || "").toLowerCase().indexOf(lq) >= 0 ||
         (n.statement || "").toLowerCase().indexOf(lq) >= 0;
     });
-    if (hit) select(hit.id, { center: true });
-    else document.getElementById("ex-count").textContent = "No node matches “" + q + "”";
+    if (hit) openNode(hit.id);
+    else setCount("No node matches “" + q + "”");
+  }
+
+  function fromHash() {
+    var h = decodeURIComponent((location.hash || "").slice(1));
+    if (!h) return go({ type: "overview" });
+    if (h === "full") return go({ type: "full" });
+    if (h.indexOf("grp-") === 0) {
+      var k = h.slice(4).replace("--", ":");
+      if (groups[k]) { stack = [{ type: "overview" }]; return go({ type: "group", id: k }, true); }
+    }
+    if (G.byId[h]) { stack = []; return openNode(h); }
+    go({ type: "overview" });
   }
 
   function init(g) {
     G = g;
-    cy = cytoscape({
-      container: document.getElementById("cy"), elements: elements(), style: style(),
-      wheelSensitivity: 0.25, minZoom: 0.05, maxZoom: 4, boxSelectionEnabled: false
-    });
+    buildGroups();
+    cy = cytoscape({ container: document.getElementById("cy"), style: style(), wheelSensitivity: 0.25,
+      minZoom: 0.05, maxZoom: 4, boxSelectionEnabled: false });
     buildControls();
-    applyFilters();
-    cy.on("tap", "node", function (e) { select(e.target.id()); });
-    cy.on("dbltap", "node", function (e) { isolate(e.target, 1); renderDetail(e.target.id()); });
-    cy.on("tap", function (e) { if (e.target === cy) { cy.$(":selected").unselect(); if (!isolated) clearHighlight(); } });
-    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    cy.on("tap", "node", function (e) {
+      var d = e.target.data();
+      if (d.isGroup) { go({ type: "group", id: d.id }, true); return; }
+      if (!G.byId[d.id]) return;
+      cy.$(":selected").unselect(); e.target.select();
+      highlight(e.target);
+      renderDetail(d.id);
+    });
+    cy.on("dbltap", "node", function (e) { if (!e.target.data("isGroup") && G.byId[e.target.id()]) openNode(e.target.id()); });
+    cy.on("mouseover", "node", function (e) { if (view.type === "overview") highlight(e.target); });
+    cy.on("mouseout", "node", function () { if (view.type === "overview") clearHighlight(); });
+    cy.on("tap", function (e) { if (e.target === cy) { cy.$(":selected").unselect(); clearHighlight(); } });
     var restyle = function () { cy.style(style()); };
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
     if (mq.addEventListener) mq.addEventListener("change", restyle);
     new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    var h = decodeURIComponent((location.hash || "").slice(1));
-    if (h && G.byId[h]) { select(h); isolate(cy.getElementById(h), 1); renderDetail(h); }
+    fromHash();
   }
 
   S.loadGraph().then(init).catch(function (err) {
-    document.getElementById("ex-count").textContent = "Could not load the graph data (" + err.message + ").";
+    setCount("Could not load the graph data (" + err.message + ").");
   });
 })();

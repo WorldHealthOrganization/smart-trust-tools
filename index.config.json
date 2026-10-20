@@ -1,0 +1,181 @@
+{
+  "$schema": "folio-index-config/v1",
+  "_comment": "smart-trust-tools takes the smart-hiv shape, as litlfred/smart-trust does: this file pins the layers it needs (fhir-harness and everything below it) and declares the site agent-run. The mounts are laid down from index.lock.json and gitignored.",
+  "site": {
+    "landing": "smart-trust-tools",
+    "agentRun": true
+  },
+  "instances": [
+    {
+      "name": "fhir-harness",
+      "source": {
+        "remote": {
+          "repository": "litlfred/fhir-harness",
+          "ref": "a46e9f017a22cb6ec319c7bb9951acac9f2ba273",
+          "overrides": {
+            "fhir-harness": {
+              "whole": true
+            }
+          },
+          "trust": {
+            "consent": {
+              "by": "litlfred",
+              "on": "2026-10-20",
+              "ref": "a46e9f017a22cb6ec319c7bb9951acac9f2ba273",
+              "evidence": "Owner (litlfred), 2026-10-20, in the session that set up this repository: \"A, needs fhir-harness, main to root, branches STAGING\" (adopt cat-harness fully, need fhir-harness). The ref is the one litlfred/folio-assistant index.config.json pins at bb61e9b, adopted unchanged."
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "folio-assistant-core",
+      "source": {
+        "remote": {
+          "repository": "litlfred/folio-assistant-core",
+          "ref": "651c1ead3608db36014a7a960cefa60ac7b9830d",
+          "overrides": {
+            "folio-assistant-core": {
+              "whole": true
+            },
+            "cat-harness": {
+              "skip": true
+            },
+            "cat-harness-tools": {
+              "skip": true
+            }
+          },
+          "trust": {
+            "consent": {
+              "by": "litlfred",
+              "on": "2026-10-20",
+              "ref": "651c1ead3608db36014a7a960cefa60ac7b9830d",
+              "evidence": "Owner (litlfred), 2026-10-20, in the session that set up this repository: \"A, needs fhir-harness, main to root, branches STAGING\" (adopt cat-harness fully, need fhir-harness). The ref is the one litlfred/folio-assistant index.config.json pins at bb61e9b, adopted unchanged."
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "cat-harness",
+      "source": {
+        "remote": {
+          "repository": "litlfred/cat-harness",
+          "ref": "65125978b0c65d7c357060cf625c6def3f58b241",
+          "overrides": {
+            "cat-harness": {
+              "whole": true
+            },
+            "bootstrap": {
+              "skip": true
+            },
+            "bootstrap-tools": {
+              "skip": true
+            }
+          },
+          "trust": {
+            "consent": {
+              "by": "litlfred",
+              "on": "2026-10-20",
+              "ref": "65125978b0c65d7c357060cf625c6def3f58b241",
+              "evidence": "Owner (litlfred), 2026-10-20, in the session that set up this repository: \"A, needs fhir-harness, main to root, branches STAGING\" (adopt cat-harness fully, need fhir-harness). The ref is the one litlfred/folio-assistant index.config.json pins at bb61e9b, adopted unchanged."
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "cat-harness-tools",
+      "source": {
+        "remote": {
+          "repository": "litlfred/cat-harness-tools",
+          "ref": "4e3ec4636b5f4d9d4f100ecdd7d550050cef993a",
+          "overrides": {
+            "cat-harness-tools": {
+              "whole": true
+            },
+            "cat-harness": {
+              "skip": true
+            }
+          },
+          "trust": {
+            "consent": {
+              "by": "litlfred",
+              "on": "2026-10-20",
+              "ref": "4e3ec4636b5f4d9d4f100ecdd7d550050cef993a",
+              "evidence": "Owner (litlfred), 2026-10-20, in the session that set up this repository: \"A, needs fhir-harness, main to root, branches STAGING\" (adopt cat-harness fully, need fhir-harness). The ref is the one litlfred/folio-assistant index.config.json pins at bb61e9b, adopted unchanged."
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "bootstrap",
+      "source": {
+        "remote": {
+          "repository": "litlfred/bootstrap",
+          "ref": "0d442b3811991e5a0c19d8f619848fb4a5f8aa5f",
+          "overrides": {
+            "bootstrap": {
+              "whole": true
+            }
+          },
+          "trust": {
+            "consent": {
+              "by": "litlfred",
+              "on": "2026-10-20",
+              "ref": "0d442b3811991e5a0c19d8f619848fb4a5f8aa5f",
+              "evidence": "Owner (litlfred), 2026-10-20, in the session that set up this repository: \"A, needs fhir-harness, main to root, branches STAGING\" (adopt cat-harness fully, need fhir-harness). The ref is the one litlfred/folio-assistant index.config.json pins at bb61e9b, adopted unchanged."
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "bootstrap-tools",
+      "source": {
+        "remote": {
+          "repository": "litlfred/bootstrap-tools",
+          "ref": "157dacf74b6fc3e86c28e123904d4b2d4a16ae61",
+          "overrides": {
+            "bootstrap-tools": {
+              "whole": true
+            },
+            "bootstrap": {
+              "skip": true
+            }
+          },
+          "trust": {
+            "consent": {
+              "by": "litlfred",
+              "on": "2026-10-20",
+              "ref": "157dacf74b6fc3e86c28e123904d4b2d4a16ae61",
+              "evidence": "Owner (litlfred), 2026-10-20, in the session that set up this repository: \"A, needs fhir-harness, main to root, branches STAGING\" (adopt cat-harness fully, need fhir-harness). The ref is the one litlfred/folio-assistant index.config.json pins at bb61e9b, adopted unchanged."
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "smart-trust-tools",
+      "source": {
+        "local": {
+          "at": "."
+        }
+      },
+      "site": {
+        "build": {
+          "home": "docs/index.md",
+          "pre": [
+            "check:req-nodes"
+          ],
+          "sourceSteps": [],
+          "siteSteps": [
+            "site:viewers"
+          ],
+          "profile": "folio"
+        }
+      }
+    }
+  ]
+}

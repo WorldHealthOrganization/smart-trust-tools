@@ -1,0 +1,41 @@
+{
+  "id": "req:stt-tst-008",
+  "title": "Schema checks against the vectors",
+  "description": "Engineering consequence of DVC QR example, machine-readable summary (test participant XXA); RFC 8610 Concise Data Definition Language (CDDL); W3C Shapes Constraint Language (SHACL).",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Schema checks against the vectors",
+      "conformance": "SHALL",
+      "requirement": "CI SHALL validate every conformance vector against the CDDL (COSE_Sign1, protected header, CWT claims) and its payload against the SHACL shapes through the JSON-LD context. It SHALL also check that mutated payloads (invariant broken, bad FHIR date, missing required element, bad FHIR id) are rejected and that valid variants (cn only, partial date) are accepted, by both CDDL and SHACL.",
+      "category": "test"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "test",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-TST-008",
+    "derivation": "derived",
+    "api": [
+      "api-testkit"
+    ],
+    "sources": [
+      {
+        "src": "doc-qr-example-json"
+      },
+      {
+        "src": "std-rfc8610"
+      },
+      {
+        "src": "std-shacl"
+      }
+    ]
+  }
+}

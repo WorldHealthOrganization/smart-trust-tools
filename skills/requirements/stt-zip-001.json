@@ -1,0 +1,42 @@
+{
+  "id": "req:stt-zip-001",
+  "title": "ZLIB/Deflate after signing",
+  "description": "Restates QR Code Generation, 7. Step 6 — Compress; HCERT Specification, 4.2.1 Payload (CWT) Compression.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "ZLIB/Deflate after signing",
+      "conformance": "SHALL",
+      "requirement": "The issuer SHALL compress the COSE_Sign1 bytes with ZLIB (RFC 1950) using Deflate (RFC 1951) after signing. The verifier SHALL decompress before parsing COSE.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-ZIP-001",
+    "derivation": "direct",
+    "steps": [
+      "step-6"
+    ],
+    "api": [
+      "api-zlib"
+    ],
+    "sources": [
+      {
+        "src": "qr-7",
+        "quote": "Compression comes after signing, so the verifier decompresses before it verifies."
+      },
+      {
+        "src": "hcert-4.2.1"
+      }
+    ]
+  }
+}

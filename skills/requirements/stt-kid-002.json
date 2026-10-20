@@ -1,0 +1,52 @@
+{
+  "id": "req:stt-kid-002",
+  "title": "kid is a lookup hint, not unique",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, 3.2.3 Key Identifier.",
+  "status": "proposed",
+  "actors": [
+    "receiver",
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "kid is a lookup hint, not unique",
+      "conformance": "SHALL",
+      "requirement": "Trust-list lookup by kid SHALL return every matching DSC, and the verifier SHALL try each candidate until one verifies. A kid match alone SHALL NOT count as authentication.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-KID-002",
+    "derivation": "direct",
+    "steps": [
+      "step-verify",
+      "step-trust"
+    ],
+    "api": [
+      "api-trust-provider",
+      "api-verifier"
+    ],
+    "sources": [
+      {
+        "src": "qr-6",
+        "quote": "a verifier that finds several DSCs with the same kid MUST try all of them"
+      },
+      {
+        "src": "hcert-3.2.3"
+      }
+    ]
+  }
+}

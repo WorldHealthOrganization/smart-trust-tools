@@ -1,0 +1,38 @@
+{
+  "id": "req:stt-tst-003",
+  "title": "Cross-implementation interoperability",
+  "description": "Engineering consequence of QR Code Generation, 13. Reference script; Stakeholder directive: Kotlin library first, Rust library second.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-gen-006"
+  ],
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Cross-implementation interoperability",
+      "conformance": "SHALL",
+      "requirement": "Certificates issued by each library (ES256 and PS256) SHALL verify in the other library and in the smart-trust reference script's verify routine. Certificates issued by the reference script SHALL verify in both libraries.",
+      "category": "test"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "test",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-TST-003",
+    "derivation": "derived",
+    "sources": [
+      {
+        "src": "qr-13"
+      },
+      {
+        "src": "dir-languages"
+      }
+    ]
+  }
+}

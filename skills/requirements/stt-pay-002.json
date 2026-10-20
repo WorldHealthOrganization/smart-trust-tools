@@ -1,0 +1,45 @@
+{
+  "id": "req:stt-pay-002",
+  "title": "Typed DVCMinVaccineDetails model",
+  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; DVCMinVaccineDetails logical model (trust-phw).",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-pay-001"
+  ],
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Typed DVCMinVaccineDetails model",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL provide the vx structure with vp 1..1, dv 1..1, cn 0..1, is 0..1 and bo 1..1.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-PAY-002",
+    "derivation": "direct",
+    "steps": [
+      "step-2"
+    ],
+    "api": [
+      "api-dvcmin-vx"
+    ],
+    "sources": [
+      {
+        "src": "qr-3",
+        "quote": "Populate the logical model you selected."
+      },
+      {
+        "src": "ext-dvcmin-vx"
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "req:stt-iss-003",
+  "title": "Test keys never in production artifacts",
+  "description": "Engineering consequence of QR Code Generation, 12.3 Test issuer; QR Code Generation, 13. Reference script.",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Test keys never in production artifacts",
+      "conformance": "SHALL NOT",
+      "requirement": "Fixed test keys and test PKI (such as the XXA SCA and DSC) SHALL only ship in the testkit module. Production modules SHALL NOT contain or accept them by default.",
+      "category": "security"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "security",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-ISS-003",
+    "derivation": "derived",
+    "api": [
+      "api-testkit"
+    ],
+    "sources": [
+      {
+        "src": "qr-12.3",
+        "quote": "The signing keys are throw-away test keys ... They appear on no trust list"
+      },
+      {
+        "src": "qr-13",
+        "quote": "It is a documentation aid, not a production issuer: it uses fixed test keys in source"
+      }
+    ]
+  }
+}

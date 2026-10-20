@@ -1,0 +1,52 @@
+{
+  "id": "req:stt-cos-003",
+  "title": "kid placement",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, 3.2.3 Key Identifier.",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "kid placement",
+      "conformance": "SHALL",
+      "requirement": "The issuer SHALL put alg and kid in the protected header. The verifier SHALL accept a kid in either the protected or the unprotected header, and SHALL use the protected one when both are present.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-COS-003",
+    "derivation": "direct",
+    "steps": [
+      "step-5",
+      "step-verify"
+    ],
+    "api": [
+      "api-sign1",
+      "api-kid"
+    ],
+    "sources": [
+      {
+        "src": "qr-6",
+        "quote": "verifiers MUST accept both placements — but when it appears in both, the protected one wins."
+      },
+      {
+        "src": "hcert-3.2.3"
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "req:stt-iss-004",
+  "title": "Two-phase signing",
+  "description": "Engineering consequence of HCERT Specification, 6.2 Key Management; W3C Web Cryptography API; QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-cos-006"
+  ],
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Two-phase signing",
+      "conformance": "SHALL",
+      "requirement": "The issuer SHALL offer a two-phase flow: prepare returns the exact bytes to sign (the Sig_structure), the caller signs them by any means, including asynchronous ones such as WebCrypto or a remote KMS, and finish assembles the certificate. For ES256, finish SHALL accept r||s or DER and SHALL always emit r||s.",
+      "category": "api"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "api",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-ISS-004",
+    "derivation": "derived",
+    "steps": [
+      "step-5"
+    ],
+    "api": [
+      "api-pending-signature",
+      "api-issuer"
+    ],
+    "issues": [
+      "OI-15"
+    ],
+    "sources": [
+      {
+        "src": "hcert-6.2"
+      },
+      {
+        "src": "std-webcrypto"
+      },
+      {
+        "src": "qr-6",
+        "quote": "Converting between the two is the single most common interoperability bug in HCERT implementations."
+      }
+    ]
+  }
+}

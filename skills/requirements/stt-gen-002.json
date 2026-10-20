@@ -1,0 +1,47 @@
+{
+  "id": "req:stt-gen-002",
+  "title": "Every step callable on its own",
+  "description": "Engineering consequence of QR Code Generation, 1. The pipeline at a glance; QR Code Generation, Generating a QR Code.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-gen-001"
+  ],
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Every step callable on its own",
+      "conformance": "SHALL",
+      "requirement": "Each pipeline step SHALL be exposed as a separate public operation (payload codec, CWT build, CBOR, COSE sign/parse, ZLIB, Base45, HC1 prefix, QR) as well as through the end-to-end issuer and verifier, so that integrators can substitute or inspect any stage.",
+      "category": "architecture"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "architecture",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-GEN-002",
+    "derivation": "derived",
+    "api": [
+      "api-cbor",
+      "api-sign1",
+      "api-zlib",
+      "api-base45",
+      "api-hc1",
+      "api-qr"
+    ],
+    "sources": [
+      {
+        "src": "qr-1"
+      },
+      {
+        "src": "qr-intro",
+        "quote": "The first step below is therefore a selection step, and everything after it is mechanical."
+      }
+    ]
+  }
+}

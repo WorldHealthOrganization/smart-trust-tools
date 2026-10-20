@@ -1,0 +1,42 @@
+{
+  "id": "req:stt-pay-007",
+  "title": "Nationality is ISO 3166-1 alpha-3",
+  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; QR Code Generation, 12.3 Test issuer.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-pay-001"
+  ],
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Nationality is ISO 3166-1 alpha-3",
+      "conformance": "SHALL",
+      "requirement": "Validation SHALL check that nt is an ISO 3166-1 alpha-3 code, including user-assigned codes such as XXA, which is used for testing.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-PAY-007",
+    "derivation": "direct",
+    "steps": [
+      "step-2"
+    ],
+    "sources": [
+      {
+        "src": "qr-3",
+        "quote": "Nationality, ISO 3166-1 alpha-3"
+      },
+      {
+        "src": "qr-12.3"
+      }
+    ]
+  }
+}

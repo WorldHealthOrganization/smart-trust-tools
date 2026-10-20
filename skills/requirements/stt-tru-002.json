@@ -1,0 +1,60 @@
+{
+  "id": "req:stt-tru-002",
+  "title": "GDHCN DID trustlist v2 client",
+  "description": "Restates GDHCN Trustlists (DID), Trustlists 2.0.0; GDHCN Trustlists (DID), DID trustlists structure; GDHCN Trustlists (DID), Example DID documents; Endpoints, Trustlist Distribution Endpoints; W3C DID Core.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-tru-001",
+    "http://smart.who.int/trust/Requirements/RetrievePKIMaterialDID"
+  ],
+  "actors": [
+    "trust-network-participant",
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "GDHCN DID trustlist v2 client",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL provide a TrustListProvider for the GDHCN DID trustlist v2. It SHALL support the embedded and reference variants, the DEV, UAT and PROD environments, and the hierarchical root/$domain/$participant/$usage paths with \"-\" as a wildcard. It SHALL read DSCs from verificationMethod publicKeyJwk (x5c), with the kid as the fragment.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-TRU-002",
+    "derivation": "direct",
+    "steps": [
+      "step-trust"
+    ],
+    "api": [
+      "api-did-trustlist"
+    ],
+    "issues": [
+      "OI-12"
+    ],
+    "sources": [
+      {
+        "src": "did-2.0.0"
+      },
+      {
+        "src": "did-structure",
+        "quote": "Note that \"-\" character can be used as a wildcard on each sublevel of root."
+      },
+      {
+        "src": "did-examples",
+        "quote": "Specific keys use base64 encoded key id (kid) as identifier, It is represented as fragments (#) in verification method id"
+      },
+      {
+        "src": "endpoints-trustlist"
+      },
+      {
+        "src": "std-did-core"
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "req:stt-gen-004",
+  "title": "Kotlin first, for JVM, Android and Node",
+  "description": "Stakeholder directive, in the context of Stakeholder directive: Kotlin library first, Rust library second; Stakeholder directive: transpile targets and API-first.",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Kotlin first, for JVM, Android and Node",
+      "conformance": "SHALL",
+      "requirement": "The first implementation SHALL be a Kotlin Multiplatform library with all pipeline logic in common code. It SHALL ship for three targets: JVM (Java 11+), Android, and Node.js (Kotlin/JS IR, published to npm with an @JsExport facade and generated TypeScript declarations). Other KMP targets MAY follow.",
+      "category": "non-functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "non-functional",
+    "directive",
+    "kotlin"
+  ],
+  "stt": {
+    "id": "STT-GEN-004",
+    "derivation": "directive",
+    "targets": [
+      "kotlin"
+    ],
+    "sources": [
+      {
+        "src": "dir-languages"
+      },
+      {
+        "src": "dir-targets"
+      }
+    ]
+  }
+}
