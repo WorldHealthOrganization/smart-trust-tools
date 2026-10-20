@@ -385,13 +385,24 @@ class Gen:
             return out + "data class %s(\n%s\n)\n" % (name, "\n".join(fields))
         if t["kind"] == "variant":
             cases = []
+            cnames = {pascal(m["name"]) for m in t["members"]}
             for m in t["members"]:
                 cname = pascal(m["name"])
                 d = kdoc(m["doc"], "    ")
                 if m["type"] is None:
                     cases.append(d + "    data object %s : %s" % (cname, name))
                 else:
-                    cases.append(d + "    data class %s(val value: %s) : %s" % (cname, self.kt(iface, m["type"], imports), name))
+                    ty = self.kt(iface, m["type"], imports)
+                    # Inside the sealed interface a case name shadows a type of the
+                    # same name (case dvc-min carrying record dvc-min), so qualify it.
+                    def qualify(match):
+                        simple = match.group(0)
+                        if simple not in cnames:
+                            return simple
+                        imported = [i for i in imports if i.endswith("." + simple)]
+                        return imported[0] if imported else "%s.%s" % (pkg(iface), simple)
+                    ty = re.sub(r"\b[A-Z][A-Za-z0-9]*\b", qualify, ty)
+                    cases.append(d + "    data class %s(val value: %s) : %s" % (cname, ty, name))
             return out + "sealed interface %s {\n%s\n}\n" % (name, "\n\n".join(cases))
         if t["kind"] == "resource":
             methods = []

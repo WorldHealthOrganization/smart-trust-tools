@@ -11,7 +11,7 @@
       "key": "statement",
       "label": "iss is an optional alpha-2 string",
       "conformance": "SHALL",
-      "requirement": "iss SHALL be optional and SHALL be encoded as a text string. The library SHALL provide a helper that maps GDHCN participant codes (alpha-3) to the alpha-2 form used in iss and in the X.509 C attribute. The mapping table SHALL be overridable.",
+      "requirement": "iss SHALL be optional and SHALL be encoded as a text string. When present, the issuer SHALL require two upper-case letters, the alpha-2 form used in iss and in the DSC's X.509 C attribute.",
       "category": "functional"
     }
   ],

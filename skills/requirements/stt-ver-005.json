@@ -11,7 +11,7 @@
       "key": "statement",
       "label": "Time checks with an injected clock",
       "conformance": "SHALL",
-      "requirement": "The verifier SHALL reject a certificate whose exp is in the past. It SHALL flag an iat in the future, beyond a configurable clock-skew tolerance. Time SHALL come from an injected Clock. Extra iat-based policies (for example a maximum age) MAY be configured.",
+      "requirement": "The verifier SHALL reject a certificate whose exp is in the past, and one whose iat is in the future beyond a configurable clock-skew tolerance. The current time SHALL be passed in by the caller (now), never read from an ambient clock.",
       "category": "functional",
       "successCriteria": [
         {

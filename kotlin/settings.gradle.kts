@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "smart-trust-kotlin"
 
 include(":hcert-api")
+include(":hcert-core")

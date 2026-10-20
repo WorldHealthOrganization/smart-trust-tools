@@ -26,3 +26,23 @@ gradle -p kotlin build               # compile JVM + JS
 Do not edit files under `hcert-api/src/commonMain`. Implementations go in
 separate modules (e.g. `hcert-core`) that depend on `:hcert-api` and
 implement its interfaces.
+
+## hcert-core
+
+`hcert-core/` implements every interface of `:hcert-api` (object `Hcert`
+is the whole `HcertWorld`) with the Kotlin standard library and the platform
+only: the JDK (`java.security`, `java.util.zip`) on JVM and Android, and
+`node:crypto`, `node:zlib` and `node:buffer` on Node. No third-party
+runtime dependency. Base45, deterministic CBOR, ASN.1 signature conversion and
+the small JSON reader for DID documents are written here.
+
+```sh
+gradle -p kotlin :hcert-core:jvmTest                           # JVM tests, incl. the PR 129 vector
+gradle -p kotlin :hcert-core:compileProductionLibraryKotlinJs  # Node build (ES modules)
+node kotlin/hcert-core/node-smoke.mjs                          # the PR 129 vector on Node
+```
+
+The tests sign with the throw-away keys in [`../vectors/testkit/`](../vectors/testkit/).
+Kotlin/JS uses the machine's Node.js; its npm packages (the mocha runner) come only from
+`kotlin-js-store/yarn.lock`, and Gradle artifacts only as listed in
+`gradle/verification-metadata.xml`.

@@ -12,7 +12,7 @@
       "key": "statement",
       "label": "Exactly one payload when issuing",
       "conformance": "SHALL",
-      "requirement": "The issuer SHALL emit an hcert (-260) map with exactly one entry. The verifier SHALL expose every entry present. When there is more than one entry, the verifier SHALL report it as a diagnostic, and SHALL fail verification if the policy is strict, which SHALL be the default.",
+      "requirement": "The issuer SHALL emit an hcert (-260) map with exactly one entry. The verifier SHALL fail verification with MultipleSubclaims when there is more than one entry, and with HcertMissing when there is none.",
       "category": "functional"
     }
   ],

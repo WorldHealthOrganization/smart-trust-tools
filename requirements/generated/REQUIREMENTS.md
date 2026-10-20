@@ -314,7 +314,7 @@ flowchart LR
 
 #### STT-SEL-004 Exactly one payload when issuing
 
-> The issuer SHALL emit an hcert (-260) map with exactly one entry. The verifier SHALL expose every entry present. When there is more than one entry, the verifier SHALL report it as a diagnostic, and SHALL fail verification if the policy is strict, which SHALL be the default.
+> The issuer SHALL emit an hcert (-260) map with exactly one entry. The verifier SHALL fail verification with MultipleSubclaims when there is more than one entry, and with HcertMissing when there is none.
 
 **SHALL** · functional · derived · targets: kotlin, rust
 
@@ -542,7 +542,7 @@ flowchart LR
 
 #### STT-CWT-005 iss is an optional alpha-2 string
 
-> iss SHALL be optional and SHALL be encoded as a text string. The library SHALL provide a helper that maps GDHCN participant codes (alpha-3) to the alpha-2 form used in iss and in the X.509 C attribute. The mapping table SHALL be overridable.
+> iss SHALL be optional and SHALL be encoded as a text string. When present, the issuer SHALL require two upper-case letters, the alpha-2 form used in iss and in the DSC's X.509 C attribute.
 
 **SHALL** · functional · derived · targets: kotlin, rust
 
@@ -928,7 +928,7 @@ flowchart LR
 
 #### STT-VER-004 EKU check against certificate type
 
-> If the matching DSC has an Extended Key Usage extension with any of 1.3.6.1.4.1.1847.2021.1.1 (test), .1.2 (vaccinations) or .1.3 (recovery), the verifier SHALL check it against the certificate type of the payload: DVC (-6) and DDCC VS (3) are vaccinations, DDCC TR (4) is test. A DSC with no such extension SHALL be accepted for any type.
+> If the matching DSC has an Extended Key Usage extension with any of 1.3.6.1.4.1.1847.2021.1.1 (test), .1.2 (vaccinations) or .1.3 (recovery), the verifier SHALL check it against the certificate type of the payload: DVC (-6) and DDCC VS (3) are vaccinations, DDCC TR (4) is test, and a DCC (1) is the type of its single v, t or r entry. A DSC with no such extension SHALL be accepted for any type.
 
 **SHALL** · functional · derived · targets: kotlin, rust
 
@@ -944,7 +944,7 @@ flowchart LR
 
 #### STT-VER-005 Time checks with an injected clock
 
-> The verifier SHALL reject a certificate whose exp is in the past. It SHALL flag an iat in the future, beyond a configurable clock-skew tolerance. Time SHALL come from an injected Clock. Extra iat-based policies (for example a maximum age) MAY be configured.
+> The verifier SHALL reject a certificate whose exp is in the past, and one whose iat is in the future beyond a configurable clock-skew tolerance. The current time SHALL be passed in by the caller (now), never read from an ambient clock.
 
 **SHALL** · functional · direct · targets: kotlin, rust
 

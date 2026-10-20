@@ -10,7 +10,7 @@ data class RawPayload(
 )
 
 sealed interface Payload {
-    data class DvcMin(val value: DvcMin) : Payload
+    data class DvcMin(val value: who.smart.trust.dvc.DvcMin) : Payload
 
     data class Raw(val value: RawPayload) : Payload
 }
