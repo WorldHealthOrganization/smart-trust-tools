@@ -240,6 +240,23 @@ requirements:
       - src: std-x680
       - src: std-rfc7493
 
+  - id: STT-GEN-014
+    title: Kotlin API skeleton generated from the WIT
+    statement: >-
+      The Kotlin API (types and interfaces, no behaviour) SHALL be generated
+      from the WIT contract by tools/wit2kotlin.py, following the WIT to
+      Kotlin mapping rules in api/README.md, into a Kotlin Multiplatform
+      module targeting the JVM and Node.js. Kotlin implementations SHALL
+      implement the generated interfaces. CI SHALL fail when the generated
+      skeleton is out of date with the WIT or does not compile.
+    conformance: SHALL
+    category: architecture
+    derivation: directive
+    refines: [STT-GEN-010, STT-GEN-004]
+    derived_from:
+      - src: dir-targets
+      - src: std-wit
+
   # ===========================================================================
   # SEL: Step 1, select payload type
   # ===========================================================================
