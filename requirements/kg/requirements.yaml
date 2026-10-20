@@ -1,0 +1,1462 @@
+# Derived requirements for the SMART Trust HCERT API libraries.
+#
+# Fields
+#   id           STT-<AREA>-<nnn>, stable, never reused
+#   statement    normative text; BCP 14 keywords
+#   conformance  SHALL | SHOULD | MAY | SHALL NOT
+#   category     scope | architecture | functional | api | security | non-functional | test
+#   derivation   direct    = restates a normative statement of a source
+#                derived   = engineering consequence of one or more sources
+#                directive = comes from a stakeholder directive, not a spec
+#   targets      [kotlin, rust] unless stated; Kotlin ships first (phase 1),
+#                Rust second (phase 2), against the same requirement set
+#   steps        pipeline steps (steps.yaml) the requirement implements
+#   derived_from source sections (sources.yaml), with a quote where direct
+#   satisfies    upstream smart-trust FHIR Requirements statements (upstream.yaml)
+#   refines      parent requirement(s) in this file
+#   api          API elements (api.yaml)
+#   verified_by  test requirements in this file
+#   issues       open issues (issues.yaml)
+
+requirements:
+
+  # ===========================================================================
+  # GEN: scope, architecture, language strategy
+  # ===========================================================================
+
+  - id: STT-GEN-001
+    title: Issuance and verification of the full HCERT QR pipeline
+    statement: >-
+      The library SHALL implement issuance (steps 1 to 9) and verification
+      (QR Code Generation section 11) of HCERT QR codes.
+    conformance: SHALL
+    category: scope
+    derivation: derived
+    steps: [step-1, step-2, step-3, step-4, step-5, step-6, step-7, step-8, step-9, step-verify]
+    derived_from:
+      - src: qr-1
+        quote: "Steps 3 to 9 never vary. A verifier runs the same list upwards."
+    satisfies: [IssuerVDHC-generate, IssuerVDHC-sign, UtilizeVDHC-validate-hash]
+    api: [api-issuer, api-verifier]
+
+  - id: STT-GEN-002
+    title: Every step callable on its own
+    statement: >-
+      Each pipeline step SHALL be exposed as a separate public operation
+      (payload codec, CWT build, CBOR, COSE sign/parse, ZLIB, Base45, HC1
+      prefix, QR) as well as through the end-to-end issuer and verifier, so
+      that integrators can substitute or inspect any stage.
+    conformance: SHALL
+    category: architecture
+    derivation: derived
+    refines: [STT-GEN-001]
+    derived_from:
+      - src: qr-1
+      - src: qr-intro
+        quote: "The first step below is therefore a selection step, and everything after it is mechanical."
+    api: [api-cbor, api-sign1, api-zlib, api-base45, api-hc1, api-qr]
+
+  - id: STT-GEN-003
+    title: Payload-agnostic core
+    statement: >-
+      The modules for steps 3 to 9 SHALL NOT depend on any payload logical
+      model. Payloads SHALL be plugged in through a PayloadCodec registered
+      against a subclaim.
+    conformance: SHALL
+    category: architecture
+    derivation: derived
+    refines: [STT-GEN-001]
+    derived_from:
+      - src: qr-intro
+        quote: "The container, the signature and the transport encoding are the same for every GDHCN trust domain ... What changes from one use case to the next is only the payload"
+    api: [api-payload-codec, api-subclaim-registry]
+
+  - id: STT-GEN-004
+    title: Kotlin first
+    statement: >-
+      The first implementation SHALL be a Kotlin library. Pure steps (codec,
+      model, payloads, pipeline logic) SHALL live in Kotlin Multiplatform
+      common code. JVM and Android SHALL be the first supported targets.
+      Other KMP targets MAY follow.
+    conformance: SHALL
+    category: non-functional
+    derivation: directive
+    targets: [kotlin]
+    derived_from:
+      - src: dir-languages
+
+  - id: STT-GEN-005
+    title: Rust second
+    statement: >-
+      The second implementation SHALL be a Rust library meeting this same
+      requirement set. The codec module SHOULD be usable without std (with
+      alloc), so that it can be embedded and exposed over FFI or WASM.
+    conformance: SHALL
+    category: non-functional
+    derivation: directive
+    targets: [rust]
+    derived_from:
+      - src: dir-languages
+
+  - id: STT-GEN-006
+    title: Kotlin and Rust behave the same
+    statement: >-
+      The Kotlin and Rust libraries SHALL expose the same conceptual
+      operations, the same configuration knobs and the same failure taxonomy,
+      with idiomatic naming in each language, and SHALL pass the same
+      conformance vectors.
+    conformance: SHALL
+    category: architecture
+    derivation: directive
+    refines: [STT-GEN-004, STT-GEN-005]
+    derived_from:
+      - src: dir-languages
+    verified_by: [STT-TST-001, STT-TST-003]
+
+  - id: STT-GEN-007
+    title: HCERT Specification is authoritative
+    statement: >-
+      Where the QR Code Generation walkthrough and the HCERT Specification
+      differ, the library SHALL follow the HCERT Specification. Each release
+      SHALL state which HCERT Specification version and which smart-trust IG
+      version it implements (currently 1.1.1 and 1.7.5).
+    conformance: SHALL
+    category: non-functional
+    derivation: direct
+    derived_from:
+      - src: qr-intro
+        quote: "Where this page and the HCERT Specification appear to differ, the HCERT Specification is authoritative."
+      - src: changes-1.7.5
+
+  - id: STT-GEN-008
+    title: CBOR is the wire format; JSON is optional
+    statement: >-
+      The library SHALL work entirely on in-memory structures and CBOR. It
+      SHALL NOT need a JSON representation to issue or verify. A JSON view of
+      payloads MAY be provided for display and debugging.
+    conformance: SHALL
+    category: architecture
+    derivation: direct
+    derived_from:
+      - src: qr-5
+        quote: "the wire format is CBOR, and an implementation need never produce the JSON form at all."
+      - src: hcert-3.2.7
+
+  - id: STT-GEN-009
+    title: Raw transport besides QR
+    statement: >-
+      The issuer SHALL be able to return the signed COSE_Sign1 bytes without
+      the barcode encodings, and the verifier SHALL accept COSE_Sign1 bytes
+      directly, for 8-bit-safe transports (NFC, Bluetooth, app-to-app).
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-5, step-verify]
+    derived_from:
+      - src: hcert-4.1
+        quote: "the HCERT container and its payloads may be transferred as-is, utilising any underlying, 8 bit safe, reliable data transport"
+    api: [api-issuer, api-verifier]
+
+  # ===========================================================================
+  # SEL: Step 1, select payload type
+  # ===========================================================================
+
+  - id: STT-SEL-001
+    title: Built-in subclaim registry
+    statement: >-
+      The library SHALL ship a subclaim registry containing 1 (HCertDCC), 3
+      (DDCCCoreDataSetVS), 4 (DDCCCoreDataSetTR), 5 (VHL URI), -6 (DVCMin) and
+      -7 (MedicationTreatmentLineMin), each with its status (Assigned,
+      Proposed, Development range) and logical-model canonical URL.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-1]
+    derived_from:
+      - src: qr-2.1
+        quote: "These are the subclaims enumerated by the HCert logical model."
+      - src: hcert-3.2.7.1
+        quote: "While the logical model enlists assigned sub claims, the ones listed in this specification are considered authoritative"
+      - src: doc-sd-hcert
+    api: [api-subclaim, api-subclaim-registry]
+    issues: [OI-06, OI-08]
+
+  - id: STT-SEL-002
+    title: Registry is extensible
+    statement: >-
+      Integrators SHALL be able to register more subclaims and their codecs,
+      and override the defaults, at runtime, without forking the library.
+    conformance: SHALL
+    category: api
+    derivation: derived
+    refines: [STT-SEL-001]
+    steps: [step-1]
+    derived_from:
+      - src: hcert-3.2.7.1
+        quote: "subclaims for negative integer values are for development purposes and are free to use"
+    api: [api-subclaim-registry]
+
+  - id: STT-SEL-003
+    title: Development-range subclaims need explicit opt-in
+    statement: >-
+      The registry SHALL classify subclaims >= 0 as WHO-reserved and negative
+      subclaims as development range. The issuer SHALL refuse to issue a
+      development-range subclaim unless the issuer policy explicitly allows
+      it. The subclaim number used for a payload type SHALL be configuration,
+      not a constant in a codec, so that DVC can move from -6 to an assigned
+      number without an API break.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-1]
+    derived_from:
+      - src: qr-2.1
+        quote: "Do not treat a negative subclaim as a production allocation."
+      - src: hcert-3.2.7.1
+    api: [api-subclaim-registry, api-issuer]
+    issues: [OI-09]
+
+  - id: STT-SEL-004
+    title: Exactly one payload when issuing
+    statement: >-
+      The issuer SHALL emit an hcert (-260) map with exactly one entry. The
+      verifier SHALL expose every entry present. When there is more than one
+      entry, the verifier SHALL report it as a diagnostic, and SHALL fail
+      verification if the policy is strict, which SHALL be the default.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-1, step-3, step-verify]
+    derived_from:
+      - src: qr-2
+        quote: "An HCERT carries exactly one payload, identified by a subclaim inside the hcert claim"
+      - src: qr-4
+        quote: "Map whose single key is the subclaim chosen in Step 1"
+      - src: hcert-3.2.7
+        quote: "Several different types of health certificate MAY exist under the same claim"
+    api: [api-hcert-claim]
+    issues: [OI-02]
+
+  - id: STT-SEL-005
+    title: Payload type advisor
+    statement: >-
+      The library MAY provide an advisor that implements the decision summary:
+      ICVP for IHR entry requirements; DVC (-6) when the content must verify
+      offline and fits in a QR code; VHL (5) otherwise. It SHOULD report an
+      estimated HC1 length so that "fits in a QR" is decided on numbers.
+    conformance: MAY
+    category: functional
+    derivation: derived
+    steps: [step-1]
+    derived_from:
+      - src: qr-2.2
+      - src: qr-2.3
+      - src: qr-2.4
+    api: [api-advisor]
+
+  - id: STT-SEL-006
+    title: Trust domain codes come from the value set
+    statement: >-
+      Trust domain codes (currently DDCC, IPS-PILGRIMAGE, PH4H, ICVP) SHALL be
+      treated as data loaded from, or checked against, the GDHCN Trust Domain
+      value set. They SHALL NOT be a closed enum.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-1, step-trust]
+    derived_from:
+      - src: qr-2.1
+        quote: "The registered production trust domains are DDCC, IPS-PILGRIMAGE, PH4H and ICVP."
+      - src: doc-trust-domains
+      - src: doc-vs-domains
+
+  # ===========================================================================
+  # PAY: Step 2, assemble payload
+  # ===========================================================================
+
+  - id: STT-PAY-001
+    title: Typed DVCMin model
+    statement: >-
+      The library SHALL provide a typed DVCMin payload with the short element
+      names and cardinalities of the logical model: n 1..1, dob 1..1, s 1..1,
+      nt 1..1, id 0..1, dt 0..1, gn 0..1, vx 1..1, v 1..1, and a PayloadCodec
+      for it.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-2]
+    derived_from:
+      - src: qr-3
+        quote: "The DVC payload uses short element names because every byte is paid for twice"
+      - src: ext-dvcmin
+    api: [api-dvcmin, api-payload-codec]
+    verified_by: [STT-TST-001]
+
+  - id: STT-PAY-002
+    title: Typed DVCMinVaccineDetails model
+    statement: >-
+      The library SHALL provide the vx structure with vp 1..1, dv 1..1, cn
+      0..1, is 0..1 and bo 1..1.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    refines: [STT-PAY-001]
+    steps: [step-2]
+    derived_from:
+      - src: qr-3
+        quote: "Populate the logical model you selected."
+      - src: ext-dvcmin-vx
+    api: [api-dvcmin-vx]
+
+  - id: STT-PAY-003
+    title: One immunization event per DVC
+    statement: >-
+      A DVCMin SHALL carry exactly one vx. The library SHALL provide a helper
+      that turns one visit with N administered vaccines into N payloads, one
+      per vaccine, and so N certificates.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    refines: [STT-PAY-001]
+    steps: [step-2]
+    derived_from:
+      - src: qr-3
+        quote: "vx is 1..1. One DVC documents one immunization event. A visit at which two vaccines are administered produces two certificates and two QR codes."
+      - src: qr-12.1
+    api: [api-dvc-split]
+
+  - id: STT-PAY-004
+    title: Issuer-or-clinician invariant
+    statement: >-
+      Validation SHALL fail a DVCMin whose vx has neither is nor cn
+      (invariant must-have-issuer-or-clinician-name). The issuer SHALL NOT
+      sign a payload that fails validation.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    refines: [STT-PAY-002]
+    steps: [step-2]
+    derived_from:
+      - src: qr-3
+        quote: "At least one of is or cn must be present"
+    verified_by: [STT-TST-004]
+
+  - id: STT-PAY-005
+    title: Subjects with no identity document
+    statement: >-
+      The DVCMin model SHALL allow id and dt to be absent and SHALL support gn
+      (parent or guardian) for subjects such as newborns.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    refines: [STT-PAY-001]
+    steps: [step-2]
+    derived_from:
+      - src: qr-3
+        quote: "id is optional precisely because many certificate subjects have no identification document."
+      - src: qr-12.1
+
+  - id: STT-PAY-006
+    title: Pluggable terminology for vp (PreQual, ICD-11)
+    statement: >-
+      vp validation SHALL go through a pluggable TerminologyValidator. A
+      DVCMinPreQual validation profile SHALL require vp to be a WHO PreQual
+      product identifier (required binding). The unconstrained DVCMin profile
+      SHALL accept any code. The library SHOULD bundle the DVC - Vaccines
+      ICD-11 codes as a default validator. It SHALL NOT bundle the PreQual
+      database.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    refines: [STT-PAY-002]
+    steps: [step-2]
+    derived_from:
+      - src: qr-3
+        quote: "DVCMinPreQual binds vp to the WHO PreQual product identifiers (required binding)"
+      - src: ext-dvcmin-prequal
+      - src: ext-dvc-vaccines-vs
+    api: [api-terminology]
+    issues: [OI-11]
+
+  - id: STT-PAY-007
+    title: Nationality is ISO 3166-1 alpha-3
+    statement: >-
+      Validation SHALL check that nt is an ISO 3166-1 alpha-3 code, including
+      user-assigned codes such as XXA, which is used for testing.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    refines: [STT-PAY-001]
+    steps: [step-2]
+    derived_from:
+      - src: qr-3
+        quote: "Nationality, ISO 3166-1 alpha-3"
+      - src: qr-12.3
+
+  - id: STT-PAY-008
+    title: Preserve unknown payload elements
+    statement: >-
+      Decoding a typed payload SHALL keep unknown elements and SHALL NOT fail
+      because of them, so that newer template versions (v) can still be read
+      and displayed.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-2, step-verify]
+    derived_from:
+      - src: hcert-3.2.7
+        quote: "Decoding applications SHOULD however be permissive and robust in these aspects"
+
+  - id: STT-PAY-009
+    title: Other payloads
+    statement: >-
+      Subclaim 5 SHALL have a typed codec holding a URI string. Subclaims 1, 3,
+      4 and -7 SHALL at least be issuable and verifiable as raw CBOR payloads.
+      Typed codecs for them MAY follow.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-2]
+    derived_from:
+      - src: qr-2.1
+      - src: doc-sd-hcert
+      - src: ext-mtl-min
+      - src: ext-ddcc
+    api: [api-vhl, api-raw-payload]
+    issues: [OI-06]
+
+  # ===========================================================================
+  # CWT: Step 3, CWT claim set
+  # ===========================================================================
+
+  - id: STT-CWT-001
+    title: Integer claim keys
+    statement: >-
+      The CWT claim set SHALL use the integer keys 1 (iss), 6 (iat), 4 (exp)
+      and -260 (hcert). The hcert map SHALL use integer subclaim keys. The
+      quoted keys in the documentation ("1", "-260", "-6") are JSON notation
+      only and SHALL NOT be emitted as text keys.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-3]
+    derived_from:
+      - src: qr-4
+        quote: "Place the payload under its subclaim, inside the hcert claim, inside a CWT claim set"
+      - src: qr-5
+        quote: "The JSON shown throughout this page and in the logical models is schema notation only"
+      - src: qr-12.4
+      - src: hcert-3.2.1
+    api: [api-cwt]
+    verified_by: [STT-TST-001]
+
+  - id: STT-CWT-002
+    title: NumericDate integers
+    statement: >-
+      iat and exp SHALL be encoded as integer NumericDate (seconds since the
+      epoch). The decoder SHOULD accept floating-point NumericDate and
+      truncate it.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-3]
+    derived_from:
+      - src: hcert-3.2.5
+        quote: "SHALL hold a timestamp in the integer NumericDate format"
+      - src: hcert-3.2.6
+      - src: std-rfc8392
+
+  - id: STT-CWT-003
+    title: Expiry is mandatory on issuance
+    statement: >-
+      The issuer API SHALL require an explicit validity (exp, or a validity
+      period) and SHALL have no default of "never expires". exp is the only
+      revocation mechanism.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-3]
+    derived_from:
+      - src: qr-4
+        quote: "exp is the only revocation mechanism this specification offers"
+      - src: hcert-6.1
+    api: [api-issuer]
+
+  - id: STT-CWT-004
+    title: Validity inside the DSC validity
+    statement: >-
+      Before signing, the issuer SHALL check that iat is not before the DSC
+      notBefore and exp is not after the DSC notAfter, and SHALL refuse to
+      sign otherwise.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-3, step-5]
+    derived_from:
+      - src: qr-4
+        quote: "MUST NOT predate the DSC validity period ... MUST NOT exceed the DSC validity period"
+      - src: hcert-3.2.5
+      - src: hcert-3.2.6
+    api: [api-issuer, api-signer]
+    verified_by: [STT-TST-004]
+
+  - id: STT-CWT-005
+    title: iss is an optional alpha-2 string
+    statement: >-
+      iss SHALL be optional and SHALL be encoded as a text string. The library
+      SHALL provide a helper that maps GDHCN participant codes (alpha-3) to
+      the alpha-2 form used in iss and in the X.509 C attribute. The mapping
+      table SHALL be overridable.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-3]
+    derived_from:
+      - src: hcert-3.2.4
+      - src: qr-12.3
+        quote: "GDHCN participant codes are ISO 3166-1 alpha-3, while the CWT iss claim and the X.509 country attribute take the alpha-2 form"
+    issues: [OI-07, OI-13]
+
+  - id: STT-CWT-006
+    title: Preserve unknown claims
+    statement: >-
+      The decoder SHALL keep CWT claims it does not recognise and expose them
+      to the caller.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-3, step-verify]
+    derived_from:
+      - src: std-rfc8392
+      - src: hcert-3.2.7
+    api: [api-cwt]
+
+  # ===========================================================================
+  # CBR: Step 4, CBOR
+  # ===========================================================================
+
+  - id: STT-CBR-001
+    title: Deterministic CBOR on encode
+    statement: >-
+      The encoder SHALL produce deterministic CBOR (RFC 8949 section 4.2.1
+      core deterministic encoding). For the HCERT key sets this matches the
+      RFC 7049 canonical ordering the reference script uses. Same input gives
+      same bytes, in both languages.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-4]
+    derived_from:
+      - src: qr-5
+      - src: doc-qr-script
+      - src: std-rfc8949
+    api: [api-cbor]
+    issues: [OI-05]
+    verified_by: [STT-TST-002]
+
+  - id: STT-CBR-002
+    title: NFC normalisation
+    statement: >-
+      The encoder SHOULD NFC-normalise text strings. The decoder SHALL accept
+      strings that are not normalised, and comparison helpers SHALL behave as
+      if both sides were normalised to NFC.
+    conformance: SHOULD
+    category: functional
+    derivation: direct
+    steps: [step-4, step-verify]
+    derived_from:
+      - src: qr-5
+        quote: "Strings SHOULD be NFC-normalised. Decoders SHOULD be permissive about input that is not."
+      - src: hcert-3.2.7
+
+  - id: STT-CBR-003
+    title: Bounded CBOR decoding
+    statement: >-
+      The CBOR decoder SHALL enforce configurable limits on nesting depth,
+      item count and string/byte-string length, and SHALL reject malformed or
+      truncated input with a typed error, without panicking or throwing
+      unchecked exceptions.
+    conformance: SHALL
+    category: security
+    derivation: derived
+    steps: [step-4, step-verify]
+    derived_from:
+      - src: hcert-6.3
+        quote: "all input fields MUST be properly validated by data types, lengths and contents"
+    api: [api-cbor, api-limits]
+    verified_by: [STT-TST-004, STT-TST-006]
+
+  # ===========================================================================
+  # COS: Step 5, COSE_Sign1
+  # ===========================================================================
+
+  - id: STT-COS-001
+    title: COSE_Sign1 structure
+    statement: >-
+      The issuer SHALL emit 18([protected bstr, unprotected map, payload bstr,
+      signature bstr]). The verifier SHALL accept the tagged form and SHOULD
+      also accept an untagged COSE_Sign1 array.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-5]
+    derived_from:
+      - src: qr-6
+        quote: "The resulting structure is 18([protected, unprotected, payload, signature])."
+      - src: std-rfc8152
+    api: [api-sign1]
+
+  - id: STT-COS-002
+    title: Both ES256 and PS256
+    statement: >-
+      The library SHALL implement signing and verification for ES256 (alg -7,
+      ECDSA P-256 with SHA-256) and PS256 (alg -37, RSASSA-PSS with SHA-256,
+      MGF1 SHA-256, salt length 32, modulus at least 2048 bits).
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-5, step-verify]
+    derived_from:
+      - src: qr-6
+        quote: "Both algorithms MUST be implemented, even though only one is used to sign any given certificate"
+      - src: hcert-3.2.2
+      - src: std-rfc8230
+    api: [api-alg]
+    verified_by: [STT-TST-003]
+
+  - id: STT-COS-003
+    title: kid placement
+    statement: >-
+      The issuer SHALL put alg and kid in the protected header. The verifier
+      SHALL accept a kid in either the protected or the unprotected header,
+      and SHALL use the protected one when both are present.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-5, step-verify]
+    derived_from:
+      - src: qr-6
+        quote: "verifiers MUST accept both placements — but when it appears in both, the protected one wins."
+      - src: hcert-3.2.3
+    api: [api-sign1, api-kid]
+    verified_by: [STT-TST-004]
+
+  - id: STT-COS-004
+    title: Sig_structure
+    statement: >-
+      The signature input SHALL be the CBOR encoding of ["Signature1",
+      protected header bytes exactly as transmitted, empty external_aad,
+      payload bytes]. The verifier SHALL use the received protected bytes and
+      SHALL NOT re-encode the decoded header.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-5, step-verify]
+    derived_from:
+      - src: qr-6
+        quote: "serialise it as CBOR, and sign those bytes."
+      - src: std-rfc8152
+    api: [api-sign1]
+
+  - id: STT-COS-005
+    title: Fixed-width r||s ECDSA signatures
+    statement: >-
+      ES256 signatures SHALL be carried as 64-byte r||s. The library SHALL
+      convert from and to the ASN.1 DER form returned or expected by platform
+      crypto APIs (JCA, Android Keystore, PKCS#11, RustCrypto). The verifier
+      SHALL reject an ES256 signature that is not exactly 64 bytes.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-5, step-verify]
+    derived_from:
+      - src: qr-6
+        quote: "For ES256 the COSE signature value is the fixed-width concatenation r || s, 32 bytes each — not the ASN.1 DER encoding"
+    api: [api-ecdsa-format]
+    verified_by: [STT-TST-004]
+
+  - id: STT-COS-006
+    title: Signer abstraction, no private keys required in-process
+    statement: >-
+      Signing SHALL go through a Signer interface (algorithm, DSC, sign(bytes)).
+      The issuer SHALL NOT need access to private key material, so HSM, KMS,
+      PKCS#11 and Android Keystore signers can be used. A software signer
+      SHALL be provided for tests only, in the testkit module.
+    conformance: SHALL
+    category: security
+    derivation: derived
+    steps: [step-5]
+    derived_from:
+      - src: hcert-6.2
+        quote: "Use of HSMs for signing health certificates is highly encouraged."
+      - src: qr-13
+        quote: "a real issuer holds its private keys in an HSM"
+    api: [api-signer]
+
+  - id: STT-COS-007
+    title: Optional deterministic ECDSA
+    statement: >-
+      The software ES256 signer in the testkit SHOULD support RFC 6979
+      deterministic nonces so that issued test artefacts can be reproduced
+      byte for byte. Verifiers SHALL accept any valid ECDSA signature.
+    conformance: SHOULD
+    category: test
+    derivation: derived
+    steps: [step-5]
+    derived_from:
+      - src: qr-13
+        quote: "regenerates the example above byte for byte"
+      - src: std-rfc6979
+    issues: [OI-01]
+
+  # ===========================================================================
+  # KID: key identifier
+  # ===========================================================================
+
+  - id: STT-KID-001
+    title: kid derivation
+    statement: >-
+      kid SHALL be the first 8 bytes of SHA-256 over the DER-encoded DSC. The
+      issuer SHALL derive it from the Signer's DSC, not take it from the
+      caller.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-5, step-trust]
+    derived_from:
+      - src: qr-6
+        quote: "take the DER encoding of the DSC and use the first 8 bytes of its SHA-256 fingerprint"
+      - src: hcert-A.1
+    api: [api-kid]
+    verified_by: [STT-TST-001]
+
+  - id: STT-KID-002
+    title: kid is a lookup hint, not unique
+    statement: >-
+      Trust-list lookup by kid SHALL return every matching DSC, and the
+      verifier SHALL try each candidate until one verifies. A kid match alone
+      SHALL NOT count as authentication.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-verify, step-trust]
+    derived_from:
+      - src: qr-6
+        quote: "a verifier that finds several DSCs with the same kid MUST try all of them"
+      - src: hcert-3.2.3
+    api: [api-trust-provider, api-verifier]
+    verified_by: [STT-TST-004]
+
+  - id: STT-KID-003
+    title: kid text forms
+    statement: >-
+      Kid SHALL convert to and from hex, standard base64 and URL-safe base64.
+      Trust-list matching SHALL compare the kid bytes, not their text form.
+    conformance: SHALL
+    category: api
+    derivation: derived
+    steps: [step-trust]
+    derived_from:
+      - src: qr-12.6
+        quote: "The kid for both is WHM+BYqqZiE= (hex 58733e058aaa6621)."
+      - src: did-examples
+    api: [api-kid]
+    issues: [OI-12]
+
+  # ===========================================================================
+  # ZIP: Step 6, compression
+  # ===========================================================================
+
+  - id: STT-ZIP-001
+    title: ZLIB/Deflate after signing
+    statement: >-
+      The issuer SHALL compress the COSE_Sign1 bytes with ZLIB (RFC 1950)
+      using Deflate (RFC 1951) after signing. The verifier SHALL decompress
+      before parsing COSE.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-6]
+    derived_from:
+      - src: qr-7
+        quote: "Compression comes after signing, so the verifier decompresses before it verifies."
+      - src: hcert-4.2.1
+    api: [api-zlib]
+
+  - id: STT-ZIP-002
+    title: Decompression bomb protection
+    statement: >-
+      Inflation SHALL stop with a typed error once the output exceeds a
+      configurable limit (DecodeLimits.maxInflatedBytes).
+    conformance: SHALL
+    category: security
+    derivation: derived
+    refines: [STT-ZIP-001]
+    steps: [step-6, step-verify]
+    derived_from:
+      - src: hcert-6.3
+    api: [api-zlib, api-limits]
+    verified_by: [STT-TST-004, STT-TST-006]
+
+  # ===========================================================================
+  # B45: Step 7, Base45
+  # ===========================================================================
+
+  - id: STT-B45-001
+    title: Base45 per RFC 9285
+    statement: >-
+      Base45 encoding and decoding SHALL follow RFC 9285, the published form
+      of the draft the IG cites.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-7]
+    derived_from:
+      - src: qr-8
+        quote: "its 45-character alphabet is exactly the QR Alphanumeric character set"
+      - src: hcert-4.2.2
+      - src: std-rfc9285
+    api: [api-base45]
+    issues: [OI-04]
+
+  - id: STT-B45-002
+    title: Strict Base45 decoding
+    statement: >-
+      The decoder SHALL reject characters outside the 45-character alphabet,
+      a dangling single character, and triplets or pairs whose value
+      overflows (above 65535, or above 255 for a trailing pair).
+    conformance: SHALL
+    category: security
+    derivation: derived
+    refines: [STT-B45-001]
+    steps: [step-7, step-verify]
+    derived_from:
+      - src: std-rfc9285
+      - src: hcert-6.3
+    verified_by: [STT-TST-004]
+
+  # ===========================================================================
+  # HC1: Step 8, context identifier
+  # ===========================================================================
+
+  - id: STT-HC1-001
+    title: HC1 prefix
+    statement: >-
+      The issuer SHALL prefix the Base45 string with "HC1:". The verifier
+      SHALL require a context identifier matching HC[1-9A-Z]: and strip it.
+      It SHALL report any identifier other than HC1 as an unsupported version,
+      distinct from malformed input.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-8, step-verify]
+    derived_from:
+      - src: qr-9
+        quote: "A future backwards-incompatible revision will use a new identifier, incrementing through [1-9] and then [A-Z]."
+      - src: hcert-4.2.2
+    api: [api-hc1]
+    verified_by: [STT-TST-004]
+
+  # ===========================================================================
+  # QR: Step 9, QR code
+  # ===========================================================================
+
+  - id: STT-QR-001
+    title: ISO/IEC 18004 QR in Alphanumeric mode
+    statement: >-
+      The QR encoder SHALL produce an ISO/IEC 18004:2015 symbol carrying the
+      whole HC1 string as Alphanumeric-mode (0010) data. It SHALL NOT fall
+      back to byte mode, and SHALL fail if the input has characters outside
+      the alphanumeric set.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-9]
+    derived_from:
+      - src: qr-10
+      - src: hcert-4.2.2
+        quote: "The Alphanumeric (Mode 2/QR Code symbols 0010) MUST be used in conjunction with Base45."
+      - src: std-iso18004
+    api: [api-qr]
+
+  - id: STT-QR-002
+    title: Error correction Q by default
+    statement: >-
+      Error-correction level SHALL default to Q and SHALL be configurable.
+      Symbol version SHALL be the smallest that fits unless the caller pins
+      one.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-9]
+    derived_from:
+      - src: qr-10
+        quote: "Level Q, approximately 25% — RECOMMENDED"
+      - src: hcert-4.2.2
+    api: [api-qr]
+
+  - id: STT-QR-003
+    title: Rendering is optional and kept separate
+    statement: >-
+      The core QR output SHALL be a module matrix with no imaging dependency.
+      PNG and SVG rendering SHALL be optional: separate artifacts in Kotlin,
+      cargo features in Rust.
+    conformance: SHALL
+    category: architecture
+    derivation: derived
+    steps: [step-9]
+    derived_from:
+      - src: qr-10
+    api: [api-qr, api-qr-render]
+
+  - id: STT-QR-004
+    title: Print-safe rendering
+    statement: >-
+      Renderers SHALL scale modules by whole numbers of device pixels so that
+      every module is square, SHALL emit a quiet zone of at least 4 modules,
+      and SHOULD provide a helper that picks the scale for a target diagonal
+      of 35 to 60 mm at a given dpi.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    refines: [STT-QR-003]
+    steps: [step-9]
+    derived_from:
+      - src: qr-10
+        quote: "make sure each module is rendered as an exact square. Non-proportional scaling turns modules into rectangles"
+      - src: hcert-4.2.2
+    api: [api-qr-render]
+
+  - id: STT-QR-005
+    title: Camera scanning out of scope
+    statement: >-
+      Decoding QR images from a camera or file is out of scope for the core
+      libraries. The verifier entry point SHALL be the scanned text (HC1
+      string) or raw COSE bytes.
+    conformance: SHALL
+    category: scope
+    derivation: derived
+    steps: [step-verify]
+    derived_from:
+      - src: qr-11
+        quote: "Confirm the HC1: prefix and strip it."
+    api: [api-verifier]
+
+  - id: STT-QR-006
+    title: Encoding report
+    statement: >-
+      The issuer SHALL return an EncodingReport with the size at every stage
+      (CBOR, COSE, deflated, HC1 characters) and the QR version and
+      error-correction level. It SHALL add a warning when the HC1 length is
+      over a configurable threshold, pointing to VHL as the alternative.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-4, step-5, step-6, step-7, step-9]
+    derived_from:
+      - src: qr-12.5
+        quote: "a payload that grows much beyond this belongs behind a VHL instead"
+      - src: qr-2.2
+    api: [api-report]
+
+  # ===========================================================================
+  # VER: verification pipeline
+  # ===========================================================================
+
+  - id: STT-VER-001
+    title: Verification order
+    statement: >-
+      The verifier SHALL run the QR Code Generation section 11 sequence in
+      order: prefix, Base45, inflate, COSE parse, header validation, trust
+      lookup by kid, signature verification, EKU check, CWT decode and time
+      checks, subclaim dispatch, business rules.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-verify]
+    derived_from:
+      - src: qr-1
+        quote: "A verifier runs the same list upwards."
+      - src: qr-11
+    satisfies: [UtilizeVDHC-reveive, UtilizeVDHC-validate-hash]
+    api: [api-verifier]
+
+  - id: STT-VER-002
+    title: No payload access before the signature is verified
+    statement: >-
+      The API SHALL make the payload and claims reachable only through a
+      successful verification result type. Code that inspects an unverified
+      payload SHALL go through an explicitly named unsafe or diagnostic call.
+    conformance: SHALL
+    category: security
+    derivation: derived
+    refines: [STT-VER-001]
+    steps: [step-verify]
+    derived_from:
+      - src: qr-11
+        quote: "Verify the signature before processing the payload."
+      - src: hcert-6.3
+        quote: "The Issuer Signature SHALL also be verified before any processing of the contents of the HCERT takes place."
+    api: [api-result]
+
+  - id: STT-VER-003
+    title: Defensive protected-header parsing
+    statement: >-
+      Before the signature is checked, the verifier SHALL validate the types
+      and lengths in the protected header: alg is a supported integer, kid is
+      a byte string of the expected length, and no duplicate labels. It SHALL
+      fail closed on anything unexpected.
+    conformance: SHALL
+    category: security
+    derivation: direct
+    refines: [STT-VER-001]
+    steps: [step-verify]
+    derived_from:
+      - src: qr-11
+        quote: "Parsing the protected header necessarily happens before signature verification, which makes it an attack surface"
+      - src: hcert-6.3
+    verified_by: [STT-TST-004, STT-TST-006]
+
+  - id: STT-VER-004
+    title: EKU check against certificate type
+    statement: >-
+      If the matching DSC has an Extended Key Usage extension with any of
+      1.3.6.1.4.1.1847.2021.1.1 (test), .1.2 (vaccinations) or .1.3
+      (recovery), the verifier SHALL check it against the certificate type of
+      the payload, using a pluggable CertificateTypeResolver. A DSC with no
+      such extension SHALL be accepted for any type. The default resolver
+      SHALL map DVC (-6) and DDCC VS (3) to vaccinations and DDCC TR (4) to
+      test.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-verify]
+    derived_from:
+      - src: qr-11
+      - src: hcert-A.2
+        quote: "If one or more are present, the verifiers SHALL verify the key usage against the stored HCERT."
+    api: [api-cert-type]
+    issues: [OI-03]
+    verified_by: [STT-TST-004]
+
+  - id: STT-VER-005
+    title: Time checks with an injected clock
+    statement: >-
+      The verifier SHALL reject a certificate whose exp is in the past. It
+      SHALL flag an iat in the future, beyond a configurable clock-skew
+      tolerance. Time SHALL come from an injected Clock. Extra iat-based
+      policies (for example a maximum age) MAY be configured.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-verify]
+    derived_from:
+      - src: qr-11
+        quote: "Decode the CBOR payload and check exp and iat against the current time."
+      - src: hcert-3.2.5
+        quote: "after which a Verifier MUST reject the Payload as expired"
+      - src: hcert-3.2.6
+    api: [api-clock]
+    verified_by: [STT-TST-004]
+
+  - id: STT-VER-006
+    title: Trust-list presence is the DSC validity check
+    statement: >-
+      The verifier SHALL NOT need CRL or OCSP access. A DSC is valid if it is
+      on the current trust list. The verifier SHOULD also check the DSC's
+      X.509 validity period against the injected clock.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-verify, step-trust]
+    derived_from:
+      - src: hcert-5.1
+        quote: "the primary validity mechanism is the presence of the certificate on the most recent version of that certificate list."
+
+  - id: STT-VER-007
+    title: Dispatch to logical model, then business rules
+    statement: >-
+      After verification the verifier SHALL decode the hcert entry with the
+      codec registered for its subclaim, falling back to RawPayload. It SHALL
+      then run any registered BusinessRuleHooks and attach their outcomes to
+      the result.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    steps: [step-verify]
+    derived_from:
+      - src: qr-11
+        quote: "Read the hcert claim, dispatch on the subclaim to the right logical model, and only then apply business rules."
+    satisfies: [UtilizeVDHC-display-verified-content, UtilizeVDHC-execute-business-rule]
+    api: [api-business-rules, api-subclaim-registry]
+
+  - id: STT-VER-008
+    title: Typed verification result and failure taxonomy
+    statement: >-
+      A certificate failing verification SHALL produce a Failed result, not an
+      exception or panic. Failed results SHALL name the step that failed and a
+      reason from a closed set shared by both languages: BadPrefix,
+      UnsupportedContextVersion, Base45Invalid, InflateFailed, LimitExceeded,
+      CoseMalformed, HeaderInvalid, UnsupportedAlgorithm, KidNotFound,
+      SignatureInvalid, KeyUsageMismatch, Expired, NotYetValid,
+      HcertMissing, MultipleSubclaims, PayloadInvalid. Exceptions or errors
+      SHALL be reserved for programming errors and infrastructure failures.
+    conformance: SHALL
+    category: api
+    derivation: derived
+    steps: [step-verify]
+    derived_from:
+      - src: qr-11
+      - src: dir-languages
+    refines: [STT-GEN-006]
+    api: [api-result]
+    verified_by: [STT-TST-004]
+
+  - id: STT-VER-009
+    title: Fully offline verification
+    statement: >-
+      Given a cached or static trust list, verification SHALL need no network
+      access.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-verify, step-trust]
+    derived_from:
+      - src: qr-2.2
+        quote: "Works fully offline — Yes — verifier needs only the trust list"
+      - src: qr-12.1
+    api: [api-static-trust, api-trust-provider]
+
+  - id: STT-VER-010
+    title: Narrow lookup by iss
+    statement: >-
+      When iss is present, the verifier MAY use it to narrow trust-list lookup
+      to that issuer's DSCs. A mismatch between iss and the DSC country SHALL
+      be reported as a diagnostic.
+    conformance: MAY
+    category: functional
+    derivation: direct
+    steps: [step-verify, step-trust]
+    derived_from:
+      - src: hcert-3.2.4
+        quote: "This claim can be used by a Verifier to identify which set of DSCs to use for validation."
+    issues: [OI-13]
+
+  # ===========================================================================
+  # TRU: trust list
+  # ===========================================================================
+
+  - id: STT-TRU-001
+    title: TrustListProvider abstraction
+    statement: >-
+      Trust material SHALL be reached through a TrustListProvider that
+      returns every trusted DSC matching a query of kid plus optional issuer,
+      trust domain, participant and key usage.
+    conformance: SHALL
+    category: api
+    derivation: derived
+    steps: [step-trust]
+    derived_from:
+      - src: hcert-A
+        quote: "Ultimately, every Verifier needs to have a list of all public keys it is willing to trust"
+      - src: qr-11
+    satisfies: [UtilizeVDHC-retreive-keys, RetrievePKIMaterial]
+    api: [api-trust-provider]
+
+  - id: STT-TRU-002
+    title: GDHCN DID trustlist v2 client
+    statement: >-
+      The library SHALL provide a TrustListProvider for the GDHCN DID
+      trustlist v2. It SHALL support the embedded and reference variants, the
+      DEV, UAT and PROD environments, and the hierarchical
+      root/$domain/$participant/$usage paths with "-" as a wildcard. It SHALL
+      read DSCs from verificationMethod publicKeyJwk (x5c), with the kid as the
+      fragment.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    refines: [STT-TRU-001]
+    steps: [step-trust]
+    derived_from:
+      - src: did-2.0.0
+      - src: did-structure
+        quote: "Note that \"-\" character can be used as a wildcard on each sublevel of root."
+      - src: did-examples
+        quote: "Specific keys use base64 encoded key id (kid) as identifier, It is represented as fragments (#) in verification method id"
+      - src: endpoints-trustlist
+      - src: std-did-core
+    satisfies: [RetrievePKIMaterialDID]
+    api: [api-did-trustlist]
+    issues: [OI-12]
+
+  - id: STT-TRU-003
+    title: Check trust-list integrity
+    statement: >-
+      The DID trustlist client SHOULD verify the JWS proof on fetched DID
+      documents against a configured GDHCN anchor, and SHALL use HTTPS with
+      platform certificate validation.
+    conformance: SHOULD
+    category: security
+    derivation: derived
+    refines: [STT-TRU-002]
+    steps: [step-trust]
+    derived_from:
+      - src: did-examples
+      - src: hcert-A
+
+  - id: STT-TRU-004
+    title: Cache and refresh
+    statement: >-
+      Trust-list providers that fetch remotely SHALL cache the last good list
+      persistently, SHALL refresh it on a configurable schedule, and SHALL
+      expose when it was last updated so that callers can apply a staleness
+      policy. A failed refresh SHALL keep the last good list.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    refines: [STT-TRU-001]
+    steps: [step-trust]
+    derived_from:
+      - src: hcert-A
+        quote: "Verifiers MUST fetch and update this list regularly."
+    api: [api-trust-provider, api-did-trustlist]
+
+  - id: STT-TRU-005
+    title: Static and national trust lists
+    statement: >-
+      The library SHALL provide a static TrustListProvider loaded from PEM,
+      DER or JWKS, for tests, pinned bilateral or national lists, and fully
+      offline deployments.
+    conformance: SHALL
+    category: functional
+    derivation: direct
+    refines: [STT-TRU-001]
+    steps: [step-trust]
+    derived_from:
+      - src: hcert-A
+        quote: "the file format of this trusted list may vary, e.g., it can be a signed JWKS"
+      - src: std-rfc7517
+    api: [api-static-trust]
+
+  - id: STT-TRU-006
+    title: Optional DSC-to-SCA chain check
+    statement: >-
+      When SCA certificates are available, the library SHOULD check that each
+      DSC is signed by a listed SCA, that the DSC AKI matches the SCA SKI, and
+      that the SCA C attribute matches the issuing country.
+    conformance: SHOULD
+    category: security
+    derivation: direct
+    steps: [step-trust]
+    derived_from:
+      - src: hcert-5
+        quote: "MUST be signed with the private key corresponding to a SCA certificate published on the aforementioned list"
+      - src: std-rfc5280
+
+  # ===========================================================================
+  # ISS: issuance end to end
+  # ===========================================================================
+
+  - id: STT-ISS-001
+    title: One-call issuance
+    statement: >-
+      HcertIssuer SHALL take a payload, its codec, a validity and a Signer,
+      and return the HC1 string. On request it SHALL also return the raw COSE
+      bytes, the QR matrix and the EncodingReport.
+    conformance: SHALL
+    category: api
+    derivation: derived
+    refines: [STT-GEN-001]
+    steps: [step-3, step-4, step-5, step-6, step-7, step-8, step-9]
+    derived_from:
+      - src: qr-1
+    satisfies: [IssuerVDHC-generate, IssuerVDHC-sign]
+    api: [api-issuer]
+
+  - id: STT-ISS-002
+    title: Optional self-verification after issuance
+    statement: >-
+      The issuer SHALL offer a policy flag that decodes and verifies every
+      certificate it has just issued against the Signer's DSC before
+      returning it. The flag SHOULD default to on in the testkit.
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-verify]
+    derived_from:
+      - src: qr-13
+        quote: "then decodes its own output and verifies the signature, so a failed run is a failed round trip rather than a silently broken certificate"
+    api: [api-issuer]
+
+  - id: STT-ISS-003
+    title: Test keys never in production artifacts
+    statement: >-
+      Fixed test keys and test PKI (such as the XXA SCA and DSC) SHALL only
+      ship in the testkit module. Production modules SHALL NOT contain or
+      accept them by default.
+    conformance: SHALL NOT
+    category: security
+    derivation: derived
+    derived_from:
+      - src: qr-12.3
+        quote: "The signing keys are throw-away test keys ... They appear on no trust list"
+      - src: qr-13
+        quote: "It is a documentation aid, not a production issuer: it uses fixed test keys in source"
+    api: [api-testkit]
+
+  # ===========================================================================
+  # SEC / NFR
+  # ===========================================================================
+
+  - id: STT-SEC-001
+    title: No payload content in logs
+    statement: >-
+      The libraries SHALL NOT log payload content, HC1 strings or decoded
+      claims at any default log level. A QR code holds readable personal data.
+    conformance: SHALL NOT
+    category: security
+    derivation: derived
+    derived_from:
+      - src: qr-2.2
+        quote: "All data is in the QR and is readable by anyone who scans it"
+      - src: hcert-6.1
+
+  - id: STT-SEC-002
+    title: Vetted crypto backends
+    statement: >-
+      Cryptography SHALL use platform or vetted libraries: JCA/BouncyCastle or
+      Android Keystore for Kotlin JVM/Android, RustCrypto (p256, rsa, sha2) or
+      ring/aws-lc-rs for Rust. Signature verification SHALL be constant-time
+      where the backend allows. The libraries SHALL NOT contain their own
+      implementations of cryptographic primitives.
+    conformance: SHALL
+    category: security
+    derivation: derived
+    derived_from:
+      - src: hcert-6.2
+
+  - id: STT-NFR-001
+    title: Versioning and spec traceability
+    statement: >-
+      Releases SHALL follow semantic versioning. A change to the wire format
+      or to subclaim defaults SHALL be a major or minor version change, as
+      documented in a changelog that cites the smart-trust change (changes.md
+      entry) it implements.
+    conformance: SHALL
+    category: non-functional
+    derivation: derived
+    refines: [STT-GEN-007]
+    derived_from:
+      - src: changes-1.7.5
+      - src: qr-9
+
+  - id: STT-NFR-002
+    title: Distribution
+    statement: >-
+      The Kotlin library SHALL be published to Maven Central and the Rust
+      library to crates.io, under coordinates still to be chosen.
+    conformance: SHALL
+    category: non-functional
+    derivation: directive
+    derived_from:
+      - src: dir-languages
+    issues: [OI-14]
+
+  # ===========================================================================
+  # TST: conformance and verification
+  # ===========================================================================
+
+  - id: STT-TST-001
+    title: PR 129 example as a conformance vector
+    statement: >-
+      Both libraries SHALL verify the two HC1 strings in
+      dvc-qr-example-XXA.json against dvc-qr-example-XXA-dsc.pem, with the
+      clock fixed inside 2026-09-29T08:30Z to 2027-09-29T08:30Z. Each SHALL
+      give kid WHM+BYqqZiE=, subclaim -6, and payloads equal to those in the
+      JSON. The committed files SHALL be used as-is; they SHALL NOT be
+      regenerated.
+    conformance: SHALL
+    category: test
+    derivation: derived
+    derived_from:
+      - src: qr-12.6
+        quote: "so that a verifier implementation can be exercised against this example end to end"
+      - src: doc-qr-example-json
+      - src: doc-qr-example-pem
+    api: [api-testkit]
+    issues: [OI-01]
+
+  - id: STT-TST-002
+    title: Byte-exact CBOR vector
+    statement: >-
+      Encoding the PR 129 example claim sets with deterministic CBOR SHALL
+      give exactly the payload bytes inside the committed COSE_Sign1: 210
+      bytes for hepb1 and 209 for bcg. Signed, deflated and HC1 sizes SHALL
+      NOT be asserted exactly, because signatures are randomized.
+    conformance: SHALL
+    category: test
+    derivation: derived
+    derived_from:
+      - src: qr-12.5
+      - src: doc-qr-example-json
+    issues: [OI-01, OI-05]
+
+  - id: STT-TST-003
+    title: Cross-implementation interoperability
+    statement: >-
+      Certificates issued by each library (ES256 and PS256) SHALL verify in
+      the other library and in the smart-trust reference script's verify
+      routine. Certificates issued by the reference script SHALL verify in
+      both libraries.
+    conformance: SHALL
+    category: test
+    derivation: derived
+    derived_from:
+      - src: qr-13
+      - src: dir-languages
+    refines: [STT-GEN-006]
+
+  - id: STT-TST-004
+    title: Negative vectors
+    statement: >-
+      The shared vector set SHALL include failing cases with the expected
+      failure reason for each: tampered payload, tampered protected header,
+      wrong or unknown kid, duplicate kid with only the second DSC valid, a
+      DER-encoded ES256 signature, expired, iat before the DSC validity, EKU
+      mismatch, missing or unsupported prefix (HC2:), invalid Base45,
+      decompression bomb, deeply nested CBOR, multiple subclaims, and a DVC
+      without is or cn.
+    conformance: SHALL
+    category: test
+    derivation: derived
+    derived_from:
+      - src: qr-11
+      - src: hcert-6.3
+    api: [api-testkit]
+
+  - id: STT-TST-005
+    title: Language-neutral vector format
+    statement: >-
+      Conformance vectors SHALL be stored once, in a language-neutral format
+      (JSON plus PEM), in this repository, and loaded by both test suites.
+    conformance: SHALL
+    category: test
+    derivation: derived
+    refines: [STT-GEN-006]
+    derived_from:
+      - src: doc-qr-example-json
+      - src: dir-languages
+    api: [api-testkit]
+
+  - id: STT-TST-006
+    title: Fuzzing of decoders
+    statement: >-
+      The Base45, ZLIB, CBOR, COSE and full verifier entry points SHALL be
+      fuzzed in CI (cargo-fuzz for Rust, Jazzer or kotlinx-fuzz for Kotlin).
+      No input may crash them, hang them, or exceed DecodeLimits.
+    conformance: SHALL
+    category: test
+    derivation: derived
+    derived_from:
+      - src: hcert-6.3
+        quote: "a potential attacker may attempt to inject carefully crafted information designed to compromise the security of the system"
