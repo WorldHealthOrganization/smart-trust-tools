@@ -14,3 +14,6 @@ kotlin/.kotlin/
 /bootstrap/
 /bootstrap-tools/
 # END index mounts
+
+# written at publish by gen-landing-data
+/docs/_data/
