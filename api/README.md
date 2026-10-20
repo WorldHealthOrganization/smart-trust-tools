@@ -11,6 +11,19 @@ implements.
 - Source of truth: [`wit/`](wit/)
 - Generated TypeScript view for review: [`generated/ts/`](generated/ts/)
   (`tools/gen_api_types.sh`)
+- Wire format: [`cddl/hcert.cddl`](cddl/hcert.cddl) (RFC 8610)
+
+## Three layers, three open standards
+
+| Layer | Describes | Format | Where |
+|---|---|---|---|
+| Library API | Functions, objects, errors | WIT | [`wit/`](wit/) |
+| Wire format | CBOR bytes: COSE_Sign1, CWT claims, `hcert` map | CDDL, IETF RFC 8610 | [`cddl/hcert.cddl`](cddl/hcert.cddl) plus generated payload rules |
+| Payload model | DVCMin and others as data | JSON-LD context + SHACL, W3C, derived from the FHIR logical models | [`../models/`](../models/) |
+
+All type references are to openly available standards: IETF, W3C, HL7 FHIR,
+ITU-T. There are no paywalled ISO references [STT-GEN-013]. ISO/IEC 18004 (QR)
+is cited only because the HCERT Specification mandates it.
 
 ## Why WIT, and not something else
 

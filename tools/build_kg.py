@@ -273,17 +273,18 @@ def build_model():
         claim(d["id"], "document")
         d = dict(d)
         urls = {}
+        ref = refs.get(d.get("ref"), {})
+        site = ref.get("sites", sites)  # a ref in another repository brings its own sites
         if "path" in d:
-            ref = refs[d["ref"]]
             d["sha"] = ref["sha"]
-            urls["pinned"] = "https://github.com/%s/blob/%s/%s" % (repo, ref["sha"], d["path"])
-            urls["main"] = "https://github.com/%s/blob/main/%s" % (repo, d["path"])
+            d_repo = ref.get("repo", repo)
+            urls["pinned"] = "https://github.com/%s/blob/%s/%s" % (d_repo, ref["sha"], d["path"])
+            urls["main"] = "https://github.com/%s/blob/main/%s" % (d_repo, d["path"])
         if "page" in d:
-            ref = refs[d["ref"]]
             if d.get("status") == "pending-merge" and "preview_dir" in ref:
-                urls["preview"] = "%s/%s/%s" % (sites["preview"], ref["preview_dir"], d["page"])
-            urls["ci"] = "%s/%s" % (sites["ci"], d["page"])
-            urls["published"] = "%s/%s" % (sites["published"], d["page"])
+                urls["preview"] = "%s/%s/%s" % (site["preview"], ref["preview_dir"], d["page"])
+            urls["ci"] = "%s/%s" % (site["ci"], d["page"])
+            urls["published"] = "%s/%s" % (site["published"], d["page"])
         if "url" in d:
             urls["url"] = d["url"]
         d["urls"] = urls
@@ -608,7 +609,7 @@ def to_markdown(M):
     w("| Tier | Meaning | Base |")
     w("|---|---|---|")
     for k, v in src["refs"].items():
-        w("| pinned (`%s`) | %s | `%s` |" % (k, md_escape(v["label"]), v["sha"][:12]))
+        w("| pinned (`%s`) | %s | `%s@%s` |" % (k, md_escape(v["label"]), v.get("repo", src["repo"]), v["sha"][:12]))
     w("| PR preview | IG build of the PR branch | %s/%s/ |" % (src["sites"]["preview"], src["refs"]["pr129"]["preview_dir"]))
     w("| CI build | continuous build of main | %s/ |" % src["sites"]["ci"])
     w("| published | canonical released IG | %s/ |" % src["sites"]["published"])

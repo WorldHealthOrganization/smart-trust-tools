@@ -2,9 +2,9 @@ name: Requirements KG and API contract
 
 on:
   push:
-    paths: ["requirements/**", "api/**", "tools/**", ".github/workflows/requirements-kg.yml"]
+    paths: ["requirements/**", "api/**", "models/**", "vectors/**", "tools/**", ".github/workflows/requirements-kg.yml"]
   pull_request:
-    paths: ["requirements/**", "api/**", "tools/**", ".github/workflows/requirements-kg.yml"]
+    paths: ["requirements/**", "api/**", "models/**", "vectors/**", "tools/**", ".github/workflows/requirements-kg.yml"]
 
 jobs:
   check:
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: pip install pyyaml rdflib
+      - run: pip install pyyaml rdflib cbor2 base45 pycddl pyshacl
       - name: Validate KG (incl. WIT references) and check generated files are current
         run: python3 tools/build_kg.py --check
       - name: Parse generated RDF
@@ -34,3 +34,7 @@ jobs:
         run: |
           tools/gen_api_types.sh
           git diff --exit-code -- api/generated/ts
+      - name: Check derived payload models are current
+        run: python3 tools/lm_derive.py --check
+      - name: Validate vectors against CDDL and SHACL
+        run: python3 tools/check_models.py

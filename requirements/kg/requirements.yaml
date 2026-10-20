@@ -217,6 +217,29 @@ requirements:
     api: [api-trust-provider, api-clock]
     issues: [OI-15]
 
+  - id: STT-GEN-013
+    title: Types and schemas trace to open standards
+    statement: >-
+      Every data type in the API contract, wire schema and payload models
+      SHALL trace to an openly available standard: IETF CBOR/CDDL (RFC 8949,
+      RFC 8610) for the wire format, HL7 FHIR data types and W3C XSD
+      datatypes for payload elements, W3C JSON-LD and SHACL for payload
+      semantics, ITU-T X.680 for certificates, and I-JSON (RFC 7493) for
+      JSON files. Paywalled standards SHALL NOT be used as type or schema
+      references.
+    conformance: SHALL
+    category: architecture
+    derivation: directive
+    derived_from:
+      - src: dir-open-standards
+      - src: std-rfc8610
+      - src: std-fhir-datatypes
+      - src: std-xsd2
+      - src: std-json-ld
+      - src: std-shacl
+      - src: std-x680
+      - src: std-rfc7493
+
   # ===========================================================================
   # SEL: Step 1, select payload type
   # ===========================================================================
@@ -485,6 +508,29 @@ requirements:
     api: [api-vhl, api-raw-payload]
     issues: [OI-06]
 
+  - id: STT-PAY-010
+    title: Payload models derived from FHIR logical models
+    statement: >-
+      Payload schemas SHALL be derived mechanically from the published FHIR
+      logical models, not written by hand: a JSON-LD 1.1 context that maps
+      the payload's short element names to IRIs, SHACL shapes for
+      cardinality, primitive patterns, invariants and bindings, and CDDL for
+      the CBOR encoding. Inputs SHALL be pinned to a source commit. Typed
+      payload codecs SHALL be checked against these derived schemas.
+    conformance: SHALL
+    category: architecture
+    derivation: directive
+    steps: [step-2]
+    derived_from:
+      - src: dir-open-standards
+      - src: ext-dvcmin
+        quote: "Minimal DVC payload for use within an HCERT Payload"
+      - src: ext-dvcmin-vx
+      - src: std-json-ld
+      - src: std-shacl
+    verified_by: [STT-TST-008]
+    issues: [OI-17, OI-18, OI-19]
+
   # ===========================================================================
   # CWT: Step 3, CWT claim set
   # ===========================================================================
@@ -645,6 +691,28 @@ requirements:
         quote: "all input fields MUST be properly validated by data types, lengths and contents"
     api: [api-cbor, api-limits]
     verified_by: [STT-TST-004, STT-TST-006]
+
+  - id: STT-CBR-004
+    title: Wire format specified in CDDL
+    statement: >-
+      The CBOR wire format (COSE_Sign1, protected header, CWT claim set,
+      hcert map and payloads) SHALL be specified in CDDL (RFC 8610), and
+      encoders SHALL produce data that validates against it. The envelope
+      SHALL be hand-written from the HCERT Specification; payload rules SHALL
+      be generated from the logical models (STT-PAY-010).
+    conformance: SHALL
+    category: functional
+    derivation: derived
+    steps: [step-3, step-4, step-5]
+    derived_from:
+      - src: dir-open-standards
+      - src: qr-5
+        quote: "The JSON shown throughout this page and in the logical models is schema notation only — the wire format is CBOR"
+      - src: hcert-3.2.1
+      - src: std-rfc8610
+      - src: std-rfc9052
+    verified_by: [STT-TST-008]
+    issues: [OI-19, OI-20]
 
   # ===========================================================================
   # COS: Step 5, COSE_Sign1
@@ -1559,4 +1627,22 @@ requirements:
     derived_from:
       - src: dir-targets
       - src: doc-qr-example-json
+    api: [api-testkit]
+
+  - id: STT-TST-008
+    title: Schema checks against the vectors
+    statement: >-
+      CI SHALL validate every conformance vector against the CDDL (COSE_Sign1,
+      protected header, CWT claims) and its payload against the SHACL shapes
+      through the JSON-LD context. It SHALL also check that mutated payloads
+      (invariant broken, bad FHIR date, missing required element, bad FHIR
+      id) are rejected and that valid variants (cn only, partial date) are
+      accepted, by both CDDL and SHACL.
+    conformance: SHALL
+    category: test
+    derivation: derived
+    derived_from:
+      - src: doc-qr-example-json
+      - src: std-rfc8610
+      - src: std-shacl
     api: [api-testkit]

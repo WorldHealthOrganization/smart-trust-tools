@@ -439,19 +439,47 @@
     a stt:Document ;
     dcterms:identifier "ext-dvcmin" ;
     dcterms:title "DVCMin logical model (trust-phw)" ;
-    stt:url <http://smart.who.int/trust-phw/StructureDefinition-DVCMin.html> .
+    stt:path "input/fsh/models/DVCMin.fsh" ;
+    stt:status "deployed" ;
+    stt:gitCommit "fd3b5480e5df8001890d31ecc9761051c17c2cc5" ;
+    stt:pinnedUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/models/DVCMin.fsh> ;
+    stt:mainUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/main/input/fsh/models/DVCMin.fsh> ;
+    stt:ciUrl <https://worldhealthorganization.github.io/smart-trust-phw/StructureDefinition-DVCMin.html> ;
+    stt:publishedUrl <https://smart.who.int/trust-phw/StructureDefinition-DVCMin.html> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin-vx>
     a stt:Document ;
     dcterms:identifier "ext-dvcmin-vx" ;
     dcterms:title "DVCMinVaccineDetails logical model (trust-phw)" ;
-    stt:url <http://smart.who.int/trust-phw/StructureDefinition-DVCMinVaccineDetails.html> .
+    stt:path "input/fsh/models/DVCMinVaccineDetails.fsh" ;
+    stt:status "deployed" ;
+    stt:gitCommit "fd3b5480e5df8001890d31ecc9761051c17c2cc5" ;
+    stt:pinnedUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/models/DVCMinVaccineDetails.fsh> ;
+    stt:mainUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/main/input/fsh/models/DVCMinVaccineDetails.fsh> ;
+    stt:ciUrl <https://worldhealthorganization.github.io/smart-trust-phw/StructureDefinition-DVCMinVaccineDetails.html> ;
+    stt:publishedUrl <https://smart.who.int/trust-phw/StructureDefinition-DVCMinVaccineDetails.html> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin-prequal>
     a stt:Document ;
     dcterms:identifier "ext-dvcmin-prequal" ;
     dcterms:title "DVCMinPreQual profile (trust-phw)" ;
-    stt:url <http://smart.who.int/trust-phw/StructureDefinition-DVCMinPreQual.html> .
+    stt:path "input/fsh/models/DVCMinPreQual.fsh" ;
+    stt:status "deployed" ;
+    stt:gitCommit "fd3b5480e5df8001890d31ecc9761051c17c2cc5" ;
+    stt:pinnedUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/models/DVCMinPreQual.fsh> ;
+    stt:mainUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/main/input/fsh/models/DVCMinPreQual.fsh> ;
+    stt:ciUrl <https://worldhealthorganization.github.io/smart-trust-phw/StructureDefinition-DVCMinPreQual.html> ;
+    stt:publishedUrl <https://smart.who.int/trust-phw/StructureDefinition-DVCMinPreQual.html> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/ext-phw-aliases>
+    a stt:Document ;
+    dcterms:identifier "ext-phw-aliases" ;
+    dcterms:title "smart-trust-phw FSH aliases" ;
+    stt:path "input/fsh/Aliases.fsh" ;
+    stt:status "deployed" ;
+    stt:gitCommit "fd3b5480e5df8001890d31ecc9761051c17c2cc5" ;
+    stt:pinnedUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/Aliases.fsh> ;
+    stt:mainUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/main/input/fsh/Aliases.fsh> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvc-vaccines-vs>
     a stt:Document ;
@@ -541,6 +569,7 @@
     a stt:Document ;
     dcterms:identifier "std-iso18004" ;
     dcterms:title "ISO/IEC 18004:2015 QR Code" ;
+    rdfs:comment "Paywalled. Cited only because the HCERT Specification mandates it; not used as a type or schema reference (dir-open-standards)." ;
     stt:url <https://www.iso.org/standard/62021.html> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc5280>
@@ -560,6 +589,60 @@
     dcterms:identifier "std-did-core" ;
     dcterms:title "W3C DID Core" ;
     stt:url <https://www.w3.org/TR/did-core/> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc8610>
+    a stt:Document ;
+    dcterms:identifier "std-rfc8610" ;
+    dcterms:title "RFC 8610 Concise Data Definition Language (CDDL)" ;
+    stt:url <https://www.rfc-editor.org/rfc/rfc8610> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9682>
+    a stt:Document ;
+    dcterms:identifier "std-rfc9682" ;
+    dcterms:title "RFC 9682 Updates to the CDDL grammar" ;
+    stt:url <https://www.rfc-editor.org/rfc/rfc9682> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9052>
+    a stt:Document ;
+    dcterms:identifier "std-rfc9052" ;
+    dcterms:title "RFC 9052 COSE: Structures and Process" ;
+    stt:url <https://www.rfc-editor.org/rfc/rfc9052> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7493>
+    a stt:Document ;
+    dcterms:identifier "std-rfc7493" ;
+    dcterms:title "RFC 7493 I-JSON" ;
+    stt:url <https://www.rfc-editor.org/rfc/rfc7493> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-json-ld>
+    a stt:Document ;
+    dcterms:identifier "std-json-ld" ;
+    dcterms:title "W3C JSON-LD 1.1" ;
+    stt:url <https://www.w3.org/TR/json-ld11/> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-shacl>
+    a stt:Document ;
+    dcterms:identifier "std-shacl" ;
+    dcterms:title "W3C Shapes Constraint Language (SHACL)" ;
+    stt:url <https://www.w3.org/TR/shacl/> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-xsd2>
+    a stt:Document ;
+    dcterms:identifier "std-xsd2" ;
+    dcterms:title "W3C XML Schema 1.1 Part 2: Datatypes" ;
+    stt:url <https://www.w3.org/TR/xmlschema11-2/> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-fhir-datatypes>
+    a stt:Document ;
+    dcterms:identifier "std-fhir-datatypes" ;
+    dcterms:title "HL7 FHIR R5 Data Types" ;
+    stt:url <https://hl7.org/fhir/R5/datatypes.html> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-x680>
+    a stt:Document ;
+    dcterms:identifier "std-x680" ;
+    dcterms:title "ITU-T X.680 ASN.1 (free)" ;
+    stt:url <https://www.itu.int/rec/T-REC-X.680> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit>
     a stt:Document ;
@@ -590,6 +673,12 @@
     dcterms:identifier "dir-targets" ;
     dcterms:title "Stakeholder directive: transpile targets and API-first" ;
     rdfs:comment "Given by the requester on 2026-10-20: Kotlin targets Node, Java (JVM) and Android; Rust targets WebAssembly. The API set is to be defined and reviewed first, in an OpenAPI-like but non-REST definition." .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/dir-open-standards>
+    a stt:Document ;
+    dcterms:identifier "dir-open-standards" ;
+    dcterms:title "Stakeholder directive: open standards for types and schemas" ;
+    rdfs:comment "Given by the requester on 2026-10-20: data types must trace to standardized type systems, with no paywalled ISO standards. Wire format in CDDL; payload models as JSON-LD derived from the FHIR logical models; library API in WIT." .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/qr-intro>
     a stt:Section ;
@@ -1945,6 +2034,45 @@
     stt:upstreamFix false ;
     stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-17>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-17" ;
+    dcterms:title "The example issues an abstract logical model" ;
+    dcterms:description "In smart-trust-phw, DVCMin and DVCMinVaccineDetails are declared abstract (^abstract = true). Only DVCMinPreQual and DVCMinVaccineDetailsPreQual are concrete. The HCert logical model puts DVCMin at subclaim -6, and the PR 129 example issues a DVCMin with ICD-11 codes. So no concrete model exists for a non-PreQual DVC: either DVCMin should not be abstract, or a concrete ICD-11 profile is needed." ;
+    stt:upstreamFix true ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin-vx> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin-prequal> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/qr-3> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/qr-12.4> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-18>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-18" ;
+    dcterms:title "Sex binding in DVCMin points at a CodeSystem, not a ValueSet" ;
+    dcterms:description "DVCMin.s is bound (extensible) to $GENDER, which smart-trust-phw aliases to http://hl7.org/fhir/administrative-gender, the CodeSystem URL. A binding must reference a ValueSet: http://hl7.org/fhir/ValueSet/administrative-gender." ;
+    stt:upstreamFix true ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/ext-phw-aliases> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-19>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-19" ;
+    dcterms:title "Upstream home for the CDDL and JSON-LD artefacts" ;
+    dcterms:description "The HCERT envelope CDDL (api/cddl/hcert.cddl) belongs in WorldHealthOrganization/smart-trust next to the HCERT Specification, which owns the wire format. The payload JSON-LD context, SHACL and CDDL belong with their logical models in smart-trust-phw, ideally generated by the IG build and published at the canonical URL. They are drafted here until upstream adopts them." ;
+    stt:upstreamFix true ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-3.2.1> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-20>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-20" ;
+    dcterms:title "CDDL validator deviations (cddl-rs / pycddl)" ;
+    dcterms:description "The only Python CDDL validator, pycddl (wrapping the Rust cddl crate), deviates from RFC 8610 in four ways found here: .cbor inside arrays is applied to the wrong items; .regexp is not implicitly anchored; escaped regex classes such as \\s are treated as literals; and map closure is not enforced across group-choice alternatives. The CDDL files stay spec-correct, and tools/check_models.py works around the first three. The schema avoids relying on the fourth. Cross-check with a second validator (e.g. cddlc) before upstreaming." ;
+    stt:upstreamFix false ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc8610> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9682> .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-001>
     a stt:Requirement ;
     dcterms:identifier "STT-GEN-001" ;
@@ -2254,6 +2382,65 @@
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.2> ;
     stt:quote "Works fully offline — Yes — verifier needs only the trust list" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013>
+    a stt:Requirement ;
+    dcterms:identifier "STT-GEN-013" ;
+    dcterms:title "Types and schemas trace to open standards" ;
+    stt:statement "Every data type in the API contract, wire schema and payload models SHALL trace to an openly available standard: IETF CBOR/CDDL (RFC 8949, RFC 8610) for the wire format, HL7 FHIR data types and W3C XSD datatypes for payload elements, W3C JSON-LD and SHACL for payload semantics, ITU-T X.680 for certificates, and I-JSON (RFC 7493) for JSON files. Paywalled standards SHALL NOT be used as type or schema references." ;
+    stt:conformance "SHALL" ;
+    stt:category "architecture" ;
+    stt:derivationType "directive" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-open-standards> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc8610> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-fhir-datatypes> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/3> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-xsd2> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/4> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-json-ld> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/5> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-shacl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/6> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-x680> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/7> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7493> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/8> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-open-standards> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc8610> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-fhir-datatypes> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/4>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-xsd2> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/5>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-json-ld> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/6>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-shacl> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/7>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-x680> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-013/derivation/8>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7493> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-001>
     a stt:Requirement ;
@@ -2688,6 +2875,53 @@
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/ext-ddcc> .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010>
+    a stt:Requirement ;
+    dcterms:identifier "STT-PAY-010" ;
+    dcterms:title "Payload models derived from FHIR logical models" ;
+    stt:statement "Payload schemas SHALL be derived mechanically from the published FHIR logical models, not written by hand: a JSON-LD 1.1 context that maps the payload's short element names to IRIs, SHACL shapes for cardinality, primitive patterns, invariants and bindings, and CDDL for the CBOR encoding. Inputs SHALL be pinned to a source commit. Typed payload codecs SHALL be checked against these derived schemas." ;
+    stt:conformance "SHALL" ;
+    stt:category "architecture" ;
+    stt:derivationType "directive" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-open-standards> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin-vx> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/3> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-json-ld> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/4> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-shacl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/5> ;
+    stt:implementsStep <https://github.com/litlfred/smart-trust-tools/kg/id/step-2> ;
+    stt:verifiedBy <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-008> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-17> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-18> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-19> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-open-standards> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin> ;
+    stt:quote "Minimal DVC payload for use within an HCERT Payload" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin-vx> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/4>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-json-ld> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-010/derivation/5>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-shacl> .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-CWT-001>
     a stt:Requirement ;
     dcterms:identifier "STT-CWT-001" ;
@@ -2955,6 +3189,54 @@
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-6.3> ;
     stt:quote "all input fields MUST be properly validated by data types, lengths and contents" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004>
+    a stt:Requirement ;
+    dcterms:identifier "STT-CBR-004" ;
+    dcterms:title "Wire format specified in CDDL" ;
+    stt:statement "The CBOR wire format (COSE_Sign1, protected header, CWT claim set, hcert map and payloads) SHALL be specified in CDDL (RFC 8610), and encoders SHALL produce data that validates against it. The envelope SHALL be hand-written from the HCERT Specification; payload rules SHALL be generated from the logical models (STT-PAY-010)." ;
+    stt:conformance "SHALL" ;
+    stt:category "functional" ;
+    stt:derivationType "derived" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-open-standards> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/qr-5> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-3.2.1> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/3> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc8610> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/4> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9052> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/5> ;
+    stt:implementsStep <https://github.com/litlfred/smart-trust-tools/kg/id/step-3> ;
+    stt:implementsStep <https://github.com/litlfred/smart-trust-tools/kg/id/step-4> ;
+    stt:implementsStep <https://github.com/litlfred/smart-trust-tools/kg/id/step-5> ;
+    stt:verifiedBy <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-008> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-19> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-20> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-open-standards> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/qr-5> ;
+    stt:quote "The JSON shown throughout this page and in the logical models is schema notation only — the wire format is CBOR" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-3.2.1> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/4>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc8610> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-CBR-004/derivation/5>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9052> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-COS-001>
     a stt:Requirement ;
@@ -4334,3 +4616,33 @@
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-007/derivation/2>
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/doc-qr-example-json> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-008>
+    a stt:Requirement ;
+    dcterms:identifier "STT-TST-008" ;
+    dcterms:title "Schema checks against the vectors" ;
+    stt:statement "CI SHALL validate every conformance vector against the CDDL (COSE_Sign1, protected header, CWT claims) and its payload against the SHACL shapes through the JSON-LD context. It SHALL also check that mutated payloads (invariant broken, bad FHIR date, missing required element, bad FHIR id) are rejected and that valid variants (cn only, partial date) are accepted, by both CDDL and SHACL." ;
+    stt:conformance "SHALL" ;
+    stt:category "test" ;
+    stt:derivationType "derived" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/doc-qr-example-json> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-008/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc8610> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-008/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-shacl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-008/derivation/3> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-testkit> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-008/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/doc-qr-example-json> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-008/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc8610> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-008/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-shacl> .

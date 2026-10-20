@@ -31,6 +31,15 @@ refs:
     # path component of the branch name.
     preview_dir: intelligent-bell-usgxfu
 
+  phw:
+    repo: WorldHealthOrganization/smart-trust-phw
+    sha: fd3b5480e5df8001890d31ecc9761051c17c2cc5
+    label: smart-trust-phw main at time of drafting (DVCMin logical models)
+    sites:
+      published: https://smart.who.int/trust-phw
+      ci: https://worldhealthorganization.github.io/smart-trust-phw
+      preview: https://worldhealthorganization.github.io/smart-trust-phw/branches
+
 sites:
   published: https://smart.who.int/trust
   ci: https://worldhealthorganization.github.io/smart-trust
@@ -219,17 +228,34 @@ documents:
     ref: main
     status: deployed
 
-  # ---- External logical models (other WHO SMART IGs) ---------------------
+  # ---- smart-trust-phw logical models (pinned; vendored in models/fhir) ----
 
   - id: ext-dvcmin
     title: DVCMin logical model (trust-phw)
-    url: http://smart.who.int/trust-phw/StructureDefinition-DVCMin.html
+    path: input/fsh/models/DVCMin.fsh
+    page: StructureDefinition-DVCMin.html
+    ref: phw
+    status: deployed
   - id: ext-dvcmin-vx
     title: DVCMinVaccineDetails logical model (trust-phw)
-    url: http://smart.who.int/trust-phw/StructureDefinition-DVCMinVaccineDetails.html
+    path: input/fsh/models/DVCMinVaccineDetails.fsh
+    page: StructureDefinition-DVCMinVaccineDetails.html
+    ref: phw
+    status: deployed
   - id: ext-dvcmin-prequal
     title: DVCMinPreQual profile (trust-phw)
-    url: http://smart.who.int/trust-phw/StructureDefinition-DVCMinPreQual.html
+    path: input/fsh/models/DVCMinPreQual.fsh
+    page: StructureDefinition-DVCMinPreQual.html
+    ref: phw
+    status: deployed
+  - id: ext-phw-aliases
+    title: smart-trust-phw FSH aliases
+    path: input/fsh/Aliases.fsh
+    ref: phw
+    status: deployed
+
+  # ---- External logical models (other WHO SMART IGs) ---------------------
+
   - id: ext-dvc-vaccines-vs
     title: DVC - Vaccines value set (trust-phw)
     url: http://smart.who.int/trust-phw/ValueSet-DVCVaccines.html
@@ -255,11 +281,25 @@ documents:
   - {id: std-rfc1951, title: "RFC 1951 DEFLATE", url: "https://www.rfc-editor.org/rfc/rfc1951"}
   - {id: std-base45-draft, title: "draft-faltstrom-base45 (cited by the IG)", url: "https://datatracker.ietf.org/doc/draft-faltstrom-base45"}
   - {id: std-rfc9285, title: "RFC 9285 The Base45 Data Encoding", url: "https://www.rfc-editor.org/rfc/rfc9285"}
-  - {id: std-iso18004, title: "ISO/IEC 18004:2015 QR Code", url: "https://www.iso.org/standard/62021.html"}
+  - id: std-iso18004
+    title: "ISO/IEC 18004:2015 QR Code"
+    url: "https://www.iso.org/standard/62021.html"
+    note: >-
+      Paywalled. Cited only because the HCERT Specification mandates it;
+      not used as a type or schema reference (dir-open-standards).
   - {id: std-rfc5280, title: "RFC 5280 X.509 PKI Certificate Profile", url: "https://www.rfc-editor.org/rfc/rfc5280"}
   - {id: std-rfc7517, title: "RFC 7517 JSON Web Key", url: "https://www.rfc-editor.org/rfc/rfc7517"}
   - {id: std-did-core, title: "W3C DID Core", url: "https://www.w3.org/TR/did-core/"}
 
+  - {id: std-rfc8610, title: "RFC 8610 Concise Data Definition Language (CDDL)", url: "https://www.rfc-editor.org/rfc/rfc8610"}
+  - {id: std-rfc9682, title: "RFC 9682 Updates to the CDDL grammar", url: "https://www.rfc-editor.org/rfc/rfc9682"}
+  - {id: std-rfc9052, title: "RFC 9052 COSE: Structures and Process", url: "https://www.rfc-editor.org/rfc/rfc9052"}
+  - {id: std-rfc7493, title: "RFC 7493 I-JSON", url: "https://www.rfc-editor.org/rfc/rfc7493"}
+  - {id: std-json-ld, title: "W3C JSON-LD 1.1", url: "https://www.w3.org/TR/json-ld11/"}
+  - {id: std-shacl, title: "W3C Shapes Constraint Language (SHACL)", url: "https://www.w3.org/TR/shacl/"}
+  - {id: std-xsd2, title: "W3C XML Schema 1.1 Part 2: Datatypes", url: "https://www.w3.org/TR/xmlschema11-2/"}
+  - {id: std-fhir-datatypes, title: "HL7 FHIR R5 Data Types", url: "https://hl7.org/fhir/R5/datatypes.html"}
+  - {id: std-x680, title: "ITU-T X.680 ASN.1 (free)", url: "https://www.itu.int/rec/T-REC-X.680"}
   - {id: std-wit, title: "WIT, WebAssembly Component Model IDL", url: "https://component-model.bytecodealliance.org/design/wit.html"}
   - {id: std-jco, title: "jco: JavaScript toolchain for WebAssembly components", url: "https://github.com/bytecodealliance/jco"}
   - {id: std-webcrypto, title: "W3C Web Cryptography API", url: "https://www.w3.org/TR/WebCryptoAPI/"}
@@ -279,3 +319,11 @@ documents:
       Given by the requester on 2026-10-20: Kotlin targets Node, Java (JVM)
       and Android; Rust targets WebAssembly. The API set is to be defined
       and reviewed first, in an OpenAPI-like but non-REST definition.
+
+  - id: dir-open-standards
+    title: "Stakeholder directive: open standards for types and schemas"
+    note: >-
+      Given by the requester on 2026-10-20: data types must trace to
+      standardized type systems, with no paywalled ISO standards. Wire
+      format in CDDL; payload models as JSON-LD derived from the FHIR
+      logical models; library API in WIT.
