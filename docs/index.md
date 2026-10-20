@@ -22,6 +22,7 @@ SMART Trust implementation guide, in particular the QR Code Generation page of
 | [Wire and payload models](viewers/models.html) | CDDL wire format; JSON-LD, SHACL and CDDL from the FHIR logical models |
 | [Kotlin skeleton](viewers/kotlin.html) | The Kotlin Multiplatform API generated from the WIT |
 | [Vocabulary](viewers/vocabulary.html) | The `stt:` terms the graph uses |
+| [User journeys](journeys.html) | What the library does for each step of journeys J1 to J4, and the gaps |
 
 ## Sources
 
