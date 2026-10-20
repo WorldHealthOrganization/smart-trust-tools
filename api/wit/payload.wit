@@ -1,60 +1,34 @@
 package who:smart-trust@0.1.0;
 
-/// Step 1: the subclaim registry.
+/// Subclaim registry. Its defaults are the WHO-listed subclaims; the
+/// subclaim a payload type is issued under is configuration, so DVC can
+/// move from -6 to an assigned number without an API break.
+/// [STT-SEL-001, STT-SEL-002, STT-SEL-003]
 interface subclaims {
-    use types.{subclaim, subclaim-status};
+    use types.{subclaim};
 
-    /// The IG defaults: 1, 3, 4, 5, -6, -7. [STT-SEL-001]
-    defaults: func() -> list<subclaim>;
+    /// Payload kinds that have a typed codec. Others travel as raw CBOR.
+    enum payload-kind { dvc-min }
 
-    /// >= 0 is WHO-reserved; negative is the development range.
-    /// [STT-SEL-003]
-    is-development-range: func(key: s32) -> bool;
-
-    /// Mutable registry. Integrators register extra subclaims or override
-    /// defaults, e.g. when DVC moves from -6 to an assigned number.
-    /// [STT-SEL-002, STT-SEL-003]
     resource registry {
-        /// Starts with `defaults()`.
+        /// Starts with the IG defaults: 1, 3, 4, 5, -6, -7. [STT-SEL-001]
         constructor();
         lookup: func(key: s32) -> option<subclaim>;
         register: func(s: subclaim);
+        all: func() -> list<subclaim>;
         /// Which subclaim number carries the given payload kind.
         subclaim-for: func(kind: payload-kind) -> option<s32>;
         set-subclaim-for: func(kind: payload-kind, key: s32);
-        all: func() -> list<subclaim>;
     }
-
-    /// Payload kinds that have a typed codec. Others travel as raw CBOR.
-    enum payload-kind { dvc-min, vhl }
-
-    /// Inputs to the QR Code Generation 2.4 decision tree. [STT-SEL-005]
-    record use-case-facts {
-        ihr-entry-requirement: bool,
-        must-verify-offline: bool,
-        content-must-change-after-issue: bool,
-        holder-controls-disclosure: bool,
-        /// Estimated HC1 length, if known.
-        estimated-hc1-chars: option<u32>,
-    }
-
-    enum advice { icvp, dvc, vhl }
-
-    record payload-advice {
-        advice: advice,
-        reasons: list<string>,
-    }
-
-    advise: func(facts: use-case-facts) -> payload-advice;
 }
 
-/// Step 2: the DVCMin payload (trust-phw DVCMin / DVCMinPreQual).
+/// Step 2: the DVCMin payload (trust-phw DVCMin). [STT-PAY-010]
 interface dvc {
     use types.{validation-issue, cbor-bytes, decode-limits};
 
     /// DVCMinVaccineDetails. [STT-PAY-002]
     record dvc-min-vaccine-details {
-        /// Vaccine product identifier. PreQual ID under DVCMinPreQual.
+        /// Vaccine product identifier.
         vp: string,
         /// Date of vaccination (FHIR date).
         dv: string,
@@ -66,21 +40,8 @@ interface dvc {
         bo: string,
     }
 
-    /// Everything in DVCMin except vx. Used to split a visit into one
-    /// certificate per vaccine. [STT-PAY-003]
-    record dvc-subject {
-        n: string,
-        dob: string,
-        s: string,
-        nt: string,
-        id: option<string>,
-        dt: option<string>,
-        gn: option<string>,
-        v: string,
-    }
-
     /// DVCMin. vx is 1..1: one immunization event per certificate.
-    /// [STT-PAY-001, STT-PAY-005]
+    /// [STT-PAY-001, STT-PAY-003, STT-PAY-005]
     record dvc-min {
         n: string,
         dob: string,
@@ -97,25 +58,16 @@ interface dvc {
         extensions: list<tuple<string, cbor-bytes>>,
     }
 
-    enum dvc-profile {
-        /// Unconstrained vp binding.
-        dvc-min,
-        /// vp MUST be a WHO PreQual product ID (required binding).
-        dvc-min-prequal,
-    }
-
-    /// Cardinality, invariant (must-have-issuer-or-clinician-name), nt
-    /// and vp checks. vp goes through the host terminology import.
-    /// [STT-PAY-004, STT-PAY-006, STT-PAY-007]
-    validate: func(p: dvc-min, profile: dvc-profile) -> list<validation-issue>;
-
-    per-event: func(subject: dvc-subject, events: list<dvc-min-vaccine-details>) -> list<dvc-min>;
+    /// Cardinality, invariant (must-have-issuer-or-clinician-name) and nt
+    /// checks. [STT-PAY-004, STT-PAY-007]
+    validate: func(p: dvc-min) -> list<validation-issue>;
 
     to-cbor: func(p: dvc-min) -> cbor-bytes;
     from-cbor: func(cbor: cbor-bytes, limits: decode-limits) -> result<dvc-min, list<validation-issue>>;
 }
 
-/// The payload carried by an hcert entry, shared by issuer and verifier.
+/// What an hcert entry carries: a typed DVCMin, or any other subclaim as
+/// encoded CBOR. [STT-GEN-003, STT-PAY-009]
 interface payloads {
     use types.{cbor-bytes};
     use dvc.{dvc-min};
@@ -125,12 +77,8 @@ interface payloads {
         cbor: cbor-bytes,
     }
 
-    /// [STT-PAY-009]
     variant payload {
         dvc-min(dvc-min),
-        /// Subclaim 5: URI of a Verifiable Health Link.
-        vhl(string),
-        /// Any subclaim without a typed codec (1, 3, 4, -7, custom).
         raw(raw-payload),
     }
 }

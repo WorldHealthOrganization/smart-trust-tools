@@ -49,7 +49,10 @@ interface Codec {
      */
     fun detectContext(text: String): WitResult<Pair<String, String>, CodecError>
 
-    /** Steps 6 to 8: COSE bytes to "HC1:..." string. */
+    /**
+     * Steps 6 to 8: COSE bytes to "HC1:..." string. The result uses only
+     * QR Alphanumeric characters. [STT-QR-001]
+     */
     fun toHc1(cose: ByteArray): String
 
     /** Steps 8 to 6 reversed: "HC1:..." string to COSE bytes. */
@@ -60,10 +63,4 @@ interface Codec {
      * [STT-CBR-001]
      */
     fun cborDeterministic(cbor: CborBytes, limits: DecodeLimits): WitResult<CborBytes, CodecError>
-
-    /**
-     * RFC 8949 diagnostic notation, for display and debugging only.
-     * [STT-GEN-008]
-     */
-    fun cborDiagnostic(cbor: CborBytes, limits: DecodeLimits): WitResult<String, CodecError>
 }

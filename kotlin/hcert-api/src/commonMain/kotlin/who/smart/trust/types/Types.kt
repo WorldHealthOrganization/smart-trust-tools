@@ -22,27 +22,20 @@ typealias NumericDate = Long
 /** Encoded CBOR data item. */
 typealias CborBytes = ByteArray
 
-/** Status of an hcert subclaim number. [STT-SEL-001, STT-SEL-003] */
-enum class SubclaimStatus {
-    /** Allocated by WHO (>= 0). */
-    ASSIGNED,
-    /** Listed by WHO as proposed (>= 0), not yet assigned. */
-    PROPOSED,
-    /** Negative: development range, free to use, not stable. */
-    DEVELOPMENT,
-}
-
+/**
+ * An hcert subclaim number and what it carries. Negative numbers are
+ * the development range. [STT-SEL-001, STT-SEL-003]
+ */
 data class Subclaim(
     val key: Int,
-    val status: SubclaimStatus,
-    /** Canonical URL of the logical model, if any. */
-    val logicalModel: String? = null,
     val title: String,
+    /** Canonical URL of the FHIR logical model, when there is one. */
+    val logicalModel: String? = null,
 )
 
 /**
- * Bounds applied while decoding untrusted input.
- * [STT-CBR-003, STT-ZIP-002]
+ * Bounds applied while decoding untrusted input. [STT-CBR-003,
+ * STT-ZIP-002]
  */
 data class DecodeLimits(
     val maxInputChars: Int,
@@ -52,30 +45,21 @@ data class DecodeLimits(
     val maxStringBytes: Int,
 )
 
-/** QR error-correction level. Default q. [STT-QR-002] */
-enum class ErrorCorrection {
-    L,
-    M,
-    Q,
-    H,
-}
-
 enum class Severity {
     BLOCKING,
     WARNING,
     INFORMATION,
 }
 
+/** One payload validation finding. `path` names the element. */
 data class ValidationIssue(
-    /** Element path, e.g. "vx.is". */
     val path: String,
-    /** Stable machine code, e.g. "must-have-issuer-or-clinician-name". */
     val code: String,
     val message: String,
     val severity: Severity,
 )
 
-/** Pipeline stages, used to say where verification failed. */
+/** Verification steps, in the order they run. [STT-VER-001] */
 enum class Step {
     PREFIX,
     BASE45,
@@ -91,7 +75,7 @@ enum class Step {
     PAYLOAD,
 }
 
-/** Closed failure taxonomy, identical in Kotlin and Rust. [STT-VER-008] */
+/** Why verification stopped. [STT-VER-008] */
 enum class FailureReason {
     BAD_PREFIX,
     UNSUPPORTED_CONTEXT_VERSION,
@@ -111,19 +95,9 @@ enum class FailureReason {
     PAYLOAD_INVALID,
 }
 
+/** A non-fatal observation made while verifying. */
 data class Diagnostic(
     val step: Step,
     val severity: Severity,
     val message: String,
-)
-
-/** Sizes at each stage of issuance. [STT-QR-006] */
-data class EncodingReport(
-    val cborBytes: Int,
-    val coseBytes: Int,
-    val deflatedBytes: Int,
-    val hc1Chars: Int,
-    val qrVersion: Int? = null,
-    val errorCorrection: ErrorCorrection? = null,
-    val warnings: List<String>,
 )

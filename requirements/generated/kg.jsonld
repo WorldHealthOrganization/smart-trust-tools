@@ -2531,7 +2531,7 @@
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-model",
       "@type": "stt:ApiModule",
       "dcterms:title": "model",
-      "dcterms:description": "Subclaim registry, CWT and hcert claim types, payload codec SPI",
+      "dcterms:description": "Subclaim registry, CWT and hcert claim types, payloads",
       "stt:kotlinName": "who.smart.trust.model",
       "stt:rustName": "smart-trust-model"
     },
@@ -2539,7 +2539,7 @@
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-payload-dvc",
       "@type": "stt:ApiModule",
       "dcterms:title": "payload-dvc",
-      "dcterms:description": "DVCMin / DVCMinPreQual typed payloads",
+      "dcterms:description": "DVCMin typed payload",
       "stt:kotlinName": "who.smart.trust.payload.dvc",
       "stt:rustName": "smart-trust-payload-dvc"
     },
@@ -2555,23 +2555,15 @@
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-cose",
       "@type": "stt:ApiModule",
       "dcterms:title": "cose",
-      "dcterms:description": "COSE_Sign1, algorithms, kid, Signer SPI",
+      "dcterms:description": "COSE_Sign1, algorithms, kid, signature formats",
       "stt:kotlinName": "who.smart.trust.cose",
       "stt:rustName": "smart-trust-cose"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-qr",
-      "@type": "stt:ApiModule",
-      "dcterms:title": "qr",
-      "dcterms:description": "QR symbol generation (module matrix), optional raster/SVG rendering",
-      "stt:kotlinName": "who.smart.trust.qr",
-      "stt:rustName": "smart-trust-qr"
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-trust",
       "@type": "stt:ApiModule",
       "dcterms:title": "trust",
-      "dcterms:description": "Trust list SPI, GDHCN DID trustlist v2 client, static lists",
+      "dcterms:description": "Trust store: PEM, DER and GDHCN DID trustlist v2 documents",
       "stt:kotlinName": "who.smart.trust.trustlist",
       "stt:rustName": "smart-trust-trustlist"
     },
@@ -2579,7 +2571,7 @@
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline",
       "@type": "stt:ApiModule",
       "dcterms:title": "pipeline",
-      "dcterms:description": "End-to-end HcertIssuer and HcertVerifier",
+      "dcterms:description": "Two-phase HcertIssuer and HcertVerifier",
       "stt:kotlinName": "who.smart.trust.hcert",
       "stt:rustName": "smart-trust-hcert"
     },
@@ -2596,12 +2588,12 @@
       "@type": "stt:ApiElement",
       "dcterms:title": "Subclaim",
       "stt:kind": "type",
-      "dcterms:description": "An hcert subclaim number with its status (ASSIGNED, PROPOSED, DEVELOPMENT) and logical-model canonical URL.",
+      "dcterms:description": "An hcert subclaim number with its title and logical-model canonical URL. Negative numbers are the development range.",
       "stt:inModule": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-model"
       },
-      "stt:kotlinSignature": "data class Subclaim(val key: Int, val status: SubclaimStatus, val logicalModel: String?)",
-      "stt:rustSignature": "pub struct Subclaim { pub key: i64, pub status: SubclaimStatus, pub logical_model: Option<String> }",
+      "stt:kotlinSignature": "data class Subclaim(val key: Int, val title: String, val logicalModel: String?)",
+      "stt:rustSignature": "pub struct Subclaim { pub key: i32, pub title: String, pub logical_model: Option<String> }",
       "stt:witItem": "types.subclaim"
     },
     {
@@ -2609,12 +2601,12 @@
       "@type": "stt:ApiElement",
       "dcterms:title": "SubclaimRegistry",
       "stt:kind": "interface",
-      "dcterms:description": "Lookup and registration of subclaims and their PayloadCodecs. Ships with the IG defaults.",
+      "dcterms:description": "Lookup and registration of subclaims, and which subclaim a payload kind is issued under. Starts with the IG defaults.",
       "stt:inModule": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-model"
       },
-      "stt:kotlinSignature": "interface SubclaimRegistry { fun lookup(key: Int): Subclaim?; fun codec(key: Int): PayloadCodec<*>?; fun register(subclaim: Subclaim, codec: PayloadCodec<*>) }",
-      "stt:rustSignature": "pub trait SubclaimRegistry { fn lookup(&self, key: i64) -> Option<&Subclaim>; fn codec(&self, key: i64) -> Option<&dyn ErasedPayloadCodec>; }",
+      "stt:kotlinSignature": "class SubclaimRegistry { fun lookup(key: Int): Subclaim?; fun register(s: Subclaim); fun all(): List<Subclaim>; fun subclaimFor(kind: PayloadKind): Int?; fun setSubclaimFor(kind: PayloadKind, key: Int) }",
+      "stt:rustSignature": "pub struct SubclaimRegistry { .. } impl SubclaimRegistry { pub fn lookup(&self, key: i32) -> Option<&Subclaim>; pub fn register(&mut self, s: Subclaim); pub fn subclaim_for(&self, kind: PayloadKind) -> Option<i32> }",
       "stt:witItem": "subclaims.registry"
     },
     {
@@ -2635,26 +2627,13 @@
       "@type": "stt:ApiElement",
       "dcterms:title": "RawPayload",
       "stt:kind": "type",
-      "dcterms:description": "Opaque CBOR payload for subclaims without a typed codec (DCC 1, DDCC 3/4, MTL -7 in v1).",
+      "dcterms:description": "Opaque CBOR payload for subclaims without a typed codec (DCC 1, DDCC 3/4, VHL 5, MTL -7).",
       "stt:inModule": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-model"
       },
       "stt:kotlinSignature": "data class RawPayload(val subclaim: Int, val item: CborItem)",
       "stt:rustSignature": "pub struct RawPayload { pub subclaim: i64, pub item: CborValue }",
       "stt:witItem": "payloads.raw-payload"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "VhlPayload",
-      "stt:kind": "type",
-      "dcterms:description": "Subclaim 5: URI of a Verifiable Health Link.",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-model"
-      },
-      "stt:kotlinSignature": "@JvmInline value class VhlPayload(val uri: String)",
-      "stt:rustSignature": "pub struct VhlPayload(pub String);",
-      "stt:witItem": "payloads.payload"
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-cwt",
@@ -2683,32 +2662,6 @@
       "stt:witItem": "verifier.verified-hcert"
     },
     {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-advisor",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "PayloadTypeAdvisor",
-      "stt:kind": "function",
-      "dcterms:description": "Implements the QR Code Generation 2.4 decision tree, plus a size estimate.",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-model"
-      },
-      "stt:kotlinSignature": "fun advisePayloadType(facts: UseCaseFacts): PayloadAdvice",
-      "stt:rustSignature": "pub fn advise_payload_type(facts: &UseCaseFacts) -> PayloadAdvice",
-      "stt:witItem": "subclaims.advise"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-terminology",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "TerminologyValidator",
-      "stt:kind": "interface",
-      "dcterms:description": "Pluggable value-set membership check (PreQual product IDs, ICD-11 DVC vaccines, ISO 3166).",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-model"
-      },
-      "stt:kotlinSignature": "fun interface TerminologyValidator { fun isMember(valueSet: String, code: String): Membership }",
-      "stt:rustSignature": "pub trait TerminologyValidator { fn is_member(&self, value_set: &str, code: &str) -> Membership; }",
-      "stt:witItem": "terminology.is-member"
-    },
-    {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-dvcmin",
       "@type": "stt:ApiElement",
       "dcterms:title": "DvcMin",
@@ -2733,19 +2686,6 @@
       "stt:kotlinSignature": "data class DvcMinVaccineDetails(val vp: String, val dv: String, val cn: String? = null, val `is`: String? = null, val bo: String)",
       "stt:rustSignature": "pub struct DvcMinVaccineDetails { pub vp: String, pub dv: String, pub cn: Option<String>, pub is: Option<String>, pub bo: String }",
       "stt:witItem": "dvc.dvc-min-vaccine-details"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-dvc-split",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "DvcMin.perEvent",
-      "stt:kind": "function",
-      "dcterms:description": "Splits one visit with N administered vaccines into N DvcMin payloads (vx is 1..1).",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-payload-dvc"
-      },
-      "stt:kotlinSignature": "fun DvcMin.Companion.perEvent(subject: DvcSubject, events: List<DvcMinVaccineDetails>): List<DvcMin>",
-      "stt:rustSignature": "pub fn per_event(subject: &DvcSubject, events: &[DvcMinVaccineDetails]) -> Vec<DvcMin>",
-      "stt:witItem": "dvc.per-event"
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-cbor",
@@ -2839,19 +2779,6 @@
       "stt:witItem": "cose.kid-from-dsc"
     },
     {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-signer",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "Signer",
-      "stt:kind": "interface",
-      "dcterms:description": "Signs Sig_structure bytes. Implementations may wrap an HSM, a KMS, Android Keystore, PKCS#11 or a software key.",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-cose"
-      },
-      "stt:kotlinSignature": "interface Signer { val algorithm: CoseAlgorithm; val dsc: X509Certificate; suspend fun sign(toBeSigned: ByteArray): ByteArray }",
-      "stt:rustSignature": "pub trait Signer { fn algorithm(&self) -> CoseAlgorithm; fn dsc_der(&self) -> &[u8]; fn sign(&self, tbs: &[u8]) -> Result<Vec<u8>, SignError>; }",
-      "stt:witItem": "signer.sign"
-    },
-    {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-sign1",
       "@type": "stt:ApiElement",
       "dcterms:title": "CoseSign1",
@@ -2878,82 +2805,43 @@
       "stt:witItem": "cose.ecdsa-der-to-raw"
     },
     {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-qr",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "QrEncoder",
-      "stt:kind": "function",
-      "dcterms:description": "Encodes an HC1 string as a single Alphanumeric-mode QR segment and returns the module matrix.",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-qr"
-      },
-      "stt:kotlinSignature": "object QrEncoder { fun encode(hc1: String, ec: ErrorCorrection = ErrorCorrection.Q): QrMatrix }",
-      "stt:rustSignature": "pub fn encode(hc1: &str, ec: ErrorCorrection) -> Result<QrMatrix, QrError>",
-      "stt:witItem": "qr.encode"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-qr-render",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "QrRenderer",
-      "stt:kind": "function",
-      "dcterms:description": "Optional: PNG/SVG rendering with integer module scaling, quiet zone, and physical-size helper.",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-qr"
-      },
-      "stt:kotlinSignature": "fun QrMatrix.toSvg(opts: RenderOptions): String; fun QrMatrix.toPng(opts: RenderOptions): ByteArray; fun RenderOptions.Companion.forDiagonal(mm: Double, dpi: Int, matrix: QrMatrix): RenderOptions",
-      "stt:rustSignature": "#[cfg(feature = \"svg\")] pub fn to_svg(m: &QrMatrix, o: &RenderOptions) -> String; #[cfg(feature = \"png\")] pub fn to_png(m: &QrMatrix, o: &RenderOptions) -> Vec<u8>",
-      "stt:witItem": "qr.to-svg"
-    },
-    {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-trust-provider",
       "@type": "stt:ApiElement",
       "dcterms:title": "TrustListProvider",
       "stt:kind": "interface",
-      "dcterms:description": "Returns every trusted DSC that matches a kid, optionally narrowed by issuer, trust domain, participant and key usage.",
+      "dcterms:description": "Holds the trusted DSCs the host loaded and returns every one matching a kid. The host does the fetching; the store does no I/O.",
       "stt:inModule": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-trust"
       },
-      "stt:kotlinSignature": "interface TrustListProvider { suspend fun candidates(query: KeyQuery): List<TrustedDsc>; val lastUpdated: Instant? }",
-      "stt:rustSignature": "pub trait TrustListProvider { fn candidates(&self, q: &KeyQuery) -> Result<Vec<TrustedDsc>, TrustError>; fn last_updated(&self) -> Option<SystemTime>; }",
+      "stt:kotlinSignature": "class TrustStore { fun addPem(pem: String): Int; fun addDer(der: ByteArray): Int; fun addDidDocument(json: String): Int; fun candidates(kid: Kid): List<TrustedDsc> }",
+      "stt:rustSignature": "pub struct TrustStore { .. } impl TrustStore { pub fn add_pem(&mut self, pem: &str) -> Result<u32, TrustError>; pub fn candidates(&self, kid: &Kid) -> Vec<TrustedDsc> }",
       "stt:witItem": "trust.trust-store"
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-did-trustlist",
       "@type": "stt:ApiElement",
-      "dcterms:title": "GdhcnDidTrustList",
-      "stt:kind": "type",
-      "dcterms:description": "Client for GDHCN DID trustlist v2 (embedded and reference variants; DEV, UAT, PROD; domain/participant/usage path levels).",
+      "dcterms:title": "TrustStore.addDidDocument",
+      "stt:kind": "function",
+      "dcterms:description": "Reads the DSCs of a GDHCN DID trustlist v2 document (embedded or reference variant) into the store: verificationMethod publicKeyJwk x5c, kid from the fragment.",
       "stt:inModule": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-trust"
       },
-      "stt:kotlinSignature": "class GdhcnDidTrustList(val environment: GdhcnEnvironment, val variant: Variant, val http: HttpFetcher, val cache: TrustListCache) : TrustListProvider",
-      "stt:rustSignature": "pub struct GdhcnDidTrustList<F: HttpFetcher, C: TrustListCache> { .. } impl TrustListProvider for GdhcnDidTrustList<F, C>",
-      "stt:witItem": "trust.did-trustlist-url"
+      "stt:kotlinSignature": "fun TrustStore.addDidDocument(json: String): Int",
+      "stt:rustSignature": "pub fn add_did_document(&mut self, json: &str) -> Result<u32, TrustError>",
+      "stt:witItem": "trust.trust-store"
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-static-trust",
       "@type": "stt:ApiElement",
       "dcterms:title": "StaticTrustList",
       "stt:kind": "type",
-      "dcterms:description": "In-memory list of DSCs (PEM/DER/JWKS), for tests, pinned national lists and fully offline deployments.",
+      "dcterms:description": "DSCs loaded from PEM or DER, for tests, pinned national lists and fully offline deployments.",
       "stt:inModule": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-trust"
       },
-      "stt:kotlinSignature": "class StaticTrustList(dscs: List<X509Certificate>) : TrustListProvider { companion object { fun fromPem(pem: String): StaticTrustList; fun fromJwks(json: String): StaticTrustList } }",
-      "stt:rustSignature": "pub struct StaticTrustList { .. } impl StaticTrustList { pub fn from_pem(pem: &str) -> Result<Self, TrustError>; pub fn from_jwks(json: &str) -> Result<Self, TrustError> }",
+      "stt:kotlinSignature": "TrustStore().apply { addPem(pem) }",
+      "stt:rustSignature": "let mut store = TrustStore::new(); store.add_pem(pem)?;",
       "stt:witItem": "trust.trust-store"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-clock",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "Clock",
-      "stt:kind": "interface",
-      "dcterms:description": "Injected time source with configurable skew tolerance.",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline"
-      },
-      "stt:kotlinSignature": "kotlinx.datetime.Clock (injected), plus VerifierPolicy.clockSkew: Duration",
-      "stt:rustSignature": "pub trait Clock { fn now(&self) -> SystemTime; }",
-      "stt:witItem": "verifier.verify"
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-pending-signature",
@@ -2973,26 +2861,13 @@
       "@type": "stt:ApiElement",
       "dcterms:title": "HcertIssuer",
       "stt:kind": "function",
-      "dcterms:description": "Runs steps 3 to 9 for a payload and returns the HC1 string, optional QR matrix and an EncodingReport.",
+      "dcterms:description": "Two-phase issuance, steps 3 to 8: prepare validates and builds the CWT, CBOR and protected header and returns the bytes to sign; finish attaches the signature and returns the HC1 string and the COSE bytes. No private key in process.",
       "stt:inModule": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline"
       },
-      "stt:kotlinSignature": "class HcertIssuer(val signer: Signer, val registry: SubclaimRegistry, val policy: IssuerPolicy) { suspend fun <T> issue(payload: T, codec: PayloadCodec<T>, validity: Validity): IssuedHcert }",
-      "stt:rustSignature": "impl<S: Signer> HcertIssuer<S> { pub fn issue<C: PayloadCodec>(&self, p: &C::Payload, codec: &C, validity: Validity) -> Result<IssuedHcert, IssueError> }",
+      "stt:kotlinSignature": "object HcertIssuer { fun prepare(req: IssueRequest, registry: SubclaimRegistry): PendingSignature; fun finish(pending: PendingSignature, signature: ByteArray): IssuedHcert }",
+      "stt:rustSignature": "pub fn prepare(req: &IssueRequest, registry: &SubclaimRegistry) -> Result<PendingSignature, IssueError>; pub fn finish(pending: PendingSignature, signature: &[u8]) -> Result<IssuedHcert, IssueError>",
       "stt:witItem": "issuer.prepare"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-report",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "EncodingReport",
-      "stt:kind": "type",
-      "dcterms:description": "Sizes at every stage (CBOR, COSE, deflated, HC1 chars) plus QR version and error-correction level.",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline"
-      },
-      "stt:kotlinSignature": "data class EncodingReport(val cborBytes: Int, val coseBytes: Int, val deflatedBytes: Int, val hc1Chars: Int, val qrVersion: Int?, val ec: ErrorCorrection?, val warnings: List<String>)",
-      "stt:rustSignature": "pub struct EncodingReport { pub cbor_bytes: usize, pub cose_bytes: usize, pub deflated_bytes: usize, pub hc1_chars: usize, pub qr_version: Option<u8>, pub warnings: Vec<String> }",
-      "stt:witItem": "types.encoding-report"
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-verifier",
@@ -3003,8 +2878,8 @@
       "stt:inModule": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline"
       },
-      "stt:kotlinSignature": "class HcertVerifier(val trust: TrustListProvider, val registry: SubclaimRegistry, val clock: Clock, val policy: VerifierPolicy) { suspend fun verify(hc1: String): VerificationResult }",
-      "stt:rustSignature": "impl HcertVerifier { pub fn verify(&self, hc1: &str) -> VerificationResult }",
+      "stt:kotlinSignature": "object HcertVerifier { fun verify(hc1: String, trust: TrustStore, registry: SubclaimRegistry, now: Long, options: VerifierOptions): VerificationResult }",
+      "stt:rustSignature": "pub fn verify(hc1: &str, trust: &TrustStore, registry: &SubclaimRegistry, now: i64, options: &VerifierOptions) -> VerificationResult",
       "stt:witItem": "verifier.verify"
     },
     {
@@ -3019,32 +2894,6 @@
       "stt:kotlinSignature": "sealed interface VerificationResult { data class Verified(...) : VerificationResult; data class Failed(val step: Step, val reason: FailureReason, ...) : VerificationResult }",
       "stt:rustSignature": "pub enum VerificationResult { Verified(VerifiedHcert), Failed(VerificationFailure) }",
       "stt:witItem": "verifier.verification-result"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-cert-type",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "CertificateTypeResolver",
-      "stt:kind": "interface",
-      "dcterms:description": "Maps a decoded hcert entry to the EKU certificate type (test, vaccination, recovery, or unknown).",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline"
-      },
-      "stt:kotlinSignature": "fun interface CertificateTypeResolver { fun resolve(subclaim: Int, payload: CborItem): CertificateType? }",
-      "stt:rustSignature": "pub trait CertificateTypeResolver { fn resolve(&self, subclaim: i64, payload: &CborValue) -> Option<CertificateType>; }",
-      "rdfs:comment": "Native-only SPI; the WIT verifier uses the built-in default mapping (OI-03)."
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-business-rules",
-      "@type": "stt:ApiElement",
-      "dcterms:title": "BusinessRuleHook",
-      "stt:kind": "interface",
-      "dcterms:description": "Called with a verified payload. Its results are attached to the VerificationResult.",
-      "stt:inModule": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline"
-      },
-      "stt:kotlinSignature": "fun interface BusinessRuleHook { suspend fun evaluate(v: VerificationResult.Verified): List<RuleOutcome> }",
-      "stt:rustSignature": "pub trait BusinessRuleHook { fn evaluate(&self, v: &VerifiedHcert) -> Vec<RuleOutcome>; }",
-      "rdfs:comment": "Host-side; run on verifier.verification-result after verify returns."
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-testkit",
@@ -3238,22 +3087,6 @@
       "stt:concerns": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/doc-qr"
       }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/OI-11",
-      "@type": "stt:OpenIssue",
-      "dcterms:identifier": "OI-11",
-      "dcterms:title": "No access route is specified for the WHO PreQual vaccine database",
-      "dcterms:description": "DVCMinPreQual binds vp to PreQual product identifiers (required binding) but there is no FHIR ValueSet, URL or API to resolve them. The library can only offer a pluggable validator.",
-      "stt:upstreamFix": true,
-      "stt:concerns": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-3"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin-prequal"
-        }
-      ]
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/OI-12",
@@ -3485,7 +3318,7 @@
       "@type": "stt:Requirement",
       "dcterms:identifier": "STT-GEN-002",
       "dcterms:title": "Every step callable on its own",
-      "stt:statement": "Each pipeline step SHALL be exposed as a separate public operation (payload codec, CWT build, CBOR, COSE sign/parse, ZLIB, Base45, HC1 prefix, QR) as well as through the end-to-end issuer and verifier, so that integrators can substitute or inspect any stage.",
+      "stt:statement": "Each pipeline step SHALL be exposed as a separate public operation (payload codec, CBOR, COSE sign/parse, ZLIB, Base45, HC1 prefix) as well as through the end-to-end issuer and verifier, so that integrators can substitute or inspect any stage.",
       "stt:conformance": "SHALL",
       "stt:category": "architecture",
       "stt:derivationType": "derived",
@@ -3527,9 +3360,6 @@
         },
         {
           "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-hc1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-qr"
         }
       ]
     },
@@ -4011,7 +3841,7 @@
           "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-trust-provider"
         },
         {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-clock"
+          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-verifier"
         }
       ],
       "stt:affectedBy": {
@@ -4459,69 +4289,6 @@
       "stt:quote": "Several different types of health certificate MAY exist under the same claim"
     },
     {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-005",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-SEL-005",
-      "dcterms:title": "Payload type advisor",
-      "stt:statement": "The library MAY provide an advisor that implements the decision summary: ICVP for IHR entry requirements; DVC (-6) when the content must verify offline and fits in a QR code; VHL (5) otherwise. It SHOULD report an estimated HC1 length so that \"fits in a QR\" is decided on numbers.",
-      "stt:conformance": "MAY",
-      "stt:category": "functional",
-      "stt:derivationType": "derived",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.2"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.3"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.4"
-        }
-      ],
-      "stt:hasDerivation": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-005/derivation/1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-005/derivation/2"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-005/derivation/3"
-        }
-      ],
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-1"
-      },
-      "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-advisor"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-005/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.2"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-005/derivation/2",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.3"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-005/derivation/3",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.4"
-      }
-    },
-    {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-006",
       "@type": "stt:Requirement",
       "dcterms:identifier": "STT-SEL-006",
@@ -4734,9 +4501,6 @@
       },
       "stt:refines": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-001"
-      },
-      "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-dvc-split"
       }
     },
     {
@@ -4840,76 +4604,6 @@
       "@type": "stt:Derivation",
       "stt:source": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-12.1"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-006",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-PAY-006",
-      "dcterms:title": "Pluggable terminology for vp (PreQual, ICD-11)",
-      "stt:statement": "vp validation SHALL go through a pluggable TerminologyValidator. A DVCMinPreQual validation profile SHALL require vp to be a WHO PreQual product identifier (required binding). The unconstrained DVCMin profile SHALL accept any code. The library SHOULD bundle the DVC - Vaccines ICD-11 codes as a default validator. It SHALL NOT bundle the PreQual database.",
-      "stt:conformance": "SHALL",
-      "stt:category": "functional",
-      "stt:derivationType": "derived",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-3"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin-prequal"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvc-vaccines-vs"
-        }
-      ],
-      "stt:hasDerivation": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-006/derivation/1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-006/derivation/2"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-006/derivation/3"
-        }
-      ],
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-2"
-      },
-      "stt:refines": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-002"
-      },
-      "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-terminology"
-      },
-      "stt:affectedBy": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/OI-11"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-006/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-3"
-      },
-      "stt:quote": "DVCMinPreQual binds vp to the WHO PreQual product identifiers (required binding)"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-006/derivation/2",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvcmin-prequal"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-PAY-006/derivation/3",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvc-vaccines-vs"
       }
     },
     {
@@ -5043,14 +4737,9 @@
       "stt:implementsStep": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-2"
       },
-      "stt:constrainsApi": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-raw-payload"
-        }
-      ],
+      "stt:constrainsApi": {
+        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-raw-payload"
+      },
       "stt:affectedBy": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/OI-06"
       }
@@ -5420,14 +5109,9 @@
           "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-5"
         }
       ],
-      "stt:constrainsApi": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-issuer"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-signer"
-        }
-      ],
+      "stt:constrainsApi": {
+        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-issuer"
+      },
       "stt:verifiedBy": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-004"
       }
@@ -6134,8 +5818,8 @@
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-COS-006",
       "@type": "stt:Requirement",
       "dcterms:identifier": "STT-COS-006",
-      "dcterms:title": "Signer abstraction, no private keys required in-process",
-      "stt:statement": "Signing SHALL go through a Signer interface (algorithm, DSC, sign(bytes)). The issuer SHALL NOT need access to private key material, so HSM, KMS, PKCS#11 and Android Keystore signers can be used. A software signer SHALL be provided for tests only, in the testkit module.",
+      "dcterms:title": "No private keys required in-process",
+      "stt:statement": "The issuer SHALL NOT need access to private key material: issuance is prepare, then the caller signs the returned bytes by any means (HSM, KMS, PKCS#11, Android Keystore, WebCrypto), then finish (STT-ISS-004). A software ES256 and PS256 signer SHALL be provided for tests only, in the testkit module.",
       "stt:conformance": "SHALL",
       "stt:category": "security",
       "stt:derivationType": "derived",
@@ -6163,7 +5847,7 @@
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-5"
       },
       "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-signer"
+        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-pending-signature"
       }
     },
     {
@@ -6181,57 +5865,6 @@
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-13"
       },
       "stt:quote": "a real issuer holds its private keys in an HSM"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-COS-007",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-COS-007",
-      "dcterms:title": "Optional deterministic ECDSA",
-      "stt:statement": "The software ES256 signer in the testkit SHOULD support RFC 6979 deterministic nonces so that issued test artefacts can be reproduced byte for byte. Verifiers SHALL accept any valid ECDSA signature.",
-      "stt:conformance": "SHOULD",
-      "stt:category": "test",
-      "stt:derivationType": "derived",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-13"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc6979"
-        }
-      ],
-      "stt:hasDerivation": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-COS-007/derivation/1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-COS-007/derivation/2"
-        }
-      ],
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-5"
-      },
-      "stt:affectedBy": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/OI-01"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-COS-007/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-13"
-      },
-      "stt:quote": "regenerates the example above byte for byte"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-COS-007/derivation/2",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc6979"
-      }
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-KID-001",
@@ -6703,11 +6336,11 @@
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-001",
       "@type": "stt:Requirement",
       "dcterms:identifier": "STT-QR-001",
-      "dcterms:title": "ISO/IEC 18004 QR in Alphanumeric mode",
-      "stt:statement": "The QR encoder SHALL produce an ISO/IEC 18004:2015 symbol carrying the whole HC1 string as Alphanumeric-mode (0010) data. It SHALL NOT fall back to byte mode, and SHALL fail if the input has characters outside the alphanumeric set.",
+      "dcterms:title": "QR-ready HC1 output; no QR encoding in the library",
+      "stt:statement": "The HC1 string SHALL consist only of characters in the QR Alphanumeric set (the Base45 alphabet and the \"HC1:\" prefix), so that integrators can encode it as a single Alphanumeric-mode segment with error correction Q using any QR encoder. The libraries SHALL NOT encode or render QR symbols.",
       "stt:conformance": "SHALL",
       "stt:category": "functional",
-      "stt:derivationType": "direct",
+      "stt:derivationType": "derived",
       "stt:target": [
         "kotlin",
         "rust"
@@ -6738,7 +6371,7 @@
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-9"
       },
       "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-qr"
+        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-hc1"
       }
     },
     {
@@ -6761,149 +6394,6 @@
       "@type": "stt:Derivation",
       "stt:source": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/std-iso18004"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-002",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-QR-002",
-      "dcterms:title": "Error correction Q by default",
-      "stt:statement": "Error-correction level SHALL default to Q and SHALL be configurable. Symbol version SHALL be the smallest that fits unless the caller pins one.",
-      "stt:conformance": "SHALL",
-      "stt:category": "functional",
-      "stt:derivationType": "direct",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-10"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-4.2.2"
-        }
-      ],
-      "stt:hasDerivation": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-002/derivation/1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-002/derivation/2"
-        }
-      ],
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-9"
-      },
-      "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-qr"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-002/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-10"
-      },
-      "stt:quote": "Level Q, approximately 25% — RECOMMENDED"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-002/derivation/2",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-4.2.2"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-003",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-QR-003",
-      "dcterms:title": "Rendering is optional and kept separate",
-      "stt:statement": "The core QR output SHALL be a module matrix with no imaging dependency. PNG and SVG rendering SHALL be optional: separate artifacts in Kotlin, cargo features in Rust.",
-      "stt:conformance": "SHALL",
-      "stt:category": "architecture",
-      "stt:derivationType": "derived",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-10"
-      },
-      "stt:hasDerivation": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-003/derivation/1"
-      },
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-9"
-      },
-      "stt:constrainsApi": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-qr"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-qr-render"
-        }
-      ]
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-003/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-10"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-004",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-QR-004",
-      "dcterms:title": "Print-safe rendering",
-      "stt:statement": "Renderers SHALL scale modules by whole numbers of device pixels so that every module is square, SHALL emit a quiet zone of at least 4 modules, and SHOULD provide a helper that picks the scale for a target diagonal of 35 to 60 mm at a given dpi.",
-      "stt:conformance": "SHALL",
-      "stt:category": "functional",
-      "stt:derivationType": "direct",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-10"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-4.2.2"
-        }
-      ],
-      "stt:hasDerivation": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-004/derivation/1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-004/derivation/2"
-        }
-      ],
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-9"
-      },
-      "stt:refines": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-003"
-      },
-      "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-qr-render"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-004/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-10"
-      },
-      "stt:quote": "make sure each module is rendered as an exact square. Non-proportional scaling turns modules into rectangles"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-004/derivation/2",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-4.2.2"
       }
     },
     {
@@ -6939,71 +6429,6 @@
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-11"
       },
       "stt:quote": "Confirm the HC1: prefix and strip it."
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-006",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-QR-006",
-      "dcterms:title": "Encoding report",
-      "stt:statement": "The issuer SHALL return an EncodingReport with the size at every stage (CBOR, COSE, deflated, HC1 characters) and the QR version and error-correction level. It SHALL add a warning when the HC1 length is over a configurable threshold, pointing to VHL as the alternative.",
-      "stt:conformance": "SHALL",
-      "stt:category": "functional",
-      "stt:derivationType": "derived",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-12.5"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.2"
-        }
-      ],
-      "stt:hasDerivation": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-006/derivation/1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-006/derivation/2"
-        }
-      ],
-      "stt:implementsStep": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-4"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-5"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-6"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-7"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-9"
-        }
-      ],
-      "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-report"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-006/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-12.5"
-      },
-      "stt:quote": "a payload that grows much beyond this belongs behind a VHL instead"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-QR-006/derivation/2",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.2"
-      }
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-001",
@@ -7183,7 +6608,7 @@
       "@type": "stt:Requirement",
       "dcterms:identifier": "STT-VER-004",
       "dcterms:title": "EKU check against certificate type",
-      "stt:statement": "If the matching DSC has an Extended Key Usage extension with any of 1.3.6.1.4.1.1847.2021.1.1 (test), .1.2 (vaccinations) or .1.3 (recovery), the verifier SHALL check it against the certificate type of the payload, using a pluggable CertificateTypeResolver. A DSC with no such extension SHALL be accepted for any type. The default resolver SHALL map DVC (-6) and DDCC VS (3) to vaccinations and DDCC TR (4) to test.",
+      "stt:statement": "If the matching DSC has an Extended Key Usage extension with any of 1.3.6.1.4.1.1847.2021.1.1 (test), .1.2 (vaccinations) or .1.3 (recovery), the verifier SHALL check it against the certificate type of the payload: DVC (-6) and DDCC VS (3) are vaccinations, DDCC TR (4) is test. A DSC with no such extension SHALL be accepted for any type.",
       "stt:conformance": "SHALL",
       "stt:category": "functional",
       "stt:derivationType": "derived",
@@ -7211,7 +6636,7 @@
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-verify"
       },
       "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-cert-type"
+        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-verifier"
       },
       "stt:verifiedBy": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-004"
@@ -7274,7 +6699,7 @@
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-verify"
       },
       "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-clock"
+        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-verifier"
       },
       "stt:verifiedBy": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-004"
@@ -7371,7 +6796,7 @@
       ],
       "stt:constrainsApi": [
         {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-business-rules"
+          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-verifier"
         },
         {
           "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-subclaim-registry"
@@ -7504,50 +6929,11 @@
       }
     },
     {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-010",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-VER-010",
-      "dcterms:title": "Narrow lookup by iss",
-      "stt:statement": "When iss is present, the verifier MAY use it to narrow trust-list lookup to that issuer's DSCs. A mismatch between iss and the DSC country SHALL be reported as a diagnostic.",
-      "stt:conformance": "MAY",
-      "stt:category": "functional",
-      "stt:derivationType": "direct",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-3.2.4"
-      },
-      "stt:hasDerivation": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-010/derivation/1"
-      },
-      "stt:implementsStep": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-verify"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-trust"
-        }
-      ],
-      "stt:affectedBy": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/OI-13"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-010/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-3.2.4"
-      },
-      "stt:quote": "This claim can be used by a Verifier to identify which set of DSCs to use for validation."
-    },
-    {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-001",
       "@type": "stt:Requirement",
       "dcterms:identifier": "STT-TRU-001",
-      "dcterms:title": "TrustListProvider abstraction",
-      "stt:statement": "Trust material SHALL be reached through a TrustListProvider that returns every trusted DSC matching a query of kid plus optional issuer, trust domain, participant and key usage.",
+      "dcterms:title": "Trust store",
+      "stt:statement": "Trust material SHALL be held in a trust store that the host fills with DSCs it has obtained, and that returns every trusted DSC matching a kid. The store SHALL do no network or file I/O (STT-GEN-012).",
       "stt:conformance": "SHALL",
       "stt:category": "api",
       "stt:derivationType": "derived",
@@ -7605,8 +6991,8 @@
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-002",
       "@type": "stt:Requirement",
       "dcterms:identifier": "STT-TRU-002",
-      "dcterms:title": "GDHCN DID trustlist v2 client",
-      "stt:statement": "The library SHALL provide a TrustListProvider for the GDHCN DID trustlist v2. It SHALL support the embedded and reference variants, the DEV, UAT and PROD environments, and the hierarchical root/$domain/$participant/$usage paths with \"-\" as a wildcard. It SHALL read DSCs from verificationMethod publicKeyJwk (x5c), with the kid as the fragment.",
+      "dcterms:title": "GDHCN DID trustlist v2 documents",
+      "stt:statement": "The trust store SHALL load GDHCN DID trustlist v2 documents, embedded and reference variants, reading DSCs from verificationMethod publicKeyJwk (x5c) with the kid as the fragment. Fetching the documents, caching them and checking their proofs are the host's.",
       "stt:conformance": "SHALL",
       "stt:category": "functional",
       "stt:derivationType": "direct",
@@ -7702,61 +7088,11 @@
       }
     },
     {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-003",
+      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-005",
       "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-TRU-003",
-      "dcterms:title": "Check trust-list integrity",
-      "stt:statement": "The DID trustlist client SHOULD verify the JWS proof on fetched DID documents against a configured GDHCN anchor, and SHALL use HTTPS with platform certificate validation.",
-      "stt:conformance": "SHOULD",
-      "stt:category": "security",
-      "stt:derivationType": "derived",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/did-examples"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-A"
-        }
-      ],
-      "stt:hasDerivation": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-003/derivation/1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-003/derivation/2"
-        }
-      ],
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-trust"
-      },
-      "stt:refines": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-002"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-003/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/did-examples"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-003/derivation/2",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-A"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-004",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-TRU-004",
-      "dcterms:title": "Cache and refresh",
-      "stt:statement": "Trust-list providers that fetch remotely SHALL cache the last good list persistently, SHALL refresh it on a configurable schedule, and SHALL expose when it was last updated so that callers can apply a staleness policy. A failed refresh SHALL keep the last good list.",
+      "dcterms:identifier": "STT-TRU-005",
+      "dcterms:title": "Static trust lists",
+      "stt:statement": "The trust store SHALL load DSCs from PEM and DER, for tests, pinned bilateral or national lists, and fully offline deployments.",
       "stt:conformance": "SHALL",
       "stt:category": "functional",
       "stt:derivationType": "direct",
@@ -7768,60 +7104,8 @@
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-A"
       },
       "stt:hasDerivation": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-004/derivation/1"
+        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-005/derivation/1"
       },
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-trust"
-      },
-      "stt:refines": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-001"
-      },
-      "stt:constrainsApi": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-trust-provider"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-did-trustlist"
-        }
-      ]
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-004/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-A"
-      },
-      "stt:quote": "Verifiers MUST fetch and update this list regularly."
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-005",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-TRU-005",
-      "dcterms:title": "Static and national trust lists",
-      "stt:statement": "The library SHALL provide a static TrustListProvider loaded from PEM, DER or JWKS, for tests, pinned bilateral or national lists, and fully offline deployments.",
-      "stt:conformance": "SHALL",
-      "stt:category": "functional",
-      "stt:derivationType": "direct",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-A"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7517"
-        }
-      ],
-      "stt:hasDerivation": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-005/derivation/1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-005/derivation/2"
-        }
-      ],
       "stt:implementsStep": {
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-trust"
       },
@@ -7839,159 +7123,6 @@
         "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-A"
       },
       "stt:quote": "the file format of this trusted list may vary, e.g., it can be a signed JWKS"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-005/derivation/2",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7517"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-006",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-TRU-006",
-      "dcterms:title": "Optional DSC-to-SCA chain check",
-      "stt:statement": "When SCA certificates are available, the library SHOULD check that each DSC is signed by a listed SCA, that the DSC AKI matches the SCA SKI, and that the SCA C attribute matches the issuing country.",
-      "stt:conformance": "SHOULD",
-      "stt:category": "security",
-      "stt:derivationType": "direct",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-5"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc5280"
-        }
-      ],
-      "stt:hasDerivation": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-006/derivation/1"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-006/derivation/2"
-        }
-      ],
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-trust"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-006/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/hcert-5"
-      },
-      "stt:quote": "MUST be signed with the private key corresponding to a SCA certificate published on the aforementioned list"
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-006/derivation/2",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc5280"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-001",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-ISS-001",
-      "dcterms:title": "One-call issuance",
-      "stt:statement": "HcertIssuer SHALL take a payload, its codec, a validity and a Signer, and return the HC1 string. On request it SHALL also return the raw COSE bytes, the QR matrix and the EncodingReport.",
-      "stt:conformance": "SHALL",
-      "stt:category": "api",
-      "stt:derivationType": "derived",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-1"
-      },
-      "stt:hasDerivation": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-001/derivation/1"
-      },
-      "stt:implementsStep": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-3"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-4"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-5"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-6"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-7"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-8"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-9"
-        }
-      ],
-      "stt:satisfies": [
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/IssuerVDHC-generate"
-        },
-        {
-          "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/IssuerVDHC-sign"
-        }
-      ],
-      "stt:refines": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-001"
-      },
-      "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-issuer"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-001/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-1"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-002",
-      "@type": "stt:Requirement",
-      "dcterms:identifier": "STT-ISS-002",
-      "dcterms:title": "Optional self-verification after issuance",
-      "stt:statement": "The issuer SHALL offer a policy flag that decodes and verifies every certificate it has just issued against the Signer's DSC before returning it. The flag SHOULD default to on in the testkit.",
-      "stt:conformance": "SHALL",
-      "stt:category": "functional",
-      "stt:derivationType": "derived",
-      "stt:target": [
-        "kotlin",
-        "rust"
-      ],
-      "prov:wasDerivedFrom": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-13"
-      },
-      "stt:hasDerivation": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-002/derivation/1"
-      },
-      "stt:implementsStep": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/step-verify"
-      },
-      "stt:constrainsApi": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/api-issuer"
-      }
-    },
-    {
-      "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-002/derivation/1",
-      "@type": "stt:Derivation",
-      "stt:source": {
-        "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/qr-13"
-      },
-      "stt:quote": "then decodes its own output and verifies the signature, so a failed run is a failed round trip rather than a silently broken certificate"
     },
     {
       "@id": "https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-003",
@@ -8047,7 +7178,7 @@
       "@type": "stt:Requirement",
       "dcterms:identifier": "STT-ISS-004",
       "dcterms:title": "Two-phase signing",
-      "stt:statement": "The issuer SHALL offer a two-phase flow: prepare returns the exact bytes to sign (the Sig_structure), the caller signs them by any means, including asynchronous ones such as WebCrypto or a remote KMS, and finish assembles the certificate. For ES256, finish SHALL accept r||s or DER and SHALL always emit r||s.",
+      "stt:statement": "Issuance SHALL be two-phase: prepare returns the exact bytes to sign (the Sig_structure), the caller signs them by any means, including asynchronous ones such as WebCrypto or a remote KMS, and finish assembles the certificate and returns the HC1 string and the COSE bytes. For ES256, finish SHALL accept r||s or DER and SHALL always emit r||s.",
       "stt:conformance": "SHALL",
       "stt:category": "api",
       "stt:derivationType": "derived",

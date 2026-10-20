@@ -27,7 +27,6 @@
       "step-2"
     ],
     "api": [
-      "api-vhl",
       "api-raw-payload"
     ],
     "issues": [

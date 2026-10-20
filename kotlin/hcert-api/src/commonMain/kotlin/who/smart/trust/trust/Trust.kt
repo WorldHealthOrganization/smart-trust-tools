@@ -7,26 +7,7 @@ import who.smart.trust.types.NumericDate
 
 sealed interface TrustError {
     data class Parse(val value: String) : TrustError
-
-    /** JWS proof on a DID document did not verify. [STT-TRU-003] */
-    data class ProofInvalid(val value: String) : TrustError
-
-    /**
-     * DSC not signed by a listed SCA, or AKI/SKI mismatch.
-     * [STT-TRU-006]
-     */
-    data class ChainInvalid(val value: String) : TrustError
 }
-
-/** Query for candidate DSCs. Optional fields narrow the match. */
-data class KeyQuery(
-    val kid: Kid,
-    /** CWT iss (alpha-2). [STT-VER-010] */
-    val iss: String? = null,
-    val domain: String? = null,
-    val participant: String? = null,
-    val usage: String? = null,
-)
 
 data class TrustedDsc(
     val der: ByteArray,
@@ -39,66 +20,42 @@ data class TrustedDsc(
      * [STT-VER-004]
      */
     val extendedKeyUsages: List<String>,
+    /**
+     * Trust domain and participant, when the DSC came from a DID
+     * trustlist document.
+     */
     val domain: String? = null,
     val participant: String? = null,
 )
 
 interface TrustStore : AutoCloseable {
-    /** Each add-* returns the number of DSCs added. */
+    /** Each add-* returns the number of DSCs added. [STT-TRU-005] */
     fun addPem(pem: String): WitResult<Int, TrustError>
 
     fun addDer(der: ByteArray): WitResult<Int, TrustError>
 
-    /** RFC 7517 JWK set with x5c. [STT-TRU-005] */
-    fun addJwks(json: String): WitResult<Int, TrustError>
-
     /**
-     * GDHCN DID trustlist v2 document (embedded variant).
-     * [STT-TRU-002]
+     * A GDHCN DID trustlist v2 document, embedded or reference
+     * variant. [STT-TRU-002]
      */
-    fun addDidDocument(json: String, verifyProof: Boolean): WitResult<Int, TrustError>
+    fun addDidDocument(json: String): WitResult<Int, TrustError>
 
-    /** SCA certificates for the optional chain check. [STT-TRU-006] */
-    fun addScaPem(pem: String): WitResult<Int, TrustError>
-
-    /** Every DSC matching the kid (kids are not unique). [STT-KID-002] */
-    fun candidates(q: KeyQuery): List<TrustedDsc>
+    /** Every DSC with this kid (kids are not unique). [STT-KID-002] */
+    fun candidates(k: Kid): List<TrustedDsc>
 
     fun size(): Int
-
-    /** When the host last replaced the contents. [STT-TRU-004] */
-    fun loadedAt(): NumericDate?
-
-    fun setLoadedAt(t: NumericDate)
 
     fun clear()
 }
 
-enum class Environment {
-    DEV,
-    UAT,
-    PROD,
-}
-
-enum class TrustlistVariant {
-    EMBEDDED,
-    REFERENCE,
-}
-
 /**
- * Trust material. The store is filled by the host from whatever source it
- * fetched (GDHCN DID trustlist, national JWKS, pinned PEM), so the core
- * never does network I/O and stays synchronous. [STT-TRU-001, STT-GEN-012]
+ * Trust material. The host fetches it (GDHCN DID trustlist, pinned PEM)
+ * and fills the store, so the core never does network I/O and stays
+ * synchronous. [STT-TRU-001, STT-GEN-012]
  *
  * Implemented by the library (Kotlin and Rust) for the `trust` WIT interface.
  */
 interface Trust {
-    /**
-     * URL of a GDHCN DID trustlist v2 document. None for a level means
-     * the "-" wildcard. [STT-TRU-002]
-     */
-    fun didTrustlistUrl(env: Environment, which: TrustlistVariant, domain: String?, participant: String?, usage: String?): String
-
     /** Creates a new [TrustStore]. */
     fun newTrustStore(): TrustStore
 }

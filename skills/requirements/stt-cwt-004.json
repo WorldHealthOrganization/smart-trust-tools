@@ -35,8 +35,7 @@
       "step-5"
     ],
     "api": [
-      "api-issuer",
-      "api-signer"
+      "api-issuer"
     ],
     "sources": [
       {

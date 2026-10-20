@@ -114,15 +114,6 @@ issues:
       merged and deployed. Re-run tools/build_kg.py --check-links after
       deployment.
 
-  - id: OI-11
-    title: No access route is specified for the WHO PreQual vaccine database
-    upstream: true
-    sources: [qr-3, ext-dvcmin-prequal]
-    description: >-
-      DVCMinPreQual binds vp to PreQual product identifiers (required binding)
-      but there is no FHIR ValueSet, URL or API to resolve them. The library
-      can only offer a pluggable validator.
-
   - id: OI-12
     title: Base64 variant of kid in the DID trustlist is unspecified
     upstream: true

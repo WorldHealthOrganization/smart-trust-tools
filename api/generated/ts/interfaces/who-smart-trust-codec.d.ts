@@ -15,7 +15,8 @@ export function zlibInflate(data: Uint8Array, maxOut: number): Uint8Array;
  */
 export function detectContext(text: string): [string, string];
 /**
- * Steps 6 to 8: COSE bytes to "HC1:..." string.
+ * Steps 6 to 8: COSE bytes to "HC1:..." string. The result uses only
+ * QR Alphanumeric characters. [STT-QR-001]
  */
 export function toHc1(cose: Uint8Array): string;
 /**
@@ -27,11 +28,6 @@ export function fromHc1(text: string, limits: DecodeLimits): Uint8Array;
  * [STT-CBR-001]
  */
 export function cborDeterministic(cbor: CborBytes, limits: DecodeLimits): CborBytes;
-/**
- * RFC 8949 diagnostic notation, for display and debugging only.
- * [STT-GEN-008]
- */
-export function cborDiagnostic(cbor: CborBytes, limits: DecodeLimits): string;
 export type DecodeLimits = import('./who-smart-trust-types.js').DecodeLimits;
 export type CborBytes = import('./who-smart-trust-types.js').CborBytes;
 export type CodecError = CodecErrorBase45Invalid | CodecErrorInflateFailed | CodecErrorLimitExceeded | CodecErrorCborMalformed | CodecErrorBadPrefix | CodecErrorUnsupportedContextVersion;

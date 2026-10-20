@@ -1,6 +1,6 @@
 {
   "id": "req:stt-tru-001",
-  "title": "TrustListProvider abstraction",
+  "title": "Trust store",
   "description": "Engineering consequence of HCERT Specification, Appendix A - Trust Management; QR Code Generation, 11. Verifying: the same steps upwards.",
   "status": "proposed",
   "derivedFrom": [
@@ -15,9 +15,9 @@
   "statements": [
     {
       "key": "statement",
-      "label": "TrustListProvider abstraction",
+      "label": "Trust store",
       "conformance": "SHALL",
-      "requirement": "Trust material SHALL be reached through a TrustListProvider that returns every trusted DSC matching a query of kid plus optional issuer, trust domain, participant and key usage.",
+      "requirement": "Trust material SHALL be held in a trust store that the host fills with DSCs it has obtained, and that returns every trusted DSC matching a kid. The store SHALL do no network or file I/O (STT-GEN-012).",
       "category": "api"
     }
   ],

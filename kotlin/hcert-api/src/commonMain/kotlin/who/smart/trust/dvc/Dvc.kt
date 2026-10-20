@@ -8,7 +8,7 @@ import who.smart.trust.types.ValidationIssue
 
 /** DVCMinVaccineDetails. [STT-PAY-002] */
 data class DvcMinVaccineDetails(
-    /** Vaccine product identifier. PreQual ID under DVCMinPreQual. */
+    /** Vaccine product identifier. */
     val vp: String,
     /** Date of vaccination (FHIR date). */
     val dv: String,
@@ -21,23 +21,8 @@ data class DvcMinVaccineDetails(
 )
 
 /**
- * Everything in DVCMin except vx. Used to split a visit into one
- * certificate per vaccine. [STT-PAY-003]
- */
-data class DvcSubject(
-    val n: String,
-    val dob: String,
-    val s: String,
-    val nt: String,
-    val id: String? = null,
-    val dt: String? = null,
-    val gn: String? = null,
-    val v: String,
-)
-
-/**
  * DVCMin. vx is 1..1: one immunization event per certificate.
- * [STT-PAY-001, STT-PAY-005]
+ * [STT-PAY-001, STT-PAY-003, STT-PAY-005]
  */
 data class DvcMin(
     val n: String,
@@ -57,27 +42,17 @@ data class DvcMin(
     val extensions: List<Pair<String, CborBytes>>,
 )
 
-enum class DvcProfile {
-    /** Unconstrained vp binding. */
-    DVC_MIN,
-    /** vp MUST be a WHO PreQual product ID (required binding). */
-    DVC_MIN_PREQUAL,
-}
-
 /**
- * Step 2: the DVCMin payload (trust-phw DVCMin / DVCMinPreQual).
+ * Step 2: the DVCMin payload (trust-phw DVCMin). [STT-PAY-010]
  *
  * Implemented by the library (Kotlin and Rust) for the `dvc` WIT interface.
  */
 interface Dvc {
     /**
-     * Cardinality, invariant (must-have-issuer-or-clinician-name), nt
-     * and vp checks. vp goes through the host terminology import.
-     * [STT-PAY-004, STT-PAY-006, STT-PAY-007]
+     * Cardinality, invariant (must-have-issuer-or-clinician-name) and nt
+     * checks. [STT-PAY-004, STT-PAY-007]
      */
-    fun validate(p: DvcMin, profile: DvcProfile): List<ValidationIssue>
-
-    fun perEvent(subject: DvcSubject, events: List<DvcMinVaccineDetails>): List<DvcMin>
+    fun validate(p: DvcMin): List<ValidationIssue>
 
     fun toCbor(p: DvcMin): CborBytes
 

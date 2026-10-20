@@ -8,7 +8,6 @@ types only, no behaviour [STT-GEN-014].
 | WIT | Kotlin |
 |---|---|
 | exported interface (e.g. `codec`, `verifier`) | `interface Codec`, `interface Verifier`, implemented by the library |
-| imported interface (`signer`, `terminology`) | `interface Signer`, `interface Terminology`, implemented by the host app |
 | resource (e.g. `trust-store`) | `interface TrustStore : AutoCloseable`, created by `newTrustStore()` on its interface |
 | record / enum / variant | `data class` / `enum class` / `sealed interface` |
 | `result<T, E>` | `WitResult<T, E>` (`Ok` / `Err`) |

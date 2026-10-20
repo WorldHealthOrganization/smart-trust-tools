@@ -2,24 +2,17 @@
 /**
  * Phase 1: validate, build CWT, CBOR and protected header.
  */
-export function prepare(req: IssueRequest, reg: Registry, policy: IssuerPolicy): PendingSignature;
+export function prepare(req: IssueRequest, reg: Registry): PendingSignature;
 /**
  * Phase 2: attach the signature. ES256 accepts r||s or DER and always
  * emits r||s. [STT-COS-005]
  */
 export function finish(pending: PendingSignature, signature: Uint8Array): IssuedHcert;
-/**
- * One call, using the host `signer` import. [STT-ISS-001]
- */
-export function issue(req: IssueRequest, reg: Registry, policy: IssuerPolicy): IssuedHcert;
 export type CoseAlgorithm = import('./who-smart-trust-types.js').CoseAlgorithm;
 export type Kid = import('./who-smart-trust-types.js').Kid;
 export type NumericDate = import('./who-smart-trust-types.js').NumericDate;
-export type ErrorCorrection = import('./who-smart-trust-types.js').ErrorCorrection;
-export type EncodingReport = import('./who-smart-trust-types.js').EncodingReport;
 export type ValidationIssue = import('./who-smart-trust-types.js').ValidationIssue;
 export type Payload = import('./who-smart-trust-payloads.js').Payload;
-export type QrMatrix = import('./who-smart-trust-qr.js').QrMatrix;
 export type Registry = import('./who-smart-trust-subclaims.js').Registry;
 export interface Validity {
   iat: NumericDate,
@@ -40,25 +33,12 @@ export interface IssueRequest {
    */
   dscDer: Uint8Array,
   alg: CoseAlgorithm,
-}
-export interface IssuerPolicy {
   /**
    * Refuse negative subclaims unless true. [STT-SEL-003]
    */
   allowDevelopmentSubclaims: boolean,
-  errorCorrection: ErrorCorrection,
-  renderQr: boolean,
-  /**
-   * Verify the result against dsc-der before returning.
-   * [STT-ISS-002]
-   */
-  selfVerify: boolean,
-  /**
-   * Warn above this HC1 length, suggesting VHL. [STT-QR-006]
-   */
-  hc1WarnChars: number,
 }
-export type IssueError = IssueErrorPayloadInvalid | IssueErrorDevelopmentSubclaimNotAllowed | IssueErrorUnknownSubclaim | IssueErrorValidityOutsideDsc | IssueErrorBadCertificate | IssueErrorBadSignatureFormat | IssueErrorSelfVerifyFailed;
+export type IssueError = IssueErrorPayloadInvalid | IssueErrorDevelopmentSubclaimNotAllowed | IssueErrorUnknownSubclaim | IssueErrorValidityOutsideDsc | IssueErrorBadCertificate | IssueErrorBadSignatureFormat;
 export interface IssueErrorPayloadInvalid {
   tag: 'payload-invalid',
   val: Array<ValidationIssue>,
@@ -85,18 +65,15 @@ export interface IssueErrorBadSignatureFormat {
   tag: 'bad-signature-format',
   val: string,
 }
-export interface IssueErrorSelfVerifyFailed {
-  tag: 'self-verify-failed',
-  val: string,
-}
 export interface IssuedHcert {
+  /**
+   * QR-ready: QR Alphanumeric characters only. [STT-QR-001]
+   */
   hc1: string,
   /**
    * Raw COSE_Sign1 for 8-bit-safe transports. [STT-GEN-009]
    */
   cose: Uint8Array,
-  qr?: QrMatrix,
-  report: EncodingReport,
 }
 
 export class PendingSignature implements Disposable {

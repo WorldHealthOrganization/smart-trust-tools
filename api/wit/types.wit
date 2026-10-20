@@ -3,8 +3,8 @@ package who:smart-trust@0.1.0;
 /// Types shared by every interface.
 ///
 /// WIT has no recursive types, so arbitrary CBOR never crosses the API
-/// boundary as a tree: it crosses as encoded bytes (`cbor-bytes`). Typed
-/// payloads (DVCMin, VHL) cross as records.
+/// boundary as a tree: it crosses as encoded bytes (`cbor-bytes`). The typed
+/// payload (DVCMin) crosses as a record.
 interface types {
     /// COSE algorithm. es256 = -7 (primary), ps256 = -37 (secondary).
     /// Both MUST be implemented. [STT-COS-002]
@@ -20,26 +20,17 @@ interface types {
     /// Encoded CBOR data item.
     type cbor-bytes = list<u8>;
 
-    /// Status of an hcert subclaim number. [STT-SEL-001, STT-SEL-003]
-    enum subclaim-status {
-        /// Allocated by WHO (>= 0).
-        assigned,
-        /// Listed by WHO as proposed (>= 0), not yet assigned.
-        proposed,
-        /// Negative: development range, free to use, not stable.
-        development,
-    }
-
+    /// An hcert subclaim number and what it carries. Negative numbers are
+    /// the development range. [STT-SEL-001, STT-SEL-003]
     record subclaim {
         key: s32,
-        status: subclaim-status,
-        /// Canonical URL of the logical model, if any.
-        logical-model: option<string>,
         title: string,
+        /// Canonical URL of the FHIR logical model, when there is one.
+        logical-model: option<string>,
     }
 
-    /// Bounds applied while decoding untrusted input.
-    /// [STT-CBR-003, STT-ZIP-002]
+    /// Bounds applied while decoding untrusted input. [STT-CBR-003,
+    /// STT-ZIP-002]
     record decode-limits {
         max-input-chars: u32,
         max-inflated-bytes: u32,
@@ -48,21 +39,17 @@ interface types {
         max-string-bytes: u32,
     }
 
-    /// QR error-correction level. Default q. [STT-QR-002]
-    enum error-correction { l, m, q, h }
-
     enum severity { blocking, warning, information }
 
+    /// One payload validation finding. `path` names the element.
     record validation-issue {
-        /// Element path, e.g. "vx.is".
         path: string,
-        /// Stable machine code, e.g. "must-have-issuer-or-clinician-name".
         code: string,
         message: string,
         severity: severity,
     }
 
-    /// Pipeline stages, used to say where verification failed.
+    /// Verification steps, in the order they run. [STT-VER-001]
     enum step {
         prefix,
         base45,
@@ -78,7 +65,7 @@ interface types {
         payload,
     }
 
-    /// Closed failure taxonomy, identical in Kotlin and Rust. [STT-VER-008]
+    /// Why verification stopped. [STT-VER-008]
     enum failure-reason {
         bad-prefix,
         unsupported-context-version,
@@ -98,20 +85,10 @@ interface types {
         payload-invalid,
     }
 
+    /// A non-fatal observation made while verifying.
     record diagnostic {
         step: step,
         severity: severity,
         message: string,
-    }
-
-    /// Sizes at each stage of issuance. [STT-QR-006]
-    record encoding-report {
-        cbor-bytes: u32,
-        cose-bytes: u32,
-        deflated-bytes: u32,
-        hc1-chars: u32,
-        qr-version: option<u8>,
-        error-correction: option<error-correction>,
-        warnings: list<string>,
     }
 }

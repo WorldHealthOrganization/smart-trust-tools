@@ -29,9 +29,6 @@
     "steps": [
       "step-2"
     ],
-    "api": [
-      "api-dvc-split"
-    ],
     "sources": [
       {
         "src": "qr-3",

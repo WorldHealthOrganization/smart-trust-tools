@@ -1,28 +1,13 @@
 package who:smart-trust@0.1.0;
 
-/// Trust material. The store is filled by the host from whatever source it
-/// fetched (GDHCN DID trustlist, national JWKS, pinned PEM), so the core
-/// never does network I/O and stays synchronous. [STT-TRU-001, STT-GEN-012]
+/// Trust material. The host fetches it (GDHCN DID trustlist, pinned PEM)
+/// and fills the store, so the core never does network I/O and stays
+/// synchronous. [STT-TRU-001, STT-GEN-012]
 interface trust {
     use types.{kid, numeric-date};
 
     variant trust-error {
         parse(string),
-        /// JWS proof on a DID document did not verify. [STT-TRU-003]
-        proof-invalid(string),
-        /// DSC not signed by a listed SCA, or AKI/SKI mismatch.
-        /// [STT-TRU-006]
-        chain-invalid(string),
-    }
-
-    /// Query for candidate DSCs. Optional fields narrow the match.
-    record key-query {
-        kid: kid,
-        /// CWT iss (alpha-2). [STT-VER-010]
-        iss: option<string>,
-        domain: option<string>,
-        participant: option<string>,
-        usage: option<string>,
     }
 
     record trusted-dsc {
@@ -34,35 +19,23 @@ interface trust {
         /// Extended Key Usage OIDs; empty means valid for any type.
         /// [STT-VER-004]
         extended-key-usages: list<string>,
+        /// Trust domain and participant, when the DSC came from a DID
+        /// trustlist document.
         domain: option<string>,
         participant: option<string>,
     }
 
     resource trust-store {
         constructor();
-        /// Each add-* returns the number of DSCs added.
+        /// Each add-* returns the number of DSCs added. [STT-TRU-005]
         add-pem: func(pem: string) -> result<u32, trust-error>;
         add-der: func(der: list<u8>) -> result<u32, trust-error>;
-        /// RFC 7517 JWK set with x5c. [STT-TRU-005]
-        add-jwks: func(json: string) -> result<u32, trust-error>;
-        /// GDHCN DID trustlist v2 document (embedded variant).
-        /// [STT-TRU-002]
-        add-did-document: func(json: string, verify-proof: bool) -> result<u32, trust-error>;
-        /// SCA certificates for the optional chain check. [STT-TRU-006]
-        add-sca-pem: func(pem: string) -> result<u32, trust-error>;
-        /// Every DSC matching the kid (kids are not unique). [STT-KID-002]
-        candidates: func(q: key-query) -> list<trusted-dsc>;
+        /// A GDHCN DID trustlist v2 document, embedded or reference
+        /// variant. [STT-TRU-002]
+        add-did-document: func(json: string) -> result<u32, trust-error>;
+        /// Every DSC with this kid (kids are not unique). [STT-KID-002]
+        candidates: func(k: kid) -> list<trusted-dsc>;
         size: func() -> u32;
-        /// When the host last replaced the contents. [STT-TRU-004]
-        loaded-at: func() -> option<numeric-date>;
-        set-loaded-at: func(t: numeric-date);
         clear: func();
     }
-
-    enum environment { dev, uat, prod }
-    enum trustlist-variant { embedded, reference }
-
-    /// URL of a GDHCN DID trustlist v2 document. None for a level means
-    /// the "-" wildcard. [STT-TRU-002]
-    did-trustlist-url: func(env: environment, which: trustlist-variant, domain: option<string>, participant: option<string>, usage: option<string>) -> string;
 }

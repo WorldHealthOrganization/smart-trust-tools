@@ -34,7 +34,7 @@
       "step-verify"
     ],
     "api": [
-      "api-clock"
+      "api-verifier"
     ],
     "sources": [
       {

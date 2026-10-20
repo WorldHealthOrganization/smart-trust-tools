@@ -9,13 +9,8 @@ data class RawPayload(
     val cbor: CborBytes,
 )
 
-/** [STT-PAY-009] */
 sealed interface Payload {
     data class DvcMin(val value: DvcMin) : Payload
 
-    /** Subclaim 5: URI of a Verifiable Health Link. */
-    data class Vhl(val value: String) : Payload
-
-    /** Any subclaim without a typed codec (1, 3, 4, -7, custom). */
     data class Raw(val value: RawPayload) : Payload
 }

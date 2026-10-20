@@ -1,15 +1,14 @@
 package who:smart-trust@0.1.0;
 
-/// End-to-end issuance (steps 3 to 9).
+/// End-to-end issuance (steps 3 to 8).
 ///
 /// Signing is two-phase so that any key holder can sign without the core
 /// calling back into the host: prepare() returns the Sig_structure bytes,
 /// the caller signs them with an HSM, KMS, Android Keystore or WebCrypto,
 /// and finish() assembles the certificate. [STT-ISS-004, STT-COS-006]
 interface issuer {
-    use types.{cose-algorithm, kid, numeric-date, error-correction, encoding-report, validation-issue};
+    use types.{cose-algorithm, kid, numeric-date, validation-issue};
     use payloads.{payload};
-    use qr.{qr-matrix};
     use subclaims.{registry};
 
     record validity {
@@ -26,18 +25,8 @@ interface issuer {
         /// DSC whose key will sign; kid is derived from it. [STT-KID-001]
         dsc-der: list<u8>,
         alg: cose-algorithm,
-    }
-
-    record issuer-policy {
         /// Refuse negative subclaims unless true. [STT-SEL-003]
         allow-development-subclaims: bool,
-        error-correction: error-correction,
-        render-qr: bool,
-        /// Verify the result against dsc-der before returning.
-        /// [STT-ISS-002]
-        self-verify: bool,
-        /// Warn above this HC1 length, suggesting VHL. [STT-QR-006]
-        hc1-warn-chars: u32,
     }
 
     variant issue-error {
@@ -48,15 +37,13 @@ interface issuer {
         validity-outside-dsc,
         bad-certificate(string),
         bad-signature-format(string),
-        self-verify-failed(string),
     }
 
     record issued-hcert {
+        /// QR-ready: QR Alphanumeric characters only. [STT-QR-001]
         hc1: string,
         /// Raw COSE_Sign1 for 8-bit-safe transports. [STT-GEN-009]
         cose: list<u8>,
-        qr: option<qr-matrix>,
-        report: encoding-report,
     }
 
     resource pending-signature {
@@ -67,34 +54,26 @@ interface issuer {
     }
 
     /// Phase 1: validate, build CWT, CBOR and protected header.
-    prepare: func(req: issue-request, reg: borrow<registry>, policy: issuer-policy) -> result<pending-signature, issue-error>;
+    prepare: func(req: issue-request, reg: borrow<registry>) -> result<pending-signature, issue-error>;
 
     /// Phase 2: attach the signature. ES256 accepts r||s or DER and always
     /// emits r||s. [STT-COS-005]
     finish: func(pending: pending-signature, signature: list<u8>) -> result<issued-hcert, issue-error>;
-
-    /// One call, using the host `signer` import. [STT-ISS-001]
-    issue: func(req: issue-request, reg: borrow<registry>, policy: issuer-policy) -> result<issued-hcert, issue-error>;
 }
 
-/// Verification (QR Code Generation section 11).
+/// Verification (QR Code Generation section 11): the steps in STT-VER-001
+/// order, each fixed by the IG rather than a policy switch. Exactly one hcert
+/// entry [STT-SEL-004]; trust-list presence is the DSC validity check
+/// [STT-VER-006]; EKU is checked against the certificate type [STT-VER-004].
 interface verifier {
-    use types.{kid, numeric-date, decode-limits, cbor-bytes, step, failure-reason, diagnostic, cose-algorithm};
+    use types.{numeric-date, decode-limits, cbor-bytes, step, failure-reason, diagnostic};
     use payloads.{payload};
     use trust.{trust-store, trusted-dsc};
     use subclaims.{registry};
 
-    record verifier-policy {
+    record verifier-options {
         limits: decode-limits,
-        /// Fail on more than one hcert entry (default true). [STT-SEL-004]
-        strict-single-subclaim: bool,
         clock-skew-seconds: u32,
-        /// Also check the DSC X.509 validity period. [STT-VER-006]
-        check-dsc-validity: bool,
-        /// Narrow DSC lookup by iss. [STT-VER-010]
-        narrow-by-iss: bool,
-        /// Check DSC EKU against the certificate type. [STT-VER-004]
-        check-key-usage: bool,
     }
 
     record verified-hcert {
@@ -105,8 +84,6 @@ interface verifier {
         payload: payload,
         /// The DSC that verified the signature.
         dsc: trusted-dsc,
-        /// Other subclaims present (non-strict policy only).
-        other-subclaims: list<s32>,
         /// Unknown CWT claims, as (encoded key, encoded value).
         /// [STT-CWT-006]
         other-claims: list<tuple<cbor-bytes, cbor-bytes>>,
@@ -128,18 +105,8 @@ interface verifier {
     }
 
     /// `now` is passed in: no ambient clock. [STT-VER-005]
-    verify: func(hc1: string, store: borrow<trust-store>, reg: borrow<registry>, now: numeric-date, policy: verifier-policy) -> verification-result;
+    verify: func(hc1: string, store: borrow<trust-store>, reg: borrow<registry>, now: numeric-date, options: verifier-options) -> verification-result;
 
     /// Same, for raw COSE_Sign1 bytes. [STT-GEN-009]
-    verify-cose: func(cose: list<u8>, store: borrow<trust-store>, reg: borrow<registry>, now: numeric-date, policy: verifier-policy) -> verification-result;
-
-    /// Decoded but NOT verified. Diagnostics only; never use for
-    /// decisions. [STT-VER-002]
-    record unverified-view {
-        alg: option<cose-algorithm>,
-        kid: option<kid>,
-        claims: cbor-bytes,
-    }
-
-    inspect-unverified: func(hc1: string, limits: decode-limits) -> result<unverified-view, verification-failure>;
+    verify-cose: func(cose: list<u8>, store: borrow<trust-store>, reg: borrow<registry>, now: numeric-date, options: verifier-options) -> verification-result;
 }
