@@ -15,6 +15,7 @@ world hcert-verifier {
     export cose;
     export subclaims;
     export dvc;
+    export vhl;
     export payloads;
     export trust;
     export verifier;
@@ -27,6 +28,7 @@ world hcert-issuer {
     export cose;
     export subclaims;
     export dvc;
+    export vhl;
     export payloads;
     export issuer;
 }

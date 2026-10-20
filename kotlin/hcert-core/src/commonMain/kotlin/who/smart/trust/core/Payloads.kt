@@ -26,7 +26,7 @@ val DEFAULT_SUBCLAIMS = listOf(
 /** [STT-SEL-002, STT-SEL-003] */
 class SubclaimRegistry : Registry {
     private val byKey = LinkedHashMap<Int, Subclaim>().apply { DEFAULT_SUBCLAIMS.forEach { put(it.key, it) } }
-    private val kinds = mutableMapOf(PayloadKind.DVC_MIN to -6)
+    private val kinds = mutableMapOf(PayloadKind.DVC_MIN to -6, PayloadKind.VHL to 5)
 
     override fun lookup(key: Int): Subclaim? = byKey[key]
     override fun register(s: Subclaim) { byKey[s.key] = s }

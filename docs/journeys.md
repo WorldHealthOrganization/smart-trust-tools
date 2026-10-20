@@ -22,10 +22,16 @@ FHIR record keeping are theirs. Source: stakeholder directive
 | **J3** Clinic verifies the foreign DVC | GDHCN verification in the STT-VER-001 order, typed failures (STT-VER-008), EKU check (STT-VER-004) | Done: `HcertVerifier.verify`, PR 129 vector verifies on JVM and Node |
 | J3 imports the immunization into the domestic record | The verified DVCMin fields; mapping to FHIR R4 `Immunization`/`Patient` | Gap: the mapping belongs with the logical models (smart-trust-phw), not in this library; the app maps until it is published |
 | J3 foreign vaccine code with no equivalence map | Codes pass through unchanged; nothing is rejected for an unknown national code | Done; adjudication is a policy question |
-| **J4.0** National portal issues one passcode-protected VHL QR per family member | VHL payload (`vhlink:/`, url, key, exp, flag P, label) in HCERT claim -260 key 5; key generation; JWE encryption of each document | **Gap: VHL module not built yet** |
-| **J4.1** Clinic abroad scans a VHL, fetches with passcode, reads IPS | Verify the VHL HCERT (done); parse the link; build the manifest request; parse the manifest Bundle; decrypt each JWE document | **Gap: VHL module not built yet**; the HTTP, mTLS and audit are the app's and the VHL host's |
+| **J4.0** National portal issues one passcode-protected VHL QR per family member | VHL payload (SHL payload format, flag P) as a CBOR map at HCERT claim -260 key 5 (STT-VHL-001, STT-VHL-002); key generation (STT-VHL-004); JWE dir / A256GCM encryption of each document (STT-VHL-007) | Done: `HcertIssuer` with `Payload.Vhl`, `HcertVhl.newKey`, `HcertVhl.encrypt`; hosting the manifest and enforcing the passcode are the VHL host's |
+| **J4.1** Clinic abroad scans a VHL, fetches with passcode, reads IPS | Verify the VHL HCERT, map or `vhlink:/` string at key 5, and the link's exp (STT-VHL-002, STT-VHL-009); ITI-YY5 request (STT-VHL-005); HTTP Message Signatures (STT-VHL-008); manifest Bundle (STT-VHL-006); decrypt each document (STT-VHL-007) | Done: `HcertVerifier.verify`, `HcertVhl.buildManifestRequest`, `buildSignatureBase`/`signatureHeader`, `parseManifest`, `decrypt`; the HTTP, mutual TLS and AuditEvents are the app's |
 
 ## VHL: what the specifications say, and where they disagree
+
+Changes raised upstream: WorldHealthOrganization/smart-trust#130 (subclaim 5
+is a VHL, a CBOR map), WorldHealthOrganization/smart-trust-phw#17 (payload
+types match SMART Health Links), and a patch for IHE ITI.VHL in
+[`upstream/ihe-iti-vhl/`](https://github.com/litlfred/smart-trust-tools/tree/main/upstream/ihe-iti-vhl)
+(ITI-YY3 key 5 as a CBOR map, example fixes). Open issues OI-21 to OI-29.
 
 The IHE ITI VHL profile and the WHO `VerifiableHealthLinkPayload` model
 share the SMART Health Links payload fields, but:

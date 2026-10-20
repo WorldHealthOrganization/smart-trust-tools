@@ -75,7 +75,8 @@ Package `who:smart-trust@0.1.0` (placeholder namespace, OI-14).
 | `cose.wit` | `cose` | 5 | COSE_Sign1 parse/verify, Sig_structure, kid, DER↔r‖s |
 | `payload.wit` | `subclaims` | 1 | Subclaim registry (resource) |
 | `payload.wit` | `dvc` | 2 | DVCMin records, validation, CBOR |
-| `payload.wit` | `payloads` | 2 | `payload` variant: dvc-min, raw |
+| `payload.wit` | `payloads` | 2 | `payload` variant: dvc-min, vhl, raw |
+| `vhl.wit` | `vhl` | J4 | Verifiable Health Links (IHE ITI VHL): payload, `vhlink:/`, ITI-YY5 request and manifest, JWE dir / A256GCM, HTTP Message Signatures |
 | `trust.wit` | `trust` | trust | `trust-store` resource filled by the host: PEM, DER, DID trustlist v2 documents |
 | `pipeline.wit` | `issuer` | 3–8 | Two-phase `prepare`/`finish` signing |
 | `pipeline.wit` | `verifier` | verify | `verify` returns `verified` or `failed(step, reason)` |

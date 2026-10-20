@@ -5,12 +5,14 @@ export type Subclaim = import('./who-smart-trust-types.js').Subclaim;
  * # Variants
  * 
  * ## `"dvc-min"`
+ * 
+ * ## `"vhl"`
  */
-export type PayloadKind = 'dvc-min';
+export type PayloadKind = 'dvc-min' | 'vhl';
 
 export class Registry implements Disposable {
   /**
-  * Starts with the IG defaults: 1, 3, 4, 5, -6, -7. [STT-SEL-001]
+  * Starts with the IG defaults: 1, 3, 4, 5, -6, -7; VHL is 5. [STT-SEL-001]
   */
   constructor()
   lookup(key: number): Subclaim | undefined;

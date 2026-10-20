@@ -96,7 +96,10 @@ def main():
         failures += 0 if ok else 1
 
     for vf in sorted(ROOT.glob("vectors/*/*.json")):
-        for name, cert in json.loads(vf.read_text())["certificates"].items():
+        vector = json.loads(vf.read_text())
+        if "certificates" not in vector:  # not an HCERT vector (e.g. vectors/ihe-vhl)
+            continue
+        for name, cert in vector["certificates"].items():
             tag = "%s/%s" % (vf.parent.name, name)
             cose = zlib.decompress(base45.b45decode(cert["hc1"][4:]))
             prot, _, payload_bytes, _ = cbor2.loads(cose).value

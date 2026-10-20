@@ -66,6 +66,7 @@ AREA_TITLES = collections.OrderedDict([
     ("QR", "Step 9: QR code"),
     ("VER", "Verification"),
     ("TRU", "Trust list"),
+    ("VHL", "Verifiable Health Link"),
     ("ISS", "Issuance"),
     ("SEC", "Security"),
     ("NFR", "Non-functional"),

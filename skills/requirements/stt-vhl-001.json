@@ -1,0 +1,52 @@
+{
+  "id": "req:stt-vhl-001",
+  "title": "VHL payload in the SMART Health Links payload format",
+  "description": "Restates SMART Health Links; IHE VHL ITI-YY3, 2:3.YY3.4.1.3 Expected Actions; VerifiableHealthLinkPayload logical model (trust-phw); Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5.",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "VHL payload in the SMART Health Links payload format",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL model the VHL payload as the SMART Health Links payload format that IHE VHL reuses: url (required, https), key (required, 43 base64url characters encoding 32 bytes), exp (optional integer, epoch seconds), flag (optional; the letters L and P in alphabetical order), label (optional, at most 80 characters), v (optional integer, default 1) and extension.fhirBaseUrl (optional). Validation SHALL report each violation. The single-file U flag is out of scope and SHALL be reported as unsupported.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-VHL-001",
+    "derivation": "direct",
+    "api": [
+      "api-vhl-payload"
+    ],
+    "issues": [
+      "OI-22",
+      "OI-23"
+    ],
+    "sources": [
+      {
+        "src": "std-shl",
+        "quote": null
+      },
+      {
+        "src": "vhl-yy3-4.1.3",
+        "quote": "Create the VHL payload (using the SHL payload format)"
+      },
+      {
+        "src": "ext-vhl-payload"
+      },
+      {
+        "src": "dir-vhl",
+        "quote": "Single file - ignore"
+      }
+    ]
+  }
+}

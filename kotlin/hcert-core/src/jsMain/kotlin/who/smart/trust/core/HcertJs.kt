@@ -26,4 +26,10 @@ object HcertNode {
             is VerificationResult.Failed -> """{"status":"failed","step":"${r.value.step}","reason":"${r.value.reason}"}"""
         }
     }
+
+    /** Decrypts a VHL document (JWE dir / A256GCM) and returns its text, or "error: ...". */
+    fun decryptText(jwe: String, key: String): String = when (val r = HcertVhl.decrypt(jwe, key)) {
+        is who.smart.trust.WitResult.Ok -> r.value.content.decodeToString()
+        is who.smart.trust.WitResult.Err -> "error: ${r.error}"
+    }
 }

@@ -6,6 +6,7 @@ import who.smart.trust.types.Subclaim
 /** Payload kinds that have a typed codec. Others travel as raw CBOR. */
 enum class PayloadKind {
     DVC_MIN,
+    VHL,
 }
 
 interface Registry : AutoCloseable {
@@ -30,6 +31,6 @@ interface Registry : AutoCloseable {
  * Implemented by the library (Kotlin and Rust) for the `subclaims` WIT interface.
  */
 interface Subclaims {
-    /** Starts with the IG defaults: 1, 3, 4, 5, -6, -7. [STT-SEL-001] */
+    /** Starts with the IG defaults: 1, 3, 4, 5, -6, -7; VHL is 5. [STT-SEL-001] */
     fun newRegistry(): Registry
 }

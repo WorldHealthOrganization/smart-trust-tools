@@ -481,6 +481,66 @@
     stt:pinnedUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/Aliases.fsh> ;
     stt:mainUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/main/input/fsh/Aliases.fsh> .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/ext-vhl-payload>
+    a stt:Document ;
+    dcterms:identifier "ext-vhl-payload" ;
+    dcterms:title "HealthLinkPayload and VerifiableHealthLinkPayload logical models (trust-phw)" ;
+    stt:path "input/fsh/models/VerifiableHealthLinkPayload.fsh" ;
+    stt:status "deployed" ;
+    stt:gitCommit "fd3b5480e5df8001890d31ecc9761051c17c2cc5" ;
+    stt:pinnedUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/models/VerifiableHealthLinkPayload.fsh> ;
+    stt:mainUrl <https://github.com/WorldHealthOrganization/smart-trust-phw/blob/main/input/fsh/models/VerifiableHealthLinkPayload.fsh> ;
+    stt:ciUrl <https://worldhealthorganization.github.io/smart-trust-phw/StructureDefinition-VerifiableHealthLinkPayload.html> ;
+    stt:publishedUrl <https://smart.who.int/trust-phw/StructureDefinition-VerifiableHealthLinkPayload.html> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl>
+    a stt:Document ;
+    dcterms:identifier "doc-ihe-vhl" ;
+    dcterms:title "IHE ITI Verifiable Health Link (VHL)" ;
+    stt:path "input/pagecontent/volume-1.md" ;
+    stt:status "deployed" ;
+    stt:gitCommit "48201473ffa66725158e729b7478a01304944a6c" ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/volume-1.md> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/volume-1.md> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/volume-1.html> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/volume-1.html> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy3>
+    a stt:Document ;
+    dcterms:identifier "doc-ihe-vhl-yy3" ;
+    dcterms:title "IHE VHL ITI-YY3 Generate VHL" ;
+    stt:path "input/pagecontent/ITI-YY3.md" ;
+    stt:status "deployed" ;
+    stt:gitCommit "48201473ffa66725158e729b7478a01304944a6c" ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/ITI-YY3.md> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/ITI-YY3.html> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/ITI-YY3.html> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy4>
+    a stt:Document ;
+    dcterms:identifier "doc-ihe-vhl-yy4" ;
+    dcterms:title "IHE VHL ITI-YY4 Provide VHL" ;
+    stt:path "input/pagecontent/ITI-YY4.md" ;
+    stt:status "deployed" ;
+    stt:gitCommit "48201473ffa66725158e729b7478a01304944a6c" ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY4.md> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/ITI-YY4.md> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/ITI-YY4.html> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/ITI-YY4.html> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy5>
+    a stt:Document ;
+    dcterms:identifier "doc-ihe-vhl-yy5" ;
+    dcterms:title "IHE VHL ITI-YY5 Retrieve Manifest" ;
+    stt:path "input/pagecontent/ITI-YY5.md" ;
+    stt:status "deployed" ;
+    stt:gitCommit "48201473ffa66725158e729b7478a01304944a6c" ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/ITI-YY5.md> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/ITI-YY5.html> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/ITI-YY5.html> .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/ext-dvc-vaccines-vs>
     a stt:Document ;
     dcterms:identifier "ext-dvc-vaccines-vs" ;
@@ -614,6 +674,42 @@
     dcterms:title "RFC 7493 I-JSON" ;
     stt:url <https://www.rfc-editor.org/rfc/rfc7493> .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-shl>
+    a stt:Document ;
+    dcterms:identifier "std-shl" ;
+    dcterms:title "HL7 SMART Health Cards and Links: SMART Health Links" ;
+    stt:url <https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7516>
+    a stt:Document ;
+    dcterms:identifier "std-rfc7516" ;
+    dcterms:title "RFC 7516 JSON Web Encryption (JWE)" ;
+    stt:url <https://www.rfc-editor.org/rfc/rfc7516> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7518>
+    a stt:Document ;
+    dcterms:identifier "std-rfc7518" ;
+    dcterms:title "RFC 7518 JSON Web Algorithms (JWA)" ;
+    stt:url <https://www.rfc-editor.org/rfc/rfc7518> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc4648>
+    a stt:Document ;
+    dcterms:identifier "std-rfc4648" ;
+    dcterms:title "RFC 4648 Base16, Base32 and Base64 encodings (base64url)" ;
+    stt:url <https://www.rfc-editor.org/rfc/rfc4648> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9421>
+    a stt:Document ;
+    dcterms:identifier "std-rfc9421" ;
+    dcterms:title "RFC 9421 HTTP Message Signatures" ;
+    stt:url <https://www.rfc-editor.org/rfc/rfc9421> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9530>
+    a stt:Document ;
+    dcterms:identifier "std-rfc9530" ;
+    dcterms:title "RFC 9530 Digest Fields (Content-Digest)" ;
+    stt:url <https://www.rfc-editor.org/rfc/rfc9530> .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/std-json-ld>
     a stt:Document ;
     dcterms:identifier "std-json-ld" ;
@@ -679,6 +775,12 @@
     dcterms:identifier "dir-journeys" ;
     dcterms:title "Stakeholder directive: the library must carry the workshop user journeys" ;
     rdfs:comment """Given by the requester on 2026-10-20 (DRAFT journeys J1 to J5, a cross-border birth and routine vaccination storyline): J1 a clinic in Country A issues a DVC for newborn routine vaccines, printed as a QR; J2 a community health worker in Country B, offline, reads the foreign QR to register the child and refer, before any verification; J3 the clinic verifies the DVC against the GDHCN trust list and imports it; J4.0 a national portal issues one passcode-protected VHL QR per family member (IPS, DVCs) on one shared phone; J4.1 a clinic abroad scans a VHL, fetches and reads the records. OHS Player and OHS Stack are consumers of the Kotlin library, not part of it: "need to make sure we can do user journey".""" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl>
+    a stt:Document ;
+    dcterms:identifier "dir-vhl" ;
+    dcterms:title "Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5" ;
+    rdfs:comment """Given by the requester on 2026-10-20: subclaim 5 is a Verifiable Health Link; the link payload follows the SMART Health Links payload format in WHO and IHE alike; manifest retrieval, trust and encryption follow the IHE ITI VHL profile (ITI-YY5); the single-file U flow is out of scope; "CBOR map primary", reading a vhlink:/ string too.""" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/dir-open-standards>
     a stt:Document ;
@@ -1271,6 +1373,83 @@
     stt:ciUrl <https://worldhealthorganization.github.io/smart-trust/endpoints.html#trustlist-distribution-endpoints> ;
     stt:publishedUrl <https://smart.who.int/trust/endpoints.html#trustlist-distribution-endpoints> .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/vhl-1.5.3>
+    a stt:Section ;
+    dcterms:identifier "vhl-1.5.3" ;
+    stt:heading "1:XX.5.3 Cryptographic Algorithm Selection" ;
+    stt:anchor "1xx53-cryptographic-algorithm-selection" ;
+    dcterms:isPartOf <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl> ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/volume-1.md#1xx53-cryptographic-algorithm-selection> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/volume-1.md#1xx53-cryptographic-algorithm-selection> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/volume-1.html#1xx53-cryptographic-algorithm-selection> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/volume-1.html#1xx53-cryptographic-algorithm-selection> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3>
+    a stt:Section ;
+    dcterms:identifier "vhl-yy3-4.1.3" ;
+    stt:heading "2:3.YY3.4.1.3 Expected Actions" ;
+    stt:anchor "23yy3413-expected-actions" ;
+    dcterms:isPartOf <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy3> ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/ITI-YY3.html#23yy3413-expected-actions> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.1.2>
+    a stt:Section ;
+    dcterms:identifier "vhl-yy5-4.1.2" ;
+    stt:heading "2:3.YY5.4.1.2 Message Semantics" ;
+    stt:anchor "23yy5412-message-semantics" ;
+    dcterms:isPartOf <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy5> ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5412-message-semantics> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/ITI-YY5.md#23yy5412-message-semantics> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/ITI-YY5.html#23yy5412-message-semantics> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5412-message-semantics> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.1.3>
+    a stt:Section ;
+    dcterms:identifier "vhl-yy5-4.1.3" ;
+    stt:heading "2:3.YY5.4.1.3 Authentication Option - HTTP Message Signatures" ;
+    stt:anchor "23yy5413-authentication-option---http-message-signatures" ;
+    dcterms:isPartOf <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy5> ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5413-authentication-option---http-message-signatures> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/ITI-YY5.md#23yy5413-authentication-option---http-message-signatures> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/ITI-YY5.html#23yy5413-authentication-option---http-message-signatures> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5413-authentication-option---http-message-signatures> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.2>
+    a stt:Section ;
+    dcterms:identifier "vhl-yy5-4.2.2" ;
+    stt:heading "2:3.YY5.4.2.2 Message Semantics" ;
+    stt:anchor "23yy5422-message-semantics" ;
+    dcterms:isPartOf <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy5> ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5422-message-semantics> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/ITI-YY5.md#23yy5422-message-semantics> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/ITI-YY5.html#23yy5422-message-semantics> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5422-message-semantics> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.4>
+    a stt:Section ;
+    dcterms:identifier "vhl-yy5-4.2.4" ;
+    stt:heading "2:3.YY5.4.2.4 Document Content Retrieval" ;
+    stt:anchor "23yy5424-document-content-retrieval" ;
+    dcterms:isPartOf <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy5> ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5424-document-content-retrieval> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/ITI-YY5.md#23yy5424-document-content-retrieval> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/ITI-YY5.html#23yy5424-document-content-retrieval> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5424-document-content-retrieval> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.5>
+    a stt:Section ;
+    dcterms:identifier "vhl-yy5-4.2.5" ;
+    stt:heading "2:3.YY5.4.2.5 Document Encryption" ;
+    stt:anchor "23yy5425-document-encryption" ;
+    dcterms:isPartOf <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy5> ;
+    stt:pinnedUrl <https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5425-document-encryption> ;
+    stt:mainUrl <https://github.com/IHE/ITI.VHL/blob/main/input/pagecontent/ITI-YY5.md#23yy5425-document-encryption> ;
+    stt:ciUrl <https://build.fhir.org/ig/IHE/ITI.VHL/ITI-YY5.html#23yy5425-document-encryption> ;
+    stt:publishedUrl <https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5425-document-encryption> .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/actor-issuer>
     a stt:Actor ;
     dcterms:title "Issuer" ;
@@ -1512,6 +1691,13 @@
     dcterms:description "Two-phase HcertIssuer and HcertVerifier" ;
     stt:kotlinName "who.smart.trust.hcert" ;
     stt:rustName "smart-trust-hcert" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/mod-vhl>
+    a stt:ApiModule ;
+    dcterms:title "vhl" ;
+    dcterms:description "Verifiable Health Links (IHE ITI VHL): payload, vhlink:/ form, ITI-YY5 request and manifest, JWE, HTTP Message Signatures" ;
+    stt:kotlinName "who.smart.trust.vhl" ;
+    stt:rustName "smart-trust-vhl" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/mod-testkit>
     a stt:ApiModule ;
@@ -1770,6 +1956,76 @@
     stt:rustSignature "pub enum VerificationResult { Verified(VerifiedHcert), Failed(VerificationFailure) }" ;
     stt:witItem "verifier.verification-result" .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-payload>
+    a stt:ApiElement ;
+    dcterms:title "VhlPayload" ;
+    stt:kind "type" ;
+    dcterms:description "The SMART Health Links payload format IHE VHL reuses, with validation; a CBOR map at HCERT key 5." ;
+    stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-vhl> ;
+    stt:kotlinSignature "data class VhlPayload(val url: String, val key: String, val exp: Long?, val flag: String?, val label: String?, val v: Int?, val fhirBaseUrl: String?)" ;
+    stt:rustSignature "pub struct VhlPayload { pub url: String, pub key: String, pub exp: Option<i64>, pub flag: Option<String>, pub label: Option<String>, pub v: Option<i32>, pub fhir_base_url: Option<String> }" ;
+    stt:witItem "vhl.vhl-payload" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-link>
+    a stt:ApiElement ;
+    dcterms:title "Vhl.toVhlink / fromVhlink" ;
+    stt:kind "function" ;
+    dcterms:description "The vhlink:/ text form: minified JSON, base64url, prefixed." ;
+    stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-vhl> ;
+    stt:kotlinSignature "fun toVhlink(p: VhlPayload): String; fun fromVhlink(text: String): WitResult<VhlPayload, VhlError>" ;
+    stt:rustSignature "pub fn to_vhlink(p: &VhlPayload) -> String; pub fn from_vhlink(s: &str) -> Result<VhlPayload, VhlError>" ;
+    stt:witItem "vhl.to-vhlink" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-key>
+    a stt:ApiElement ;
+    dcterms:title "Vhl.newKey" ;
+    stt:kind "function" ;
+    dcterms:description "32 bytes from the platform CSPRNG, 43 base64url characters." ;
+    stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-vhl> ;
+    stt:kotlinSignature "fun newKey(): String" ;
+    stt:rustSignature "pub fn new_key() -> String" ;
+    stt:witItem "vhl.new-key" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-manifest-request>
+    a stt:ApiElement ;
+    dcterms:title "Vhl.buildManifestRequest" ;
+    stt:kind "function" ;
+    dcterms:description "Builds the ITI-YY5 POST <base>/List/_search form request; the host sends it." ;
+    stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-vhl> ;
+    stt:kotlinSignature "fun buildManifestRequest(p: VhlPayload, recipient: String, passcode: String?, embeddedLengthMax: Int?): WitResult<ManifestRequest, VhlError>" ;
+    stt:rustSignature "pub fn build_manifest_request(p: &VhlPayload, recipient: &str, passcode: Option<&str>, embedded_length_max: Option<u32>) -> Result<ManifestRequest, VhlError>" ;
+    stt:witItem "vhl.build-manifest-request" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-manifest>
+    a stt:ApiElement ;
+    dcterms:title "Vhl.parseManifest" ;
+    stt:kind "function" ;
+    dcterms:description "Reads the ITI-YY5 searchset Bundle into document URLs or references, with their decrypted content types." ;
+    stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-vhl> ;
+    stt:kotlinSignature "fun parseManifest(bundleJson: String): WitResult<List<ManifestDocument>, VhlError>" ;
+    stt:rustSignature "pub fn parse_manifest(json: &str) -> Result<Vec<ManifestDocument>, VhlError>" ;
+    stt:witItem "vhl.parse-manifest" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-jwe>
+    a stt:ApiElement ;
+    dcterms:title "Vhl.encrypt / decrypt" ;
+    stt:kind "function" ;
+    dcterms:description "JWE Compact, dir / A256GCM, with the payload key." ;
+    stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-vhl> ;
+    stt:kotlinSignature "fun encrypt(content: ByteArray, contentType: String, key: String): WitResult<String, VhlError>; fun decrypt(jwe: String, key: String): WitResult<Decrypted, VhlError>" ;
+    stt:rustSignature "pub fn encrypt(content: &[u8], cty: &str, key: &str) -> Result<String, VhlError>; pub fn decrypt(jwe: &str, key: &str) -> Result<Decrypted, VhlError>" ;
+    stt:witItem "vhl.decrypt" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-http-signature>
+    a stt:ApiElement ;
+    dcterms:title "Vhl.buildSignatureBase / signatureHeader" ;
+    stt:kind "function" ;
+    dcterms:description "RFC 9421 signature base and RFC 9530 Content-Digest for the receiver; the host signs the base." ;
+    stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-vhl> ;
+    stt:kotlinSignature "fun buildSignatureBase(r: SignatureRequest): SignatureBase; fun signatureHeader(signature: ByteArray, alg: String): WitResult<String, VhlError>" ;
+    stt:rustSignature "pub fn build_signature_base(r: &SignatureRequest) -> SignatureBase; pub fn signature_header(sig: &[u8], alg: &str) -> Result<String, VhlError>" ;
+    stt:witItem "vhl.build-signature-base" .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-testkit>
     a stt:ApiElement ;
     dcterms:title "TestVectors" ;
@@ -1841,6 +2097,7 @@
     dcterms:title "Subclaim 5 is called VHL in one place and SHL in another" ;
     dcterms:description "QR Code Generation 2.1 and the HCert logical model describe subclaim 5 as the URI of a Verifiable Health Link. HCERT Specification 3.2.7.1.5, which is the authoritative list, describes it as Smart Health Link (SHL) and links the SMART Health Links spec. The two define different URI schemes and payloads." ;
     stt:upstreamFix true ;
+    stt:resolutionHint "Raised as WorldHealthOrganization/smart-trust#130: 3.2.7.1.5 becomes Verifiable Health Link (IHE ITI VHL, SHL payload format), and the HCert model types key 5 as the trust-phw VerifiableHealthLinkPayload, carried as a CBOR map. The library follows that (STT-VHL-002)." ;
     stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.1> ;
     stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-3.2.7.1.5> ;
     stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/doc-sd-hcert> .
@@ -1962,6 +2219,92 @@
     stt:upstreamFix false ;
     stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc8610> ;
     stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9682> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-21>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-21" ;
+    dcterms:title "IHE ITI-YY3 puts a vhlink:/ string at HCERT key 5; ITI-YY4 reads an object" ;
+    dcterms:description "ITI-YY3 step 5 base64url-encodes the minified payload JSON, prefixes it with vhlink:/ and puts that text at claim -260 key 5. ITI-YY4 step 8 and its example read key 5 as a decoded object. Text-in-CBOR also costs about a third of the QR: on the ITI-YY3 example the string form is ~609 HC1 characters against ~422 for a CBOR map." ;
+    stt:upstreamFix true ;
+    stt:resolutionHint "Patch prepared for the IHE editors (upstream/ihe-iti-vhl/): for the HCERT carrier key 5 is the payload as a CBOR map; vhlink:/ stays the text form for URI carriers; receivers also accept the string. smart-trust#130 makes the same change on the WHO side." ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy4> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/doc-sd-hcert> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-22>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-22" ;
+    dcterms:title "IHE VHL examples break their own rules" ;
+    dcterms:description """The ITI-YY3 example JSON has "extension" but its base64url encodes "extensions". The ITI-YY4 example key is 44 characters and decodes to 33 bytes ("this is a secret key used for enc"), against the 43-character, 32-byte rule stated beside it.""" ;
+    stt:upstreamFix true ;
+    stt:resolutionHint "Fixed in the IHE patch in upstream/ihe-iti-vhl/." ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy4> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-23>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-23" ;
+    dcterms:title "trust-phw Health Link payload types exp and v as strings and requires type" ;
+    dcterms:description "HealthLinkPayload types exp and v as string where SMART Health Links and IHE VHL use numbers, and VerifiableHealthLinkPayload makes type 1..1, a field neither SHL nor IHE has." ;
+    stt:upstreamFix true ;
+    stt:resolutionHint "Raised as WorldHealthOrganization/smart-trust-phw#17: exp integer64, v integer, VHL type 0..1 (absent inside an HCERT)." ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/ext-vhl-payload> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-shl> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-24>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-24" ;
+    dcterms:title "IHE VHL leaves JWE alg/enc non-normative" ;
+    dcterms:description """Document encryption names dir / A256GCM only in an example and defers to "Cryptographic Algorithm Selection", which mandates nothing for encryption (its only baseline is RS256 for signatures). Two conformant implementations need not interoperate. SMART Health Links, which the section cites, fixes dir / A256GCM.""" ;
+    stt:upstreamFix true ;
+    stt:resolutionHint "The library implements dir / A256GCM only and refuses anything else (STT-VHL-007)." ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.5> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-1.5.3> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-25>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-25" ;
+    dcterms:title "Manifest URL is List? in one place and List/_search? in another" ;
+    dcterms:description "ITI-YY3 builds the manifest URL as .../List/_search?...; ITI-YY5 shows .../List?... and says the receiver POSTs the parameters to _search. The library accepts both and always POSTs to <base>/List/_search (STT-VHL-005)." ;
+    stt:upstreamFix true ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.1.2> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-26>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-26" ;
+    dcterms:title "IHE's Content-Digest example is not RFC 9530 syntax" ;
+    dcterms:description """The ITI-YY5 example sends "Content-Digest: sha-256=X48E...=", but RFC 9530 makes the value a Structured Field byte sequence, "sha-256=:X48E...=:". A sharer verifying strictly rejects the example form. The library emits RFC 9530 syntax (STT-VHL-008).""" ;
+    stt:upstreamFix true ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.1.3> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9530> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-27>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-27" ;
+    dcterms:title "No signed manifest in IHE VHL or SMART Health Links" ;
+    dcterms:description """The journeys ask to "verify DVC and signed VHL manifests against the DEV trust list". Neither specification signs the manifest: the VHL link is signed (the HCERT), and the manifest's integrity rests on mutual TLS and receiver authentication. Either the journey wording changes, or a signed-manifest option is proposed upstream.""" ;
+    stt:upstreamFix true ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.2> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/dir-journeys> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-28>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-28" ;
+    dcterms:title "How a receiver's keyid, and a DID trust list entry, map to keys" ;
+    dcterms:description """ITI-YY5 says keyid is "used to locate key in trust list" but not how; and ITI-YY2's DID trust list is not tied to the COSE kid (8-byte SHA-256 of the DSC) that ITI-YY4 uses to find the VHL signer.""" ;
+    stt:upstreamFix true ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.1.3> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-29>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-29" ;
+    dcterms:title "$generate-vhl sends the passcode in a GET query string" ;
+    dcterms:description "ITI-YY3's $generate-vhl is a GET with passcode as a query parameter, so the passcode lands in server and proxy logs. Host concern, not the library's; noted for the policy track." ;
+    stt:upstreamFix true ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-001>
     a stt:Requirement ;
@@ -3890,6 +4233,322 @@
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-A> ;
     stt:quote "the file format of this trusted list may vary, e.g., it can be a signed JWKS" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-001" ;
+    dcterms:title "VHL payload in the SMART Health Links payload format" ;
+    stt:statement "The library SHALL model the VHL payload as the SMART Health Links payload format that IHE VHL reuses: url (required, https), key (required, 43 base64url characters encoding 32 bytes), exp (optional integer, epoch seconds), flag (optional; the letters L and P in alphabetical order), label (optional, at most 80 characters), v (optional integer, default 1) and extension.fhirBaseUrl (optional). Validation SHALL report each violation. The single-file U flag is out of scope and SHALL be reported as unsupported." ;
+    stt:conformance "SHALL" ;
+    stt:category "functional" ;
+    stt:derivationType "direct" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-shl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/ext-vhl-payload> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001/derivation/3> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001/derivation/4> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-payload> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-22> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-23> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-shl> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:quote "Create the VHL payload (using the SHL payload format)" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/ext-vhl-payload> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001/derivation/4>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:quote "Single file - ignore" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-002>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-002" ;
+    dcterms:title "VHL payload at HCERT key 5 as a CBOR map" ;
+    stt:statement "The issuer SHALL carry the VHL payload at HCERT claim -260 key 5 as a CBOR map with text keys, exp and v as CBOR integers. The verifier SHALL read key 5 as that map, and SHALL also accept a vhlink:/ text string there, so that VHLs built to IHE ITI-YY3 still verify." ;
+    stt:conformance "SHALL" ;
+    stt:category "functional" ;
+    stt:derivationType "directive" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-002/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-3.2.7.1.5> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-002/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-002/derivation/3> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy4> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-002/derivation/4> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-payload> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-raw-payload> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-06> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-21> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-002/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:quote "CBOR map primary" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-002/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-3.2.7.1.5> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-002/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:quote "SHALL contain the VHL payload embedded in HCERT claim structure (claim key -260, key 5)" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-002/derivation/4>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy4> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-003>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-003" ;
+    dcterms:title "vhlink:/ text form" ;
+    stt:statement "The library SHALL convert a VHL payload to and from its text form: the minified JSON, base64url-encoded without padding (RFC 4648), prefixed with vhlink:/." ;
+    stt:conformance "SHALL" ;
+    stt:category "functional" ;
+    stt:derivationType "direct" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-003/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc4648> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-003/derivation/2> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-link> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-003/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:quote "Prefixed with vhlink:/" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-003/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc4648> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-004>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-004" ;
+    dcterms:title "VHL key generation" ;
+    stt:statement "The library SHALL generate a VHL key as 32 bytes from the platform's cryptographically secure random generator, encoded as 43 base64url characters." ;
+    stt:conformance "SHALL" ;
+    stt:category "security" ;
+    stt:derivationType "derived" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-004/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-shl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-004/derivation/2> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-key> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-004/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy3-4.1.3> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-004/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-shl> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-005>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-005" ;
+    dcterms:title "ITI-YY5 manifest request" ;
+    stt:statement "The library SHALL build the ITI-YY5 Retrieve Manifest request from a VHL payload: POST to <base>/List/_search (accepting a manifest URL of either the List?... or the List/_search?... form), Content-Type application/x-www-form-urlencoded, body holding the manifest URL's search parameters (_id, code, status and patient.identifier required; _include=List:item optional) plus recipient (required), passcode (required when, and only when, the payload's flag has P) and embeddedLengthMax (optional). It SHALL refuse a payload whose URL lacks a required parameter. Sending the request is the host's." ;
+    stt:conformance "SHALL" ;
+    stt:category "functional" ;
+    stt:derivationType "direct" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.1.2> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-005/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-005/derivation/2> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-manifest-request> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-25> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-29> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-005/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.1.2> ;
+    stt:quote "The VHL Receiver performs an HTTP POST to the _search endpoint with the manifest URL parameters from the VHL payload" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-005/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:quote "Manifest -> go with IHE VHL" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-006>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-006" ;
+    dcterms:title "ITI-YY5 manifest response" ;
+    stt:statement "The library SHALL read the ITI-YY5 response, a FHIR searchset Bundle: the List with search.mode match and, when the Include DocumentReference option was used, the DocumentReferences with search.mode include. For each document it SHALL return the attachment URL and the decrypted content type (attachment.contentType); for List items whose DocumentReference is not included it SHALL return the reference for the host to read." ;
+    stt:conformance "SHALL" ;
+    stt:category "functional" ;
+    stt:derivationType "direct" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.2> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-006/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.4> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-006/derivation/2> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-005> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-manifest> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-27> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-006/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.2> ;
+    stt:quote "the Retrieve Manifest response is — at the FHIR level — an MHD ITI-66 response message" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-006/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.4> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-007>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-007" ;
+    dcterms:title "Document encryption: JWE dir / A256GCM" ;
+    stt:statement "Document binaries SHALL be encrypted and decrypted as JWE Compact Serialization (RFC 7516) with alg dir and enc A256GCM (RFC 7518), the VHL key as the content key and the protected header as additional authenticated data, following SMART Health Links. Decryption SHALL refuse any other alg or enc, SHALL accept zip DEF, and SHALL fail on a bad tag. Encryption SHALL set cty to the document's content type." ;
+    stt:conformance "SHALL" ;
+    stt:category "security" ;
+    stt:derivationType "direct" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.5> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-007/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7516> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-007/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7518> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-007/derivation/3> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-007/derivation/4> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-jwe> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-24> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-007/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.5> ;
+    stt:quote "VHL document binaries are encrypted following the SMART Health Links — Encrypting and Decrypting Files convention" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-007/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7516> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-007/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc7518> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-007/derivation/4>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:quote "Encryption as VHL" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-008>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-008" ;
+    dcterms:title "Receiver authentication: HTTP Message Signatures" ;
+    stt:statement "For the ITI-YY5 HTTP Message Signatures option the library SHALL compute Content-Digest (RFC 9530, sha-256, Structured Field byte sequence) and the RFC 9421 signature base over @method, @path, @authority, content-type and content-digest with created, keyid and alg parameters, return the bytes for the host to sign with the receiver's key, and assemble the Signature-Input and Signature headers from the result. For ecdsa-p256-sha256 the signature SHALL be the 64-byte r||s; a DER signature SHALL be converted." ;
+    stt:conformance "SHALL" ;
+    stt:category "security" ;
+    stt:derivationType "direct" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.1.3> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-008/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9421> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-008/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9530> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-008/derivation/3> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-008/derivation/4> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-005> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-http-signature> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-26> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-28> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-008/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.1.3> ;
+    stt:quote "Implementations MAY authenticate using HTTP Message Signatures per RFC 9421" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-008/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9421> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-008/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-rfc9530> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-008/derivation/4>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-vhl> ;
+    stt:quote "Trust - IHE VHL" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-009>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-009" ;
+    dcterms:title "VHL expiry" ;
+    stt:statement "Validating a VHL payload against a caller-supplied now SHALL report an expired link when the payload's exp has passed, in addition to the HCERT exp check made by the verifier." ;
+    stt:conformance "SHALL" ;
+    stt:category "functional" ;
+    stt:derivationType "direct" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy4> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-009/derivation/1> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-001> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-payload> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-009/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/doc-ihe-vhl-yy4> ;
+    stt:quote "Check the payload's exp (if present) - reject if current time > expiration" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-010>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VHL-010" ;
+    dcterms:title "VHL with no I/O in the library" ;
+    stt:statement "The VHL functions SHALL do no network, file or clock access: the host sends the ITI-YY5 request and the ITI-68 document GETs over mutual TLS, holds the receiver's signing key, and logs AuditEvents. The library builds, parses, signs-by-proxy and decrypts." ;
+    stt:conformance "SHALL" ;
+    stt:category "architecture" ;
+    stt:derivationType "derived" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.4> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-010/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-journeys> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-010/derivation/2> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-012> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl-manifest-request> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-010/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/vhl-yy5-4.2.4> ;
+    stt:quote "Transport: Same ATNA secure channel used for ITI-YY5" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VHL-010/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-journeys> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-003>
     a stt:Requirement ;

@@ -31,8 +31,11 @@ internal actual object Platform {
         }
     }
 
-    actual fun inflate(data: ByteArray, maxOut: Int): ByteArray {
-        val inf = Inflater()
+    actual fun inflate(data: ByteArray, maxOut: Int): ByteArray = inflateWith(Inflater(), data, maxOut)
+
+    actual fun inflateRaw(data: ByteArray, maxOut: Int): ByteArray = inflateWith(Inflater(true), data, maxOut)
+
+    private fun inflateWith(inf: Inflater, data: ByteArray, maxOut: Int): ByteArray {
         try {
             inf.setInput(data)
             val out = ByteArrayOutputStream()
@@ -50,6 +53,25 @@ internal actual object Platform {
         } finally {
             inf.end()
         }
+    }
+
+    private val random by lazy { java.security.SecureRandom() }
+
+    actual fun randomBytes(n: Int): ByteArray = ByteArray(n).also { random.nextBytes(it) }
+
+    private fun gcm(mode: Int, key: ByteArray, iv: ByteArray, aad: ByteArray) =
+        javax.crypto.Cipher.getInstance("AES/GCM/NoPadding").apply {
+            init(mode, javax.crypto.spec.SecretKeySpec(key, "AES"), javax.crypto.spec.GCMParameterSpec(128, iv))
+            updateAAD(aad)
+        }
+
+    actual fun aesGcmEncrypt(key: ByteArray, iv: ByteArray, aad: ByteArray, plaintext: ByteArray): ByteArray =
+        gcm(javax.crypto.Cipher.ENCRYPT_MODE, key, iv, aad).doFinal(plaintext)
+
+    actual fun aesGcmDecrypt(key: ByteArray, iv: ByteArray, aad: ByteArray, ciphertextAndTag: ByteArray): ByteArray = try {
+        gcm(javax.crypto.Cipher.DECRYPT_MODE, key, iv, aad).doFinal(ciphertextAndTag)
+    } catch (e: java.security.GeneralSecurityException) {
+        throw IllegalArgumentException("AES-GCM decryption failed: ${e.message}")
     }
 
     private fun x509(der: ByteArray): X509Certificate =

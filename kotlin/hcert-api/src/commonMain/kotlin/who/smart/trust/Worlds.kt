@@ -8,6 +8,7 @@ import who.smart.trust.issuer.Issuer
 import who.smart.trust.subclaims.Subclaims
 import who.smart.trust.trust.Trust
 import who.smart.trust.verifier.Verifier
+import who.smart.trust.vhl.Vhl
 
 /**
  * Pure encoding and decoding: the pipeline steps on their own. No host
@@ -23,13 +24,14 @@ interface HcertCodecWorld {
 /**
  * Verifier: what a scanning app or border system embeds.
  *
- * WIT world `hcert-verifier`. Exports: types, codec, cose, subclaims, dvc, payloads, trust, verifier.
+ * WIT world `hcert-verifier`. Exports: types, codec, cose, subclaims, dvc, vhl, payloads, trust, verifier.
  */
 interface HcertVerifierWorld {
     val codec: Codec
     val cose: Cose
     val subclaims: Subclaims
     val dvc: Dvc
+    val vhl: Vhl
     val trust: Trust
     val verifier: Verifier
 }
@@ -37,13 +39,14 @@ interface HcertVerifierWorld {
 /**
  * Issuer: what a clinic or national issuance service embeds.
  *
- * WIT world `hcert-issuer`. Exports: types, codec, cose, subclaims, dvc, payloads, issuer.
+ * WIT world `hcert-issuer`. Exports: types, codec, cose, subclaims, dvc, vhl, payloads, issuer.
  */
 interface HcertIssuerWorld {
     val codec: Codec
     val cose: Cose
     val subclaims: Subclaims
     val dvc: Dvc
+    val vhl: Vhl
     val issuer: Issuer
 }
 

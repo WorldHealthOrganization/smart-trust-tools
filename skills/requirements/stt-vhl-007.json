@@ -1,0 +1,53 @@
+{
+  "id": "req:stt-vhl-007",
+  "title": "Document encryption: JWE dir / A256GCM",
+  "description": "Restates IHE VHL ITI-YY5, 2:3.YY5.4.2.5 Document Encryption; RFC 7516; RFC 7518; Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-vhl-001"
+  ],
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Document encryption: JWE dir / A256GCM",
+      "conformance": "SHALL",
+      "requirement": "Document binaries SHALL be encrypted and decrypted as JWE Compact Serialization (RFC 7516) with alg dir and enc A256GCM (RFC 7518), the VHL key as the content key and the protected header as additional authenticated data, following SMART Health Links. Decryption SHALL refuse any other alg or enc, SHALL accept zip DEF, and SHALL fail on a bad tag. Encryption SHALL set cty to the document's content type.",
+      "category": "security"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "security",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-VHL-007",
+    "derivation": "direct",
+    "api": [
+      "api-vhl-jwe"
+    ],
+    "issues": [
+      "OI-24"
+    ],
+    "sources": [
+      {
+        "src": "vhl-yy5-4.2.5",
+        "quote": "VHL document binaries are encrypted following the SMART Health Links — Encrypting and Decrypting Files convention"
+      },
+      {
+        "src": "std-rfc7516"
+      },
+      {
+        "src": "std-rfc7518"
+      },
+      {
+        "src": "dir-vhl",
+        "quote": "Encryption as VHL"
+      }
+    ]
+  }
+}

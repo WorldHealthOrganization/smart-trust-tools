@@ -9,12 +9,16 @@ private external object NodeCrypto {
     val constants: dynamic
     fun createHash(algorithm: String): dynamic
     fun verify(algorithm: String, data: dynamic, key: dynamic, signature: dynamic): Boolean
+    fun randomBytes(n: Int): dynamic
+    fun createCipheriv(algorithm: String, key: dynamic, iv: dynamic, options: dynamic): dynamic
+    fun createDecipheriv(algorithm: String, key: dynamic, iv: dynamic, options: dynamic): dynamic
 }
 
 @JsModule("node:zlib")
 private external object NodeZlib {
     fun deflateSync(data: dynamic, options: dynamic): dynamic
     fun inflateSync(data: dynamic, options: dynamic): dynamic
+    fun inflateRawSync(data: dynamic, options: dynamic): dynamic
 }
 
 @JsModule("node:buffer")
@@ -52,11 +56,43 @@ internal actual object Platform {
         return bytesOf(zlib.deflateSync(data.toBuffer(), opts))
     }
 
-    actual fun inflate(data: ByteArray, maxOut: Int): ByteArray {
+    actual fun inflate(data: ByteArray, maxOut: Int): ByteArray = inflateWith(data, maxOut, raw = false)
+
+    actual fun inflateRaw(data: ByteArray, maxOut: Int): ByteArray = inflateWith(data, maxOut, raw = true)
+
+    actual fun randomBytes(n: Int): ByteArray = bytesOf(crypto.randomBytes(n))
+
+    private fun gcmOptions(): dynamic {
+        val o: dynamic = js("({})")
+        o.authTagLength = 16
+        return o
+    }
+
+    actual fun aesGcmEncrypt(key: ByteArray, iv: ByteArray, aad: ByteArray, plaintext: ByteArray): ByteArray {
+        val c = crypto.createCipheriv("aes-256-gcm", key.toBuffer(), iv.toBuffer(), gcmOptions())
+        c.setAAD(aad.toBuffer())
+        val head = bytesOf(c.update(plaintext.toBuffer()))
+        val tail = bytesOf(c.final())
+        return head + tail + bytesOf(c.getAuthTag())
+    }
+
+    actual fun aesGcmDecrypt(key: ByteArray, iv: ByteArray, aad: ByteArray, ciphertextAndTag: ByteArray): ByteArray {
+        if (ciphertextAndTag.size < 16) throw IllegalArgumentException("ciphertext shorter than the tag")
+        return try {
+            val d = crypto.createDecipheriv("aes-256-gcm", key.toBuffer(), iv.toBuffer(), gcmOptions())
+            d.setAAD(aad.toBuffer())
+            d.setAuthTag(ciphertextAndTag.copyOfRange(ciphertextAndTag.size - 16, ciphertextAndTag.size).toBuffer())
+            bytesOf(d.update(ciphertextAndTag.copyOfRange(0, ciphertextAndTag.size - 16).toBuffer())) + bytesOf(d.final())
+        } catch (e: Throwable) {
+            throw IllegalArgumentException("AES-GCM decryption failed: ${e.message}")
+        }
+    }
+
+    private fun inflateWith(data: ByteArray, maxOut: Int, raw: Boolean): ByteArray {
         val opts: dynamic = js("({})")
         opts.maxOutputLength = maxOut
         return try {
-            bytesOf(zlib.inflateSync(data.toBuffer(), opts))
+            bytesOf(if (raw) zlib.inflateRawSync(data.toBuffer(), opts) else zlib.inflateSync(data.toBuffer(), opts))
         } catch (e: Throwable) {
             val code = e.asDynamic().code as? String
             if (code == "ERR_BUFFER_TOO_LARGE") throw LimitException("inflated data exceeds $maxOut bytes")

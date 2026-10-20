@@ -3,6 +3,7 @@ package who.smart.trust.payloads
 
 import who.smart.trust.dvc.DvcMin
 import who.smart.trust.types.CborBytes
+import who.smart.trust.vhl.VhlPayload
 
 data class RawPayload(
     val subclaim: Int,
@@ -11,6 +12,8 @@ data class RawPayload(
 
 sealed interface Payload {
     data class DvcMin(val value: who.smart.trust.dvc.DvcMin) : Payload
+
+    data class Vhl(val value: VhlPayload) : Payload
 
     data class Raw(val value: RawPayload) : Payload
 }

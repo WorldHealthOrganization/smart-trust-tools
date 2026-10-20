@@ -69,6 +69,12 @@ object HcertIssuer : Issuer {
                 }
                 key to item
             }
+            is Payload.Vhl -> {
+                val key = reg.subclaimFor(PayloadKind.VHL) ?: return WitResult.Err(IssueError.UnknownSubclaim(5))
+                val issues = HcertVhl.validate(p.value, null).filter { it.severity == Severity.BLOCKING }
+                if (issues.isNotEmpty()) return WitResult.Err(IssueError.PayloadInvalid(issues))
+                key to HcertVhl.toItem(p.value) // a CBOR map, not a vhlink:/ string [STT-VHL-002]
+            }
             is Payload.Raw -> {
                 val item = try {
                     cborDecode(p.value.cbor, DEFAULT_LIMITS)
@@ -247,7 +253,16 @@ object HcertVerifier : Verifier {
     } ?: throw Fail(Step.CWT, FailureReason.COSE_MALFORMED, "CWT claim set is not a map")
 
     private fun payloadOf(subclaim: Int, body: CborItem, reg: Registry): Payload =
-        if (subclaim == reg.subclaimFor(PayloadKind.DVC_MIN)) {
+        if (subclaim == reg.subclaimFor(PayloadKind.VHL)) {
+            // A CBOR map, or the vhlink:/ string IHE ITI-YY3 describes. [STT-VHL-002]
+            val p = when (val r = HcertVhl.fromItem(body)) {
+                is WitResult.Ok -> r.value
+                is WitResult.Err -> throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, "VHL payload: ${r.error}")
+            }
+            HcertVhl.validate(p, null).firstOrNull { it.severity == Severity.BLOCKING }
+                ?.let { throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, "${it.path}: ${it.message}") }
+            Payload.Vhl(p)
+        } else if (subclaim == reg.subclaimFor(PayloadKind.DVC_MIN)) {
             val dvc = when (val r = HcertDvc.fromItem(body)) {
                 is WitResult.Ok -> r.value
                 is WitResult.Err -> throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, r.error.joinToString("; ") { "${it.path}: ${it.message}" })
@@ -315,6 +330,8 @@ object HcertVerifier : Verifier {
         val subclaim = (keyItem as? CborItem.Int)?.value?.toInt() ?: throw Fail(Step.HCERT, FailureReason.HCERT_MISSING, "hcert key is not an integer")
         if (reg.lookup(subclaim) == null) diagnostics += Diagnostic(Step.HCERT, Severity.WARNING, "subclaim $subclaim is not in the registry")
         val payload = payloadOf(subclaim, body, reg)
+        // The link's own exp, besides the HCERT's. [STT-VHL-009]
+        if (payload is Payload.Vhl) payload.value.exp?.let { if (now - skew > it) throw Fail(Step.TIME, FailureReason.EXPIRED, "the VHL payload's exp has passed") }
 
         // Claims this version does not know are kept. [STT-CWT-006]
         val known = setOf(Claim.ISS, Claim.EXP, Claim.IAT, Claim.HCERT)
@@ -333,5 +350,6 @@ object Hcert : HcertWorld {
     override val dvc = HcertDvc
     override val trust = HcertTrust
     override val issuer = HcertIssuer
+    override val vhl = HcertVhl
     override val verifier = HcertVerifier
 }

@@ -1,0 +1,39 @@
+{
+  "id": "req:stt-vhl-009",
+  "title": "VHL expiry",
+  "description": "Restates IHE VHL ITI-YY4 Provide VHL.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-vhl-001"
+  ],
+  "actors": [
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "VHL expiry",
+      "conformance": "SHALL",
+      "requirement": "Validating a VHL payload against a caller-supplied now SHALL report an expired link when the payload's exp has passed, in addition to the HCERT exp check made by the verifier.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-VHL-009",
+    "derivation": "direct",
+    "api": [
+      "api-vhl-payload"
+    ],
+    "sources": [
+      {
+        "src": "doc-ihe-vhl-yy4",
+        "quote": "Check the payload's exp (if present) - reject if current time > expiration"
+      }
+    ]
+  }
+}

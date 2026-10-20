@@ -1,0 +1,47 @@
+{
+  "id": "req:stt-vhl-005",
+  "title": "ITI-YY5 manifest request",
+  "description": "Restates IHE VHL ITI-YY5, 2:3.YY5.4.1.2 Message Semantics; Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-vhl-001"
+  ],
+  "actors": [
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "ITI-YY5 manifest request",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL build the ITI-YY5 Retrieve Manifest request from a VHL payload: POST to <base>/List/_search (accepting a manifest URL of either the List?... or the List/_search?... form), Content-Type application/x-www-form-urlencoded, body holding the manifest URL's search parameters (_id, code, status and patient.identifier required; _include=List:item optional) plus recipient (required), passcode (required when, and only when, the payload's flag has P) and embeddedLengthMax (optional). It SHALL refuse a payload whose URL lacks a required parameter. Sending the request is the host's.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-VHL-005",
+    "derivation": "direct",
+    "api": [
+      "api-vhl-manifest-request"
+    ],
+    "issues": [
+      "OI-25",
+      "OI-29"
+    ],
+    "sources": [
+      {
+        "src": "vhl-yy5-4.1.2",
+        "quote": "The VHL Receiver performs an HTTP POST to the _search endpoint with the manifest URL parameters from the VHL payload"
+      },
+      {
+        "src": "dir-vhl",
+        "quote": "Manifest -> go with IHE VHL"
+      }
+    ]
+  }
+}

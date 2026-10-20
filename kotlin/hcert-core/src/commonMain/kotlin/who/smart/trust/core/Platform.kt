@@ -29,4 +29,12 @@ internal expect object Platform {
      * MGF1-SHA-256 and a 32-byte salt.
      */
     fun verify(alg: CoseAlgorithm, dscDer: ByteArray, data: ByteArray, signature: ByteArray): Boolean
+    /** Bytes from the platform's cryptographically secure random generator. */
+    fun randomBytes(n: Int): ByteArray
+    /** AES-256-GCM with a 128-bit tag; returns ciphertext followed by the tag. */
+    fun aesGcmEncrypt(key: ByteArray, iv: ByteArray, aad: ByteArray, plaintext: ByteArray): ByteArray
+    /** Inverse of [aesGcmEncrypt]; throws IllegalArgumentException when the tag does not verify. */
+    fun aesGcmDecrypt(key: ByteArray, iv: ByteArray, aad: ByteArray, ciphertextAndTag: ByteArray): ByteArray
+    /** Inflates raw DEFLATE (RFC 1951, no ZLIB header), as JWE "zip": "DEF" uses. */
+    fun inflateRaw(data: ByteArray, maxOut: Int): ByteArray
 }

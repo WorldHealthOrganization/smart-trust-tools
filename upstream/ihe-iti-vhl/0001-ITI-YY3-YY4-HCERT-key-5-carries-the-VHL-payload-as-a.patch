@@ -1,0 +1,124 @@
+From 3538503451817f56eb7f4eb8be855f6f566d9325 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Tue, 20 Oct 2026 18:49:21 +0000
+Subject: [PATCH] ITI-YY3/YY4: HCERT key 5 carries the VHL payload as a CBOR
+ map; fix examples
+
+- ITI-YY3 step 5: for the HCERT carrier (format=qrcode) the payload goes at
+  claim -260 key 5 as a CBOR map with the same text keys; it is not
+  base64url-encoded or prefixed. The vhlink:/ text form stays for carriers
+  that need a URI. On the ITI-YY3 example the CBOR map is ~422 HC1 characters
+  against ~609 for the vhlink:/ string.
+- ITI-YY3 example: the base64url (step 5b/5c) encoded "extensions" while the
+  JSON says "extension"; re-encoded from the JSON shown.
+- ITI-YY3 HCERT example and the requirement list show key 5 as a map.
+- ITI-YY4 step 8: key 5 is a CBOR map; receivers SHOULD also accept a
+  vhlink:/ string for VHLs issued earlier.
+- ITI-YY4 example key was 44 characters (33 bytes, 'this is a secret key used
+  for enc'), against the 43-character / 32-byte rule; replaced with the
+  ITI-YY3 example key.
+---
+ input/pagecontent/ITI-YY3.md | 29 ++++++++++++++++++-----------
+ input/pagecontent/ITI-YY4.md |  4 ++--
+ 2 files changed, 20 insertions(+), 13 deletions(-)
+
+diff --git a/input/pagecontent/ITI-YY3.md b/input/pagecontent/ITI-YY3.md
+index 9cf821b..9bc5507 100644
+--- a/input/pagecontent/ITI-YY3.md
++++ b/input/pagecontent/ITI-YY3.md
+@@ -159,10 +159,9 @@ The VHL payload SHALL be constructed in alignment with the [SMART Health Links s
+    - `extension`: (conditional) object containing implementation-defined extensions. Required when the {{ linkvhls }} supports the OAuth with SSRAA Option, in which case it SHALL include:
+      - `fhirBaseUrl`: the FHIR base URL of the {{ linkvhls }} (e.g., `https://vhl-sharer.example.org`). This enables the {{ linkvhlr }} to perform UDAP Discovery (per Section 2 of the HL7 Security for Scalable Registration, Authentication, and Authorization IG) and Dynamic Client Registration (per Section 3) with the {{ linkvhls }} before making an authenticated manifest request via ITI-YY5.
+ 
+-5. The JSON Payload is then:
+-    - Minified
+-    - Base64urlencoded
+-    - Prefixed with vhlink:/
++5. How the payload is carried depends on the carrier:
++    - **HCERT (`format=qrcode`)**: the payload is placed at HCERT claim -260, key 5, as a **CBOR map** with the same text keys and values (`url`, `key`, `exp`, `flag`, `label`, `v`, `extension`); `exp` and `v` are CBOR integers. It SHALL NOT be base64url-encoded or prefixed: base64url-encoding JSON text inside the CBOR makes the QR code roughly a third larger.
++    - **Text form**, for carriers that need a URI (for example a hyperlink): the JSON payload is minified, base64url-encoded and prefixed with `vhlink:/`.
+ 
+ **Example VHL Construction:**
+ 
+@@ -182,19 +181,19 @@ The VHL payload SHALL be constructed in alignment with the [SMART Health Links s
+ ```
+ 
+ ```text
+-// Step 5: Minify, Base64url-encode, and prefix with vhlink:/
++// Step 5 (text form only): Minify, Base64url-encode, and prefix with vhlink:/
+ 
+ // Step 5a – Minified JSON:
+ {"url":"https://vhl-sharer.example.org/List/_search?_id=abc123def456&code=folder&status=current&patient.identifier=urn:oid:2.16.840.1.113883.2.4.6.3|PASSPORT123&_include=List:item","key":"86F8LY5LlWAa1-OS_FgrTnYNqFHJP2ey5RSKLJBN9jk","exp":1735689600,"flag":"LP","label":"Patient Health Summary","v":1,"extension":{"fhirBaseUrl":"https://vhl-sharer.example.org"}}
+ 
+ // Step 5b – Base64url-encoded:
+-eyJ1cmwiOiJodHRwczovL3ZobC1zaGFyZXIuZXhhbXBsZS5vcmcvTGlzdC9fc2VhcmNoP19pZD1hYmMxMjNkZWY0NTYmY29kZT1mb2xkZXImc3RhdHVzPWN1cnJlbnQmcGF0aWVudC5pZGVudGlmaWVyPXVybjpvaWQ6Mi4xNi44NDAuMS4xMTM4ODMuMi40LjYuM3xQQVNTUE9SVDEyMyZfaW5jbHVkZT1MaXN0Oml0ZW0iLCJrZXkiOiI4NkY4TFk1TGxXQWExLU9TX0ZnclRuWU5xRkhKUDJleTVSU0tMSkJOOWprIiwiZXhwIjoxNzM1Njg5NjAwLCJmbGFnIjoiTFAiLCJsYWJlbCI6IlBhdGllbnQgSGVhbHRoIFN1bW1hcnkiLCJ2IjoxLCJleHRlbnNpb25zIjp7ImZoaXJCYXNlVXJsIjoiaHR0cHM6Ly92aGwtc2hhcmVyLmV4YW1wbGUub3JnIn19
++eyJ1cmwiOiJodHRwczovL3ZobC1zaGFyZXIuZXhhbXBsZS5vcmcvTGlzdC9fc2VhcmNoP19pZD1hYmMxMjNkZWY0NTYmY29kZT1mb2xkZXImc3RhdHVzPWN1cnJlbnQmcGF0aWVudC5pZGVudGlmaWVyPXVybjpvaWQ6Mi4xNi44NDAuMS4xMTM4ODMuMi40LjYuM3xQQVNTUE9SVDEyMyZfaW5jbHVkZT1MaXN0Oml0ZW0iLCJrZXkiOiI4NkY4TFk1TGxXQWExLU9TX0ZnclRuWU5xRkhKUDJleTVSU0tMSkJOOWprIiwiZXhwIjoxNzM1Njg5NjAwLCJmbGFnIjoiTFAiLCJsYWJlbCI6IlBhdGllbnQgSGVhbHRoIFN1bW1hcnkiLCJ2IjoxLCJleHRlbnNpb24iOnsiZmhpckJhc2VVcmwiOiJodHRwczovL3ZobC1zaGFyZXIuZXhhbXBsZS5vcmcifX0
+ 
+ // Step 5c – Final VHL link (prefixed with vhlink:/):
+-vhlink:/eyJ1cmwiOiJodHRwczovL3ZobC1zaGFyZXIuZXhhbXBsZS5vcmcvTGlzdC9fc2VhcmNoP19pZD1hYmMxMjNkZWY0NTYmY29kZT1mb2xkZXImc3RhdHVzPWN1cnJlbnQmcGF0aWVudC5pZGVudGlmaWVyPXVybjpvaWQ6Mi4xNi44NDAuMS4xMTM4ODMuMi40LjYuM3xQQVNTUE9SVDEyMyZfaW5jbHVkZT1MaXN0Oml0ZW0iLCJrZXkiOiI4NkY4TFk1TGxXQWExLU9TX0ZnclRuWU5xRkhKUDJleTVSU0tMSkJOOWprIiwiZXhwIjoxNzM1Njg5NjAwLCJmbGFnIjoiTFAiLCJsYWJlbCI6IlBhdGllbnQgSGVhbHRoIFN1bW1hcnkiLCJ2IjoxLCJleHRlbnNpb25zIjp7ImZoaXJCYXNlVXJsIjoiaHR0cHM6Ly92aGwtc2hhcmVyLmV4YW1wbGUub3JnIn19
++vhlink:/eyJ1cmwiOiJodHRwczovL3ZobC1zaGFyZXIuZXhhbXBsZS5vcmcvTGlzdC9fc2VhcmNoP19pZD1hYmMxMjNkZWY0NTYmY29kZT1mb2xkZXImc3RhdHVzPWN1cnJlbnQmcGF0aWVudC5pZGVudGlmaWVyPXVybjpvaWQ6Mi4xNi44NDAuMS4xMTM4ODMuMi40LjYuM3xQQVNTUE9SVDEyMyZfaW5jbHVkZT1MaXN0Oml0ZW0iLCJrZXkiOiI4NkY4TFk1TGxXQWExLU9TX0ZnclRuWU5xRkhKUDJleTVSU0tMSkJOOWprIiwiZXhwIjoxNzM1Njg5NjAwLCJmbGFnIjoiTFAiLCJsYWJlbCI6IlBhdGllbnQgSGVhbHRoIFN1bW1hcnkiLCJ2IjoxLCJleHRlbnNpb24iOnsiZmhpckJhc2VVcmwiOiJodHRwczovL3ZobC1zaGFyZXIuZXhhbXBsZS5vcmcifX0
+ 
+ // NOTE: extension.fhirBaseUrl is only present when the VHL Sharer supports the OAuth with SSRAA Option
+-// The VHL link (step 5c) will be embedded in the HCERT structure (see QR Code Generation below)
++// For format=qrcode the payload itself (step 4), not the vhlink:/ text form, is embedded in the HCERT as a CBOR map (see QR Code Generation below)
+ ```
+ 
+ **QR Code Generation (HCERT/CWT Encoding) — `format=qrcode`**
+@@ -204,13 +203,21 @@ After constructing the VHL payload (steps 1–4 above), the {{ linkvhls }} SHALL
+ **Example HCERT/CWT Structure:**
+ 
+ ```json
+-// CWT Claims
++// CWT Claims (shown as JSON; encoded as CBOR, with key 5 a CBOR map)
+ {
+   "1": "US",                    // iss: issuer country code
+   "4": 1735689600,              // exp: expiration timestamp
+   "6": 1704067200,              // iat: issued at timestamp
+   "-260": {                     // hcert: health certificate claim
+-    "5": "vhlink:/eyJ1cmwiOiJodHRwczovL3ZobC1zaGFyZXIuZXhhbXBsZS5vcmcvTGlzdC9fc2VhcmNoP19pZD1hYmMxMjNkZWY0NTYmY29kZT1mb2xkZXImc3RhdHVzPWN1cnJlbnQmcGF0aWVudC5pZGVudGlmaWVyPXVybjpvaWQ6Mi4xNi44NDAuMS4xMTM4ODMuMi40LjYuM3xQQVNTUE9SVDEyMyZfaW5jbHVkZT1MaXN0Oml0ZW0iLCJrZXkiOiI4NkY4TFk1TGxXQWExLU9TX0ZnclRuWU5xRkhKUDJleTVSU0tMSkJOOWprIiwiZXhwIjoxNzM1Njg5NjAwLCJmbGFnIjoiTFAiLCJsYWJlbCI6IlBhdGllbnQgSGVhbHRoIFN1bW1hcnkiLCJ2IjoxLCJleHRlbnNpb25zIjp7ImZoaXJCYXNlVXJsIjoiaHR0cHM6Ly92aGwtc2hhcmVyLmV4YW1wbGUub3JnIn19"
++    "5": {                      // VHL payload as a CBOR map
++      "url": "https://vhl-sharer.example.org/List/_search?_id=abc123def456&code=folder&status=current&patient.identifier=urn:oid:2.16.840.1.113883.2.4.6.3|PASSPORT123&_include=List:item",
++      "key": "86F8LY5LlWAa1-OS_FgrTnYNqFHJP2ey5RSKLJBN9jk",
++      "exp": 1735689600,
++      "flag": "LP",
++      "label": "Patient Health Summary",
++      "v": 1,
++      "extension": { "fhirBaseUrl": "https://vhl-sharer.example.org" }
++    }
+   }
+ }
+ 
+@@ -294,7 +301,7 @@ The response SHALL include exactly one of the following output parameters, selec
+ 
+ **QR Code Output:**
+ - SHALL be encoded as HCERT with `HC1:` prefix
+-- SHALL contain the VHL payload embedded in HCERT claim structure (claim key -260, key 5)
++- SHALL contain the VHL payload embedded in HCERT claim structure (claim key -260, key 5) as a CBOR map, not as a `vhlink:/` string
+ - SHALL be suitable for camera scanning
+ - SHALL be in PNG or SVG format
+ 
+diff --git a/input/pagecontent/ITI-YY4.md b/input/pagecontent/ITI-YY4.md
+index 6f48198..f60838e 100644
+--- a/input/pagecontent/ITI-YY4.md
++++ b/input/pagecontent/ITI-YY4.md
+@@ -154,7 +154,7 @@ The VHL Receiver SHALL decode the received VHL using the appropriate path below.
+ 
+ 8. **Extract VHL Payload from HCERT**:
+    - Within the `hcert` claim (claim key -260), locate claim key 5
+-   - Claim key 5 contains the VHL payload (conforming to the SHL payload format) with:
++   - Claim key 5 contains the VHL payload (conforming to the SHL payload format) as a CBOR map. A VHL Receiver SHOULD also accept a `vhlink:/` text string at key 5 (base64url-decode the JSON after the prefix), for VHLs issued before this was clarified. The payload has:
+      - `url`: manifest URL (required) - includes all mandatory FHIR search parameters
+      - `key`: base64url-encoded decryption key, 43 characters (required). The {{ linkvhlr }} caches this key for the VHL session and uses it as the symmetric key for JWE `dir`/`A256GCM` decryption of document binaries retrieved via [ITI-68](https://profiles.ihe.net/ITI/MHD/ITI-68.html); see [ITI-YY5 Document Encryption](ITI-YY5.html#23yy5425-document-encryption).
+      - `flag`: flags such as "L" for long-term, "P" for passcode (optional)
+@@ -231,7 +231,7 @@ Step 6: Extract CWT claims:
+ Step 7: Within hcert (claim -260), extract claim key 5 (VHL payload):
+   {
+     "url": "https://vhl-sharer.example.org/List/_search?_id=abc123def456&code=folder&status=current&patient.identifier=urn:oid:2.16.840.1.113883.2.4.6.3|PASSPORT123&_include=List:item",
+-    "key": "dGhpcyBpcyBhIHNlY3JldCBrZXkgdXNlZCBmb3IgZW5j",
++    "key": "86F8LY5LlWAa1-OS_FgrTnYNqFHJP2ey5RSKLJBN9jk",
+     "flag": "LP",
+     "exp": 1735689600,
+     "label": "Patient Health Summary",
+-- 
+2.43.0
+

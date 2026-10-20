@@ -15,6 +15,7 @@ Every smart-trust reference carries up to four URLs, so links work today and aft
 | pinned (`main`) | smart-trust main at time of drafting (IG version 1.7.5 ci-build) | `WorldHealthOrganization/smart-trust@e277cce5dcb8` |
 | pinned (`pr129`) | smart-trust PR 129 head (QR Code Generation page) | `WorldHealthOrganization/smart-trust@50bcb25b387d` |
 | pinned (`phw`) | smart-trust-phw main at time of drafting (DVCMin logical models) | `WorldHealthOrganization/smart-trust-phw@fd3b5480e5df` |
+| pinned (`ihevhl`) | IHE ITI Verifiable Health Link (VHL) profile source at time of drafting | `IHE/ITI.VHL@48201473ffa6` |
 | PR preview | IG build of the PR branch | https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/ |
 | CI build | continuous build of main | https://worldhealthorganization.github.io/smart-trust/ |
 | published | canonical released IG | https://smart.who.int/trust/ |
@@ -23,10 +24,10 @@ Links below go to the pinned source. Content from PR 129 also links to its PR pr
 
 ## Summary
 
-- **81 requirements**: 78 SHALL, 2 SHALL NOT, 1 SHOULD
-- by category: api 5, architecture 10, functional 42, non-functional 5, scope 2, security 9, test 8
-- by derivation: derived 42, direct 30, directive 9
-- **19 open issues** (13 to fix upstream in smart-trust)
+- **91 requirements**: 88 SHALL, 2 SHALL NOT, 1 SHOULD
+- by category: api 5, architecture 11, functional 48, non-functional 5, scope 2, security 12, test 8
+- by derivation: derived 44, direct 37, directive 10
+- **28 open issues** (22 to fix upstream in smart-trust)
 
 ## Pipeline
 
@@ -1078,6 +1079,160 @@ flowchart LR
 - Refines: [STT-TRU-001](#stt-tru-001)
 - API: [`StaticTrustList`](#api-static-trust)
 
+### VHL — Verifiable Health Link
+
+<a id="stt-vhl-001"></a>
+
+#### STT-VHL-001 VHL payload in the SMART Health Links payload format
+
+> The library SHALL model the VHL payload as the SMART Health Links payload format that IHE VHL reuses: url (required, https), key (required, 43 base64url characters encoding 32 bytes), exp (optional integer, epoch seconds), flag (optional; the letters L and P in alphabetical order), label (optional, at most 80 characters), v (optional integer, default 1) and extension.fhirBaseUrl (optional). Validation SHALL report each violation. The single-file U flag is out of scope and SHALL be reported as unsupported.
+
+**SHALL** · functional · direct · targets: kotlin, rust
+
+- Derived from:
+  - [HL7 SMART Health Cards and Links: SMART Health Links](https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html)
+  - [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions)) — “Create the VHL payload (using the SHL payload format)”
+  - [HealthLinkPayload and VerifiableHealthLinkPayload logical models (trust-phw)](https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/models/VerifiableHealthLinkPayload.fsh) ([published](https://smart.who.int/trust-phw/StructureDefinition-VerifiableHealthLinkPayload.html))
+  - Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5 — “Single file - ignore”
+- API: [`VhlPayload`](#api-vhl-payload)
+- Open issues: [OI-22](#oi-22), [OI-23](#oi-23)
+
+<a id="stt-vhl-002"></a>
+
+#### STT-VHL-002 VHL payload at HCERT key 5 as a CBOR map
+
+> The issuer SHALL carry the VHL payload at HCERT claim -260 key 5 as a CBOR map with text keys, exp and v as CBOR integers. The verifier SHALL read key 5 as that map, and SHALL also accept a vhlink:/ text string there, so that VHLs built to IHE ITI-YY3 still verify.
+
+**SHALL** · functional · directive · targets: kotlin, rust
+
+- Derived from:
+  - Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5 — “CBOR map primary”
+  - [HCERT Specification § 3.2.7.1.5 Smart Health Link (SHL)](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#32715-smart-health-link-shl) ([published](https://smart.who.int/trust/hcert_spec.html#32715-smart-health-link-shl))
+  - [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions)) — “SHALL contain the VHL payload embedded in HCERT claim structure (claim key -260, key 5)”
+  - [IHE VHL ITI-YY4 Provide VHL](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY4.md) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY4.html))
+- Refines: [STT-VHL-001](#stt-vhl-001)
+- API: [`VhlPayload`](#api-vhl-payload), [`RawPayload`](#api-raw-payload)
+- Open issues: [OI-06](#oi-06), [OI-21](#oi-21)
+
+<a id="stt-vhl-003"></a>
+
+#### STT-VHL-003 vhlink:/ text form
+
+> The library SHALL convert a VHL payload to and from its text form: the minified JSON, base64url-encoded without padding (RFC 4648), prefixed with vhlink:/.
+
+**SHALL** · functional · direct · targets: kotlin, rust
+
+- Derived from:
+  - [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions)) — “Prefixed with vhlink:/”
+  - [RFC 4648 Base16, Base32 and Base64 encodings (base64url)](https://www.rfc-editor.org/rfc/rfc4648)
+- Refines: [STT-VHL-001](#stt-vhl-001)
+- API: [`Vhl.toVhlink / fromVhlink`](#api-vhl-link)
+
+<a id="stt-vhl-004"></a>
+
+#### STT-VHL-004 VHL key generation
+
+> The library SHALL generate a VHL key as 32 bytes from the platform's cryptographically secure random generator, encoded as 43 base64url characters.
+
+**SHALL** · security · derived · targets: kotlin, rust
+
+- Derived from:
+  - [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions))
+  - [HL7 SMART Health Cards and Links: SMART Health Links](https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html)
+- Refines: [STT-VHL-001](#stt-vhl-001)
+- API: [`Vhl.newKey`](#api-vhl-key)
+
+<a id="stt-vhl-005"></a>
+
+#### STT-VHL-005 ITI-YY5 manifest request
+
+> The library SHALL build the ITI-YY5 Retrieve Manifest request from a VHL payload: POST to <base>/List/_search (accepting a manifest URL of either the List?... or the List/_search?... form), Content-Type application/x-www-form-urlencoded, body holding the manifest URL's search parameters (_id, code, status and patient.identifier required; _include=List:item optional) plus recipient (required), passcode (required when, and only when, the payload's flag has P) and embeddedLengthMax (optional). It SHALL refuse a payload whose URL lacks a required parameter. Sending the request is the host's.
+
+**SHALL** · functional · direct · targets: kotlin, rust
+
+- Derived from:
+  - [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.1.2 Message Semantics](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5412-message-semantics) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5412-message-semantics)) — “The VHL Receiver performs an HTTP POST to the _search endpoint with the manifest URL parameters from the VHL payload”
+  - Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5 — “Manifest -> go with IHE VHL”
+- Refines: [STT-VHL-001](#stt-vhl-001)
+- API: [`Vhl.buildManifestRequest`](#api-vhl-manifest-request)
+- Open issues: [OI-25](#oi-25), [OI-29](#oi-29)
+
+<a id="stt-vhl-006"></a>
+
+#### STT-VHL-006 ITI-YY5 manifest response
+
+> The library SHALL read the ITI-YY5 response, a FHIR searchset Bundle: the List with search.mode match and, when the Include DocumentReference option was used, the DocumentReferences with search.mode include. For each document it SHALL return the attachment URL and the decrypted content type (attachment.contentType); for List items whose DocumentReference is not included it SHALL return the reference for the host to read.
+
+**SHALL** · functional · direct · targets: kotlin, rust
+
+- Derived from:
+  - [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.2.2 Message Semantics](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5422-message-semantics) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5422-message-semantics)) — “the Retrieve Manifest response is — at the FHIR level — an MHD ITI-66 response message”
+  - [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.2.4 Document Content Retrieval](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5424-document-content-retrieval) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5424-document-content-retrieval))
+- Refines: [STT-VHL-005](#stt-vhl-005)
+- API: [`Vhl.parseManifest`](#api-vhl-manifest)
+- Open issues: [OI-27](#oi-27)
+
+<a id="stt-vhl-007"></a>
+
+#### STT-VHL-007 Document encryption: JWE dir / A256GCM
+
+> Document binaries SHALL be encrypted and decrypted as JWE Compact Serialization (RFC 7516) with alg dir and enc A256GCM (RFC 7518), the VHL key as the content key and the protected header as additional authenticated data, following SMART Health Links. Decryption SHALL refuse any other alg or enc, SHALL accept zip DEF, and SHALL fail on a bad tag. Encryption SHALL set cty to the document's content type.
+
+**SHALL** · security · direct · targets: kotlin, rust
+
+- Derived from:
+  - [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.2.5 Document Encryption](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5425-document-encryption) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5425-document-encryption)) — “VHL document binaries are encrypted following the SMART Health Links — Encrypting and Decrypting Files convention”
+  - [RFC 7516 JSON Web Encryption (JWE)](https://www.rfc-editor.org/rfc/rfc7516)
+  - [RFC 7518 JSON Web Algorithms (JWA)](https://www.rfc-editor.org/rfc/rfc7518)
+  - Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5 — “Encryption as VHL”
+- Refines: [STT-VHL-001](#stt-vhl-001)
+- API: [`Vhl.encrypt / decrypt`](#api-vhl-jwe)
+- Open issues: [OI-24](#oi-24)
+
+<a id="stt-vhl-008"></a>
+
+#### STT-VHL-008 Receiver authentication: HTTP Message Signatures
+
+> For the ITI-YY5 HTTP Message Signatures option the library SHALL compute Content-Digest (RFC 9530, sha-256, Structured Field byte sequence) and the RFC 9421 signature base over @method, @path, @authority, content-type and content-digest with created, keyid and alg parameters, return the bytes for the host to sign with the receiver's key, and assemble the Signature-Input and Signature headers from the result. For ecdsa-p256-sha256 the signature SHALL be the 64-byte r||s; a DER signature SHALL be converted.
+
+**SHALL** · security · direct · targets: kotlin, rust
+
+- Derived from:
+  - [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.1.3 Authentication Option - HTTP Message Signatures](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5413-authentication-option---http-message-signatures) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5413-authentication-option---http-message-signatures)) — “Implementations MAY authenticate using HTTP Message Signatures per RFC 9421”
+  - [RFC 9421 HTTP Message Signatures](https://www.rfc-editor.org/rfc/rfc9421)
+  - [RFC 9530 Digest Fields (Content-Digest)](https://www.rfc-editor.org/rfc/rfc9530)
+  - Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5 — “Trust - IHE VHL”
+- Refines: [STT-VHL-005](#stt-vhl-005)
+- API: [`Vhl.buildSignatureBase / signatureHeader`](#api-vhl-http-signature)
+- Open issues: [OI-26](#oi-26), [OI-28](#oi-28)
+
+<a id="stt-vhl-009"></a>
+
+#### STT-VHL-009 VHL expiry
+
+> Validating a VHL payload against a caller-supplied now SHALL report an expired link when the payload's exp has passed, in addition to the HCERT exp check made by the verifier.
+
+**SHALL** · functional · direct · targets: kotlin, rust
+
+- Derived from:
+  - [IHE VHL ITI-YY4 Provide VHL](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY4.md) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY4.html)) — “Check the payload's exp (if present) - reject if current time > expiration”
+- Refines: [STT-VHL-001](#stt-vhl-001)
+- API: [`VhlPayload`](#api-vhl-payload)
+
+<a id="stt-vhl-010"></a>
+
+#### STT-VHL-010 VHL with no I/O in the library
+
+> The VHL functions SHALL do no network, file or clock access: the host sends the ITI-YY5 request and the ITI-68 document GETs over mutual TLS, holds the receiver's signing key, and logs AuditEvents. The library builds, parses, signs-by-proxy and decrypts.
+
+**SHALL** · architecture · derived · targets: kotlin, rust
+
+- Derived from:
+  - [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.2.4 Document Content Retrieval](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5424-document-content-retrieval) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5424-document-content-retrieval)) — “Transport: Same ATNA secure channel used for ITI-YY5”
+  - Stakeholder directive: the library must carry the workshop user journeys
+- Refines: [STT-GEN-012](#stt-gen-012)
+- API: [`Vhl.buildManifestRequest`](#api-vhl-manifest-request)
+
 ### ISS — Issuance
 
 <a id="stt-iss-003"></a>
@@ -1320,6 +1475,7 @@ flowchart LR
 | [HCERT Specification § 3.2.6 Issued At](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#326-issued-at) ([published](https://smart.who.int/trust/hcert_spec.html#326-issued-at)) | [STT-CWT-002](#stt-cwt-002), [STT-CWT-004](#stt-cwt-004), [STT-VER-005](#stt-ver-005) |
 | [HCERT Specification § 3.2.7 Health Certificate Claim](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#327-health-certificate-claim) ([published](https://smart.who.int/trust/hcert_spec.html#327-health-certificate-claim)) | [STT-GEN-008](#stt-gen-008), [STT-SEL-004](#stt-sel-004), [STT-PAY-008](#stt-pay-008), [STT-CWT-006](#stt-cwt-006), [STT-CBR-002](#stt-cbr-002) |
 | [HCERT Specification § 3.2.7.1 Subclaims](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#3271-subclaims) ([published](https://smart.who.int/trust/hcert_spec.html#3271-subclaims)) | [STT-SEL-001](#stt-sel-001), [STT-SEL-002](#stt-sel-002), [STT-SEL-003](#stt-sel-003) |
+| [HCERT Specification § 3.2.7.1.5 Smart Health Link (SHL)](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#32715-smart-health-link-shl) ([published](https://smart.who.int/trust/hcert_spec.html#32715-smart-health-link-shl)) | [STT-VHL-002](#stt-vhl-002) |
 | [HCERT Specification § 4.1 Raw](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#41-raw) ([published](https://smart.who.int/trust/hcert_spec.html#41-raw)) | [STT-GEN-009](#stt-gen-009) |
 | [HCERT Specification § 4.2.1 Payload (CWT) Compression](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#421-payload-cwt-compression) ([published](https://smart.who.int/trust/hcert_spec.html#421-payload-cwt-compression)) | [STT-ZIP-001](#stt-zip-001) |
 | [HCERT Specification § 4.2.2 QR 2D Barcode](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#422-qr-2d-barcode) ([published](https://smart.who.int/trust/hcert_spec.html#422-qr-2d-barcode)) | [STT-B45-001](#stt-b45-001), [STT-HC1-001](#stt-hc1-001), [STT-QR-001](#stt-qr-001) |
@@ -1334,6 +1490,12 @@ flowchart LR
 | [GDHCN Trustlists (DID) § DID trustlists structure](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/concepts_did_gdhcn.md#did-trustlists-structure) ([published](https://smart.who.int/trust/concepts_did_gdhcn.html#did-trustlists-structure)) | [STT-TRU-002](#stt-tru-002) |
 | [GDHCN Trustlists (DID) § Example DID documents](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/concepts_did_gdhcn.md#example-did-documents) ([published](https://smart.who.int/trust/concepts_did_gdhcn.html#example-did-documents)) | [STT-KID-003](#stt-kid-003), [STT-TRU-002](#stt-tru-002) |
 | [Endpoints § Trustlist Distribution Endpoints](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/endpoints.md#trustlist-distribution-endpoints) ([published](https://smart.who.int/trust/endpoints.html#trustlist-distribution-endpoints)) | [STT-TRU-002](#stt-tru-002) |
+| [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions)) | [STT-VHL-001](#stt-vhl-001), [STT-VHL-002](#stt-vhl-002), [STT-VHL-003](#stt-vhl-003), [STT-VHL-004](#stt-vhl-004) |
+| [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.1.2 Message Semantics](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5412-message-semantics) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5412-message-semantics)) | [STT-VHL-005](#stt-vhl-005) |
+| [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.1.3 Authentication Option - HTTP Message Signatures](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5413-authentication-option---http-message-signatures) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5413-authentication-option---http-message-signatures)) | [STT-VHL-008](#stt-vhl-008) |
+| [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.2.2 Message Semantics](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5422-message-semantics) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5422-message-semantics)) | [STT-VHL-006](#stt-vhl-006) |
+| [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.2.4 Document Content Retrieval](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5424-document-content-retrieval) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5424-document-content-retrieval)) | [STT-VHL-006](#stt-vhl-006), [STT-VHL-010](#stt-vhl-010) |
+| [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.2.5 Document Encryption](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5425-document-encryption) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5425-document-encryption)) | [STT-VHL-007](#stt-vhl-007) |
 | [DVC QR example, machine-readable summary (test participant XXA)](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/images/dvc-qr-example-XXA.json) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/dvc-qr-example-XXA.json) · [after deploy](https://smart.who.int/trust/dvc-qr-example-XXA.json)) | [STT-TST-001](#stt-tst-001), [STT-TST-002](#stt-tst-002), [STT-TST-005](#stt-tst-005), [STT-TST-007](#stt-tst-007), [STT-TST-008](#stt-tst-008) |
 | [DVC QR example, test DSC and SCA (PEM)](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/images/dvc-qr-example-XXA-dsc.pem) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/dvc-qr-example-XXA-dsc.pem) · [after deploy](https://smart.who.int/trust/dvc-qr-example-XXA-dsc.pem)) | [STT-TST-001](#stt-tst-001) |
 | [Reference generation script generate_dvc_qr.py](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/scripts/generate_dvc_qr.py) ([after merge](https://github.com/WorldHealthOrganization/smart-trust/blob/main/input/scripts/generate_dvc_qr.py)) | [STT-CBR-001](#stt-cbr-001) |
@@ -1342,6 +1504,8 @@ flowchart LR
 | [GDHCN Trust Domain value set](https://smart.who.int/trust/ValueSet-Domains.html) ([published](https://smart.who.int/trust/ValueSet-Domains.html)) | [STT-SEL-006](#stt-sel-006) |
 | [DVCMin logical model (trust-phw)](https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/models/DVCMin.fsh) ([published](https://smart.who.int/trust-phw/StructureDefinition-DVCMin.html)) | [STT-PAY-001](#stt-pay-001), [STT-PAY-010](#stt-pay-010) |
 | [DVCMinVaccineDetails logical model (trust-phw)](https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/models/DVCMinVaccineDetails.fsh) ([published](https://smart.who.int/trust-phw/StructureDefinition-DVCMinVaccineDetails.html)) | [STT-PAY-002](#stt-pay-002), [STT-PAY-010](#stt-pay-010) |
+| [HealthLinkPayload and VerifiableHealthLinkPayload logical models (trust-phw)](https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/models/VerifiableHealthLinkPayload.fsh) ([published](https://smart.who.int/trust-phw/StructureDefinition-VerifiableHealthLinkPayload.html)) | [STT-VHL-001](#stt-vhl-001) |
+| [IHE VHL ITI-YY4 Provide VHL](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY4.md) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY4.html)) | [STT-VHL-002](#stt-vhl-002), [STT-VHL-009](#stt-vhl-009) |
 | [MedicationTreatmentLineMin logical model (ph4h)](http://smart.who.int/ph4h/StructureDefinition-MedicationTreatmentLineMin.html) | [STT-PAY-009](#stt-pay-009) |
 | [DDCC Implementation Guide](https://smart.who.int/ddcc/) | [STT-PAY-009](#stt-pay-009) |
 | [RFC 8392 CBOR Web Token (CWT)](https://www.rfc-editor.org/rfc/rfc8392) | [STT-CWT-002](#stt-cwt-002), [STT-CWT-006](#stt-cwt-006) |
@@ -1354,6 +1518,12 @@ flowchart LR
 | [RFC 8610 Concise Data Definition Language (CDDL)](https://www.rfc-editor.org/rfc/rfc8610) | [STT-GEN-013](#stt-gen-013), [STT-CBR-004](#stt-cbr-004), [STT-TST-008](#stt-tst-008) |
 | [RFC 9052 COSE: Structures and Process](https://www.rfc-editor.org/rfc/rfc9052) | [STT-CBR-004](#stt-cbr-004) |
 | [RFC 7493 I-JSON](https://www.rfc-editor.org/rfc/rfc7493) | [STT-GEN-013](#stt-gen-013) |
+| [HL7 SMART Health Cards and Links: SMART Health Links](https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html) | [STT-VHL-001](#stt-vhl-001), [STT-VHL-004](#stt-vhl-004) |
+| [RFC 7516 JSON Web Encryption (JWE)](https://www.rfc-editor.org/rfc/rfc7516) | [STT-VHL-007](#stt-vhl-007) |
+| [RFC 7518 JSON Web Algorithms (JWA)](https://www.rfc-editor.org/rfc/rfc7518) | [STT-VHL-007](#stt-vhl-007) |
+| [RFC 4648 Base16, Base32 and Base64 encodings (base64url)](https://www.rfc-editor.org/rfc/rfc4648) | [STT-VHL-003](#stt-vhl-003) |
+| [RFC 9421 HTTP Message Signatures](https://www.rfc-editor.org/rfc/rfc9421) | [STT-VHL-008](#stt-vhl-008) |
+| [RFC 9530 Digest Fields (Content-Digest)](https://www.rfc-editor.org/rfc/rfc9530) | [STT-VHL-008](#stt-vhl-008) |
 | [W3C JSON-LD 1.1](https://www.w3.org/TR/json-ld11/) | [STT-GEN-013](#stt-gen-013), [STT-PAY-010](#stt-pay-010) |
 | [W3C Shapes Constraint Language (SHACL)](https://www.w3.org/TR/shacl/) | [STT-GEN-013](#stt-gen-013), [STT-PAY-010](#stt-pay-010), [STT-TST-008](#stt-tst-008) |
 | [W3C XML Schema 1.1 Part 2: Datatypes](https://www.w3.org/TR/xmlschema11-2/) | [STT-GEN-013](#stt-gen-013) |
@@ -1364,7 +1534,8 @@ flowchart LR
 | [W3C Web Cryptography API](https://www.w3.org/TR/WebCryptoAPI/) | [STT-ISS-004](#stt-iss-004) |
 | Stakeholder directive: Kotlin library first, Rust library second | [STT-GEN-004](#stt-gen-004), [STT-GEN-005](#stt-gen-005), [STT-GEN-006](#stt-gen-006), [STT-VER-008](#stt-ver-008), [STT-NFR-002](#stt-nfr-002), [STT-TST-003](#stt-tst-003), [STT-TST-005](#stt-tst-005) |
 | Stakeholder directive: transpile targets and API-first | [STT-GEN-004](#stt-gen-004), [STT-GEN-005](#stt-gen-005), [STT-GEN-010](#stt-gen-010), [STT-GEN-011](#stt-gen-011), [STT-GEN-014](#stt-gen-014), [STT-NFR-002](#stt-nfr-002), [STT-TST-007](#stt-tst-007) |
-| Stakeholder directive: the library must carry the workshop user journeys | [STT-VER-011](#stt-ver-011) |
+| Stakeholder directive: the library must carry the workshop user journeys | [STT-VER-011](#stt-ver-011), [STT-VHL-010](#stt-vhl-010) |
+| Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5 | [STT-VHL-001](#stt-vhl-001), [STT-VHL-002](#stt-vhl-002), [STT-VHL-005](#stt-vhl-005), [STT-VHL-007](#stt-vhl-007), [STT-VHL-008](#stt-vhl-008) |
 | Stakeholder directive: open standards for types and schemas | [STT-GEN-013](#stt-gen-013), [STT-PAY-010](#stt-pay-010), [STT-CBR-004](#stt-cbr-004) |
 
 ## Open issues
@@ -1431,9 +1602,11 @@ Affects: [STT-CBR-001](#stt-cbr-001), [STT-TST-002](#stt-tst-002)
 
 QR Code Generation 2.1 and the HCert logical model describe subclaim 5 as the URI of a Verifiable Health Link. HCERT Specification 3.2.7.1.5, which is the authoritative list, describes it as Smart Health Link (SHL) and links the SMART Health Links spec. The two define different URI schemes and payloads.
 
+*Suggested resolution:* Raised as WorldHealthOrganization/smart-trust#130: 3.2.7.1.5 becomes Verifiable Health Link (IHE ITI VHL, SHL payload format), and the HCert model types key 5 as the trust-phw VerifiableHealthLinkPayload, carried as a CBOR map. The library follows that (STT-VHL-002).
+
 Sources: [QR Code Generation § 2.1 Subclaims defined in this guide](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#21-subclaims-defined-in-this-guide) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#21-subclaims-defined-in-this-guide) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#21-subclaims-defined-in-this-guide)); [HCERT Specification § 3.2.7.1.5 Smart Health Link (SHL)](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#32715-smart-health-link-shl) ([published](https://smart.who.int/trust/hcert_spec.html#32715-smart-health-link-shl)); [HCert logical model](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/fsh/models/hcert.fsh) ([published](https://smart.who.int/trust/StructureDefinition-HCert.html))
 
-Affects: [STT-SEL-001](#stt-sel-001), [STT-PAY-009](#stt-pay-009)
+Affects: [STT-SEL-001](#stt-sel-001), [STT-PAY-009](#stt-pay-009), [STT-VHL-002](#stt-vhl-002)
 
 <a id="oi-07"></a>
 
@@ -1563,6 +1736,104 @@ Sources: [RFC 8610 Concise Data Definition Language (CDDL)](https://www.rfc-edit
 
 Affects: [STT-CBR-004](#stt-cbr-004)
 
+<a id="oi-21"></a>
+
+### OI-21 IHE ITI-YY3 puts a vhlink:/ string at HCERT key 5; ITI-YY4 reads an object *(fix upstream)*
+
+ITI-YY3 step 5 base64url-encodes the minified payload JSON, prefixes it with vhlink:/ and puts that text at claim -260 key 5. ITI-YY4 step 8 and its example read key 5 as a decoded object. Text-in-CBOR also costs about a third of the QR: on the ITI-YY3 example the string form is ~609 HC1 characters against ~422 for a CBOR map.
+
+*Suggested resolution:* Patch prepared for the IHE editors (upstream/ihe-iti-vhl/): for the HCERT carrier key 5 is the payload as a CBOR map; vhlink:/ stays the text form for URI carriers; receivers also accept the string. smart-trust#130 makes the same change on the WHO side.
+
+Sources: [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions)); [IHE VHL ITI-YY4 Provide VHL](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY4.md) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY4.html)); [HCert logical model](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/fsh/models/hcert.fsh) ([published](https://smart.who.int/trust/StructureDefinition-HCert.html))
+
+Affects: [STT-VHL-002](#stt-vhl-002)
+
+<a id="oi-22"></a>
+
+### OI-22 IHE VHL examples break their own rules *(fix upstream)*
+
+The ITI-YY3 example JSON has "extension" but its base64url encodes "extensions". The ITI-YY4 example key is 44 characters and decodes to 33 bytes ("this is a secret key used for enc"), against the 43-character, 32-byte rule stated beside it.
+
+*Suggested resolution:* Fixed in the IHE patch in upstream/ihe-iti-vhl/.
+
+Sources: [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions)); [IHE VHL ITI-YY4 Provide VHL](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY4.md) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY4.html))
+
+Affects: [STT-VHL-001](#stt-vhl-001)
+
+<a id="oi-23"></a>
+
+### OI-23 trust-phw Health Link payload types exp and v as strings and requires type *(fix upstream)*
+
+HealthLinkPayload types exp and v as string where SMART Health Links and IHE VHL use numbers, and VerifiableHealthLinkPayload makes type 1..1, a field neither SHL nor IHE has.
+
+*Suggested resolution:* Raised as WorldHealthOrganization/smart-trust-phw#17: exp integer64, v integer, VHL type 0..1 (absent inside an HCERT).
+
+Sources: [HealthLinkPayload and VerifiableHealthLinkPayload logical models (trust-phw)](https://github.com/WorldHealthOrganization/smart-trust-phw/blob/fd3b5480e5df8001890d31ecc9761051c17c2cc5/input/fsh/models/VerifiableHealthLinkPayload.fsh) ([published](https://smart.who.int/trust-phw/StructureDefinition-VerifiableHealthLinkPayload.html)); [HL7 SMART Health Cards and Links: SMART Health Links](https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html); [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions))
+
+Affects: [STT-VHL-001](#stt-vhl-001)
+
+<a id="oi-24"></a>
+
+### OI-24 IHE VHL leaves JWE alg/enc non-normative *(fix upstream)*
+
+Document encryption names dir / A256GCM only in an example and defers to "Cryptographic Algorithm Selection", which mandates nothing for encryption (its only baseline is RS256 for signatures). Two conformant implementations need not interoperate. SMART Health Links, which the section cites, fixes dir / A256GCM.
+
+*Suggested resolution:* The library implements dir / A256GCM only and refuses anything else (STT-VHL-007).
+
+Sources: [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.2.5 Document Encryption](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5425-document-encryption) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5425-document-encryption)); [IHE ITI Verifiable Health Link (VHL) § 1:XX.5.3 Cryptographic Algorithm Selection](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/volume-1.md#1xx53-cryptographic-algorithm-selection) ([published](https://profiles.ihe.net/ITI/VHL/volume-1.html#1xx53-cryptographic-algorithm-selection))
+
+Affects: [STT-VHL-007](#stt-vhl-007)
+
+<a id="oi-25"></a>
+
+### OI-25 Manifest URL is List? in one place and List/_search? in another *(fix upstream)*
+
+ITI-YY3 builds the manifest URL as .../List/_search?...; ITI-YY5 shows .../List?... and says the receiver POSTs the parameters to _search. The library accepts both and always POSTs to <base>/List/_search (STT-VHL-005).
+
+Sources: [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions)); [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.1.2 Message Semantics](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5412-message-semantics) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5412-message-semantics))
+
+Affects: [STT-VHL-005](#stt-vhl-005)
+
+<a id="oi-26"></a>
+
+### OI-26 IHE's Content-Digest example is not RFC 9530 syntax *(fix upstream)*
+
+The ITI-YY5 example sends "Content-Digest: sha-256=X48E...=", but RFC 9530 makes the value a Structured Field byte sequence, "sha-256=:X48E...=:". A sharer verifying strictly rejects the example form. The library emits RFC 9530 syntax (STT-VHL-008).
+
+Sources: [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.1.3 Authentication Option - HTTP Message Signatures](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5413-authentication-option---http-message-signatures) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5413-authentication-option---http-message-signatures)); [RFC 9530 Digest Fields (Content-Digest)](https://www.rfc-editor.org/rfc/rfc9530)
+
+Affects: [STT-VHL-008](#stt-vhl-008)
+
+<a id="oi-27"></a>
+
+### OI-27 No signed manifest in IHE VHL or SMART Health Links *(fix upstream)*
+
+The journeys ask to "verify DVC and signed VHL manifests against the DEV trust list". Neither specification signs the manifest: the VHL link is signed (the HCERT), and the manifest's integrity rests on mutual TLS and receiver authentication. Either the journey wording changes, or a signed-manifest option is proposed upstream.
+
+Sources: [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.2.2 Message Semantics](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5422-message-semantics) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5422-message-semantics)); Stakeholder directive: the library must carry the workshop user journeys
+
+Affects: [STT-VHL-006](#stt-vhl-006)
+
+<a id="oi-28"></a>
+
+### OI-28 How a receiver's keyid, and a DID trust list entry, map to keys *(fix upstream)*
+
+ITI-YY5 says keyid is "used to locate key in trust list" but not how; and ITI-YY2's DID trust list is not tied to the COSE kid (8-byte SHA-256 of the DSC) that ITI-YY4 uses to find the VHL signer.
+
+Sources: [IHE VHL ITI-YY5 Retrieve Manifest § 2:3.YY5.4.1.3 Authentication Option - HTTP Message Signatures](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY5.md#23yy5413-authentication-option---http-message-signatures) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY5.html#23yy5413-authentication-option---http-message-signatures)); [IHE ITI Verifiable Health Link (VHL)](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/volume-1.md) ([published](https://profiles.ihe.net/ITI/VHL/volume-1.html))
+
+Affects: [STT-VHL-008](#stt-vhl-008)
+
+<a id="oi-29"></a>
+
+### OI-29 $generate-vhl sends the passcode in a GET query string *(fix upstream)*
+
+ITI-YY3's $generate-vhl is a GET with passcode as a query parameter, so the passcode lands in server and proxy logs. Host concern, not the library's; noted for the policy track.
+
+Sources: [IHE VHL ITI-YY3 Generate VHL § 2:3.YY3.4.1.3 Expected Actions](https://github.com/IHE/ITI.VHL/blob/48201473ffa66725158e729b7478a01304944a6c/input/pagecontent/ITI-YY3.md#23yy3413-expected-actions) ([published](https://profiles.ihe.net/ITI/VHL/ITI-YY3.html#23yy3413-expected-actions))
+
+Affects: [STT-VHL-005](#stt-vhl-005)
+
 ## API sketch
 
 The normative API contract is the WIT package in [`api/wit/`](../../api/wit/) (see [`api/README.md`](../../api/README.md)). The elements below link each one to its WIT item and show the intended Kotlin and Rust shapes. Names are placeholders (OI-14).
@@ -1614,7 +1885,7 @@ pub trait PayloadCodec { type Payload; const SUBCLAIM: i64; fn to_cbor(&self, p:
 
 **`RawPayload`** (type): Opaque CBOR payload for subclaims without a typed codec (DCC 1, DDCC 3/4, VHL 5, MTL -7).
 WIT: [`payloads.raw-payload`](../../api/wit/payload.wit).
-Constrained by [STT-PAY-009](#stt-pay-009).
+Constrained by [STT-PAY-009](#stt-pay-009), [STT-VHL-002](#stt-vhl-002).
 
 ```kotlin
 data class RawPayload(val subclaim: Int, val item: CborItem)
@@ -1914,6 +2185,101 @@ sealed interface VerificationResult { data class Verified(...) : VerificationRes
 ```
 ```rust
 pub enum VerificationResult { Verified(VerifiedHcert), Failed(VerificationFailure) }
+```
+
+### `vhl` — Verifiable Health Links (IHE ITI VHL): payload, vhlink:/ form, ITI-YY5 request and manifest, JWE, HTTP Message Signatures
+
+Kotlin `who.smart.trust.vhl` · Rust `smart-trust-vhl`
+
+<a id="api-vhl-payload"></a>
+
+**`VhlPayload`** (type): The SMART Health Links payload format IHE VHL reuses, with validation; a CBOR map at HCERT key 5.
+WIT: [`vhl.vhl-payload`](../../api/wit/vhl.wit).
+Constrained by [STT-VHL-001](#stt-vhl-001), [STT-VHL-002](#stt-vhl-002), [STT-VHL-009](#stt-vhl-009).
+
+```kotlin
+data class VhlPayload(val url: String, val key: String, val exp: Long?, val flag: String?, val label: String?, val v: Int?, val fhirBaseUrl: String?)
+```
+```rust
+pub struct VhlPayload { pub url: String, pub key: String, pub exp: Option<i64>, pub flag: Option<String>, pub label: Option<String>, pub v: Option<i32>, pub fhir_base_url: Option<String> }
+```
+
+<a id="api-vhl-link"></a>
+
+**`Vhl.toVhlink / fromVhlink`** (function): The vhlink:/ text form: minified JSON, base64url, prefixed.
+WIT: [`vhl.to-vhlink`](../../api/wit/vhl.wit).
+Constrained by [STT-VHL-003](#stt-vhl-003).
+
+```kotlin
+fun toVhlink(p: VhlPayload): String; fun fromVhlink(text: String): WitResult<VhlPayload, VhlError>
+```
+```rust
+pub fn to_vhlink(p: &VhlPayload) -> String; pub fn from_vhlink(s: &str) -> Result<VhlPayload, VhlError>
+```
+
+<a id="api-vhl-key"></a>
+
+**`Vhl.newKey`** (function): 32 bytes from the platform CSPRNG, 43 base64url characters.
+WIT: [`vhl.new-key`](../../api/wit/vhl.wit).
+Constrained by [STT-VHL-004](#stt-vhl-004).
+
+```kotlin
+fun newKey(): String
+```
+```rust
+pub fn new_key() -> String
+```
+
+<a id="api-vhl-manifest-request"></a>
+
+**`Vhl.buildManifestRequest`** (function): Builds the ITI-YY5 POST <base>/List/_search form request; the host sends it.
+WIT: [`vhl.build-manifest-request`](../../api/wit/vhl.wit).
+Constrained by [STT-VHL-005](#stt-vhl-005), [STT-VHL-010](#stt-vhl-010).
+
+```kotlin
+fun buildManifestRequest(p: VhlPayload, recipient: String, passcode: String?, embeddedLengthMax: Int?): WitResult<ManifestRequest, VhlError>
+```
+```rust
+pub fn build_manifest_request(p: &VhlPayload, recipient: &str, passcode: Option<&str>, embedded_length_max: Option<u32>) -> Result<ManifestRequest, VhlError>
+```
+
+<a id="api-vhl-manifest"></a>
+
+**`Vhl.parseManifest`** (function): Reads the ITI-YY5 searchset Bundle into document URLs or references, with their decrypted content types.
+WIT: [`vhl.parse-manifest`](../../api/wit/vhl.wit).
+Constrained by [STT-VHL-006](#stt-vhl-006).
+
+```kotlin
+fun parseManifest(bundleJson: String): WitResult<List<ManifestDocument>, VhlError>
+```
+```rust
+pub fn parse_manifest(json: &str) -> Result<Vec<ManifestDocument>, VhlError>
+```
+
+<a id="api-vhl-jwe"></a>
+
+**`Vhl.encrypt / decrypt`** (function): JWE Compact, dir / A256GCM, with the payload key.
+WIT: [`vhl.decrypt`](../../api/wit/vhl.wit).
+Constrained by [STT-VHL-007](#stt-vhl-007).
+
+```kotlin
+fun encrypt(content: ByteArray, contentType: String, key: String): WitResult<String, VhlError>; fun decrypt(jwe: String, key: String): WitResult<Decrypted, VhlError>
+```
+```rust
+pub fn encrypt(content: &[u8], cty: &str, key: &str) -> Result<String, VhlError>; pub fn decrypt(jwe: &str, key: &str) -> Result<Decrypted, VhlError>
+```
+
+<a id="api-vhl-http-signature"></a>
+
+**`Vhl.buildSignatureBase / signatureHeader`** (function): RFC 9421 signature base and RFC 9530 Content-Digest for the receiver; the host signs the base.
+WIT: [`vhl.build-signature-base`](../../api/wit/vhl.wit).
+Constrained by [STT-VHL-008](#stt-vhl-008).
+
+```kotlin
+fun buildSignatureBase(r: SignatureRequest): SignatureBase; fun signatureHeader(signature: ByteArray, alg: String): WitResult<String, VhlError>
+```
+```rust
+pub fn build_signature_base(r: &SignatureRequest) -> SignatureBase; pub fn signature_header(sig: &[u8], alg: &str) -> Result<String, VhlError>
 ```
 
 ### `testkit` — Test vectors, test PKI, fixed clocks. Never a production dependency.

@@ -27,4 +27,12 @@ for (const name of ["hepb1", "bcg"]) {
   expect(`${name} unknown kid`, JSON.parse(HcertNode.verifySummary(hc1, "", NOW)), { status: "failed", reason: "KID_NOT_FOUND" });
 }
 expect("bad prefix", JSON.parse(HcertNode.verifySummary("HC2:00", pem, NOW)), { status: "failed", reason: "UNSUPPORTED_CONTEXT_VERSION" });
+// VHL document decryption on Node, against a JWE made by node:crypto alone.
+const jwe = JSON.parse(readFileSync(join(repo, "vectors/ihe-vhl/jwe-dir-a256gcm.json"), "utf8"));
+for (const k of ["jwe", "jweZipDef"]) {
+  const got = HcertNode.decryptText(jwe[k], jwe.key);
+  const ok = got === jwe.plaintext;
+  console.log(`${ok ? "ok  " : "FAIL"} ${k} decrypts`);
+  if (!ok) failures++;
+}
 process.exit(failures ? 1 : 0);

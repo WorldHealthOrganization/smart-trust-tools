@@ -15,6 +15,7 @@ modules:
   - {id: mod-cose, name: cose, description: "COSE_Sign1, algorithms, kid, signature formats", kotlin: "who.smart.trust.cose", rust: "smart-trust-cose"}
   - {id: mod-trust, name: trust, description: "Trust store: PEM, DER and GDHCN DID trustlist v2 documents", kotlin: "who.smart.trust.trustlist", rust: "smart-trust-trustlist"}
   - {id: mod-pipeline, name: pipeline, description: "Two-phase HcertIssuer and HcertVerifier", kotlin: "who.smart.trust.hcert", rust: "smart-trust-hcert"}
+  - {id: mod-vhl, name: vhl, description: "Verifiable Health Links (IHE ITI VHL): payload, vhlink:/ form, ITI-YY5 request and manifest, JWE, HTTP Message Signatures", kotlin: "who.smart.trust.vhl", rust: "smart-trust-vhl"}
   - {id: mod-testkit, name: testkit, description: "Test vectors, test PKI, fixed clocks. Never a production dependency.", kotlin: "who.smart.trust.testkit", rust: "smart-trust-testkit"}
 
 elements:
@@ -229,6 +230,64 @@ elements:
     description: "Either Verified(claims, payload, dsc, diagnostics) or Failed(step, reason, diagnostics). Payload content is only reachable from Verified."
     kotlin: "sealed interface VerificationResult { data class Verified(...) : VerificationResult; data class Failed(val step: Step, val reason: FailureReason, ...) : VerificationResult }"
     rust: "pub enum VerificationResult { Verified(VerifiedHcert), Failed(VerificationFailure) }"
+
+  # ---- vhl ------------------------------------------------------------------
+  - id: api-vhl-payload
+    name: VhlPayload
+    module: mod-vhl
+    wit: vhl.vhl-payload
+    kind: type
+    description: "The SMART Health Links payload format IHE VHL reuses, with validation; a CBOR map at HCERT key 5."
+    kotlin: "data class VhlPayload(val url: String, val key: String, val exp: Long?, val flag: String?, val label: String?, val v: Int?, val fhirBaseUrl: String?)"
+    rust: "pub struct VhlPayload { pub url: String, pub key: String, pub exp: Option<i64>, pub flag: Option<String>, pub label: Option<String>, pub v: Option<i32>, pub fhir_base_url: Option<String> }"
+  - id: api-vhl-link
+    name: Vhl.toVhlink / fromVhlink
+    module: mod-vhl
+    wit: vhl.to-vhlink
+    kind: function
+    description: "The vhlink:/ text form: minified JSON, base64url, prefixed."
+    kotlin: "fun toVhlink(p: VhlPayload): String; fun fromVhlink(text: String): WitResult<VhlPayload, VhlError>"
+    rust: "pub fn to_vhlink(p: &VhlPayload) -> String; pub fn from_vhlink(s: &str) -> Result<VhlPayload, VhlError>"
+  - id: api-vhl-key
+    name: Vhl.newKey
+    module: mod-vhl
+    wit: vhl.new-key
+    kind: function
+    description: "32 bytes from the platform CSPRNG, 43 base64url characters."
+    kotlin: "fun newKey(): String"
+    rust: "pub fn new_key() -> String"
+  - id: api-vhl-manifest-request
+    name: Vhl.buildManifestRequest
+    module: mod-vhl
+    wit: vhl.build-manifest-request
+    kind: function
+    description: "Builds the ITI-YY5 POST <base>/List/_search form request; the host sends it."
+    kotlin: "fun buildManifestRequest(p: VhlPayload, recipient: String, passcode: String?, embeddedLengthMax: Int?): WitResult<ManifestRequest, VhlError>"
+    rust: "pub fn build_manifest_request(p: &VhlPayload, recipient: &str, passcode: Option<&str>, embedded_length_max: Option<u32>) -> Result<ManifestRequest, VhlError>"
+  - id: api-vhl-manifest
+    name: Vhl.parseManifest
+    module: mod-vhl
+    wit: vhl.parse-manifest
+    kind: function
+    description: "Reads the ITI-YY5 searchset Bundle into document URLs or references, with their decrypted content types."
+    kotlin: "fun parseManifest(bundleJson: String): WitResult<List<ManifestDocument>, VhlError>"
+    rust: "pub fn parse_manifest(json: &str) -> Result<Vec<ManifestDocument>, VhlError>"
+  - id: api-vhl-jwe
+    name: Vhl.encrypt / decrypt
+    module: mod-vhl
+    wit: vhl.decrypt
+    kind: function
+    description: "JWE Compact, dir / A256GCM, with the payload key."
+    kotlin: "fun encrypt(content: ByteArray, contentType: String, key: String): WitResult<String, VhlError>; fun decrypt(jwe: String, key: String): WitResult<Decrypted, VhlError>"
+    rust: "pub fn encrypt(content: &[u8], cty: &str, key: &str) -> Result<String, VhlError>; pub fn decrypt(jwe: &str, key: &str) -> Result<Decrypted, VhlError>"
+  - id: api-vhl-http-signature
+    name: Vhl.buildSignatureBase / signatureHeader
+    module: mod-vhl
+    wit: vhl.build-signature-base
+    kind: function
+    description: "RFC 9421 signature base and RFC 9530 Content-Digest for the receiver; the host signs the base."
+    kotlin: "fun buildSignatureBase(r: SignatureRequest): SignatureBase; fun signatureHeader(signature: ByteArray, alg: String): WitResult<String, VhlError>"
+    rust: "pub fn build_signature_base(r: &SignatureRequest) -> SignatureBase; pub fn signature_header(sig: &[u8], alg: &str) -> Result<String, VhlError>"
 
   # ---- testkit --------------------------------------------------------------
   - id: api-testkit
