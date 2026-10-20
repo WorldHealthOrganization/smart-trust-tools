@@ -213,6 +213,14 @@ elements:
     description: "Runs QR Code Generation section 11 over an HC1 string and returns a VerificationResult."
     kotlin: "object HcertVerifier { fun verify(hc1: String, trust: TrustStore, registry: SubclaimRegistry, now: Long, options: VerifierOptions): VerificationResult }"
     rust: "pub fn verify(hc1: &str, trust: &TrustStore, registry: &SubclaimRegistry, now: i64, options: &VerifierOptions) -> VerificationResult"
+  - id: api-unverified
+    name: HcertVerifier.readUnverified
+    module: mod-pipeline
+    wit: verifier.read-unverified
+    kind: function
+    description: "Decodes an HC1 string to its claims and payload with no trust lookup or signature check, for offline triage. The result type says it is unverified."
+    kotlin: "fun readUnverified(hc1: String, limits: DecodeLimits): WitResult<UnverifiedHcert, VerificationFailure>"
+    rust: "pub fn read_unverified(hc1: &str, limits: &DecodeLimits) -> Result<UnverifiedHcert, VerificationFailure>"
   - id: api-result
     name: VerificationResult
     module: mod-pipeline

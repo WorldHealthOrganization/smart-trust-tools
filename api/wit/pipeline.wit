@@ -66,7 +66,7 @@ interface issuer {
 /// entry [STT-SEL-004]; trust-list presence is the DSC validity check
 /// [STT-VER-006]; EKU is checked against the certificate type [STT-VER-004].
 interface verifier {
-    use types.{numeric-date, decode-limits, cbor-bytes, step, failure-reason, diagnostic};
+    use types.{kid, numeric-date, decode-limits, cbor-bytes, step, failure-reason, diagnostic};
     use payloads.{payload};
     use trust.{trust-store, trusted-dsc};
     use subclaims.{registry};
@@ -104,9 +104,26 @@ interface verifier {
         failed(verification-failure),
     }
 
+    /// Decoded, NOT verified: no trust lookup, no signature check. For
+    /// display and triage where verification is impossible (an offline
+    /// household visit, journey J2); never a basis for trust. [STT-VER-011]
+    record unverified-hcert {
+        kid: option<kid>,
+        iss: option<string>,
+        iat: option<numeric-date>,
+        exp: option<numeric-date>,
+        subclaim: option<s32>,
+        /// The payload, when it decoded.
+        payload: option<payload>,
+        diagnostics: list<diagnostic>,
+    }
+
     /// `now` is passed in: no ambient clock. [STT-VER-005]
     verify: func(hc1: string, store: borrow<trust-store>, reg: borrow<registry>, now: numeric-date, options: verifier-options) -> verification-result;
 
     /// Same, for raw COSE_Sign1 bytes. [STT-GEN-009]
     verify-cose: func(cose: list<u8>, store: borrow<trust-store>, reg: borrow<registry>, now: numeric-date, options: verifier-options) -> verification-result;
+
+    /// [STT-VER-011]
+    read-unverified: func(hc1: string, reg: borrow<registry>, limits: decode-limits) -> result<unverified-hcert, verification-failure>;
 }

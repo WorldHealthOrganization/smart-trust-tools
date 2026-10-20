@@ -57,7 +57,7 @@ Package `who:smart-trust@0.1.0` (placeholder namespace, OI-14).
                         │ hcert-issuer  hcert (= both)       │
                         └────────────────────────────────────┘
  pipeline     issuer ─ prepare / finish
- (pipeline.wit) verifier ─ verify / verify-cose
+ (pipeline.wit) verifier ─ verify / verify-cose / read-unverified
                     │                 │
  domain       subclaims   dvc   payloads   trust (trust-store resource)
  (payload.wit, trust.wit)
@@ -96,7 +96,9 @@ encoder at error correction Q. [STT-QR-001]
    imported from the host. [STT-ISS-004]
 3. **Payload content is only reachable after verification.** `verify` returns
    a `verification-result` variant; only its `verified` case carries the
-   payload. [STT-VER-002]
+   payload. `read-unverified` is the one explicitly named way to look at an
+   unverified certificate, and its result is a different type. [STT-VER-002,
+   STT-VER-011]
 4. **Expected failures are values, not exceptions.** Invalid certificates
    give `failed(step, reason)`. Note that `jco` maps WIT `result<_, E>` to a
    thrown `ComponentError` in JS; `verify` deliberately returns a variant,

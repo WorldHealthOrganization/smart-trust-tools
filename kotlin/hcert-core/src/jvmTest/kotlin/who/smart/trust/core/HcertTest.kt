@@ -76,6 +76,17 @@ class Pr129VectorTest {
         assertEquals(295, cose.size)
     }
 
+    /** J2: a CHW device with no trust list reads the payload, marked unverified. [STT-VER-011] */
+    @Test fun unverifiedReadForTriage() {
+        val u = HcertVerifier.readUnverified(hc1("hepb1"), reg, DEFAULT_LIMITS).ok()
+        assertEquals("58733e058aaa6621", u.kid!!.toHex())
+        assertEquals(-6, u.subclaim)
+        assertEquals("XM9V38", (u.payload as Payload.DvcMin).value.vx.vp)
+        assertTrue(u.diagnostics.first().message.startsWith("NOT VERIFIED"))
+        val bad = HcertVerifier.readUnverified("HC1:abc", reg, DEFAULT_LIMITS)
+        assertEquals(FailureReason.BASE45_INVALID, (bad as WitResult.Err).error.reason)
+    }
+
     @Test fun expiredAndNotYetValid() {
         val late = HcertVerifier.verify(hc1("bcg"), store, reg, 1822206600L + 301, options)
         assertEquals(FailureReason.EXPIRED, assertIs<VerificationResult.Failed>(late).value.reason)

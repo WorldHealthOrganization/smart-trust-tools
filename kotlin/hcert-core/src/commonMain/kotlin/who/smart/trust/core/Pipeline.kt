@@ -21,6 +21,7 @@ import who.smart.trust.types.NumericDate
 import who.smart.trust.types.Severity
 import who.smart.trust.types.Step
 import who.smart.trust.types.ValidationIssue
+import who.smart.trust.verifier.UnverifiedHcert
 import who.smart.trust.verifier.VerificationFailure
 import who.smart.trust.verifier.VerificationResult
 import who.smart.trust.verifier.VerifiedHcert
@@ -160,27 +161,62 @@ object HcertVerifier : Verifier {
 
     private class Fail(val step: Step, val reason: FailureReason, val detail: String) : Exception(detail)
 
-    override fun verify(hc1: String, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult {
-        val limits = options.limits
-        if (hc1.length > limits.maxInputChars) return failed(Step.PREFIX, FailureReason.LIMIT_EXCEEDED, "input exceeds ${limits.maxInputChars} characters")
+    /** Prefix, Base45 and inflate: HC1 text to COSE bytes. */
+    private fun front(hc1: String, limits: who.smart.trust.types.DecodeLimits): ByteArray {
+        if (hc1.length > limits.maxInputChars) throw Fail(Step.PREFIX, FailureReason.LIMIT_EXCEEDED, "input exceeds ${limits.maxInputChars} characters")
         val (version, rest) = when (val c = HcertCodec.detectContext(hc1)) {
             is WitResult.Ok -> c.value
-            is WitResult.Err -> return failed(Step.PREFIX, FailureReason.BAD_PREFIX, "no HC[1-9A-Z]: context identifier")
+            is WitResult.Err -> throw Fail(Step.PREFIX, FailureReason.BAD_PREFIX, "no HC[1-9A-Z]: context identifier")
         }
-        if (version != "1") return failed(Step.PREFIX, FailureReason.UNSUPPORTED_CONTEXT_VERSION, "context identifier HC$version")
+        if (version != "1") throw Fail(Step.PREFIX, FailureReason.UNSUPPORTED_CONTEXT_VERSION, "context identifier HC$version")
         val deflated = try {
             Base45.decode(rest)
         } catch (e: IllegalArgumentException) {
-            return failed(Step.BASE45, FailureReason.BASE45_INVALID, e.message ?: "invalid Base45")
+            throw Fail(Step.BASE45, FailureReason.BASE45_INVALID, e.message ?: "invalid Base45")
         }
-        val cose = try {
+        return try {
             Platform.inflate(deflated, limits.maxInflatedBytes)
         } catch (e: LimitException) {
-            return failed(Step.INFLATE, FailureReason.LIMIT_EXCEEDED, e.message ?: "inflate limit")
+            throw Fail(Step.INFLATE, FailureReason.LIMIT_EXCEEDED, e.message ?: "inflate limit")
         } catch (e: IllegalArgumentException) {
-            return failed(Step.INFLATE, FailureReason.INFLATE_FAILED, e.message ?: "invalid ZLIB data")
+            throw Fail(Step.INFLATE, FailureReason.INFLATE_FAILED, e.message ?: "invalid ZLIB data")
         }
-        return verifyCose(cose, store, reg, now, options)
+    }
+
+    override fun verify(hc1: String, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult = try {
+        VerificationResult.Verified(run(front(hc1, options.limits), store, reg, now, options))
+    } catch (f: Fail) {
+        failed(f.step, f.reason, f.detail)
+    }
+
+    override fun readUnverified(hc1: String, reg: Registry, limits: who.smart.trust.types.DecodeLimits): WitResult<UnverifiedHcert, VerificationFailure> = try {
+        WitResult.Ok(unverified(front(hc1, limits), reg, limits))
+    } catch (f: Fail) {
+        WitResult.Err(VerificationFailure(f.step, f.reason, f.detail, emptyList()))
+    }
+
+    /** [STT-VER-011] Everything here is unverified; the first diagnostic says so. */
+    private fun unverified(cose: ByteArray, reg: Registry, limits: who.smart.trust.types.DecodeLimits): UnverifiedHcert {
+        val diagnostics = mutableListOf(Diagnostic(Step.SIGNATURE, Severity.WARNING, "NOT VERIFIED: no trust lookup and no signature check were made"))
+        val s = parse(cose, limits)
+        val claims = decodeClaims(s.payload, limits)
+        val iss = (claims[Claim.ISS] as? CborItem.Text)?.value
+        val iat = (claims[Claim.IAT] as? CborItem.Int)?.value
+        val exp = (claims[Claim.EXP] as? CborItem.Int)?.value
+        val entries = (claims[Claim.HCERT] as? CborItem.Map)?.entries.orEmpty()
+        if (entries.size > 1) diagnostics += Diagnostic(Step.HCERT, Severity.WARNING, "hcert has ${entries.size} entries; the first is shown")
+        val first = entries.firstOrNull()
+        val subclaim = (first?.first as? CborItem.Int)?.value?.toInt()
+        val payload = if (first == null || subclaim == null) {
+            diagnostics += Diagnostic(Step.HCERT, Severity.WARNING, "no hcert entry")
+            null
+        } else try {
+            payloadOf(subclaim, first.second, reg)
+        } catch (f: Fail) {
+            diagnostics += Diagnostic(Step.PAYLOAD, Severity.WARNING, f.detail)
+            null
+        }
+        return UnverifiedHcert(s.kid, iss, iat, exp, subclaim, payload, diagnostics)
     }
 
     override fun verifyCose(cose: ByteArray, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult = try {
@@ -192,12 +228,8 @@ object HcertVerifier : Verifier {
     private fun failed(step: Step, reason: FailureReason, detail: String) =
         VerificationResult.Failed(VerificationFailure(step, reason, detail, emptyList()))
 
-    private fun run(cose: ByteArray, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerifiedHcert {
-        val limits = options.limits
-        val diagnostics = mutableListOf<Diagnostic>()
-
-        // COSE parse and header validation [STT-VER-003]
-        val s = when (val r = HcertCose.parseSign1(cose, limits)) {
+    private fun parse(cose: ByteArray, limits: who.smart.trust.types.DecodeLimits): who.smart.trust.cose.Sign1 =
+        when (val r = HcertCose.parseSign1(cose, limits)) {
             is WitResult.Ok -> r.value
             is WitResult.Err -> throw when (val e = r.error) {
                 is who.smart.trust.cose.CoseError.HeaderInvalid -> Fail(Step.HEADER, FailureReason.HEADER_INVALID, e.value)
@@ -207,6 +239,32 @@ object HcertVerifier : Verifier {
                 else -> Fail(Step.COSE, FailureReason.COSE_MALFORMED, e.toString())
             }
         }
+
+    private fun decodeClaims(payload: ByteArray, limits: who.smart.trust.types.DecodeLimits): CborItem.Map = try {
+        cborDecode(payload, limits) as? CborItem.Map
+    } catch (e: CborException) {
+        throw Fail(Step.CWT, if (e.limit) FailureReason.LIMIT_EXCEEDED else FailureReason.COSE_MALFORMED, e.message!!)
+    } ?: throw Fail(Step.CWT, FailureReason.COSE_MALFORMED, "CWT claim set is not a map")
+
+    private fun payloadOf(subclaim: Int, body: CborItem, reg: Registry): Payload =
+        if (subclaim == reg.subclaimFor(PayloadKind.DVC_MIN)) {
+            val dvc = when (val r = HcertDvc.fromItem(body)) {
+                is WitResult.Ok -> r.value
+                is WitResult.Err -> throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, r.error.joinToString("; ") { "${it.path}: ${it.message}" })
+            }
+            HcertDvc.validate(dvc).firstOrNull { it.severity == Severity.BLOCKING }
+                ?.let { throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, "${it.path}: ${it.message}") }
+            Payload.DvcMin(dvc)
+        } else {
+            Payload.Raw(RawPayload(subclaim, CborEncoder.encode(body)))
+        }
+
+    private fun run(cose: ByteArray, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerifiedHcert {
+        val limits = options.limits
+        val diagnostics = mutableListOf<Diagnostic>()
+
+        // COSE parse and header validation [STT-VER-003]
+        val s = parse(cose, limits)
         if (!s.tagged) diagnostics += Diagnostic(Step.COSE, Severity.WARNING, "COSE_Sign1 is not tagged 18")
         val kid = s.kid ?: throw Fail(Step.HEADER, FailureReason.HEADER_INVALID, "no kid")
         if (!s.kidInProtected) diagnostics += Diagnostic(Step.HEADER, Severity.WARNING, "kid is in the unprotected header")
@@ -220,11 +278,7 @@ object HcertVerifier : Verifier {
         if (now < dsc.notBefore || now > dsc.notAfter) diagnostics += Diagnostic(Step.TRUST_LOOKUP, Severity.WARNING, "the DSC is outside its X.509 validity period")
 
         // CWT, decoded only now that the signature has verified.
-        val claims = try {
-            cborDecode(s.payload, limits) as? CborItem.Map
-        } catch (e: CborException) {
-            throw Fail(Step.CWT, if (e.limit) FailureReason.LIMIT_EXCEEDED else FailureReason.COSE_MALFORMED, e.message!!)
-        } ?: throw Fail(Step.CWT, FailureReason.COSE_MALFORMED, "CWT claim set is not a map")
+        val claims = decodeClaims(s.payload, limits)
         val hcert = claims[Claim.HCERT] as? CborItem.Map
         val entries = hcert?.entries.orEmpty()
 
@@ -260,17 +314,7 @@ object HcertVerifier : Verifier {
         val (keyItem, body) = entries.single()
         val subclaim = (keyItem as? CborItem.Int)?.value?.toInt() ?: throw Fail(Step.HCERT, FailureReason.HCERT_MISSING, "hcert key is not an integer")
         if (reg.lookup(subclaim) == null) diagnostics += Diagnostic(Step.HCERT, Severity.WARNING, "subclaim $subclaim is not in the registry")
-        val payload = if (subclaim == reg.subclaimFor(PayloadKind.DVC_MIN)) {
-            val dvc = when (val r = HcertDvc.fromItem(body)) {
-                is WitResult.Ok -> r.value
-                is WitResult.Err -> throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, r.error.joinToString("; ") { "${it.path}: ${it.message}" })
-            }
-            val issues = HcertDvc.validate(dvc)
-            issues.firstOrNull { it.severity == Severity.BLOCKING }?.let { throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, "${it.path}: ${it.message}") }
-            Payload.DvcMin(dvc)
-        } else {
-            Payload.Raw(RawPayload(subclaim, CborEncoder.encode(body)))
-        }
+        val payload = payloadOf(subclaim, body, reg)
 
         // Claims this version does not know are kept. [STT-CWT-006]
         val known = setOf(Claim.ISS, Claim.EXP, Claim.IAT, Claim.HCERT)

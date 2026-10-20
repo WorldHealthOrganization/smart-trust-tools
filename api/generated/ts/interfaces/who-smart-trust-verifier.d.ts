@@ -7,6 +7,11 @@ export function verify(hc1: string, store: TrustStore, reg: Registry, now: Numer
  * Same, for raw COSE_Sign1 bytes. [STT-GEN-009]
  */
 export function verifyCose(cose: Uint8Array, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult;
+/**
+ * [STT-VER-011]
+ */
+export function readUnverified(hc1: string, reg: Registry, limits: DecodeLimits): UnverifiedHcert;
+export type Kid = import('./who-smart-trust-types.js').Kid;
 export type NumericDate = import('./who-smart-trust-types.js').NumericDate;
 export type DecodeLimits = import('./who-smart-trust-types.js').DecodeLimits;
 export type CborBytes = import('./who-smart-trust-types.js').CborBytes;
@@ -56,4 +61,21 @@ export interface VerificationResultVerified {
 export interface VerificationResultFailed {
   tag: 'failed',
   val: VerificationFailure,
+}
+/**
+ * Decoded, NOT verified: no trust lookup, no signature check. For
+ * display and triage where verification is impossible (an offline
+ * household visit, journey J2); never a basis for trust. [STT-VER-011]
+ */
+export interface UnverifiedHcert {
+  kid?: Kid,
+  iss?: string,
+  iat?: NumericDate,
+  exp?: NumericDate,
+  subclaim?: number,
+  /**
+   * The payload, when it decoded.
+   */
+  payload?: Payload,
+  diagnostics: Array<Diagnostic>,
 }

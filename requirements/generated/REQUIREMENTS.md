@@ -23,9 +23,9 @@ Links below go to the pinned source. Content from PR 129 also links to its PR pr
 
 ## Summary
 
-- **80 requirements**: 77 SHALL, 2 SHALL NOT, 1 SHOULD
-- by category: api 5, architecture 10, functional 41, non-functional 5, scope 2, security 9, test 8
-- by derivation: derived 42, direct 30, directive 8
+- **81 requirements**: 78 SHALL, 2 SHALL NOT, 1 SHOULD
+- by category: api 5, architecture 10, functional 42, non-functional 5, scope 2, security 9, test 8
+- by derivation: derived 42, direct 30, directive 9
 - **19 open issues** (13 to fix upstream in smart-trust)
 
 ## Pipeline
@@ -66,7 +66,7 @@ flowchart LR
 | 7. Encode as Base45 | [QR Code Generation § 8. Step 7 — Encode as Base45](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#8-step-7--encode-as-base45) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#8-step-7--encode-as-base45) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#8-step-7--encode-as-base45)) | [STT-GEN-001](#stt-gen-001), [STT-B45-001](#stt-b45-001), [STT-B45-002](#stt-b45-002) |
 | 8. Prefix context identifier HC1: | [QR Code Generation § 9. Step 8 — Prefix the context identifier](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#9-step-8--prefix-the-context-identifier) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#9-step-8--prefix-the-context-identifier) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#9-step-8--prefix-the-context-identifier)) | [STT-GEN-001](#stt-gen-001), [STT-HC1-001](#stt-hc1-001) |
 | 9. Render QR (Alphanumeric, EC Q) | [QR Code Generation § 10. Step 9 — Render the QR code](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#10-step-9--render-the-qr-code) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#10-step-9--render-the-qr-code) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#10-step-9--render-the-qr-code)) | [STT-GEN-001](#stt-gen-001), [STT-QR-001](#stt-qr-001) |
-| 10. Verify (steps 9 to 1 in reverse, plus trust list lookup) | [QR Code Generation § 11. Verifying: the same steps upwards](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#11-verifying-the-same-steps-upwards) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#11-verifying-the-same-steps-upwards) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#11-verifying-the-same-steps-upwards)) | [STT-GEN-001](#stt-gen-001), [STT-GEN-009](#stt-gen-009), [STT-SEL-004](#stt-sel-004), [STT-PAY-008](#stt-pay-008), [STT-CWT-006](#stt-cwt-006), [STT-CBR-002](#stt-cbr-002), [STT-CBR-003](#stt-cbr-003), [STT-COS-002](#stt-cos-002), [STT-COS-003](#stt-cos-003), [STT-COS-004](#stt-cos-004), [STT-COS-005](#stt-cos-005), [STT-KID-002](#stt-kid-002), [STT-ZIP-002](#stt-zip-002), [STT-B45-002](#stt-b45-002), [STT-HC1-001](#stt-hc1-001), [STT-QR-005](#stt-qr-005), [STT-VER-001](#stt-ver-001), [STT-VER-002](#stt-ver-002), [STT-VER-003](#stt-ver-003), [STT-VER-004](#stt-ver-004), [STT-VER-005](#stt-ver-005), [STT-VER-006](#stt-ver-006), [STT-VER-007](#stt-ver-007), [STT-VER-008](#stt-ver-008), [STT-VER-009](#stt-ver-009) |
+| 10. Verify (steps 9 to 1 in reverse, plus trust list lookup) | [QR Code Generation § 11. Verifying: the same steps upwards](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#11-verifying-the-same-steps-upwards) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#11-verifying-the-same-steps-upwards) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#11-verifying-the-same-steps-upwards)) | [STT-GEN-001](#stt-gen-001), [STT-GEN-009](#stt-gen-009), [STT-SEL-004](#stt-sel-004), [STT-PAY-008](#stt-pay-008), [STT-CWT-006](#stt-cwt-006), [STT-CBR-002](#stt-cbr-002), [STT-CBR-003](#stt-cbr-003), [STT-COS-002](#stt-cos-002), [STT-COS-003](#stt-cos-003), [STT-COS-004](#stt-cos-004), [STT-COS-005](#stt-cos-005), [STT-KID-002](#stt-kid-002), [STT-ZIP-002](#stt-zip-002), [STT-B45-002](#stt-b45-002), [STT-HC1-001](#stt-hc1-001), [STT-QR-005](#stt-qr-005), [STT-VER-001](#stt-ver-001), [STT-VER-002](#stt-ver-002), [STT-VER-003](#stt-ver-003), [STT-VER-004](#stt-ver-004), [STT-VER-005](#stt-ver-005), [STT-VER-006](#stt-ver-006), [STT-VER-007](#stt-ver-007), [STT-VER-008](#stt-ver-008), [STT-VER-009](#stt-ver-009), [STT-VER-011](#stt-ver-011) |
 | 11. Obtain trusted DSCs | [HCERT Specification § Appendix A - Trust Management](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#appendix-a---trust-management) ([published](https://smart.who.int/trust/hcert_spec.html#appendix-a---trust-management)) | [STT-SEL-006](#stt-sel-006), [STT-KID-001](#stt-kid-001), [STT-KID-002](#stt-kid-002), [STT-KID-003](#stt-kid-003), [STT-VER-006](#stt-ver-006), [STT-VER-009](#stt-ver-009), [STT-TRU-001](#stt-tru-001), [STT-TRU-002](#stt-tru-002), [STT-TRU-005](#stt-tru-005) |
 
 ## Requirements
@@ -1012,6 +1012,21 @@ flowchart LR
 - Steps: Verify (steps 9 to 1 in reverse, plus trust list lookup), Obtain trusted DSCs
 - API: [`StaticTrustList`](#api-static-trust), [`TrustListProvider`](#api-trust-provider)
 
+<a id="stt-ver-011"></a>
+
+#### STT-VER-011 Unverified read for triage
+
+> The verifier SHALL offer an explicitly named unverified read (read-unverified) that decodes an HC1 string up to and including the payload without any trust lookup or signature check, for display and triage where verification is not possible, such as a community health worker offline at a household (journey J2). Its result type SHALL be distinct from a verified result, SHALL carry the kid and the claims it found, and SHALL state that nothing in it is verified. It SHALL apply the same decode limits as verify.
+
+**SHALL** · functional · directive · targets: kotlin, rust
+
+- Derived from:
+  - Stakeholder directive: the library must carry the workshop user journeys — “lightweight QR scan reads basic vaccine metadata without requiring full cryptographic verification at the household edge”
+  - [QR Code Generation § 11. Verifying: the same steps upwards](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#11-verifying-the-same-steps-upwards) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#11-verifying-the-same-steps-upwards) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#11-verifying-the-same-steps-upwards))
+- Steps: Verify (steps 9 to 1 in reverse, plus trust list lookup)
+- Refines: [STT-VER-002](#stt-ver-002)
+- API: [`HcertVerifier.readUnverified`](#api-unverified)
+
 ### TRU — Trust list
 
 <a id="stt-tru-001"></a>
@@ -1289,7 +1304,7 @@ flowchart LR
 | [QR Code Generation § 8. Step 7 — Encode as Base45](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#8-step-7--encode-as-base45) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#8-step-7--encode-as-base45) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#8-step-7--encode-as-base45)) | [STT-B45-001](#stt-b45-001) |
 | [QR Code Generation § 9. Step 8 — Prefix the context identifier](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#9-step-8--prefix-the-context-identifier) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#9-step-8--prefix-the-context-identifier) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#9-step-8--prefix-the-context-identifier)) | [STT-HC1-001](#stt-hc1-001), [STT-NFR-001](#stt-nfr-001) |
 | [QR Code Generation § 10. Step 9 — Render the QR code](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#10-step-9--render-the-qr-code) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#10-step-9--render-the-qr-code) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#10-step-9--render-the-qr-code)) | [STT-QR-001](#stt-qr-001) |
-| [QR Code Generation § 11. Verifying: the same steps upwards](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#11-verifying-the-same-steps-upwards) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#11-verifying-the-same-steps-upwards) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#11-verifying-the-same-steps-upwards)) | [STT-QR-005](#stt-qr-005), [STT-VER-001](#stt-ver-001), [STT-VER-002](#stt-ver-002), [STT-VER-003](#stt-ver-003), [STT-VER-004](#stt-ver-004), [STT-VER-005](#stt-ver-005), [STT-VER-007](#stt-ver-007), [STT-VER-008](#stt-ver-008), [STT-TRU-001](#stt-tru-001), [STT-TST-004](#stt-tst-004) |
+| [QR Code Generation § 11. Verifying: the same steps upwards](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#11-verifying-the-same-steps-upwards) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#11-verifying-the-same-steps-upwards) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#11-verifying-the-same-steps-upwards)) | [STT-QR-005](#stt-qr-005), [STT-VER-001](#stt-ver-001), [STT-VER-002](#stt-ver-002), [STT-VER-003](#stt-ver-003), [STT-VER-004](#stt-ver-004), [STT-VER-005](#stt-ver-005), [STT-VER-007](#stt-ver-007), [STT-VER-008](#stt-ver-008), [STT-VER-011](#stt-ver-011), [STT-TRU-001](#stt-tru-001), [STT-TST-004](#stt-tst-004) |
 | [QR Code Generation § 12.1 Scenario](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#121-scenario) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#121-scenario) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#121-scenario)) | [STT-PAY-003](#stt-pay-003), [STT-PAY-005](#stt-pay-005), [STT-VER-009](#stt-ver-009) |
 | [QR Code Generation § 12.3 Test issuer](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#123-test-issuer) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#123-test-issuer) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#123-test-issuer)) | [STT-PAY-007](#stt-pay-007), [STT-CWT-005](#stt-cwt-005), [STT-ISS-003](#stt-iss-003) |
 | [QR Code Generation § 12.4 The payload](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#124-the-payload) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#124-the-payload) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#124-the-payload)) | [STT-CWT-001](#stt-cwt-001) |
@@ -1349,6 +1364,7 @@ flowchart LR
 | [W3C Web Cryptography API](https://www.w3.org/TR/WebCryptoAPI/) | [STT-ISS-004](#stt-iss-004) |
 | Stakeholder directive: Kotlin library first, Rust library second | [STT-GEN-004](#stt-gen-004), [STT-GEN-005](#stt-gen-005), [STT-GEN-006](#stt-gen-006), [STT-VER-008](#stt-ver-008), [STT-NFR-002](#stt-nfr-002), [STT-TST-003](#stt-tst-003), [STT-TST-005](#stt-tst-005) |
 | Stakeholder directive: transpile targets and API-first | [STT-GEN-004](#stt-gen-004), [STT-GEN-005](#stt-gen-005), [STT-GEN-010](#stt-gen-010), [STT-GEN-011](#stt-gen-011), [STT-GEN-014](#stt-gen-014), [STT-NFR-002](#stt-nfr-002), [STT-TST-007](#stt-tst-007) |
+| Stakeholder directive: the library must carry the workshop user journeys | [STT-VER-011](#stt-ver-011) |
 | Stakeholder directive: open standards for types and schemas | [STT-GEN-013](#stt-gen-013), [STT-PAY-010](#stt-pay-010), [STT-CBR-004](#stt-cbr-004) |
 
 ## Open issues
@@ -1872,6 +1888,19 @@ object HcertVerifier { fun verify(hc1: String, trust: TrustStore, registry: Subc
 ```
 ```rust
 pub fn verify(hc1: &str, trust: &TrustStore, registry: &SubclaimRegistry, now: i64, options: &VerifierOptions) -> VerificationResult
+```
+
+<a id="api-unverified"></a>
+
+**`HcertVerifier.readUnverified`** (function): Decodes an HC1 string to its claims and payload with no trust lookup or signature check, for offline triage. The result type says it is unverified.
+WIT: [`verifier.read-unverified`](../../api/wit/pipeline.wit).
+Constrained by [STT-VER-011](#stt-ver-011).
+
+```kotlin
+fun readUnverified(hc1: String, limits: DecodeLimits): WitResult<UnverifiedHcert, VerificationFailure>
+```
+```rust
+pub fn read_unverified(hc1: &str, limits: &DecodeLimits) -> Result<UnverifiedHcert, VerificationFailure>
 ```
 
 <a id="api-result"></a>

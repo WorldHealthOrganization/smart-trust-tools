@@ -674,6 +674,12 @@
     dcterms:title "Stakeholder directive: transpile targets and API-first" ;
     rdfs:comment "Given by the requester on 2026-10-20: Kotlin targets Node, Java (JVM) and Android; Rust targets WebAssembly. The API set is to be defined and reviewed first, in an OpenAPI-like but non-REST definition." .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/dir-journeys>
+    a stt:Document ;
+    dcterms:identifier "dir-journeys" ;
+    dcterms:title "Stakeholder directive: the library must carry the workshop user journeys" ;
+    rdfs:comment """Given by the requester on 2026-10-20 (DRAFT journeys J1 to J5, a cross-border birth and routine vaccination storyline): J1 a clinic in Country A issues a DVC for newborn routine vaccines, printed as a QR; J2 a community health worker in Country B, offline, reads the foreign QR to register the child and refer, before any verification; J3 the clinic verifies the DVC against the GDHCN trust list and imports it; J4.0 a national portal issues one passcode-protected VHL QR per family member (IPS, DVCs) on one shared phone; J4.1 a clinic abroad scans a VHL, fetches and reads the records. OHS Player and OHS Stack are consumers of the Kotlin library, not part of it: "need to make sure we can do user journey".""" .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/dir-open-standards>
     a stt:Document ;
     dcterms:identifier "dir-open-standards" ;
@@ -1743,6 +1749,16 @@
     stt:kotlinSignature "object HcertVerifier { fun verify(hc1: String, trust: TrustStore, registry: SubclaimRegistry, now: Long, options: VerifierOptions): VerificationResult }" ;
     stt:rustSignature "pub fn verify(hc1: &str, trust: &TrustStore, registry: &SubclaimRegistry, now: i64, options: &VerifierOptions) -> VerificationResult" ;
     stt:witItem "verifier.verify" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/api-unverified>
+    a stt:ApiElement ;
+    dcterms:title "HcertVerifier.readUnverified" ;
+    stt:kind "function" ;
+    dcterms:description "Decodes an HC1 string to its claims and payload with no trust lookup or signature check, for offline triage. The result type says it is unverified." ;
+    stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline> ;
+    stt:kotlinSignature "fun readUnverified(hc1: String, limits: DecodeLimits): WitResult<UnverifiedHcert, VerificationFailure>" ;
+    stt:rustSignature "pub fn read_unverified(hc1: &str, limits: &DecodeLimits) -> Result<UnverifiedHcert, VerificationFailure>" ;
+    stt:witItem "verifier.read-unverified" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-result>
     a stt:ApiElement ;
@@ -3750,6 +3766,33 @@
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-009/derivation/2>
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/qr-12.1> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-011>
+    a stt:Requirement ;
+    dcterms:identifier "STT-VER-011" ;
+    dcterms:title "Unverified read for triage" ;
+    stt:statement "The verifier SHALL offer an explicitly named unverified read (read-unverified) that decodes an HC1 string up to and including the payload without any trust lookup or signature check, for display and triage where verification is not possible, such as a community health worker offline at a household (journey J2). Its result type SHALL be distinct from a verified result, SHALL carry the kid and the claims it found, and SHALL state that nothing in it is verified. It SHALL apply the same decode limits as verify." ;
+    stt:conformance "SHALL" ;
+    stt:category "functional" ;
+    stt:derivationType "directive" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-journeys> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-011/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/qr-11> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-011/derivation/2> ;
+    stt:implementsStep <https://github.com/litlfred/smart-trust-tools/kg/id/step-verify> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-002> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-unverified> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-011/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-journeys> ;
+    stt:quote "lightweight QR scan reads basic vaccine metadata without requiring full cryptographic verification at the household edge" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-VER-011/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/qr-11> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TRU-001>
     a stt:Requirement ;
