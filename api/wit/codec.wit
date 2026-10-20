@@ -13,7 +13,7 @@ interface codec {
         /// A decode-limits bound was hit. [STT-CBR-003, STT-ZIP-002]
         limit-exceeded(string),
         cbor-malformed(string),
-        /// No HC[1-9A-Z]: context identifier. [STT-HC1-001]
+        /// No `HC[1-9A-Z]:` context identifier. [STT-HC1-001]
         bad-prefix,
         /// A well-formed context identifier other than HC1, e.g. "HC2".
         unsupported-context-version(string),

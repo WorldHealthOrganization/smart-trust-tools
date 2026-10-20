@@ -1,6 +1,14 @@
 # smart-trust-tools
 tools for the smart-trust repo
 
+## Viewers
+
+The site is built by `.github/workflows/pages.yml` and published on GitHub Pages:
+**https://litlfred.github.io/smart-trust-tools/**. It includes the graph explorer, the
+traceability matrix, the requirements, the WIT API contract with its TypeScript reference, and
+the wire and payload models. Build it locally with `tools/build_site.sh` (needs Python and
+Node.js).
+
 ## Contents
 
 - [`api/`](api/): the library API contract, defined first in WIT

@@ -59,7 +59,7 @@ export interface CodecErrorCborMalformed {
   val: string,
 }
 /**
- * No HC[1-9A-Z]: context identifier. [STT-HC1-001]
+ * No `HC[1-9A-Z]:` context identifier. [STT-HC1-001]
  */
 export interface CodecErrorBadPrefix {
   tag: 'bad-prefix',
