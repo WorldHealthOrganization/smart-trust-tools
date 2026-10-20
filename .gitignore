@@ -17,3 +17,7 @@ kotlin/.kotlin/
 
 # written at publish by gen-landing-data
 /docs/_data/
+
+# agent surface written by mount:remote / mount:lock from the mounted layers
+/.agents/
+/.claude/commands/
