@@ -5,15 +5,6 @@ node_modules/
 .gradle/
 build/
 kotlin/.kotlin/
-# Mounted harness layers, laid down from index.lock.json (bun run cat mount:lock); never committed
-/cat-harness/
-/cat-harness-tools/
-/folio-assistant-core/
-/fhir-harness/
-/bootstrap/
-/bootstrap-tools/
-node_modules/
-
 # BEGIN index mounts (generated from index.config.json — do not edit)
 /fhir-harness/
 /folio-assistant-core/

@@ -9,6 +9,24 @@
   "needs": [
     "fhir-harness"
   ],
-  "assets": [],
+  "mountApprovers": [
+    "litlfred"
+  ],
+  "assets": [
+    {
+      "id": "agent-instructions",
+      "src": "AGENTS.md",
+      "role": "agent-instructions",
+      "title": "AGENTS.md — smart-trust-tools",
+      "description": "Cold start for work here: what is source, what is generated and by which tool, and where the library requirements come from."
+    },
+    {
+      "id": "instance-readme",
+      "src": "README.md",
+      "role": "instance-readme",
+      "title": "SMART Trust HCERT library tools",
+      "description": "Requirements, API contract, wire format and payload models for the Kotlin and Rust HCERT libraries, and where they are published."
+    }
+  ],
   "directories": []
 }
