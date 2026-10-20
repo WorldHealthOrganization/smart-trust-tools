@@ -1,0 +1,14 @@
+{
+  "$schema": "cat-harness-declaration/1.0.0",
+  "name": "smart-trust-tools",
+  "version": "0.1.0",
+  "repository": "litlfred/smart-trust-tools",
+  "iriBase": "https://litlfred.github.io/smart-trust-tools/",
+  "title": "SMART Trust HCERT library tools",
+  "description": "Requirements, API contract (WIT), wire format (CDDL) and payload models for the Kotlin and Rust HCERT libraries, derived from the WHO SMART Trust implementation guide.",
+  "needs": [
+    "fhir-harness"
+  ],
+  "assets": [],
+  "directories": []
+}
