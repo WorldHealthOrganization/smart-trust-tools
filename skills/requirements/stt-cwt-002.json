@@ -1,0 +1,42 @@
+{
+  "id": "req:stt-cwt-002",
+  "title": "NumericDate integers",
+  "description": "Restates HCERT Specification, 3.2.5 Expiration Time; HCERT Specification, 3.2.6 Issued At; RFC 8392 CBOR Web Token (CWT).",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "NumericDate integers",
+      "conformance": "SHALL",
+      "requirement": "iat and exp SHALL be encoded as integer NumericDate (seconds since the epoch). The decoder SHOULD accept floating-point NumericDate and truncate it.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-CWT-002",
+    "derivation": "direct",
+    "steps": [
+      "step-3"
+    ],
+    "sources": [
+      {
+        "src": "hcert-3.2.5",
+        "quote": "SHALL hold a timestamp in the integer NumericDate format"
+      },
+      {
+        "src": "hcert-3.2.6"
+      },
+      {
+        "src": "std-rfc8392"
+      }
+    ]
+  }
+}

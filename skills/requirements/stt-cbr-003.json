@@ -1,0 +1,54 @@
+{
+  "id": "req:stt-cbr-003",
+  "title": "Bounded CBOR decoding",
+  "description": "Engineering consequence of HCERT Specification, 6.3 Input Data Validation.",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Bounded CBOR decoding",
+      "conformance": "SHALL",
+      "requirement": "The CBOR decoder SHALL enforce configurable limits on nesting depth, item count and string/byte-string length, and SHALL reject malformed or truncated input with a typed error, without panicking or throwing unchecked exceptions.",
+      "category": "security",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        },
+        {
+          "key": "stt-tst-006",
+          "criterion": "Fuzzing of decoders (req:stt-tst-006) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "security",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-CBR-003",
+    "derivation": "derived",
+    "steps": [
+      "step-4",
+      "step-verify"
+    ],
+    "api": [
+      "api-cbor",
+      "api-limits"
+    ],
+    "sources": [
+      {
+        "src": "hcert-6.3",
+        "quote": "all input fields MUST be properly validated by data types, lengths and contents"
+      }
+    ]
+  }
+}

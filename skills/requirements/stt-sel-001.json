@@ -1,0 +1,51 @@
+{
+  "id": "req:stt-sel-001",
+  "title": "Built-in subclaim registry",
+  "description": "Restates QR Code Generation, 2.1 Subclaims defined in this guide; HCERT Specification, 3.2.7.1 Subclaims; HCert logical model.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Built-in subclaim registry",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL ship a subclaim registry containing 1 (HCertDCC), 3 (DDCCCoreDataSetVS), 4 (DDCCCoreDataSetTR), 5 (VHL URI), -6 (DVCMin) and -7 (MedicationTreatmentLineMin), each with its status (Assigned, Proposed, Development range) and logical-model canonical URL.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-SEL-001",
+    "derivation": "direct",
+    "steps": [
+      "step-1"
+    ],
+    "api": [
+      "api-subclaim",
+      "api-subclaim-registry"
+    ],
+    "issues": [
+      "OI-06",
+      "OI-08"
+    ],
+    "sources": [
+      {
+        "src": "qr-2.1",
+        "quote": "These are the subclaims enumerated by the HCert logical model."
+      },
+      {
+        "src": "hcert-3.2.7.1",
+        "quote": "While the logical model enlists assigned sub claims, the ones listed in this specification are considered authoritative"
+      },
+      {
+        "src": "doc-sd-hcert"
+      }
+    ]
+  }
+}

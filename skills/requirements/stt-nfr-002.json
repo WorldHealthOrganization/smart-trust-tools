@@ -1,0 +1,38 @@
+{
+  "id": "req:stt-nfr-002",
+  "title": "Distribution",
+  "description": "Stakeholder directive, in the context of Stakeholder directive: Kotlin library first, Rust library second; Stakeholder directive: transpile targets and API-first.",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Distribution",
+      "conformance": "SHALL",
+      "requirement": "The Kotlin library SHALL be published to Maven Central (JVM, Android AAR) and to npm (Kotlin/JS). The Rust library SHALL be published to crates.io, and its jco-transpiled WebAssembly component to npm. All coordinates are still to be chosen.",
+      "category": "non-functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "non-functional",
+    "directive"
+  ],
+  "stt": {
+    "id": "STT-NFR-002",
+    "derivation": "directive",
+    "issues": [
+      "OI-14"
+    ],
+    "sources": [
+      {
+        "src": "dir-languages"
+      },
+      {
+        "src": "dir-targets"
+      }
+    ]
+  }
+}

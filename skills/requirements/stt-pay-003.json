@@ -1,0 +1,45 @@
+{
+  "id": "req:stt-pay-003",
+  "title": "One immunization event per DVC",
+  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; QR Code Generation, 12.1 Scenario.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-pay-001"
+  ],
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "One immunization event per DVC",
+      "conformance": "SHALL",
+      "requirement": "A DVCMin SHALL carry exactly one vx. The library SHALL provide a helper that turns one visit with N administered vaccines into N payloads, one per vaccine, and so N certificates.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-PAY-003",
+    "derivation": "direct",
+    "steps": [
+      "step-2"
+    ],
+    "api": [
+      "api-dvc-split"
+    ],
+    "sources": [
+      {
+        "src": "qr-3",
+        "quote": "vx is 1..1. One DVC documents one immunization event. A visit at which two vaccines are administered produces two certificates and two QR codes."
+      },
+      {
+        "src": "qr-12.1"
+      }
+    ]
+  }
+}

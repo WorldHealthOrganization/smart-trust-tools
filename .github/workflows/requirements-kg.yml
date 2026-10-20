@@ -2,9 +2,9 @@ name: Requirements KG and API contract
 
 on:
   push:
-    paths: ["requirements/**", "api/**", "models/**", "vectors/**", "tools/**", "kotlin/**", ".github/workflows/requirements-kg.yml"]
+    paths: ["requirements/**", "skills/**", "api/**", "models/**", "vectors/**", "tools/**", "kotlin/**", ".github/workflows/requirements-kg.yml"]
   pull_request:
-    paths: ["requirements/**", "api/**", "models/**", "vectors/**", "tools/**", "kotlin/**", ".github/workflows/requirements-kg.yml"]
+    paths: ["requirements/**", "skills/**", "api/**", "models/**", "vectors/**", "tools/**", "kotlin/**", ".github/workflows/requirements-kg.yml"]
 
 jobs:
   check:

@@ -1,0 +1,45 @@
+{
+  "id": "req:stt-kid-003",
+  "title": "kid text forms",
+  "description": "Engineering consequence of QR Code Generation, 12.6 The certificate; GDHCN Trustlists (DID), Example DID documents.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "kid text forms",
+      "conformance": "SHALL",
+      "requirement": "Kid SHALL convert to and from hex, standard base64 and URL-safe base64. Trust-list matching SHALL compare the kid bytes, not their text form.",
+      "category": "api"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "api",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-KID-003",
+    "derivation": "derived",
+    "steps": [
+      "step-trust"
+    ],
+    "api": [
+      "api-kid"
+    ],
+    "issues": [
+      "OI-12"
+    ],
+    "sources": [
+      {
+        "src": "qr-12.6",
+        "quote": "The kid for both is WHM+BYqqZiE= (hex 58733e058aaa6621)."
+      },
+      {
+        "src": "did-examples"
+      }
+    ]
+  }
+}

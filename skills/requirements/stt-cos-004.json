@@ -1,0 +1,44 @@
+{
+  "id": "req:stt-cos-004",
+  "title": "Sig_structure",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; RFC 8152 CBOR Object Signing and Encryption (COSE).",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Sig_structure",
+      "conformance": "SHALL",
+      "requirement": "The signature input SHALL be the CBOR encoding of [\"Signature1\", protected header bytes exactly as transmitted, empty external_aad, payload bytes]. The verifier SHALL use the received protected bytes and SHALL NOT re-encode the decoded header.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-COS-004",
+    "derivation": "direct",
+    "steps": [
+      "step-5",
+      "step-verify"
+    ],
+    "api": [
+      "api-sign1"
+    ],
+    "sources": [
+      {
+        "src": "qr-6",
+        "quote": "serialise it as CBOR, and sign those bytes."
+      },
+      {
+        "src": "std-rfc8152"
+      }
+    ]
+  }
+}

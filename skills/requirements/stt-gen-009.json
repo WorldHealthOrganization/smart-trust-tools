@@ -1,0 +1,42 @@
+{
+  "id": "req:stt-gen-009",
+  "title": "Raw transport besides QR",
+  "description": "Engineering consequence of HCERT Specification, 4.1 Raw.",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Raw transport besides QR",
+      "conformance": "SHALL",
+      "requirement": "The issuer SHALL be able to return the signed COSE_Sign1 bytes without the barcode encodings, and the verifier SHALL accept COSE_Sign1 bytes directly, for 8-bit-safe transports (NFC, Bluetooth, app-to-app).",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-GEN-009",
+    "derivation": "derived",
+    "steps": [
+      "step-5",
+      "step-verify"
+    ],
+    "api": [
+      "api-issuer",
+      "api-verifier"
+    ],
+    "sources": [
+      {
+        "src": "hcert-4.1",
+        "quote": "the HCERT container and its payloads may be transferred as-is, utilising any underlying, 8 bit safe, reliable data transport"
+      }
+    ]
+  }
+}

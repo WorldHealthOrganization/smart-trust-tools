@@ -1,0 +1,53 @@
+{
+  "id": "req:stt-gen-013",
+  "title": "Types and schemas trace to open standards",
+  "description": "Stakeholder directive, in the context of Stakeholder directive: open standards for types and schemas; RFC 8610 Concise Data Definition Language (CDDL); HL7 FHIR R5 Data Types; W3C XML Schema 1.1 Part 2: Datatypes; W3C JSON-LD 1.1; W3C Shapes Constraint Language (SHACL); ITU-T X.680 ASN.1 (free); RFC 7493 I-JSON.",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Types and schemas trace to open standards",
+      "conformance": "SHALL",
+      "requirement": "Every data type in the API contract, wire schema and payload models SHALL trace to an openly available standard: IETF CBOR/CDDL (RFC 8949, RFC 8610) for the wire format, HL7 FHIR data types and W3C XSD datatypes for payload elements, W3C JSON-LD and SHACL for payload semantics, ITU-T X.680 for certificates, and I-JSON (RFC 7493) for JSON files. Paywalled standards SHALL NOT be used as type or schema references.",
+      "category": "architecture"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "architecture",
+    "directive"
+  ],
+  "stt": {
+    "id": "STT-GEN-013",
+    "derivation": "directive",
+    "sources": [
+      {
+        "src": "dir-open-standards"
+      },
+      {
+        "src": "std-rfc8610"
+      },
+      {
+        "src": "std-fhir-datatypes"
+      },
+      {
+        "src": "std-xsd2"
+      },
+      {
+        "src": "std-json-ld"
+      },
+      {
+        "src": "std-shacl"
+      },
+      {
+        "src": "std-x680"
+      },
+      {
+        "src": "std-rfc7493"
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "req:stt-cwt-005",
+  "title": "iss is an optional alpha-2 string",
+  "description": "Engineering consequence of HCERT Specification, 3.2.4 Issuer; QR Code Generation, 12.3 Test issuer.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "iss is an optional alpha-2 string",
+      "conformance": "SHALL",
+      "requirement": "iss SHALL be optional and SHALL be encoded as a text string. The library SHALL provide a helper that maps GDHCN participant codes (alpha-3) to the alpha-2 form used in iss and in the X.509 C attribute. The mapping table SHALL be overridable.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-CWT-005",
+    "derivation": "derived",
+    "steps": [
+      "step-3"
+    ],
+    "issues": [
+      "OI-07",
+      "OI-13"
+    ],
+    "sources": [
+      {
+        "src": "hcert-3.2.4"
+      },
+      {
+        "src": "qr-12.3",
+        "quote": "GDHCN participant codes are ISO 3166-1 alpha-3, while the CWT iss claim and the X.509 country attribute take the alpha-2 form"
+      }
+    ]
+  }
+}

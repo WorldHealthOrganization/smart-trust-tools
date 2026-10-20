@@ -1,0 +1,42 @@
+{
+  "id": "req:stt-cos-001",
+  "title": "COSE_Sign1 structure",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; RFC 8152 CBOR Object Signing and Encryption (COSE).",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "COSE_Sign1 structure",
+      "conformance": "SHALL",
+      "requirement": "The issuer SHALL emit 18([protected bstr, unprotected map, payload bstr, signature bstr]). The verifier SHALL accept the tagged form and SHOULD also accept an untagged COSE_Sign1 array.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-COS-001",
+    "derivation": "direct",
+    "steps": [
+      "step-5"
+    ],
+    "api": [
+      "api-sign1"
+    ],
+    "sources": [
+      {
+        "src": "qr-6",
+        "quote": "The resulting structure is 18([protected, unprotected, payload, signature])."
+      },
+      {
+        "src": "std-rfc8152"
+      }
+    ]
+  }
+}

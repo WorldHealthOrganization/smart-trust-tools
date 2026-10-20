@@ -1,0 +1,39 @@
+{
+  "id": "req:stt-tru-006",
+  "title": "Optional DSC-to-SCA chain check",
+  "description": "Restates HCERT Specification, 5 Trusted List Format (DSC list); RFC 5280 X.509 PKI Certificate Profile.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Optional DSC-to-SCA chain check",
+      "conformance": "SHOULD",
+      "requirement": "When SCA certificates are available, the library SHOULD check that each DSC is signed by a listed SCA, that the DSC AKI matches the SCA SKI, and that the SCA C attribute matches the issuing country.",
+      "category": "security"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "security",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-TRU-006",
+    "derivation": "direct",
+    "steps": [
+      "step-trust"
+    ],
+    "sources": [
+      {
+        "src": "hcert-5",
+        "quote": "MUST be signed with the private key corresponding to a SCA certificate published on the aforementioned list"
+      },
+      {
+        "src": "std-rfc5280"
+      }
+    ]
+  }
+}

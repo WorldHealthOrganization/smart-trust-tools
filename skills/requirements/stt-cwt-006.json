@@ -1,0 +1,43 @@
+{
+  "id": "req:stt-cwt-006",
+  "title": "Preserve unknown claims",
+  "description": "Engineering consequence of RFC 8392 CBOR Web Token (CWT); HCERT Specification, 3.2.7 Health Certificate Claim.",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Preserve unknown claims",
+      "conformance": "SHALL",
+      "requirement": "The decoder SHALL keep CWT claims it does not recognise and expose them to the caller.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-CWT-006",
+    "derivation": "derived",
+    "steps": [
+      "step-3",
+      "step-verify"
+    ],
+    "api": [
+      "api-cwt"
+    ],
+    "sources": [
+      {
+        "src": "std-rfc8392"
+      },
+      {
+        "src": "hcert-3.2.7"
+      }
+    ]
+  }
+}

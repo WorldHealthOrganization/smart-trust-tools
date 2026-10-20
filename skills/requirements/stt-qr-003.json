@@ -1,0 +1,39 @@
+{
+  "id": "req:stt-qr-003",
+  "title": "Rendering is optional and kept separate",
+  "description": "Engineering consequence of QR Code Generation, 10. Step 9 — Render the QR code.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Rendering is optional and kept separate",
+      "conformance": "SHALL",
+      "requirement": "The core QR output SHALL be a module matrix with no imaging dependency. PNG and SVG rendering SHALL be optional: separate artifacts in Kotlin, cargo features in Rust.",
+      "category": "architecture"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "architecture",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-QR-003",
+    "derivation": "derived",
+    "steps": [
+      "step-9"
+    ],
+    "api": [
+      "api-qr",
+      "api-qr-render"
+    ],
+    "sources": [
+      {
+        "src": "qr-10"
+      }
+    ]
+  }
+}

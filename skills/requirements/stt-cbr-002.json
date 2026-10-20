@@ -1,0 +1,41 @@
+{
+  "id": "req:stt-cbr-002",
+  "title": "NFC normalisation",
+  "description": "Restates QR Code Generation, 5. Step 4 — Serialise as CBOR; HCERT Specification, 3.2.7 Health Certificate Claim.",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "NFC normalisation",
+      "conformance": "SHOULD",
+      "requirement": "The encoder SHOULD NFC-normalise text strings. The decoder SHALL accept strings that are not normalised, and comparison helpers SHALL behave as if both sides were normalised to NFC.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-CBR-002",
+    "derivation": "direct",
+    "steps": [
+      "step-4",
+      "step-verify"
+    ],
+    "sources": [
+      {
+        "src": "qr-5",
+        "quote": "Strings SHOULD be NFC-normalised. Decoders SHOULD be permissive about input that is not."
+      },
+      {
+        "src": "hcert-3.2.7"
+      }
+    ]
+  }
+}

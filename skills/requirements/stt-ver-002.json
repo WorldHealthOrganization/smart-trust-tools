@@ -1,0 +1,46 @@
+{
+  "id": "req:stt-ver-002",
+  "title": "No payload access before the signature is verified",
+  "description": "Engineering consequence of QR Code Generation, 11. Verifying: the same steps upwards; HCERT Specification, 6.3 Input Data Validation.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-ver-001"
+  ],
+  "actors": [
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "No payload access before the signature is verified",
+      "conformance": "SHALL",
+      "requirement": "The API SHALL make the payload and claims reachable only through a successful verification result type. Code that inspects an unverified payload SHALL go through an explicitly named unsafe or diagnostic call.",
+      "category": "security"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "security",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-VER-002",
+    "derivation": "derived",
+    "steps": [
+      "step-verify"
+    ],
+    "api": [
+      "api-result"
+    ],
+    "sources": [
+      {
+        "src": "qr-11",
+        "quote": "Verify the signature before processing the payload."
+      },
+      {
+        "src": "hcert-6.3",
+        "quote": "The Issuer Signature SHALL also be verified before any processing of the contents of the HCERT takes place."
+      }
+    ]
+  }
+}

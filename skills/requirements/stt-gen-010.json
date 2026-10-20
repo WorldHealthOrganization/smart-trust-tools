@@ -1,0 +1,41 @@
+{
+  "id": "req:stt-gen-010",
+  "title": "API defined first, in WIT",
+  "description": "Stakeholder directive, in the context of Stakeholder directive: transpile targets and API-first; WIT, WebAssembly Component Model IDL.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-gen-006"
+  ],
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "API defined first, in WIT",
+      "conformance": "SHALL",
+      "requirement": "The library API SHALL be defined in WIT (api/wit) and reviewed before implementation. The WIT SHALL be the contract both implementations follow: Rust exports it from its WebAssembly component, and Kotlin follows it through documented mapping rules. Each WIT item SHALL cite the requirement(s) it implements. Breaking WIT changes SHALL bump the package version.",
+      "category": "architecture"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "architecture",
+    "directive"
+  ],
+  "stt": {
+    "id": "STT-GEN-010",
+    "derivation": "directive",
+    "issues": [
+      "OI-16"
+    ],
+    "sources": [
+      {
+        "src": "dir-targets"
+      },
+      {
+        "src": "std-wit"
+      }
+    ]
+  }
+}

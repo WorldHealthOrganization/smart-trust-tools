@@ -1,0 +1,51 @@
+{
+  "id": "req:stt-hc1-001",
+  "title": "HC1 prefix",
+  "description": "Restates QR Code Generation, 9. Step 8 — Prefix the context identifier; HCERT Specification, 4.2.2 QR 2D Barcode.",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "HC1 prefix",
+      "conformance": "SHALL",
+      "requirement": "The issuer SHALL prefix the Base45 string with \"HC1:\". The verifier SHALL require a context identifier matching HC[1-9A-Z]: and strip it. It SHALL report any identifier other than HC1 as an unsupported version, distinct from malformed input.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-HC1-001",
+    "derivation": "direct",
+    "steps": [
+      "step-8",
+      "step-verify"
+    ],
+    "api": [
+      "api-hc1"
+    ],
+    "sources": [
+      {
+        "src": "qr-9",
+        "quote": "A future backwards-incompatible revision will use a new identifier, incrementing through [1-9] and then [A-Z]."
+      },
+      {
+        "src": "hcert-4.2.2"
+      }
+    ]
+  }
+}

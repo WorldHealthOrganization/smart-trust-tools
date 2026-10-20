@@ -1,0 +1,55 @@
+{
+  "id": "req:stt-gen-001",
+  "title": "Issuance and verification of the full HCERT QR pipeline",
+  "description": "Engineering consequence of QR Code Generation, 1. The pipeline at a glance.",
+  "status": "proposed",
+  "derivedFrom": [
+    "http://smart.who.int/trust/Requirements/IssuerVDHC#IssuerVDHC-generate",
+    "http://smart.who.int/trust/Requirements/IssuerVDHC#IssuerVDHC-sign",
+    "http://smart.who.int/trust/Requirements/UtilizeVDHC#UtilizeVDHC-validate-hash"
+  ],
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Issuance and verification of the full HCERT QR pipeline",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL implement issuance (steps 1 to 9) and verification (QR Code Generation section 11) of HCERT QR codes.",
+      "category": "scope"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "scope",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-GEN-001",
+    "derivation": "derived",
+    "steps": [
+      "step-1",
+      "step-2",
+      "step-3",
+      "step-4",
+      "step-5",
+      "step-6",
+      "step-7",
+      "step-8",
+      "step-9",
+      "step-verify"
+    ],
+    "api": [
+      "api-issuer",
+      "api-verifier"
+    ],
+    "sources": [
+      {
+        "src": "qr-1",
+        "quote": "Steps 3 to 9 never vary. A verifier runs the same list upwards."
+      }
+    ]
+  }
+}

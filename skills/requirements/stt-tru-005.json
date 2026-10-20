@@ -1,0 +1,45 @@
+{
+  "id": "req:stt-tru-005",
+  "title": "Static and national trust lists",
+  "description": "Restates HCERT Specification, Appendix A - Trust Management; RFC 7517 JSON Web Key.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-tru-001"
+  ],
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Static and national trust lists",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL provide a static TrustListProvider loaded from PEM, DER or JWKS, for tests, pinned bilateral or national lists, and fully offline deployments.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-TRU-005",
+    "derivation": "direct",
+    "steps": [
+      "step-trust"
+    ],
+    "api": [
+      "api-static-trust"
+    ],
+    "sources": [
+      {
+        "src": "hcert-A",
+        "quote": "the file format of this trusted list may vary, e.g., it can be a signed JWKS"
+      },
+      {
+        "src": "std-rfc7517"
+      }
+    ]
+  }
+}

@@ -37,7 +37,7 @@ To change a pin, edit `index.config.json` and run `bun run cat mount:remote`
   dispatch a GitHub workflow to publish.
 - **Generated is never edited by hand.** `requirements/generated/`,
   `api/generated/`, `models/generated/` and `kotlin/hcert-api/` are written by
-  the generators under `tools/`. Change the source (`requirements/kg/*.yaml`,
+  the generators under `tools/`. Change the source (`skills/requirements/*.json`, `requirements/kg/*.yaml`,
   `api/wit/`, `api/cddl/`, the logical models) and re-run the generator.
 - **Only open standards.** Every normative reference must be openly available:
   IETF RFCs, W3C, HL7 FHIR, WHO. No paywalled ISO.

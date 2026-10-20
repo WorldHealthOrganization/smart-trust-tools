@@ -1,0 +1,38 @@
+{
+  "id": "req:stt-tst-004",
+  "title": "Negative vectors",
+  "description": "Engineering consequence of QR Code Generation, 11. Verifying: the same steps upwards; HCERT Specification, 6.3 Input Data Validation.",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Negative vectors",
+      "conformance": "SHALL",
+      "requirement": "The shared vector set SHALL include failing cases with the expected failure reason for each: tampered payload, tampered protected header, wrong or unknown kid, duplicate kid with only the second DSC valid, a DER-encoded ES256 signature, expired, iat before the DSC validity, EKU mismatch, missing or unsupported prefix (HC2:), invalid Base45, decompression bomb, deeply nested CBOR, multiple subclaims, and a DVC without is or cn.",
+      "category": "test"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "test",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-TST-004",
+    "derivation": "derived",
+    "api": [
+      "api-testkit"
+    ],
+    "sources": [
+      {
+        "src": "qr-11"
+      },
+      {
+        "src": "hcert-6.3"
+      }
+    ]
+  }
+}

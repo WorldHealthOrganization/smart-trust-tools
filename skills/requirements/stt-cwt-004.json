@@ -1,0 +1,54 @@
+{
+  "id": "req:stt-cwt-004",
+  "title": "Validity inside the DSC validity",
+  "description": "Restates QR Code Generation, 4. Step 3 — Build the CWT claim set; HCERT Specification, 3.2.5 Expiration Time; HCERT Specification, 3.2.6 Issued At.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Validity inside the DSC validity",
+      "conformance": "SHALL",
+      "requirement": "Before signing, the issuer SHALL check that iat is not before the DSC notBefore and exp is not after the DSC notAfter, and SHALL refuse to sign otherwise.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-CWT-004",
+    "derivation": "direct",
+    "steps": [
+      "step-3",
+      "step-5"
+    ],
+    "api": [
+      "api-issuer",
+      "api-signer"
+    ],
+    "sources": [
+      {
+        "src": "qr-4",
+        "quote": "MUST NOT predate the DSC validity period ... MUST NOT exceed the DSC validity period"
+      },
+      {
+        "src": "hcert-3.2.5"
+      },
+      {
+        "src": "hcert-3.2.6"
+      }
+    ]
+  }
+}

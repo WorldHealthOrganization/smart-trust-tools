@@ -1,0 +1,48 @@
+{
+  "id": "req:stt-cos-005",
+  "title": "Fixed-width r||s ECDSA signatures",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1.",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Fixed-width r||s ECDSA signatures",
+      "conformance": "SHALL",
+      "requirement": "ES256 signatures SHALL be carried as 64-byte r||s. The library SHALL convert from and to the ASN.1 DER form returned or expected by platform crypto APIs (JCA, Android Keystore, PKCS#11, RustCrypto). The verifier SHALL reject an ES256 signature that is not exactly 64 bytes.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-COS-005",
+    "derivation": "direct",
+    "steps": [
+      "step-5",
+      "step-verify"
+    ],
+    "api": [
+      "api-ecdsa-format"
+    ],
+    "sources": [
+      {
+        "src": "qr-6",
+        "quote": "For ES256 the COSE signature value is the fixed-width concatenation r || s, 32 bytes each — not the ASN.1 DER encoding"
+      }
+    ]
+  }
+}

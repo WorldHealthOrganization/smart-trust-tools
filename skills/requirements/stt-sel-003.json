@@ -1,0 +1,46 @@
+{
+  "id": "req:stt-sel-003",
+  "title": "Development-range subclaims need explicit opt-in",
+  "description": "Engineering consequence of QR Code Generation, 2.1 Subclaims defined in this guide; HCERT Specification, 3.2.7.1 Subclaims.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Development-range subclaims need explicit opt-in",
+      "conformance": "SHALL",
+      "requirement": "The registry SHALL classify subclaims >= 0 as WHO-reserved and negative subclaims as development range. The issuer SHALL refuse to issue a development-range subclaim unless the issuer policy explicitly allows it. The subclaim number used for a payload type SHALL be configuration, not a constant in a codec, so that DVC can move from -6 to an assigned number without an API break.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-SEL-003",
+    "derivation": "derived",
+    "steps": [
+      "step-1"
+    ],
+    "api": [
+      "api-subclaim-registry",
+      "api-issuer"
+    ],
+    "issues": [
+      "OI-09"
+    ],
+    "sources": [
+      {
+        "src": "qr-2.1",
+        "quote": "Do not treat a negative subclaim as a production allocation."
+      },
+      {
+        "src": "hcert-3.2.7.1"
+      }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "req:stt-pay-001",
+  "title": "Typed DVCMin model",
+  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; DVCMin logical model (trust-phw).",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Typed DVCMin model",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL provide a typed DVCMin payload with the short element names and cardinalities of the logical model: n 1..1, dob 1..1, s 1..1, nt 1..1, id 0..1, dt 0..1, gn 0..1, vx 1..1, v 1..1, and a PayloadCodec for it.",
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "stt-tst-001",
+          "criterion": "PR 129 example as a conformance vector (req:stt-tst-001) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-PAY-001",
+    "derivation": "direct",
+    "steps": [
+      "step-2"
+    ],
+    "api": [
+      "api-dvcmin",
+      "api-payload-codec"
+    ],
+    "sources": [
+      {
+        "src": "qr-3",
+        "quote": "The DVC payload uses short element names because every byte is paid for twice"
+      },
+      {
+        "src": "ext-dvcmin"
+      }
+    ]
+  }
+}

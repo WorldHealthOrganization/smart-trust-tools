@@ -1,0 +1,46 @@
+{
+  "id": "req:stt-qr-006",
+  "title": "Encoding report",
+  "description": "Engineering consequence of QR Code Generation, 12.5 Size at each stage; QR Code Generation, 2.2 Choosing between a DVC and a VHL.",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Encoding report",
+      "conformance": "SHALL",
+      "requirement": "The issuer SHALL return an EncodingReport with the size at every stage (CBOR, COSE, deflated, HC1 characters) and the QR version and error-correction level. It SHALL add a warning when the HC1 length is over a configurable threshold, pointing to VHL as the alternative.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-QR-006",
+    "derivation": "derived",
+    "steps": [
+      "step-4",
+      "step-5",
+      "step-6",
+      "step-7",
+      "step-9"
+    ],
+    "api": [
+      "api-report"
+    ],
+    "sources": [
+      {
+        "src": "qr-12.5",
+        "quote": "a payload that grows much beyond this belongs behind a VHL instead"
+      },
+      {
+        "src": "qr-2.2"
+      }
+    ]
+  }
+}

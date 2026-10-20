@@ -1,0 +1,45 @@
+{
+  "id": "req:stt-tst-001",
+  "title": "PR 129 example as a conformance vector",
+  "description": "Engineering consequence of QR Code Generation, 12.6 The certificate; DVC QR example, machine-readable summary (test participant XXA); DVC QR example, test DSC and SCA (PEM).",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "PR 129 example as a conformance vector",
+      "conformance": "SHALL",
+      "requirement": "Both libraries SHALL verify the two HC1 strings in dvc-qr-example-XXA.json against dvc-qr-example-XXA-dsc.pem, with the clock fixed inside 2026-09-29T08:30Z to 2027-09-29T08:30Z. Each SHALL give kid WHM+BYqqZiE=, subclaim -6, and payloads equal to those in the JSON. The committed files SHALL be used as-is; they SHALL NOT be regenerated.",
+      "category": "test"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "test",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-TST-001",
+    "derivation": "derived",
+    "api": [
+      "api-testkit"
+    ],
+    "issues": [
+      "OI-01"
+    ],
+    "sources": [
+      {
+        "src": "qr-12.6",
+        "quote": "so that a verifier implementation can be exercised against this example end to end"
+      },
+      {
+        "src": "doc-qr-example-json"
+      },
+      {
+        "src": "doc-qr-example-pem"
+      }
+    ]
+  }
+}

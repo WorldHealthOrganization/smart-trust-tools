@@ -1,0 +1,39 @@
+{
+  "id": "req:stt-tst-002",
+  "title": "Byte-exact CBOR vector",
+  "description": "Engineering consequence of QR Code Generation, 12.5 Size at each stage; DVC QR example, machine-readable summary (test participant XXA).",
+  "status": "proposed",
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Byte-exact CBOR vector",
+      "conformance": "SHALL",
+      "requirement": "Encoding the PR 129 example claim sets with deterministic CBOR SHALL give exactly the payload bytes inside the committed COSE_Sign1: 210 bytes for hepb1 and 209 for bcg. Signed, deflated and HC1 sizes SHALL NOT be asserted exactly, because signatures are randomized.",
+      "category": "test"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "test",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-TST-002",
+    "derivation": "derived",
+    "issues": [
+      "OI-01",
+      "OI-05"
+    ],
+    "sources": [
+      {
+        "src": "qr-12.5"
+      },
+      {
+        "src": "doc-qr-example-json"
+      }
+    ]
+  }
+}

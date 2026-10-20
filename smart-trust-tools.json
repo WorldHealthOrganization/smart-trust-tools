@@ -28,5 +28,14 @@
       "description": "Requirements, API contract, wire format and payload models for the Kotlin and Rust HCERT libraries, and where they are published."
     }
   ],
-  "directories": []
+  "directories": [
+    {
+      "id": "stt-skills",
+      "path": "skills/",
+      "description": "The HCERT library requirements: one cat-harness req: node per STT requirement under skills/requirements/, derived from the WHO SMART Trust IG (QR Code Generation, HCERT specification, DID trust list) and its FHIR Requirements. tools/build_kg.py renders them, with the sources, steps, API elements and issues in requirements/kg/, into requirements/generated/.",
+      "graphTypologies": [
+        "skills"
+      ]
+    }
+  ]
 }

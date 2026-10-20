@@ -1,0 +1,54 @@
+{
+  "id": "req:stt-ver-003",
+  "title": "Defensive protected-header parsing",
+  "description": "Restates QR Code Generation, 11. Verifying: the same steps upwards; HCERT Specification, 6.3 Input Data Validation.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-ver-001"
+  ],
+  "actors": [
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Defensive protected-header parsing",
+      "conformance": "SHALL",
+      "requirement": "Before the signature is checked, the verifier SHALL validate the types and lengths in the protected header: alg is a supported integer, kid is a byte string of the expected length, and no duplicate labels. It SHALL fail closed on anything unexpected.",
+      "category": "security",
+      "successCriteria": [
+        {
+          "key": "stt-tst-004",
+          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "verification": "test"
+        },
+        {
+          "key": "stt-tst-006",
+          "criterion": "Fuzzing of decoders (req:stt-tst-006) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "security",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-VER-003",
+    "derivation": "direct",
+    "steps": [
+      "step-verify"
+    ],
+    "sources": [
+      {
+        "src": "qr-11",
+        "quote": "Parsing the protected header necessarily happens before signature verification, which makes it an attack surface"
+      },
+      {
+        "src": "hcert-6.3"
+      }
+    ]
+  }
+}

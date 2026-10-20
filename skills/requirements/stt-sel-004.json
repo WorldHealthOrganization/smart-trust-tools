@@ -1,0 +1,53 @@
+{
+  "id": "req:stt-sel-004",
+  "title": "Exactly one payload when issuing",
+  "description": "Engineering consequence of QR Code Generation, 2. Step 1 — Select the logical model for your use case; QR Code Generation, 4. Step 3 — Build the CWT claim set; HCERT Specification, 3.2.7 Health Certificate Claim.",
+  "status": "proposed",
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Exactly one payload when issuing",
+      "conformance": "SHALL",
+      "requirement": "The issuer SHALL emit an hcert (-260) map with exactly one entry. The verifier SHALL expose every entry present. When there is more than one entry, the verifier SHALL report it as a diagnostic, and SHALL fail verification if the policy is strict, which SHALL be the default.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-SEL-004",
+    "derivation": "derived",
+    "steps": [
+      "step-1",
+      "step-3",
+      "step-verify"
+    ],
+    "api": [
+      "api-hcert-claim"
+    ],
+    "issues": [
+      "OI-02"
+    ],
+    "sources": [
+      {
+        "src": "qr-2",
+        "quote": "An HCERT carries exactly one payload, identified by a subclaim inside the hcert claim"
+      },
+      {
+        "src": "qr-4",
+        "quote": "Map whose single key is the subclaim chosen in Step 1"
+      },
+      {
+        "src": "hcert-3.2.7",
+        "quote": "Several different types of health certificate MAY exist under the same claim"
+      }
+    ]
+  }
+}

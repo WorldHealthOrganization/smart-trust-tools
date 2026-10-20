@@ -1,0 +1,60 @@
+{
+  "id": "req:stt-pay-010",
+  "title": "Payload models derived from FHIR logical models",
+  "description": "Stakeholder directive, in the context of Stakeholder directive: open standards for types and schemas; DVCMin logical model (trust-phw); DVCMinVaccineDetails logical model (trust-phw); W3C JSON-LD 1.1; W3C Shapes Constraint Language (SHACL).",
+  "status": "proposed",
+  "actors": [
+    "issuer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Payload models derived from FHIR logical models",
+      "conformance": "SHALL",
+      "requirement": "Payload schemas SHALL be derived mechanically from the published FHIR logical models, not written by hand: a JSON-LD 1.1 context that maps the payload's short element names to IRIs, SHACL shapes for cardinality, primitive patterns, invariants and bindings, and CDDL for the CBOR encoding. Inputs SHALL be pinned to a source commit. Typed payload codecs SHALL be checked against these derived schemas.",
+      "category": "architecture",
+      "successCriteria": [
+        {
+          "key": "stt-tst-008",
+          "criterion": "Schema checks against the vectors (req:stt-tst-008) passes.",
+          "verification": "test"
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "architecture",
+    "directive"
+  ],
+  "stt": {
+    "id": "STT-PAY-010",
+    "derivation": "directive",
+    "steps": [
+      "step-2"
+    ],
+    "issues": [
+      "OI-17",
+      "OI-18",
+      "OI-19"
+    ],
+    "sources": [
+      {
+        "src": "dir-open-standards"
+      },
+      {
+        "src": "ext-dvcmin",
+        "quote": "Minimal DVC payload for use within an HCERT Payload"
+      },
+      {
+        "src": "ext-dvcmin-vx"
+      },
+      {
+        "src": "std-json-ld"
+      },
+      {
+        "src": "std-shacl"
+      }
+    ]
+  }
+}

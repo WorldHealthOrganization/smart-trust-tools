@@ -1,0 +1,41 @@
+{
+  "id": "req:stt-tst-005",
+  "title": "Language-neutral vector format",
+  "description": "Engineering consequence of DVC QR example, machine-readable summary (test participant XXA); Stakeholder directive: Kotlin library first, Rust library second.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-gen-006"
+  ],
+  "actors": [
+    "implementer"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "Language-neutral vector format",
+      "conformance": "SHALL",
+      "requirement": "Conformance vectors SHALL be stored once, in a language-neutral format (JSON plus PEM), in this repository, and loaded by both test suites.",
+      "category": "test"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "test",
+    "derived"
+  ],
+  "stt": {
+    "id": "STT-TST-005",
+    "derivation": "derived",
+    "api": [
+      "api-testkit"
+    ],
+    "sources": [
+      {
+        "src": "doc-qr-example-json"
+      },
+      {
+        "src": "dir-languages"
+      }
+    ]
+  }
+}
