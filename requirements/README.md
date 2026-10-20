@@ -21,7 +21,7 @@ and FHIR `Requirements` resources.
 | `kg/sources.yaml` | smart-trust documents and sections, pinned commits, URL tiers; external standards; stakeholder directives |
 | `kg/upstream.yaml` | smart-trust FHIR `Requirements` statements and actors that library requirements `satisfy` |
 | `kg/steps.yaml` | The 9-step HCERT QR pipeline, plus verification and trust-list steps |
-| `kg/api.yaml` | Language-neutral API elements, with Kotlin and Rust sketches |
+| `kg/api.yaml` | API elements linked to their WIT items in [`../api/wit/`](../api/wit/), with Kotlin and Rust sketches |
 | `kg/issues.yaml` | Gaps and inconsistencies found in the sources (most to fix upstream) |
 | `generated/kg.ttl`, `generated/kg.jsonld` | The graph as RDF (Turtle and JSON-LD; same triples) |
 | `generated/REQUIREMENTS.md` | Human-readable rendering with traceability tables |

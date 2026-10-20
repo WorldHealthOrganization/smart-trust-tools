@@ -1,10 +1,10 @@
-name: Requirements KG
+name: Requirements KG and API contract
 
 on:
   push:
-    paths: ["requirements/**", "tools/build_kg.py", ".github/workflows/requirements-kg.yml"]
+    paths: ["requirements/**", "api/**", "tools/**", ".github/workflows/requirements-kg.yml"]
   pull_request:
-    paths: ["requirements/**", "tools/build_kg.py", ".github/workflows/requirements-kg.yml"]
+    paths: ["requirements/**", "api/**", "tools/**", ".github/workflows/requirements-kg.yml"]
 
 jobs:
   check:
@@ -14,8 +14,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - run: pip install pyyaml rdflib
-      - name: Validate KG and check generated files are current
+      - name: Validate KG (incl. WIT references) and check generated files are current
         run: python3 tools/build_kg.py --check
       - name: Parse generated RDF
         run: |
@@ -27,3 +30,7 @@ jobs:
           assert isomorphic(a, b), 'Turtle and JSON-LD differ'
           print(len(a), 'triples')
           "
+      - name: Validate WIT and check generated TypeScript is current
+        run: |
+          tools/gen_api_types.sh
+          git diff --exit-code -- api/generated/ts

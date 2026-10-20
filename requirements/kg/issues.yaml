@@ -152,3 +152,29 @@ issues:
       Maven group / Kotlin package root and crate names are placeholders. The
       natural reverse-DNS root, int.who, cannot be used because `int` is a
       reserved Java keyword. The licence has not been chosen.
+
+  - id: OI-15
+    title: Asynchronous crypto and I/O across the WIT boundary
+    upstream: false
+    sources: [std-wit, std-webcrypto]
+    description: >-
+      WASI 0.2 component calls are synchronous. WebCrypto (the natural crypto
+      backend for Kotlin/JS on Node and browsers) is promise-based, as are
+      remote KMS signers and HTTP fetches. The design avoids async callbacks
+      into the host: signing is two-phase and trust lists are loaded by the
+      host. The Rust component verifies with in-WASM RustCrypto, so verify
+      stays synchronous. Kotlin/JS must either use Node's synchronous
+      `crypto` module (Node only) or expose a Promise-returning verify, which
+      would diverge from the jco surface. Decide before implementation;
+      revisit when WASI 0.3 async is stable.
+
+  - id: OI-16
+    title: WIT type-system limits
+    upstream: false
+    sources: [std-wit]
+    description: >-
+      WIT has no recursive types, so generic CBOR crosses as encoded bytes
+      and only DVCMin and VHL are typed records. s64 becomes bigint in
+      JavaScript, so it is used only for NumericDate, and subclaim numbers
+      are s32. result<T, E> is thrown as ComponentError by jco, so APIs whose
+      failures are expected (verify) return a variant instead.

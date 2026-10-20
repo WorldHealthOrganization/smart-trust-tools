@@ -167,6 +167,11 @@
     a rdf:Property ;
     rdfs:label "Rust sketch" .
 
+<https://github.com/litlfred/smart-trust-tools/kg/vocab#witItem>
+    a rdf:Property ;
+    rdfs:label "WIT item" ;
+    rdfs:comment "interface.item in the who:smart-trust WIT package (api/wit)." .
+
 <https://github.com/litlfred/smart-trust-tools/kg/vocab#kotlinName>
     a rdf:Property ;
     rdfs:label "Kotlin package" .
@@ -556,11 +561,35 @@
     dcterms:title "W3C DID Core" ;
     stt:url <https://www.w3.org/TR/did-core/> .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-wit>
+    a stt:Document ;
+    dcterms:identifier "std-wit" ;
+    dcterms:title "WIT, WebAssembly Component Model IDL" ;
+    stt:url <https://component-model.bytecodealliance.org/design/wit.html> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-jco>
+    a stt:Document ;
+    dcterms:identifier "std-jco" ;
+    dcterms:title "jco: JavaScript toolchain for WebAssembly components" ;
+    stt:url <https://github.com/bytecodealliance/jco> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/std-webcrypto>
+    a stt:Document ;
+    dcterms:identifier "std-webcrypto" ;
+    dcterms:title "W3C Web Cryptography API" ;
+    stt:url <https://www.w3.org/TR/WebCryptoAPI/> .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/dir-languages>
     a stt:Document ;
     dcterms:identifier "dir-languages" ;
     dcterms:title "Stakeholder directive: Kotlin library first, Rust library second" ;
     rdfs:comment """Given by the requester on 2026-10-20 when commissioning these requirements: "API requirements are intended for kotlin (first) and rust (second) libraries."""" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets>
+    a stt:Document ;
+    dcterms:identifier "dir-targets" ;
+    dcterms:title "Stakeholder directive: transpile targets and API-first" ;
+    rdfs:comment "Given by the requester on 2026-10-20: Kotlin targets Node, Java (JVM) and Android; Rust targets WebAssembly. The API set is to be defined and reviewed first, in an OpenAPI-like but non-REST definition." .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/qr-intro>
     a stt:Section ;
@@ -1410,7 +1439,8 @@
     dcterms:description "An hcert subclaim number with its status (ASSIGNED, PROPOSED, DEVELOPMENT) and logical-model canonical URL." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-model> ;
     stt:kotlinSignature "data class Subclaim(val key: Int, val status: SubclaimStatus, val logicalModel: String?)" ;
-    stt:rustSignature "pub struct Subclaim { pub key: i64, pub status: SubclaimStatus, pub logical_model: Option<String> }" .
+    stt:rustSignature "pub struct Subclaim { pub key: i64, pub status: SubclaimStatus, pub logical_model: Option<String> }" ;
+    stt:witItem "types.subclaim" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-subclaim-registry>
     a stt:ApiElement ;
@@ -1419,7 +1449,8 @@
     dcterms:description "Lookup and registration of subclaims and their PayloadCodecs. Ships with the IG defaults." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-model> ;
     stt:kotlinSignature "interface SubclaimRegistry { fun lookup(key: Int): Subclaim?; fun codec(key: Int): PayloadCodec<*>?; fun register(subclaim: Subclaim, codec: PayloadCodec<*>) }" ;
-    stt:rustSignature "pub trait SubclaimRegistry { fn lookup(&self, key: i64) -> Option<&Subclaim>; fn codec(&self, key: i64) -> Option<&dyn ErasedPayloadCodec>; }" .
+    stt:rustSignature "pub trait SubclaimRegistry { fn lookup(&self, key: i64) -> Option<&Subclaim>; fn codec(&self, key: i64) -> Option<&dyn ErasedPayloadCodec>; }" ;
+    stt:witItem "subclaims.registry" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-payload-codec>
     a stt:ApiElement ;
@@ -1428,7 +1459,8 @@
     dcterms:description "Converts a typed payload to and from a CBOR data item and validates it against its logical model." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-model> ;
     stt:kotlinSignature "interface PayloadCodec<T> { val subclaim: Int; fun toCbor(p: T): CborItem; fun fromCbor(i: CborItem): T; fun validate(p: T): List<ValidationIssue> }" ;
-    stt:rustSignature "pub trait PayloadCodec { type Payload; const SUBCLAIM: i64; fn to_cbor(&self, p: &Self::Payload) -> CborValue; fn from_cbor(&self, v: &CborValue) -> Result<Self::Payload, PayloadError>; fn validate(&self, p: &Self::Payload) -> Vec<ValidationIssue>; }" .
+    stt:rustSignature "pub trait PayloadCodec { type Payload; const SUBCLAIM: i64; fn to_cbor(&self, p: &Self::Payload) -> CborValue; fn from_cbor(&self, v: &CborValue) -> Result<Self::Payload, PayloadError>; fn validate(&self, p: &Self::Payload) -> Vec<ValidationIssue>; }" ;
+    stt:witItem "dvc.to-cbor" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-raw-payload>
     a stt:ApiElement ;
@@ -1437,7 +1469,8 @@
     dcterms:description "Opaque CBOR payload for subclaims without a typed codec (DCC 1, DDCC 3/4, MTL -7 in v1)." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-model> ;
     stt:kotlinSignature "data class RawPayload(val subclaim: Int, val item: CborItem)" ;
-    stt:rustSignature "pub struct RawPayload { pub subclaim: i64, pub item: CborValue }" .
+    stt:rustSignature "pub struct RawPayload { pub subclaim: i64, pub item: CborValue }" ;
+    stt:witItem "payloads.raw-payload" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-vhl>
     a stt:ApiElement ;
@@ -1446,7 +1479,8 @@
     dcterms:description "Subclaim 5: URI of a Verifiable Health Link." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-model> ;
     stt:kotlinSignature "@JvmInline value class VhlPayload(val uri: String)" ;
-    stt:rustSignature "pub struct VhlPayload(pub String);" .
+    stt:rustSignature "pub struct VhlPayload(pub String);" ;
+    stt:witItem "payloads.payload" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-cwt>
     a stt:ApiElement ;
@@ -1455,7 +1489,8 @@
     dcterms:description "CWT claim set: iss (1), iat (6), exp (4), hcert (-260), plus preserved unknown claims." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-model> ;
     stt:kotlinSignature "data class CwtClaims(val iss: String?, val iat: Instant, val exp: Instant, val hcert: HcertClaim, val other: Map<CborItem, CborItem> = emptyMap())" ;
-    stt:rustSignature "pub struct CwtClaims { pub iss: Option<String>, pub iat: NumericDate, pub exp: NumericDate, pub hcert: HcertClaim, pub other: BTreeMap<CborValue, CborValue> }" .
+    stt:rustSignature "pub struct CwtClaims { pub iss: Option<String>, pub iat: NumericDate, pub exp: NumericDate, pub hcert: HcertClaim, pub other: BTreeMap<CborValue, CborValue> }" ;
+    stt:witItem "issuer.issue-request" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-hcert-claim>
     a stt:ApiElement ;
@@ -1464,7 +1499,8 @@
     dcterms:description "The -260 map. Issuance holds exactly one entry; decoding exposes every entry present." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-model> ;
     stt:kotlinSignature "class HcertClaim(val entries: Map<Int, CborItem>) { val single: Pair<Int, CborItem>? }" ;
-    stt:rustSignature "pub struct HcertClaim { pub entries: BTreeMap<i64, CborValue> }" .
+    stt:rustSignature "pub struct HcertClaim { pub entries: BTreeMap<i64, CborValue> }" ;
+    stt:witItem "verifier.verified-hcert" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-advisor>
     a stt:ApiElement ;
@@ -1473,7 +1509,8 @@
     dcterms:description "Implements the QR Code Generation 2.4 decision tree, plus a size estimate." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-model> ;
     stt:kotlinSignature "fun advisePayloadType(facts: UseCaseFacts): PayloadAdvice" ;
-    stt:rustSignature "pub fn advise_payload_type(facts: &UseCaseFacts) -> PayloadAdvice" .
+    stt:rustSignature "pub fn advise_payload_type(facts: &UseCaseFacts) -> PayloadAdvice" ;
+    stt:witItem "subclaims.advise" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-terminology>
     a stt:ApiElement ;
@@ -1482,7 +1519,8 @@
     dcterms:description "Pluggable value-set membership check (PreQual product IDs, ICD-11 DVC vaccines, ISO 3166)." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-model> ;
     stt:kotlinSignature "fun interface TerminologyValidator { fun isMember(valueSet: String, code: String): Membership }" ;
-    stt:rustSignature "pub trait TerminologyValidator { fn is_member(&self, value_set: &str, code: &str) -> Membership; }" .
+    stt:rustSignature "pub trait TerminologyValidator { fn is_member(&self, value_set: &str, code: &str) -> Membership; }" ;
+    stt:witItem "terminology.is-member" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-dvcmin>
     a stt:ApiElement ;
@@ -1491,7 +1529,8 @@
     dcterms:description "DVCMin with short element names n, dob, s, nt, id, dt, gn, vx, v." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-payload-dvc> ;
     stt:kotlinSignature "data class DvcMin(val n: String, val dob: String, val s: String, val nt: String, val id: String? = null, val dt: String? = null, val gn: String? = null, val vx: DvcMinVaccineDetails, val v: String)" ;
-    stt:rustSignature "pub struct DvcMin { pub n: String, pub dob: String, pub s: String, pub nt: String, pub id: Option<String>, pub dt: Option<String>, pub gn: Option<String>, pub vx: DvcMinVaccineDetails, pub v: String }" .
+    stt:rustSignature "pub struct DvcMin { pub n: String, pub dob: String, pub s: String, pub nt: String, pub id: Option<String>, pub dt: Option<String>, pub gn: Option<String>, pub vx: DvcMinVaccineDetails, pub v: String }" ;
+    stt:witItem "dvc.dvc-min" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-dvcmin-vx>
     a stt:ApiElement ;
@@ -1500,7 +1539,8 @@
     dcterms:description "vp, dv, cn, is, bo." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-payload-dvc> ;
     stt:kotlinSignature "data class DvcMinVaccineDetails(val vp: String, val dv: String, val cn: String? = null, val `is`: String? = null, val bo: String)" ;
-    stt:rustSignature "pub struct DvcMinVaccineDetails { pub vp: String, pub dv: String, pub cn: Option<String>, pub is: Option<String>, pub bo: String }" .
+    stt:rustSignature "pub struct DvcMinVaccineDetails { pub vp: String, pub dv: String, pub cn: Option<String>, pub is: Option<String>, pub bo: String }" ;
+    stt:witItem "dvc.dvc-min-vaccine-details" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-dvc-split>
     a stt:ApiElement ;
@@ -1509,7 +1549,8 @@
     dcterms:description "Splits one visit with N administered vaccines into N DvcMin payloads (vx is 1..1)." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-payload-dvc> ;
     stt:kotlinSignature "fun DvcMin.Companion.perEvent(subject: DvcSubject, events: List<DvcMinVaccineDetails>): List<DvcMin>" ;
-    stt:rustSignature "pub fn per_event(subject: &DvcSubject, events: &[DvcMinVaccineDetails]) -> Vec<DvcMin>" .
+    stt:rustSignature "pub fn per_event(subject: &DvcSubject, events: &[DvcMinVaccineDetails]) -> Vec<DvcMin>" ;
+    stt:witItem "dvc.per-event" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-cbor>
     a stt:ApiElement ;
@@ -1518,7 +1559,8 @@
     dcterms:description "Deterministic CBOR encode; bounded decode." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-codec> ;
     stt:kotlinSignature "object Cbor { fun encode(item: CborItem): ByteArray; fun decode(bytes: ByteArray, limits: DecodeLimits = DecodeLimits.DEFAULT): CborItem }" ;
-    stt:rustSignature "pub fn encode(v: &CborValue) -> Vec<u8>; pub fn decode(b: &[u8], limits: &DecodeLimits) -> Result<CborValue, CodecError>" .
+    stt:rustSignature "pub fn encode(v: &CborValue) -> Vec<u8>; pub fn decode(b: &[u8], limits: &DecodeLimits) -> Result<CborValue, CodecError>" ;
+    stt:witItem "codec.cbor-deterministic" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-limits>
     a stt:ApiElement ;
@@ -1527,7 +1569,8 @@
     dcterms:description "Upper bounds applied while decoding untrusted input: input length, inflated size, CBOR nesting depth, item count, string length." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-codec> ;
     stt:kotlinSignature "data class DecodeLimits(val maxInputChars: Int, val maxInflatedBytes: Int, val maxDepth: Int, val maxItems: Int, val maxStringBytes: Int)" ;
-    stt:rustSignature "pub struct DecodeLimits { pub max_input_chars: usize, pub max_inflated_bytes: usize, pub max_depth: usize, pub max_items: usize, pub max_string_bytes: usize }" .
+    stt:rustSignature "pub struct DecodeLimits { pub max_input_chars: usize, pub max_inflated_bytes: usize, pub max_depth: usize, pub max_items: usize, pub max_string_bytes: usize }" ;
+    stt:witItem "types.decode-limits" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-zlib>
     a stt:ApiElement ;
@@ -1536,7 +1579,8 @@
     dcterms:description "ZLIB (RFC 1950) wrapping DEFLATE (RFC 1951)." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-codec> ;
     stt:kotlinSignature "object Zlib { fun compress(b: ByteArray, level: Int = 9): ByteArray; fun inflate(b: ByteArray, maxOut: Int): ByteArray }" ;
-    stt:rustSignature "pub fn compress(b: &[u8], level: u32) -> Vec<u8>; pub fn inflate(b: &[u8], max_out: usize) -> Result<Vec<u8>, CodecError>" .
+    stt:rustSignature "pub fn compress(b: &[u8], level: u32) -> Vec<u8>; pub fn inflate(b: &[u8], max_out: usize) -> Result<Vec<u8>, CodecError>" ;
+    stt:witItem "codec.zlib-inflate" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-base45>
     a stt:ApiElement ;
@@ -1545,7 +1589,8 @@
     dcterms:description "RFC 9285 Base45, strict decode." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-codec> ;
     stt:kotlinSignature "object Base45 { fun encode(b: ByteArray): String; fun decode(s: String): ByteArray }" ;
-    stt:rustSignature "pub fn encode(b: &[u8]) -> String; pub fn decode(s: &str) -> Result<Vec<u8>, CodecError>" .
+    stt:rustSignature "pub fn encode(b: &[u8]) -> String; pub fn decode(s: &str) -> Result<Vec<u8>, CodecError>" ;
+    stt:witItem "codec.base45-decode" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-hc1>
     a stt:ApiElement ;
@@ -1554,7 +1599,8 @@
     dcterms:description "HC1: prefixing and detection of HC[1-9A-Z]: context identifiers." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-codec> ;
     stt:kotlinSignature """object ContextIdentifier { const val HC1 = "HC1:"; fun detect(s: String): ContextId?; fun prefix(b45: String): String }""" ;
-    stt:rustSignature """pub const HC1: &str = "HC1:"; pub fn detect(s: &str) -> Option<ContextId>""" .
+    stt:rustSignature """pub const HC1: &str = "HC1:"; pub fn detect(s: &str) -> Option<ContextId>""" ;
+    stt:witItem "codec.detect-context" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-alg>
     a stt:ApiElement ;
@@ -1563,7 +1609,8 @@
     dcterms:description "ES256 (-7), PS256 (-37)." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-cose> ;
     stt:kotlinSignature "enum class CoseAlgorithm(val id: Int) { ES256(-7), PS256(-37) }" ;
-    stt:rustSignature "pub enum CoseAlgorithm { Es256 = -7, Ps256 = -37 }" .
+    stt:rustSignature "pub enum CoseAlgorithm { Es256 = -7, Ps256 = -37 }" ;
+    stt:witItem "types.cose-algorithm" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-kid>
     a stt:ApiElement ;
@@ -1572,7 +1619,8 @@
     dcterms:description "8-byte key identifier with derivation from a DER DSC and base64/hex forms." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-cose> ;
     stt:kotlinSignature "@JvmInline value class Kid(val bytes: ByteArray) { companion object { fun fromDsc(der: ByteArray): Kid; fun fromBase64(s: String): Kid }; fun toBase64(): String }" ;
-    stt:rustSignature "pub struct Kid([u8; 8]); impl Kid { pub fn from_dsc(der: &[u8]) -> Kid; pub fn from_base64(s: &str) -> Result<Kid, KidError>; pub fn to_base64(&self) -> String }" .
+    stt:rustSignature "pub struct Kid([u8; 8]); impl Kid { pub fn from_dsc(der: &[u8]) -> Kid; pub fn from_base64(s: &str) -> Result<Kid, KidError>; pub fn to_base64(&self) -> String }" ;
+    stt:witItem "cose.kid-from-dsc" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-signer>
     a stt:ApiElement ;
@@ -1581,7 +1629,8 @@
     dcterms:description "Signs Sig_structure bytes. Implementations may wrap an HSM, a KMS, Android Keystore, PKCS#11 or a software key." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-cose> ;
     stt:kotlinSignature "interface Signer { val algorithm: CoseAlgorithm; val dsc: X509Certificate; suspend fun sign(toBeSigned: ByteArray): ByteArray }" ;
-    stt:rustSignature "pub trait Signer { fn algorithm(&self) -> CoseAlgorithm; fn dsc_der(&self) -> &[u8]; fn sign(&self, tbs: &[u8]) -> Result<Vec<u8>, SignError>; }" .
+    stt:rustSignature "pub trait Signer { fn algorithm(&self) -> CoseAlgorithm; fn dsc_der(&self) -> &[u8]; fn sign(&self, tbs: &[u8]) -> Result<Vec<u8>, SignError>; }" ;
+    stt:witItem "signer.sign" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-sign1>
     a stt:ApiElement ;
@@ -1590,7 +1639,8 @@
     dcterms:description "Parsed or built COSE_Sign1: protected bytes, unprotected map, payload, signature." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-cose> ;
     stt:kotlinSignature "class CoseSign1(val protectedBytes: ByteArray, val unprotected: Map<Int, CborItem>, val payload: ByteArray, val signature: ByteArray) { fun sigStructure(): ByteArray; val alg: CoseAlgorithm?; val kid: Kid? }" ;
-    stt:rustSignature "pub struct CoseSign1 { pub protected: Vec<u8>, pub unprotected: BTreeMap<i64, CborValue>, pub payload: Vec<u8>, pub signature: Vec<u8> }" .
+    stt:rustSignature "pub struct CoseSign1 { pub protected: Vec<u8>, pub unprotected: BTreeMap<i64, CborValue>, pub payload: Vec<u8>, pub signature: Vec<u8> }" ;
+    stt:witItem "cose.sign1" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-ecdsa-format>
     a stt:ApiElement ;
@@ -1599,7 +1649,8 @@
     dcterms:description "Conversion between ASN.1 DER ECDSA-Sig-Value and fixed-width r||s." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-cose> ;
     stt:kotlinSignature "object EcdsaSignatureFormat { fun derToRaw(der: ByteArray, n: Int = 32): ByteArray; fun rawToDer(raw: ByteArray): ByteArray }" ;
-    stt:rustSignature "pub fn der_to_raw(der: &[u8], n: usize) -> Result<Vec<u8>, SigFormatError>; pub fn raw_to_der(raw: &[u8]) -> Result<Vec<u8>, SigFormatError>" .
+    stt:rustSignature "pub fn der_to_raw(der: &[u8], n: usize) -> Result<Vec<u8>, SigFormatError>; pub fn raw_to_der(raw: &[u8]) -> Result<Vec<u8>, SigFormatError>" ;
+    stt:witItem "cose.ecdsa-der-to-raw" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-qr>
     a stt:ApiElement ;
@@ -1608,7 +1659,8 @@
     dcterms:description "Encodes an HC1 string as a single Alphanumeric-mode QR segment and returns the module matrix." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-qr> ;
     stt:kotlinSignature "object QrEncoder { fun encode(hc1: String, ec: ErrorCorrection = ErrorCorrection.Q): QrMatrix }" ;
-    stt:rustSignature "pub fn encode(hc1: &str, ec: ErrorCorrection) -> Result<QrMatrix, QrError>" .
+    stt:rustSignature "pub fn encode(hc1: &str, ec: ErrorCorrection) -> Result<QrMatrix, QrError>" ;
+    stt:witItem "qr.encode" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-qr-render>
     a stt:ApiElement ;
@@ -1617,7 +1669,8 @@
     dcterms:description "Optional: PNG/SVG rendering with integer module scaling, quiet zone, and physical-size helper." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-qr> ;
     stt:kotlinSignature "fun QrMatrix.toSvg(opts: RenderOptions): String; fun QrMatrix.toPng(opts: RenderOptions): ByteArray; fun RenderOptions.Companion.forDiagonal(mm: Double, dpi: Int, matrix: QrMatrix): RenderOptions" ;
-    stt:rustSignature """#[cfg(feature = "svg")] pub fn to_svg(m: &QrMatrix, o: &RenderOptions) -> String; #[cfg(feature = "png")] pub fn to_png(m: &QrMatrix, o: &RenderOptions) -> Vec<u8>""" .
+    stt:rustSignature """#[cfg(feature = "svg")] pub fn to_svg(m: &QrMatrix, o: &RenderOptions) -> String; #[cfg(feature = "png")] pub fn to_png(m: &QrMatrix, o: &RenderOptions) -> Vec<u8>""" ;
+    stt:witItem "qr.to-svg" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-trust-provider>
     a stt:ApiElement ;
@@ -1626,7 +1679,8 @@
     dcterms:description "Returns every trusted DSC that matches a kid, optionally narrowed by issuer, trust domain, participant and key usage." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-trust> ;
     stt:kotlinSignature "interface TrustListProvider { suspend fun candidates(query: KeyQuery): List<TrustedDsc>; val lastUpdated: Instant? }" ;
-    stt:rustSignature "pub trait TrustListProvider { fn candidates(&self, q: &KeyQuery) -> Result<Vec<TrustedDsc>, TrustError>; fn last_updated(&self) -> Option<SystemTime>; }" .
+    stt:rustSignature "pub trait TrustListProvider { fn candidates(&self, q: &KeyQuery) -> Result<Vec<TrustedDsc>, TrustError>; fn last_updated(&self) -> Option<SystemTime>; }" ;
+    stt:witItem "trust.trust-store" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-did-trustlist>
     a stt:ApiElement ;
@@ -1635,7 +1689,8 @@
     dcterms:description "Client for GDHCN DID trustlist v2 (embedded and reference variants; DEV, UAT, PROD; domain/participant/usage path levels)." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-trust> ;
     stt:kotlinSignature "class GdhcnDidTrustList(val environment: GdhcnEnvironment, val variant: Variant, val http: HttpFetcher, val cache: TrustListCache) : TrustListProvider" ;
-    stt:rustSignature "pub struct GdhcnDidTrustList<F: HttpFetcher, C: TrustListCache> { .. } impl TrustListProvider for GdhcnDidTrustList<F, C>" .
+    stt:rustSignature "pub struct GdhcnDidTrustList<F: HttpFetcher, C: TrustListCache> { .. } impl TrustListProvider for GdhcnDidTrustList<F, C>" ;
+    stt:witItem "trust.did-trustlist-url" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-static-trust>
     a stt:ApiElement ;
@@ -1644,7 +1699,8 @@
     dcterms:description "In-memory list of DSCs (PEM/DER/JWKS), for tests, pinned national lists and fully offline deployments." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-trust> ;
     stt:kotlinSignature "class StaticTrustList(dscs: List<X509Certificate>) : TrustListProvider { companion object { fun fromPem(pem: String): StaticTrustList; fun fromJwks(json: String): StaticTrustList } }" ;
-    stt:rustSignature "pub struct StaticTrustList { .. } impl StaticTrustList { pub fn from_pem(pem: &str) -> Result<Self, TrustError>; pub fn from_jwks(json: &str) -> Result<Self, TrustError> }" .
+    stt:rustSignature "pub struct StaticTrustList { .. } impl StaticTrustList { pub fn from_pem(pem: &str) -> Result<Self, TrustError>; pub fn from_jwks(json: &str) -> Result<Self, TrustError> }" ;
+    stt:witItem "trust.trust-store" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-clock>
     a stt:ApiElement ;
@@ -1653,7 +1709,18 @@
     dcterms:description "Injected time source with configurable skew tolerance." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline> ;
     stt:kotlinSignature "kotlinx.datetime.Clock (injected), plus VerifierPolicy.clockSkew: Duration" ;
-    stt:rustSignature "pub trait Clock { fn now(&self) -> SystemTime; }" .
+    stt:rustSignature "pub trait Clock { fn now(&self) -> SystemTime; }" ;
+    stt:witItem "verifier.verify" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/api-pending-signature>
+    a stt:ApiElement ;
+    dcterms:title "PendingSignature" ;
+    stt:kind "type" ;
+    dcterms:description "Result of issuer.prepare: the exact bytes to sign, the algorithm and the kid. Consumed by issuer.finish." ;
+    stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline> ;
+    stt:kotlinSignature "class PendingSignature : AutoCloseable { val toBeSigned: ByteArray; val algorithm: CoseAlgorithm; val kid: Kid }" ;
+    stt:rustSignature "pub struct PendingSignature { .. } impl PendingSignature { pub fn to_be_signed(&self) -> &[u8] }" ;
+    stt:witItem "issuer.pending-signature" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-issuer>
     a stt:ApiElement ;
@@ -1662,7 +1729,8 @@
     dcterms:description "Runs steps 3 to 9 for a payload and returns the HC1 string, optional QR matrix and an EncodingReport." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline> ;
     stt:kotlinSignature "class HcertIssuer(val signer: Signer, val registry: SubclaimRegistry, val policy: IssuerPolicy) { suspend fun <T> issue(payload: T, codec: PayloadCodec<T>, validity: Validity): IssuedHcert }" ;
-    stt:rustSignature "impl<S: Signer> HcertIssuer<S> { pub fn issue<C: PayloadCodec>(&self, p: &C::Payload, codec: &C, validity: Validity) -> Result<IssuedHcert, IssueError> }" .
+    stt:rustSignature "impl<S: Signer> HcertIssuer<S> { pub fn issue<C: PayloadCodec>(&self, p: &C::Payload, codec: &C, validity: Validity) -> Result<IssuedHcert, IssueError> }" ;
+    stt:witItem "issuer.prepare" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-report>
     a stt:ApiElement ;
@@ -1671,7 +1739,8 @@
     dcterms:description "Sizes at every stage (CBOR, COSE, deflated, HC1 chars) plus QR version and error-correction level." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline> ;
     stt:kotlinSignature "data class EncodingReport(val cborBytes: Int, val coseBytes: Int, val deflatedBytes: Int, val hc1Chars: Int, val qrVersion: Int?, val ec: ErrorCorrection?, val warnings: List<String>)" ;
-    stt:rustSignature "pub struct EncodingReport { pub cbor_bytes: usize, pub cose_bytes: usize, pub deflated_bytes: usize, pub hc1_chars: usize, pub qr_version: Option<u8>, pub warnings: Vec<String> }" .
+    stt:rustSignature "pub struct EncodingReport { pub cbor_bytes: usize, pub cose_bytes: usize, pub deflated_bytes: usize, pub hc1_chars: usize, pub qr_version: Option<u8>, pub warnings: Vec<String> }" ;
+    stt:witItem "types.encoding-report" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-verifier>
     a stt:ApiElement ;
@@ -1680,7 +1749,8 @@
     dcterms:description "Runs QR Code Generation section 11 over an HC1 string and returns a VerificationResult." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline> ;
     stt:kotlinSignature "class HcertVerifier(val trust: TrustListProvider, val registry: SubclaimRegistry, val clock: Clock, val policy: VerifierPolicy) { suspend fun verify(hc1: String): VerificationResult }" ;
-    stt:rustSignature "impl HcertVerifier { pub fn verify(&self, hc1: &str) -> VerificationResult }" .
+    stt:rustSignature "impl HcertVerifier { pub fn verify(&self, hc1: &str) -> VerificationResult }" ;
+    stt:witItem "verifier.verify" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-result>
     a stt:ApiElement ;
@@ -1689,7 +1759,8 @@
     dcterms:description "Either Verified(claims, payload, dsc, diagnostics) or Failed(step, reason, diagnostics). Payload content is only reachable from Verified." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline> ;
     stt:kotlinSignature "sealed interface VerificationResult { data class Verified(...) : VerificationResult; data class Failed(val step: Step, val reason: FailureReason, ...) : VerificationResult }" ;
-    stt:rustSignature "pub enum VerificationResult { Verified(VerifiedHcert), Failed(VerificationFailure) }" .
+    stt:rustSignature "pub enum VerificationResult { Verified(VerifiedHcert), Failed(VerificationFailure) }" ;
+    stt:witItem "verifier.verification-result" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-cert-type>
     a stt:ApiElement ;
@@ -1698,7 +1769,8 @@
     dcterms:description "Maps a decoded hcert entry to the EKU certificate type (test, vaccination, recovery, or unknown)." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline> ;
     stt:kotlinSignature "fun interface CertificateTypeResolver { fun resolve(subclaim: Int, payload: CborItem): CertificateType? }" ;
-    stt:rustSignature "pub trait CertificateTypeResolver { fn resolve(&self, subclaim: i64, payload: &CborValue) -> Option<CertificateType>; }" .
+    stt:rustSignature "pub trait CertificateTypeResolver { fn resolve(&self, subclaim: i64, payload: &CborValue) -> Option<CertificateType>; }" ;
+    rdfs:comment "Native-only SPI; the WIT verifier uses the built-in default mapping (OI-03)." .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-business-rules>
     a stt:ApiElement ;
@@ -1707,7 +1779,8 @@
     dcterms:description "Called with a verified payload. Its results are attached to the VerificationResult." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-pipeline> ;
     stt:kotlinSignature "fun interface BusinessRuleHook { suspend fun evaluate(v: VerificationResult.Verified): List<RuleOutcome> }" ;
-    stt:rustSignature "pub trait BusinessRuleHook { fn evaluate(&self, v: &VerifiedHcert) -> Vec<RuleOutcome>; }" .
+    stt:rustSignature "pub trait BusinessRuleHook { fn evaluate(&self, v: &VerifiedHcert) -> Vec<RuleOutcome>; }" ;
+    rdfs:comment "Host-side; run on verifier.verification-result after verify returns." .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/api-testkit>
     a stt:ApiElement ;
@@ -1716,7 +1789,8 @@
     dcterms:description "Shared, language-neutral conformance vectors (JSON + PEM) and loaders in both languages." ;
     stt:inModule <https://github.com/litlfred/smart-trust-tools/kg/id/mod-testkit> ;
     stt:kotlinSignature "object TestVectors { val dvcXxa: List<HcertVector> }" ;
-    stt:rustSignature "pub fn dvc_xxa() -> Vec<HcertVector>" .
+    stt:rustSignature "pub fn dvc_xxa() -> Vec<HcertVector>" ;
+    rdfs:comment "Test-only; not part of the shipped contract." .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/OI-01>
     a stt:OpenIssue ;
@@ -1854,6 +1928,23 @@
     stt:upstreamFix false ;
     stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/dir-languages> .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-15>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-15" ;
+    dcterms:title "Asynchronous crypto and I/O across the WIT boundary" ;
+    dcterms:description "WASI 0.2 component calls are synchronous. WebCrypto (the natural crypto backend for Kotlin/JS on Node and browsers) is promise-based, as are remote KMS signers and HTTP fetches. The design avoids async callbacks into the host: signing is two-phase and trust lists are loaded by the host. The Rust component verifies with in-WASM RustCrypto, so verify stays synchronous. Kotlin/JS must either use Node's synchronous `crypto` module (Node only) or expose a Promise-returning verify, which would diverge from the jco surface. Decide before implementation; revisit when WASI 0.3 async is stable." ;
+    stt:upstreamFix false ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-webcrypto> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/OI-16>
+    a stt:OpenIssue ;
+    dcterms:identifier "OI-16" ;
+    dcterms:title "WIT type-system limits" ;
+    dcterms:description "WIT has no recursive types, so generic CBOR crosses as encoded bytes and only DVCMin and VHL are typed records. s64 becomes bigint in JavaScript, so it is used only for NumericDate, and subclaim numbers are s32. result<T, E> is thrown as ComponentError by jco, so APIs whose failures are expected (verify) return a variant instead." ;
+    stt:upstreamFix false ;
+    stt:concerns <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-001>
     a stt:Requirement ;
     dcterms:identifier "STT-GEN-001" ;
@@ -1942,34 +2033,58 @@
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-004>
     a stt:Requirement ;
     dcterms:identifier "STT-GEN-004" ;
-    dcterms:title "Kotlin first" ;
-    stt:statement "The first implementation SHALL be a Kotlin library. Pure steps (codec, model, payloads, pipeline logic) SHALL live in Kotlin Multiplatform common code. JVM and Android SHALL be the first supported targets. Other KMP targets MAY follow." ;
+    dcterms:title "Kotlin first, for JVM, Android and Node" ;
+    stt:statement "The first implementation SHALL be a Kotlin Multiplatform library with all pipeline logic in common code. It SHALL ship for three targets: JVM (Java 11+), Android, and Node.js (Kotlin/JS IR, published to npm with an @JsExport facade and generated TypeScript declarations). Other KMP targets MAY follow." ;
     stt:conformance "SHALL" ;
     stt:category "non-functional" ;
     stt:derivationType "directive" ;
     stt:target "kotlin" ;
     prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-languages> ;
-    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-004/derivation/1> .
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-004/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-004/derivation/2> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-004/derivation/1>
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-languages> .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-004/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005>
     a stt:Requirement ;
     dcterms:identifier "STT-GEN-005" ;
-    dcterms:title "Rust second" ;
-    stt:statement "The second implementation SHALL be a Rust library meeting this same requirement set. The codec module SHOULD be usable without std (with alloc), so that it can be embedded and exposed over FFI or WASM." ;
+    dcterms:title "Rust second, for WebAssembly" ;
+    stt:statement "The second implementation SHALL be a Rust library meeting this same requirement set. It SHALL build for wasm32 as a WebAssembly component implementing the WIT worlds in api/wit, and SHALL be transpiled with jco into an npm package usable from Node.js and browsers. A native crate SHALL also be published. The codec module SHOULD build without std (with alloc)." ;
     stt:conformance "SHALL" ;
     stt:category "non-functional" ;
     stt:derivationType "directive" ;
     stt:target "rust" ;
     prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-languages> ;
-    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005/derivation/1> .
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005/derivation/3> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-jco> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005/derivation/4> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005/derivation/1>
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-languages> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-005/derivation/4>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-jco> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-006>
     a stt:Requirement ;
@@ -2061,6 +2176,84 @@
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-4.1> ;
     stt:quote "the HCERT container and its payloads may be transferred as-is, utilising any underlying, 8 bit safe, reliable data transport" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-010>
+    a stt:Requirement ;
+    dcterms:identifier "STT-GEN-010" ;
+    dcterms:title "API defined first, in WIT" ;
+    stt:statement "The library API SHALL be defined in WIT (api/wit) and reviewed before implementation. The WIT SHALL be the contract both implementations follow: Rust exports it from its WebAssembly component, and Kotlin follows it through documented mapping rules. Each WIT item SHALL cite the requirement(s) it implements. Breaking WIT changes SHALL bump the package version." ;
+    stt:conformance "SHALL" ;
+    stt:category "architecture" ;
+    stt:derivationType "directive" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-010/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-010/derivation/2> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-006> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-16> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-010/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-010/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-011>
+    a stt:Requirement ;
+    dcterms:identifier "STT-GEN-011" ;
+    dcterms:title "Same JavaScript surface from Kotlin/JS and Rust/WASM" ;
+    stt:statement "The Node.js packages built from Kotlin/JS and from the Rust WebAssembly component SHALL expose the same TypeScript surface: the declarations jco generates from the WIT (api/generated/ts). The Kotlin/JS declarations SHALL type-check against it." ;
+    stt:conformance "SHALL" ;
+    stt:category "architecture" ;
+    stt:derivationType "derived" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-011/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-jco> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-011/derivation/2> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-006> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-010> ;
+    stt:verifiedBy <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-007> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-011/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-011/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-jco> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-012>
+    a stt:Requirement ;
+    dcterms:identifier "STT-GEN-012" ;
+    dcterms:title "Synchronous core with no I/O" ;
+    stt:statement "The pipeline core SHALL do no network or file I/O and SHALL NOT read an ambient clock. Trust material SHALL be loaded into a trust store by the host, and the current time SHALL be passed as an argument. Fetching, caching and refreshing trust lists SHALL live in separate, platform-specific modules." ;
+    stt:conformance "SHALL" ;
+    stt:category "architecture" ;
+    stt:derivationType "derived" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-012/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.2> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-012/derivation/2> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-trust-provider> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-clock> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-15> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-012/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-wit> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-012/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/qr-2.2> ;
+    stt:quote "Works fully offline — Yes — verifier needs only the trust list" .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEL-001>
     a stt:Requirement ;
@@ -3845,6 +4038,41 @@
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/qr-13> ;
     stt:quote "It is a documentation aid, not a production issuer: it uses fixed test keys in source" .
 
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-004>
+    a stt:Requirement ;
+    dcterms:identifier "STT-ISS-004" ;
+    dcterms:title "Two-phase signing" ;
+    stt:statement "The issuer SHALL offer a two-phase flow: prepare returns the exact bytes to sign (the Sig_structure), the caller signs them by any means, including asynchronous ones such as WebCrypto or a remote KMS, and finish assembles the certificate. For ES256, finish SHALL accept r||s or DER and SHALL always emit r||s." ;
+    stt:conformance "SHALL" ;
+    stt:category "api" ;
+    stt:derivationType "derived" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-6.2> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-004/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/std-webcrypto> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-004/derivation/2> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/qr-6> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-004/derivation/3> ;
+    stt:implementsStep <https://github.com/litlfred/smart-trust-tools/kg/id/step-5> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-COS-006> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-pending-signature> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-issuer> ;
+    stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-15> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-004/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-6.2> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-004/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/std-webcrypto> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-ISS-004/derivation/3>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/qr-6> ;
+    stt:quote "Converting between the two is the single most common interoperability bug in HCERT implementations." .
+
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-SEC-001>
     a stt:Requirement ;
     dcterms:identifier "STT-SEC-001" ;
@@ -3914,7 +4142,7 @@
     a stt:Requirement ;
     dcterms:identifier "STT-NFR-002" ;
     dcterms:title "Distribution" ;
-    stt:statement "The Kotlin library SHALL be published to Maven Central and the Rust library to crates.io, under coordinates still to be chosen." ;
+    stt:statement "The Kotlin library SHALL be published to Maven Central (JVM, Android AAR) and to npm (Kotlin/JS). The Rust library SHALL be published to crates.io, and its jco-transpiled WebAssembly component to npm. All coordinates are still to be chosen." ;
     stt:conformance "SHALL" ;
     stt:category "non-functional" ;
     stt:derivationType "directive" ;
@@ -3922,11 +4150,17 @@
     stt:target "rust" ;
     prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-languages> ;
     stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-NFR-002/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-NFR-002/derivation/2> ;
     stt:affectedBy <https://github.com/litlfred/smart-trust-tools/kg/id/OI-14> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-NFR-002/derivation/1>
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-languages> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-NFR-002/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> .
 
 <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-001>
     a stt:Requirement ;
@@ -4075,3 +4309,28 @@
     a stt:Derivation ;
     stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/hcert-6.3> ;
     stt:quote "a potential attacker may attempt to inject carefully crafted information designed to compromise the security of the system" .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-007>
+    a stt:Requirement ;
+    dcterms:identifier "STT-TST-007" ;
+    dcterms:title "One TypeScript conformance suite for both Node packages" ;
+    stt:statement "A single TypeScript test suite, type-checked against api/generated/ts and driven by the shared vectors, SHALL run in CI against both the Kotlin/JS npm package and the jco-transpiled Rust component, and SHALL pass on both." ;
+    stt:conformance "SHALL" ;
+    stt:category "test" ;
+    stt:derivationType "derived" ;
+    stt:target "kotlin" ;
+    stt:target "rust" ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-007/derivation/1> ;
+    prov:wasDerivedFrom <https://github.com/litlfred/smart-trust-tools/kg/id/doc-qr-example-json> ;
+    stt:hasDerivation <https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-007/derivation/2> ;
+    stt:refines <https://github.com/litlfred/smart-trust-tools/kg/id/STT-GEN-011> ;
+    stt:constrainsApi <https://github.com/litlfred/smart-trust-tools/kg/id/api-testkit> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-007/derivation/1>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/dir-targets> .
+
+<https://github.com/litlfred/smart-trust-tools/kg/id/STT-TST-007/derivation/2>
+    a stt:Derivation ;
+    stt:source <https://github.com/litlfred/smart-trust-tools/kg/id/doc-qr-example-json> .

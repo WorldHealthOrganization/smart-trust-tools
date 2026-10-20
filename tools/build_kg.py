@@ -28,6 +28,7 @@ import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 KG_DIR = ROOT / "requirements" / "kg"
+WIT_DIR = ROOT / "api" / "wit"
 OUT_DIR = ROOT / "requirements" / "generated"
 
 BASE = "https://github.com/litlfred/smart-trust-tools/kg/"
@@ -106,6 +107,7 @@ VOCAB_TERMS = [
     ("kind", "datatype", "kind", ""),
     ("kotlinSignature", "datatype", "Kotlin sketch", ""),
     ("rustSignature", "datatype", "Rust sketch", ""),
+    ("witItem", "datatype", "WIT item", "interface.item in the who:smart-trust WIT package (api/wit)."),
     ("kotlinName", "datatype", "Kotlin package", ""),
     ("rustName", "datatype", "Rust crate", ""),
     ("upstreamFix", "datatype", "fix belongs upstream", ""),
@@ -135,6 +137,23 @@ def slug(heading):
     s = heading.strip().lower()
     s = re.sub(r"[^\w\- ]", "", s)
     return s.replace(" ", "-")
+
+
+def wit_index():
+    """Map WIT interface name -> (file name, set of item names)."""
+    index = {}
+    for path in sorted(WIT_DIR.glob("*.wit")):
+        text = re.sub(r"//[^\n]*", "", path.read_text(encoding="utf-8"))
+        for m in re.finditer(r"\binterface\s+([a-z0-9-]+)\s*\{", text):
+            depth, i = 1, m.end()
+            while depth and i < len(text):
+                depth += {"{": 1, "}": -1}.get(text[i], 0)
+                i += 1
+            body = text[m.end():i]
+            items = set(re.findall(r"\b(?:record|resource|variant|enum|flags|type)\s+([a-z0-9-]+)", body))
+            items |= set(re.findall(r"\b([a-z0-9-]+)\s*:\s*func\b", body))
+            index[m.group(1)] = (path.name, items)
+    return index
 
 
 def load(name):
@@ -301,11 +320,20 @@ def build_model():
     for m in modules:
         claim(m, "module")
     elements = collections.OrderedDict()
+    wit = wit_index()
     for e in api["elements"]:
         claim(e["id"], "api element")
         elements[e["id"]] = e
         if e["module"] not in modules:
             errors.append("api %s: unknown module %s" % (e["id"], e["module"]))
+        if "wit" in e:
+            iface, _, item = e["wit"].partition(".")
+            if iface not in wit or item not in wit[iface][1]:
+                errors.append("api %s: WIT item %s not found in api/wit" % (e["id"], e["wit"]))
+            else:
+                e["wit_file"] = wit[iface][0]
+        elif "wit_note" not in e:
+            errors.append("api %s: needs wit or wit_note" % e["id"])
 
     issuemap = collections.OrderedDict()
     for i in issues:
@@ -376,7 +404,7 @@ def build_model():
         "src": src, "docs": docs, "sections": sections, "actors": actors,
         "upreqs": upreqs, "upstmts": upstmts, "steps": stepmap,
         "modules": modules, "elements": elements, "issues": issuemap,
-        "reqs": reqmap, "warnings": warnings,
+        "reqs": reqmap, "warnings": warnings, "wit": wit,
     }
 
 
@@ -470,6 +498,8 @@ def build_graph(M):
         g.add(iri, "stt:inModule", I(e["module"]), iri_obj=True)
         g.add(iri, "stt:kotlinSignature", e["kotlin"])
         g.add(iri, "stt:rustSignature", e["rust"])
+        g.add(iri, "stt:witItem", e.get("wit"))
+        g.add(iri, "rdfs:comment", e.get("wit_note"))
 
     for i in M["issues"].values():
         iri = I(i["id"])
@@ -705,7 +735,9 @@ def to_markdown(M):
 
     w("## API sketch")
     w("")
-    w("Language-neutral elements with intended Kotlin and Rust shapes. Names are placeholders (OI-14).")
+    w("The normative API contract is the WIT package in [`api/wit/`](../../api/wit/) "
+      "(see [`api/README.md`](../../api/README.md)). The elements below link each one to "
+      "its WIT item and show the intended Kotlin and Rust shapes. Names are placeholders (OI-14).")
     w("")
     for m in M["modules"].values():
         els = [e for e in M["elements"].values() if e["module"] == m["id"]]
@@ -717,6 +749,10 @@ def to_markdown(M):
             w('<a id="%s"></a>' % e["id"])
             w("")
             w("**`%s`** (%s): %s" % (e["name"], e["kind"], e["description"]))
+            if e.get("wit"):
+                w("WIT: [`%s`](../../api/wit/%s)." % (e["wit"], e["wit_file"]))
+            elif e.get("wit_note"):
+                w("Not in WIT: %s" % e["wit_note"])
             rs = [r["id"] for r in reqs if e["id"] in r.get("api", [])]
             if rs:
                 w("Constrained by " + ", ".join("[%s](#%s)" % (x, req_anchor(x)) for x in rs) + ".")

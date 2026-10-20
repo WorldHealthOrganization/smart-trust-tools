@@ -260,6 +260,10 @@ documents:
   - {id: std-rfc7517, title: "RFC 7517 JSON Web Key", url: "https://www.rfc-editor.org/rfc/rfc7517"}
   - {id: std-did-core, title: "W3C DID Core", url: "https://www.w3.org/TR/did-core/"}
 
+  - {id: std-wit, title: "WIT, WebAssembly Component Model IDL", url: "https://component-model.bytecodealliance.org/design/wit.html"}
+  - {id: std-jco, title: "jco: JavaScript toolchain for WebAssembly components", url: "https://github.com/bytecodealliance/jco"}
+  - {id: std-webcrypto, title: "W3C Web Cryptography API", url: "https://www.w3.org/TR/WebCryptoAPI/"}
+
   # ---- Stakeholder directives (not in any spec) --------------------------
 
   - id: dir-languages
@@ -268,3 +272,10 @@ documents:
       Given by the requester on 2026-10-20 when commissioning these
       requirements: "API requirements are intended for kotlin (first) and rust
       (second) libraries."
+
+  - id: dir-targets
+    title: "Stakeholder directive: transpile targets and API-first"
+    note: >-
+      Given by the requester on 2026-10-20: Kotlin targets Node, Java (JVM)
+      and Android; Rust targets WebAssembly. The API set is to be defined
+      and reviewed first, in an OpenAPI-like but non-REST definition.

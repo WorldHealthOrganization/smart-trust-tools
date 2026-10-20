@@ -22,10 +22,10 @@ Links below go to the pinned source. Content from PR 129 also links to its PR pr
 
 ## Summary
 
-- **83 requirements**: 2 MAY, 75 SHALL, 2 SHALL NOT, 4 SHOULD
-- by category: api 5, architecture 5, functional 48, non-functional 5, scope 2, security 11, test 7
-- by derivation: derived 43, direct 36, directive 4
-- **14 open issues** (11 to fix upstream in smart-trust)
+- **88 requirements**: 2 MAY, 80 SHALL, 2 SHALL NOT, 4 SHOULD
+- by category: api 6, architecture 8, functional 48, non-functional 5, scope 2, security 11, test 8
+- by derivation: derived 47, direct 36, directive 5
+- **16 open issues** (11 to fix upstream in smart-trust)
 
 ## Pipeline
 
@@ -60,7 +60,7 @@ flowchart LR
 | 2. Assemble payload | [QR Code Generation § 3. Step 2 — Assemble the payload](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#3-step-2--assemble-the-payload) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#3-step-2--assemble-the-payload) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#3-step-2--assemble-the-payload)) | [STT-GEN-001](#stt-gen-001), [STT-PAY-001](#stt-pay-001), [STT-PAY-002](#stt-pay-002), [STT-PAY-003](#stt-pay-003), [STT-PAY-004](#stt-pay-004), [STT-PAY-005](#stt-pay-005), [STT-PAY-006](#stt-pay-006), [STT-PAY-007](#stt-pay-007), [STT-PAY-008](#stt-pay-008), [STT-PAY-009](#stt-pay-009) |
 | 3. Wrap in CWT claim set | [QR Code Generation § 4. Step 3 — Build the CWT claim set](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#4-step-3--build-the-cwt-claim-set) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#4-step-3--build-the-cwt-claim-set) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#4-step-3--build-the-cwt-claim-set)) | [STT-GEN-001](#stt-gen-001), [STT-SEL-004](#stt-sel-004), [STT-CWT-001](#stt-cwt-001), [STT-CWT-002](#stt-cwt-002), [STT-CWT-003](#stt-cwt-003), [STT-CWT-004](#stt-cwt-004), [STT-CWT-005](#stt-cwt-005), [STT-CWT-006](#stt-cwt-006), [STT-ISS-001](#stt-iss-001) |
 | 4. Serialise as CBOR | [QR Code Generation § 5. Step 4 — Serialise as CBOR](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#5-step-4--serialise-as-cbor) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#5-step-4--serialise-as-cbor) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#5-step-4--serialise-as-cbor)) | [STT-GEN-001](#stt-gen-001), [STT-CBR-001](#stt-cbr-001), [STT-CBR-002](#stt-cbr-002), [STT-CBR-003](#stt-cbr-003), [STT-QR-006](#stt-qr-006), [STT-ISS-001](#stt-iss-001) |
-| 5. Sign as COSE_Sign1 | [QR Code Generation § 6. Step 5 — Sign as a COSE_Sign1](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#6-step-5--sign-as-a-cose_sign1) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1)) | [STT-GEN-001](#stt-gen-001), [STT-GEN-009](#stt-gen-009), [STT-CWT-004](#stt-cwt-004), [STT-COS-001](#stt-cos-001), [STT-COS-002](#stt-cos-002), [STT-COS-003](#stt-cos-003), [STT-COS-004](#stt-cos-004), [STT-COS-005](#stt-cos-005), [STT-COS-006](#stt-cos-006), [STT-COS-007](#stt-cos-007), [STT-KID-001](#stt-kid-001), [STT-QR-006](#stt-qr-006), [STT-ISS-001](#stt-iss-001) |
+| 5. Sign as COSE_Sign1 | [QR Code Generation § 6. Step 5 — Sign as a COSE_Sign1](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#6-step-5--sign-as-a-cose_sign1) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1)) | [STT-GEN-001](#stt-gen-001), [STT-GEN-009](#stt-gen-009), [STT-CWT-004](#stt-cwt-004), [STT-COS-001](#stt-cos-001), [STT-COS-002](#stt-cos-002), [STT-COS-003](#stt-cos-003), [STT-COS-004](#stt-cos-004), [STT-COS-005](#stt-cos-005), [STT-COS-006](#stt-cos-006), [STT-COS-007](#stt-cos-007), [STT-KID-001](#stt-kid-001), [STT-QR-006](#stt-qr-006), [STT-ISS-001](#stt-iss-001), [STT-ISS-004](#stt-iss-004) |
 | 6. Compress with ZLIB/Deflate | [QR Code Generation § 7. Step 6 — Compress](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#7-step-6--compress) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#7-step-6--compress) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#7-step-6--compress)) | [STT-GEN-001](#stt-gen-001), [STT-ZIP-001](#stt-zip-001), [STT-ZIP-002](#stt-zip-002), [STT-QR-006](#stt-qr-006), [STT-ISS-001](#stt-iss-001) |
 | 7. Encode as Base45 | [QR Code Generation § 8. Step 7 — Encode as Base45](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#8-step-7--encode-as-base45) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#8-step-7--encode-as-base45) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#8-step-7--encode-as-base45)) | [STT-GEN-001](#stt-gen-001), [STT-B45-001](#stt-b45-001), [STT-B45-002](#stt-b45-002), [STT-QR-006](#stt-qr-006), [STT-ISS-001](#stt-iss-001) |
 | 8. Prefix context identifier HC1: | [QR Code Generation § 9. Step 8 — Prefix the context identifier](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#9-step-8--prefix-the-context-identifier) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#9-step-8--prefix-the-context-identifier) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#9-step-8--prefix-the-context-identifier)) | [STT-GEN-001](#stt-gen-001), [STT-HC1-001](#stt-hc1-001), [STT-ISS-001](#stt-iss-001) |
@@ -115,25 +115,29 @@ flowchart LR
 
 <a id="stt-gen-004"></a>
 
-#### STT-GEN-004 Kotlin first
+#### STT-GEN-004 Kotlin first, for JVM, Android and Node
 
-> The first implementation SHALL be a Kotlin library. Pure steps (codec, model, payloads, pipeline logic) SHALL live in Kotlin Multiplatform common code. JVM and Android SHALL be the first supported targets. Other KMP targets MAY follow.
+> The first implementation SHALL be a Kotlin Multiplatform library with all pipeline logic in common code. It SHALL ship for three targets: JVM (Java 11+), Android, and Node.js (Kotlin/JS IR, published to npm with an @JsExport facade and generated TypeScript declarations). Other KMP targets MAY follow.
 
 **SHALL** · non-functional · directive · targets: kotlin
 
 - Derived from:
   - Stakeholder directive: Kotlin library first, Rust library second
+  - Stakeholder directive: transpile targets and API-first
 
 <a id="stt-gen-005"></a>
 
-#### STT-GEN-005 Rust second
+#### STT-GEN-005 Rust second, for WebAssembly
 
-> The second implementation SHALL be a Rust library meeting this same requirement set. The codec module SHOULD be usable without std (with alloc), so that it can be embedded and exposed over FFI or WASM.
+> The second implementation SHALL be a Rust library meeting this same requirement set. It SHALL build for wasm32 as a WebAssembly component implementing the WIT worlds in api/wit, and SHALL be transpiled with jco into an npm package usable from Node.js and browsers. A native crate SHALL also be published. The codec module SHOULD build without std (with alloc).
 
 **SHALL** · non-functional · directive · targets: rust
 
 - Derived from:
   - Stakeholder directive: Kotlin library first, Rust library second
+  - Stakeholder directive: transpile targets and API-first
+  - [WIT, WebAssembly Component Model IDL](https://component-model.bytecodealliance.org/design/wit.html)
+  - [jco: JavaScript toolchain for WebAssembly components](https://github.com/bytecodealliance/jco)
 
 <a id="stt-gen-006"></a>
 
@@ -184,6 +188,48 @@ flowchart LR
   - [HCERT Specification § 4.1 Raw](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#41-raw) ([published](https://smart.who.int/trust/hcert_spec.html#41-raw)) — “the HCERT container and its payloads may be transferred as-is, utilising any underlying, 8 bit safe, reliable data transport”
 - Steps: Sign as COSE_Sign1, Verify (steps 9 to 1 in reverse, plus trust list lookup)
 - API: [`HcertIssuer`](#api-issuer), [`HcertVerifier`](#api-verifier)
+
+<a id="stt-gen-010"></a>
+
+#### STT-GEN-010 API defined first, in WIT
+
+> The library API SHALL be defined in WIT (api/wit) and reviewed before implementation. The WIT SHALL be the contract both implementations follow: Rust exports it from its WebAssembly component, and Kotlin follows it through documented mapping rules. Each WIT item SHALL cite the requirement(s) it implements. Breaking WIT changes SHALL bump the package version.
+
+**SHALL** · architecture · directive · targets: kotlin, rust
+
+- Derived from:
+  - Stakeholder directive: transpile targets and API-first
+  - [WIT, WebAssembly Component Model IDL](https://component-model.bytecodealliance.org/design/wit.html)
+- Refines: [STT-GEN-006](#stt-gen-006)
+- Open issues: [OI-16](#oi-16)
+
+<a id="stt-gen-011"></a>
+
+#### STT-GEN-011 Same JavaScript surface from Kotlin/JS and Rust/WASM
+
+> The Node.js packages built from Kotlin/JS and from the Rust WebAssembly component SHALL expose the same TypeScript surface: the declarations jco generates from the WIT (api/generated/ts). The Kotlin/JS declarations SHALL type-check against it.
+
+**SHALL** · architecture · derived · targets: kotlin, rust
+
+- Derived from:
+  - Stakeholder directive: transpile targets and API-first
+  - [jco: JavaScript toolchain for WebAssembly components](https://github.com/bytecodealliance/jco)
+- Refines: [STT-GEN-006](#stt-gen-006), [STT-GEN-010](#stt-gen-010)
+- Verified by: [STT-TST-007](#stt-tst-007)
+
+<a id="stt-gen-012"></a>
+
+#### STT-GEN-012 Synchronous core with no I/O
+
+> The pipeline core SHALL do no network or file I/O and SHALL NOT read an ambient clock. Trust material SHALL be loaded into a trust store by the host, and the current time SHALL be passed as an argument. Fetching, caching and refreshing trust lists SHALL live in separate, platform-specific modules.
+
+**SHALL** · architecture · derived · targets: kotlin, rust
+
+- Derived from:
+  - [WIT, WebAssembly Component Model IDL](https://component-model.bytecodealliance.org/design/wit.html)
+  - [QR Code Generation § 2.2 Choosing between a DVC and a VHL](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#22-choosing-between-a-dvc-and-a-vhl) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#22-choosing-between-a-dvc-and-a-vhl) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#22-choosing-between-a-dvc-and-a-vhl)) — “Works fully offline — Yes — verifier needs only the trust list”
+- API: [`TrustListProvider`](#api-trust-provider), [`Clock`](#api-clock)
+- Open issues: [OI-15](#oi-15)
 
 ### SEL — Step 1: select payload type
 
@@ -1150,6 +1196,23 @@ flowchart LR
   - [QR Code Generation § 13. Reference script](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#13-reference-script) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#13-reference-script) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#13-reference-script)) — “It is a documentation aid, not a production issuer: it uses fixed test keys in source”
 - API: [`TestVectors`](#api-testkit)
 
+<a id="stt-iss-004"></a>
+
+#### STT-ISS-004 Two-phase signing
+
+> The issuer SHALL offer a two-phase flow: prepare returns the exact bytes to sign (the Sig_structure), the caller signs them by any means, including asynchronous ones such as WebCrypto or a remote KMS, and finish assembles the certificate. For ES256, finish SHALL accept r||s or DER and SHALL always emit r||s.
+
+**SHALL** · api · derived · targets: kotlin, rust
+
+- Derived from:
+  - [HCERT Specification § 6.2 Key Management](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#62-key-management) ([published](https://smart.who.int/trust/hcert_spec.html#62-key-management))
+  - [W3C Web Cryptography API](https://www.w3.org/TR/WebCryptoAPI/)
+  - [QR Code Generation § 6. Step 5 — Sign as a COSE_Sign1](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#6-step-5--sign-as-a-cose_sign1) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1)) — “Converting between the two is the single most common interoperability bug in HCERT implementations.”
+- Steps: Sign as COSE_Sign1
+- Refines: [STT-COS-006](#stt-cos-006)
+- API: [`PendingSignature`](#api-pending-signature), [`HcertIssuer`](#api-issuer)
+- Open issues: [OI-15](#oi-15)
+
 ### SEC — Security
 
 <a id="stt-sec-001"></a>
@@ -1194,12 +1257,13 @@ flowchart LR
 
 #### STT-NFR-002 Distribution
 
-> The Kotlin library SHALL be published to Maven Central and the Rust library to crates.io, under coordinates still to be chosen.
+> The Kotlin library SHALL be published to Maven Central (JVM, Android AAR) and to npm (Kotlin/JS). The Rust library SHALL be published to crates.io, and its jco-transpiled WebAssembly component to npm. All coordinates are still to be chosen.
 
 **SHALL** · non-functional · directive · targets: kotlin, rust
 
 - Derived from:
   - Stakeholder directive: Kotlin library first, Rust library second
+  - Stakeholder directive: transpile targets and API-first
 - Open issues: [OI-14](#oi-14)
 
 ### TST — Conformance testing
@@ -1283,6 +1347,20 @@ flowchart LR
 - Derived from:
   - [HCERT Specification § 6.3 Input Data Validation](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#63-input-data-validation) ([published](https://smart.who.int/trust/hcert_spec.html#63-input-data-validation)) — “a potential attacker may attempt to inject carefully crafted information designed to compromise the security of the system”
 
+<a id="stt-tst-007"></a>
+
+#### STT-TST-007 One TypeScript conformance suite for both Node packages
+
+> A single TypeScript test suite, type-checked against api/generated/ts and driven by the shared vectors, SHALL run in CI against both the Kotlin/JS npm package and the jco-transpiled Rust component, and SHALL pass on both.
+
+**SHALL** · test · derived · targets: kotlin, rust
+
+- Derived from:
+  - Stakeholder directive: transpile targets and API-first
+  - [DVC QR example, machine-readable summary (test participant XXA)](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/images/dvc-qr-example-XXA.json) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/dvc-qr-example-XXA.json) · [after deploy](https://smart.who.int/trust/dvc-qr-example-XXA.json))
+- Refines: [STT-GEN-011](#stt-gen-011)
+- API: [`TestVectors`](#api-testkit)
+
 ## Traceability to smart-trust requirements
 
 | smart-trust statement | Library requirements |
@@ -1306,13 +1384,13 @@ flowchart LR
 | [QR Code Generation § 1. The pipeline at a glance](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#1-the-pipeline-at-a-glance) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#1-the-pipeline-at-a-glance) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#1-the-pipeline-at-a-glance)) | [STT-GEN-001](#stt-gen-001), [STT-GEN-002](#stt-gen-002), [STT-VER-001](#stt-ver-001), [STT-ISS-001](#stt-iss-001) |
 | [QR Code Generation § 2. Step 1 — Select the logical model for your use case](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#2-step-1--select-the-logical-model-for-your-use-case) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#2-step-1--select-the-logical-model-for-your-use-case) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#2-step-1--select-the-logical-model-for-your-use-case)) | [STT-SEL-004](#stt-sel-004) |
 | [QR Code Generation § 2.1 Subclaims defined in this guide](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#21-subclaims-defined-in-this-guide) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#21-subclaims-defined-in-this-guide) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#21-subclaims-defined-in-this-guide)) | [STT-SEL-001](#stt-sel-001), [STT-SEL-003](#stt-sel-003), [STT-SEL-006](#stt-sel-006), [STT-PAY-009](#stt-pay-009) |
-| [QR Code Generation § 2.2 Choosing between a DVC and a VHL](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#22-choosing-between-a-dvc-and-a-vhl) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#22-choosing-between-a-dvc-and-a-vhl) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#22-choosing-between-a-dvc-and-a-vhl)) | [STT-SEL-005](#stt-sel-005), [STT-QR-006](#stt-qr-006), [STT-VER-009](#stt-ver-009), [STT-SEC-001](#stt-sec-001) |
+| [QR Code Generation § 2.2 Choosing between a DVC and a VHL](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#22-choosing-between-a-dvc-and-a-vhl) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#22-choosing-between-a-dvc-and-a-vhl) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#22-choosing-between-a-dvc-and-a-vhl)) | [STT-GEN-012](#stt-gen-012), [STT-SEL-005](#stt-sel-005), [STT-QR-006](#stt-qr-006), [STT-VER-009](#stt-ver-009), [STT-SEC-001](#stt-sec-001) |
 | [QR Code Generation § 2.3 Choosing between a generic DVC and the ICVP](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#23-choosing-between-a-generic-dvc-and-the-icvp) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#23-choosing-between-a-generic-dvc-and-the-icvp) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#23-choosing-between-a-generic-dvc-and-the-icvp)) | [STT-SEL-005](#stt-sel-005) |
 | [QR Code Generation § 2.4 Decision summary](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#24-decision-summary) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#24-decision-summary) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#24-decision-summary)) | [STT-SEL-005](#stt-sel-005) |
 | [QR Code Generation § 3. Step 2 — Assemble the payload](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#3-step-2--assemble-the-payload) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#3-step-2--assemble-the-payload) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#3-step-2--assemble-the-payload)) | [STT-PAY-001](#stt-pay-001), [STT-PAY-002](#stt-pay-002), [STT-PAY-003](#stt-pay-003), [STT-PAY-004](#stt-pay-004), [STT-PAY-005](#stt-pay-005), [STT-PAY-006](#stt-pay-006), [STT-PAY-007](#stt-pay-007) |
 | [QR Code Generation § 4. Step 3 — Build the CWT claim set](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#4-step-3--build-the-cwt-claim-set) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#4-step-3--build-the-cwt-claim-set) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#4-step-3--build-the-cwt-claim-set)) | [STT-SEL-004](#stt-sel-004), [STT-CWT-001](#stt-cwt-001), [STT-CWT-003](#stt-cwt-003), [STT-CWT-004](#stt-cwt-004) |
 | [QR Code Generation § 5. Step 4 — Serialise as CBOR](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#5-step-4--serialise-as-cbor) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#5-step-4--serialise-as-cbor) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#5-step-4--serialise-as-cbor)) | [STT-GEN-008](#stt-gen-008), [STT-CWT-001](#stt-cwt-001), [STT-CBR-001](#stt-cbr-001), [STT-CBR-002](#stt-cbr-002) |
-| [QR Code Generation § 6. Step 5 — Sign as a COSE_Sign1](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#6-step-5--sign-as-a-cose_sign1) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1)) | [STT-COS-001](#stt-cos-001), [STT-COS-002](#stt-cos-002), [STT-COS-003](#stt-cos-003), [STT-COS-004](#stt-cos-004), [STT-COS-005](#stt-cos-005), [STT-KID-001](#stt-kid-001), [STT-KID-002](#stt-kid-002) |
+| [QR Code Generation § 6. Step 5 — Sign as a COSE_Sign1](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#6-step-5--sign-as-a-cose_sign1) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#6-step-5--sign-as-a-cose_sign1)) | [STT-COS-001](#stt-cos-001), [STT-COS-002](#stt-cos-002), [STT-COS-003](#stt-cos-003), [STT-COS-004](#stt-cos-004), [STT-COS-005](#stt-cos-005), [STT-KID-001](#stt-kid-001), [STT-KID-002](#stt-kid-002), [STT-ISS-004](#stt-iss-004) |
 | [QR Code Generation § 7. Step 6 — Compress](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#7-step-6--compress) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#7-step-6--compress) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#7-step-6--compress)) | [STT-ZIP-001](#stt-zip-001) |
 | [QR Code Generation § 8. Step 7 — Encode as Base45](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#8-step-7--encode-as-base45) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#8-step-7--encode-as-base45) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#8-step-7--encode-as-base45)) | [STT-B45-001](#stt-b45-001) |
 | [QR Code Generation § 9. Step 8 — Prefix the context identifier](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/pagecontent/qr_code_generation.md#9-step-8--prefix-the-context-identifier) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/qr_code_generation.html#9-step-8--prefix-the-context-identifier) · [after deploy](https://smart.who.int/trust/qr_code_generation.html#9-step-8--prefix-the-context-identifier)) | [STT-HC1-001](#stt-hc1-001), [STT-NFR-001](#stt-nfr-001) |
@@ -1339,7 +1417,7 @@ flowchart LR
 | [HCERT Specification § 5 Trusted List Format (DSC list)](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#5-trusted-list-format-dsc-list) ([published](https://smart.who.int/trust/hcert_spec.html#5-trusted-list-format-dsc-list)) | [STT-TRU-006](#stt-tru-006) |
 | [HCERT Specification § 5.1 Simplified SCA/DSC](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#51-simplified-scadsc) ([published](https://smart.who.int/trust/hcert_spec.html#51-simplified-scadsc)) | [STT-VER-006](#stt-ver-006) |
 | [HCERT Specification § 6.1 HCERT Signature Validity Time](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#61-hcert-signature-validity-time) ([published](https://smart.who.int/trust/hcert_spec.html#61-hcert-signature-validity-time)) | [STT-CWT-003](#stt-cwt-003), [STT-SEC-001](#stt-sec-001) |
-| [HCERT Specification § 6.2 Key Management](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#62-key-management) ([published](https://smart.who.int/trust/hcert_spec.html#62-key-management)) | [STT-COS-006](#stt-cos-006), [STT-SEC-002](#stt-sec-002) |
+| [HCERT Specification § 6.2 Key Management](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#62-key-management) ([published](https://smart.who.int/trust/hcert_spec.html#62-key-management)) | [STT-COS-006](#stt-cos-006), [STT-ISS-004](#stt-iss-004), [STT-SEC-002](#stt-sec-002) |
 | [HCERT Specification § 6.3 Input Data Validation](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#63-input-data-validation) ([published](https://smart.who.int/trust/hcert_spec.html#63-input-data-validation)) | [STT-CBR-003](#stt-cbr-003), [STT-ZIP-002](#stt-zip-002), [STT-B45-002](#stt-b45-002), [STT-VER-002](#stt-ver-002), [STT-VER-003](#stt-ver-003), [STT-TST-004](#stt-tst-004), [STT-TST-006](#stt-tst-006) |
 | [HCERT Specification § Appendix A - Trust Management](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#appendix-a---trust-management) ([published](https://smart.who.int/trust/hcert_spec.html#appendix-a---trust-management)) | [STT-TRU-001](#stt-tru-001), [STT-TRU-003](#stt-tru-003), [STT-TRU-004](#stt-tru-004), [STT-TRU-005](#stt-tru-005) |
 | [HCERT Specification § A.1 The Key Identifier (kids)](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/hcert_spec.md#a1-the-key-identifier-kids) ([published](https://smart.who.int/trust/hcert_spec.html#a1-the-key-identifier-kids)) | [STT-KID-001](#stt-kid-001) |
@@ -1348,7 +1426,7 @@ flowchart LR
 | [GDHCN Trustlists (DID) § DID trustlists structure](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/concepts_did_gdhcn.md#did-trustlists-structure) ([published](https://smart.who.int/trust/concepts_did_gdhcn.html#did-trustlists-structure)) | [STT-TRU-002](#stt-tru-002) |
 | [GDHCN Trustlists (DID) § Example DID documents](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/concepts_did_gdhcn.md#example-did-documents) ([published](https://smart.who.int/trust/concepts_did_gdhcn.html#example-did-documents)) | [STT-KID-003](#stt-kid-003), [STT-TRU-002](#stt-tru-002), [STT-TRU-003](#stt-tru-003) |
 | [Endpoints § Trustlist Distribution Endpoints](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/endpoints.md#trustlist-distribution-endpoints) ([published](https://smart.who.int/trust/endpoints.html#trustlist-distribution-endpoints)) | [STT-TRU-002](#stt-tru-002) |
-| [DVC QR example, machine-readable summary (test participant XXA)](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/images/dvc-qr-example-XXA.json) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/dvc-qr-example-XXA.json) · [after deploy](https://smart.who.int/trust/dvc-qr-example-XXA.json)) | [STT-TST-001](#stt-tst-001), [STT-TST-002](#stt-tst-002), [STT-TST-005](#stt-tst-005) |
+| [DVC QR example, machine-readable summary (test participant XXA)](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/images/dvc-qr-example-XXA.json) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/dvc-qr-example-XXA.json) · [after deploy](https://smart.who.int/trust/dvc-qr-example-XXA.json)) | [STT-TST-001](#stt-tst-001), [STT-TST-002](#stt-tst-002), [STT-TST-005](#stt-tst-005), [STT-TST-007](#stt-tst-007) |
 | [DVC QR example, test DSC and SCA (PEM)](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/images/dvc-qr-example-XXA-dsc.pem) ([PR preview](https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/dvc-qr-example-XXA-dsc.pem) · [after deploy](https://smart.who.int/trust/dvc-qr-example-XXA-dsc.pem)) | [STT-TST-001](#stt-tst-001) |
 | [Reference generation script generate_dvc_qr.py](https://github.com/WorldHealthOrganization/smart-trust/blob/50bcb25b387d7e7113ffc9e9046452580f9d67aa/input/scripts/generate_dvc_qr.py) ([after merge](https://github.com/WorldHealthOrganization/smart-trust/blob/main/input/scripts/generate_dvc_qr.py)) | [STT-CBR-001](#stt-cbr-001) |
 | [Trust Domains](https://github.com/WorldHealthOrganization/smart-trust/blob/e277cce5dcb8d2134ef1625c3a38e27cdf19e835/input/pagecontent/trust_domains.md) ([published](https://smart.who.int/trust/trust_domains.html)) | [STT-SEL-006](#stt-sel-006) |
@@ -1370,7 +1448,11 @@ flowchart LR
 | [RFC 5280 X.509 PKI Certificate Profile](https://www.rfc-editor.org/rfc/rfc5280) | [STT-TRU-006](#stt-tru-006) |
 | [RFC 7517 JSON Web Key](https://www.rfc-editor.org/rfc/rfc7517) | [STT-TRU-005](#stt-tru-005) |
 | [W3C DID Core](https://www.w3.org/TR/did-core/) | [STT-TRU-002](#stt-tru-002) |
+| [WIT, WebAssembly Component Model IDL](https://component-model.bytecodealliance.org/design/wit.html) | [STT-GEN-005](#stt-gen-005), [STT-GEN-010](#stt-gen-010), [STT-GEN-012](#stt-gen-012) |
+| [jco: JavaScript toolchain for WebAssembly components](https://github.com/bytecodealliance/jco) | [STT-GEN-005](#stt-gen-005), [STT-GEN-011](#stt-gen-011) |
+| [W3C Web Cryptography API](https://www.w3.org/TR/WebCryptoAPI/) | [STT-ISS-004](#stt-iss-004) |
 | Stakeholder directive: Kotlin library first, Rust library second | [STT-GEN-004](#stt-gen-004), [STT-GEN-005](#stt-gen-005), [STT-GEN-006](#stt-gen-006), [STT-VER-008](#stt-ver-008), [STT-NFR-002](#stt-nfr-002), [STT-TST-003](#stt-tst-003), [STT-TST-005](#stt-tst-005) |
+| Stakeholder directive: transpile targets and API-first | [STT-GEN-004](#stt-gen-004), [STT-GEN-005](#stt-gen-005), [STT-GEN-010](#stt-gen-010), [STT-GEN-011](#stt-gen-011), [STT-NFR-002](#stt-nfr-002), [STT-TST-007](#stt-tst-007) |
 
 ## Open issues
 
@@ -1518,9 +1600,29 @@ Sources: Stakeholder directive: Kotlin library first, Rust library second
 
 Affects: [STT-NFR-002](#stt-nfr-002)
 
+<a id="oi-15"></a>
+
+### OI-15 Asynchronous crypto and I/O across the WIT boundary
+
+WASI 0.2 component calls are synchronous. WebCrypto (the natural crypto backend for Kotlin/JS on Node and browsers) is promise-based, as are remote KMS signers and HTTP fetches. The design avoids async callbacks into the host: signing is two-phase and trust lists are loaded by the host. The Rust component verifies with in-WASM RustCrypto, so verify stays synchronous. Kotlin/JS must either use Node's synchronous `crypto` module (Node only) or expose a Promise-returning verify, which would diverge from the jco surface. Decide before implementation; revisit when WASI 0.3 async is stable.
+
+Sources: [WIT, WebAssembly Component Model IDL](https://component-model.bytecodealliance.org/design/wit.html); [W3C Web Cryptography API](https://www.w3.org/TR/WebCryptoAPI/)
+
+Affects: [STT-GEN-012](#stt-gen-012), [STT-ISS-004](#stt-iss-004)
+
+<a id="oi-16"></a>
+
+### OI-16 WIT type-system limits
+
+WIT has no recursive types, so generic CBOR crosses as encoded bytes and only DVCMin and VHL are typed records. s64 becomes bigint in JavaScript, so it is used only for NumericDate, and subclaim numbers are s32. result<T, E> is thrown as ComponentError by jco, so APIs whose failures are expected (verify) return a variant instead.
+
+Sources: [WIT, WebAssembly Component Model IDL](https://component-model.bytecodealliance.org/design/wit.html)
+
+Affects: [STT-GEN-010](#stt-gen-010)
+
 ## API sketch
 
-Language-neutral elements with intended Kotlin and Rust shapes. Names are placeholders (OI-14).
+The normative API contract is the WIT package in [`api/wit/`](../../api/wit/) (see [`api/README.md`](../../api/README.md)). The elements below link each one to its WIT item and show the intended Kotlin and Rust shapes. Names are placeholders (OI-14).
 
 ### `model` — Subclaim registry, CWT and hcert claim types, payload codec SPI
 
@@ -1529,6 +1631,7 @@ Kotlin `who.smart.trust.model` · Rust `smart-trust-model`
 <a id="api-subclaim"></a>
 
 **`Subclaim`** (type): An hcert subclaim number with its status (ASSIGNED, PROPOSED, DEVELOPMENT) and logical-model canonical URL.
+WIT: [`types.subclaim`](../../api/wit/types.wit).
 Constrained by [STT-SEL-001](#stt-sel-001).
 
 ```kotlin
@@ -1541,6 +1644,7 @@ pub struct Subclaim { pub key: i64, pub status: SubclaimStatus, pub logical_mode
 <a id="api-subclaim-registry"></a>
 
 **`SubclaimRegistry`** (interface): Lookup and registration of subclaims and their PayloadCodecs. Ships with the IG defaults.
+WIT: [`subclaims.registry`](../../api/wit/payload.wit).
 Constrained by [STT-GEN-003](#stt-gen-003), [STT-SEL-001](#stt-sel-001), [STT-SEL-002](#stt-sel-002), [STT-SEL-003](#stt-sel-003), [STT-VER-007](#stt-ver-007).
 
 ```kotlin
@@ -1553,6 +1657,7 @@ pub trait SubclaimRegistry { fn lookup(&self, key: i64) -> Option<&Subclaim>; fn
 <a id="api-payload-codec"></a>
 
 **`PayloadCodec`** (interface): Converts a typed payload to and from a CBOR data item and validates it against its logical model.
+WIT: [`dvc.to-cbor`](../../api/wit/payload.wit).
 Constrained by [STT-GEN-003](#stt-gen-003), [STT-PAY-001](#stt-pay-001).
 
 ```kotlin
@@ -1565,6 +1670,7 @@ pub trait PayloadCodec { type Payload; const SUBCLAIM: i64; fn to_cbor(&self, p:
 <a id="api-raw-payload"></a>
 
 **`RawPayload`** (type): Opaque CBOR payload for subclaims without a typed codec (DCC 1, DDCC 3/4, MTL -7 in v1).
+WIT: [`payloads.raw-payload`](../../api/wit/payload.wit).
 Constrained by [STT-PAY-009](#stt-pay-009).
 
 ```kotlin
@@ -1577,6 +1683,7 @@ pub struct RawPayload { pub subclaim: i64, pub item: CborValue }
 <a id="api-vhl"></a>
 
 **`VhlPayload`** (type): Subclaim 5: URI of a Verifiable Health Link.
+WIT: [`payloads.payload`](../../api/wit/payload.wit).
 Constrained by [STT-PAY-009](#stt-pay-009).
 
 ```kotlin
@@ -1589,6 +1696,7 @@ pub struct VhlPayload(pub String);
 <a id="api-cwt"></a>
 
 **`CwtClaims`** (type): CWT claim set: iss (1), iat (6), exp (4), hcert (-260), plus preserved unknown claims.
+WIT: [`issuer.issue-request`](../../api/wit/pipeline.wit).
 Constrained by [STT-CWT-001](#stt-cwt-001), [STT-CWT-006](#stt-cwt-006).
 
 ```kotlin
@@ -1601,6 +1709,7 @@ pub struct CwtClaims { pub iss: Option<String>, pub iat: NumericDate, pub exp: N
 <a id="api-hcert-claim"></a>
 
 **`HcertClaim`** (type): The -260 map. Issuance holds exactly one entry; decoding exposes every entry present.
+WIT: [`verifier.verified-hcert`](../../api/wit/pipeline.wit).
 Constrained by [STT-SEL-004](#stt-sel-004).
 
 ```kotlin
@@ -1613,6 +1722,7 @@ pub struct HcertClaim { pub entries: BTreeMap<i64, CborValue> }
 <a id="api-advisor"></a>
 
 **`PayloadTypeAdvisor`** (function): Implements the QR Code Generation 2.4 decision tree, plus a size estimate.
+WIT: [`subclaims.advise`](../../api/wit/payload.wit).
 Constrained by [STT-SEL-005](#stt-sel-005).
 
 ```kotlin
@@ -1625,6 +1735,7 @@ pub fn advise_payload_type(facts: &UseCaseFacts) -> PayloadAdvice
 <a id="api-terminology"></a>
 
 **`TerminologyValidator`** (interface): Pluggable value-set membership check (PreQual product IDs, ICD-11 DVC vaccines, ISO 3166).
+WIT: [`terminology.is-member`](../../api/wit/host.wit).
 Constrained by [STT-PAY-006](#stt-pay-006).
 
 ```kotlin
@@ -1641,6 +1752,7 @@ Kotlin `who.smart.trust.payload.dvc` · Rust `smart-trust-payload-dvc`
 <a id="api-dvcmin"></a>
 
 **`DvcMin`** (type): DVCMin with short element names n, dob, s, nt, id, dt, gn, vx, v.
+WIT: [`dvc.dvc-min`](../../api/wit/payload.wit).
 Constrained by [STT-PAY-001](#stt-pay-001).
 
 ```kotlin
@@ -1653,6 +1765,7 @@ pub struct DvcMin { pub n: String, pub dob: String, pub s: String, pub nt: Strin
 <a id="api-dvcmin-vx"></a>
 
 **`DvcMinVaccineDetails`** (type): vp, dv, cn, is, bo.
+WIT: [`dvc.dvc-min-vaccine-details`](../../api/wit/payload.wit).
 Constrained by [STT-PAY-002](#stt-pay-002).
 
 ```kotlin
@@ -1665,6 +1778,7 @@ pub struct DvcMinVaccineDetails { pub vp: String, pub dv: String, pub cn: Option
 <a id="api-dvc-split"></a>
 
 **`DvcMin.perEvent`** (function): Splits one visit with N administered vaccines into N DvcMin payloads (vx is 1..1).
+WIT: [`dvc.per-event`](../../api/wit/payload.wit).
 Constrained by [STT-PAY-003](#stt-pay-003).
 
 ```kotlin
@@ -1681,6 +1795,7 @@ Kotlin `who.smart.trust.codec` · Rust `smart-trust-codec`
 <a id="api-cbor"></a>
 
 **`Cbor`** (function): Deterministic CBOR encode; bounded decode.
+WIT: [`codec.cbor-deterministic`](../../api/wit/codec.wit).
 Constrained by [STT-GEN-002](#stt-gen-002), [STT-CBR-001](#stt-cbr-001), [STT-CBR-003](#stt-cbr-003).
 
 ```kotlin
@@ -1693,6 +1808,7 @@ pub fn encode(v: &CborValue) -> Vec<u8>; pub fn decode(b: &[u8], limits: &Decode
 <a id="api-limits"></a>
 
 **`DecodeLimits`** (type): Upper bounds applied while decoding untrusted input: input length, inflated size, CBOR nesting depth, item count, string length.
+WIT: [`types.decode-limits`](../../api/wit/types.wit).
 Constrained by [STT-CBR-003](#stt-cbr-003), [STT-ZIP-002](#stt-zip-002).
 
 ```kotlin
@@ -1705,6 +1821,7 @@ pub struct DecodeLimits { pub max_input_chars: usize, pub max_inflated_bytes: us
 <a id="api-zlib"></a>
 
 **`Zlib`** (function): ZLIB (RFC 1950) wrapping DEFLATE (RFC 1951).
+WIT: [`codec.zlib-inflate`](../../api/wit/codec.wit).
 Constrained by [STT-GEN-002](#stt-gen-002), [STT-ZIP-001](#stt-zip-001), [STT-ZIP-002](#stt-zip-002).
 
 ```kotlin
@@ -1717,6 +1834,7 @@ pub fn compress(b: &[u8], level: u32) -> Vec<u8>; pub fn inflate(b: &[u8], max_o
 <a id="api-base45"></a>
 
 **`Base45`** (function): RFC 9285 Base45, strict decode.
+WIT: [`codec.base45-decode`](../../api/wit/codec.wit).
 Constrained by [STT-GEN-002](#stt-gen-002), [STT-B45-001](#stt-b45-001).
 
 ```kotlin
@@ -1729,6 +1847,7 @@ pub fn encode(b: &[u8]) -> String; pub fn decode(s: &str) -> Result<Vec<u8>, Cod
 <a id="api-hc1"></a>
 
 **`ContextIdentifier`** (function): HC1: prefixing and detection of HC[1-9A-Z]: context identifiers.
+WIT: [`codec.detect-context`](../../api/wit/codec.wit).
 Constrained by [STT-GEN-002](#stt-gen-002), [STT-HC1-001](#stt-hc1-001).
 
 ```kotlin
@@ -1745,6 +1864,7 @@ Kotlin `who.smart.trust.cose` · Rust `smart-trust-cose`
 <a id="api-alg"></a>
 
 **`CoseAlgorithm`** (enum): ES256 (-7), PS256 (-37).
+WIT: [`types.cose-algorithm`](../../api/wit/types.wit).
 Constrained by [STT-COS-002](#stt-cos-002).
 
 ```kotlin
@@ -1757,6 +1877,7 @@ pub enum CoseAlgorithm { Es256 = -7, Ps256 = -37 }
 <a id="api-kid"></a>
 
 **`Kid`** (type): 8-byte key identifier with derivation from a DER DSC and base64/hex forms.
+WIT: [`cose.kid-from-dsc`](../../api/wit/cose.wit).
 Constrained by [STT-COS-003](#stt-cos-003), [STT-KID-001](#stt-kid-001), [STT-KID-003](#stt-kid-003).
 
 ```kotlin
@@ -1769,6 +1890,7 @@ pub struct Kid([u8; 8]); impl Kid { pub fn from_dsc(der: &[u8]) -> Kid; pub fn f
 <a id="api-signer"></a>
 
 **`Signer`** (interface): Signs Sig_structure bytes. Implementations may wrap an HSM, a KMS, Android Keystore, PKCS#11 or a software key.
+WIT: [`signer.sign`](../../api/wit/host.wit).
 Constrained by [STT-CWT-004](#stt-cwt-004), [STT-COS-006](#stt-cos-006).
 
 ```kotlin
@@ -1781,6 +1903,7 @@ pub trait Signer { fn algorithm(&self) -> CoseAlgorithm; fn dsc_der(&self) -> &[
 <a id="api-sign1"></a>
 
 **`CoseSign1`** (type): Parsed or built COSE_Sign1: protected bytes, unprotected map, payload, signature.
+WIT: [`cose.sign1`](../../api/wit/cose.wit).
 Constrained by [STT-GEN-002](#stt-gen-002), [STT-COS-001](#stt-cos-001), [STT-COS-003](#stt-cos-003), [STT-COS-004](#stt-cos-004).
 
 ```kotlin
@@ -1793,6 +1916,7 @@ pub struct CoseSign1 { pub protected: Vec<u8>, pub unprotected: BTreeMap<i64, Cb
 <a id="api-ecdsa-format"></a>
 
 **`EcdsaSignatureFormat`** (function): Conversion between ASN.1 DER ECDSA-Sig-Value and fixed-width r||s.
+WIT: [`cose.ecdsa-der-to-raw`](../../api/wit/cose.wit).
 Constrained by [STT-COS-005](#stt-cos-005).
 
 ```kotlin
@@ -1809,6 +1933,7 @@ Kotlin `who.smart.trust.qr` · Rust `smart-trust-qr`
 <a id="api-qr"></a>
 
 **`QrEncoder`** (function): Encodes an HC1 string as a single Alphanumeric-mode QR segment and returns the module matrix.
+WIT: [`qr.encode`](../../api/wit/qr.wit).
 Constrained by [STT-GEN-002](#stt-gen-002), [STT-QR-001](#stt-qr-001), [STT-QR-002](#stt-qr-002), [STT-QR-003](#stt-qr-003).
 
 ```kotlin
@@ -1821,6 +1946,7 @@ pub fn encode(hc1: &str, ec: ErrorCorrection) -> Result<QrMatrix, QrError>
 <a id="api-qr-render"></a>
 
 **`QrRenderer`** (function): Optional: PNG/SVG rendering with integer module scaling, quiet zone, and physical-size helper.
+WIT: [`qr.to-svg`](../../api/wit/qr.wit).
 Constrained by [STT-QR-003](#stt-qr-003), [STT-QR-004](#stt-qr-004).
 
 ```kotlin
@@ -1837,7 +1963,8 @@ Kotlin `who.smart.trust.trustlist` · Rust `smart-trust-trustlist`
 <a id="api-trust-provider"></a>
 
 **`TrustListProvider`** (interface): Returns every trusted DSC that matches a kid, optionally narrowed by issuer, trust domain, participant and key usage.
-Constrained by [STT-KID-002](#stt-kid-002), [STT-VER-009](#stt-ver-009), [STT-TRU-001](#stt-tru-001), [STT-TRU-004](#stt-tru-004).
+WIT: [`trust.trust-store`](../../api/wit/trust.wit).
+Constrained by [STT-GEN-012](#stt-gen-012), [STT-KID-002](#stt-kid-002), [STT-VER-009](#stt-ver-009), [STT-TRU-001](#stt-tru-001), [STT-TRU-004](#stt-tru-004).
 
 ```kotlin
 interface TrustListProvider { suspend fun candidates(query: KeyQuery): List<TrustedDsc>; val lastUpdated: Instant? }
@@ -1849,6 +1976,7 @@ pub trait TrustListProvider { fn candidates(&self, q: &KeyQuery) -> Result<Vec<T
 <a id="api-did-trustlist"></a>
 
 **`GdhcnDidTrustList`** (type): Client for GDHCN DID trustlist v2 (embedded and reference variants; DEV, UAT, PROD; domain/participant/usage path levels).
+WIT: [`trust.did-trustlist-url`](../../api/wit/trust.wit).
 Constrained by [STT-TRU-002](#stt-tru-002), [STT-TRU-004](#stt-tru-004).
 
 ```kotlin
@@ -1861,6 +1989,7 @@ pub struct GdhcnDidTrustList<F: HttpFetcher, C: TrustListCache> { .. } impl Trus
 <a id="api-static-trust"></a>
 
 **`StaticTrustList`** (type): In-memory list of DSCs (PEM/DER/JWKS), for tests, pinned national lists and fully offline deployments.
+WIT: [`trust.trust-store`](../../api/wit/trust.wit).
 Constrained by [STT-VER-009](#stt-ver-009), [STT-TRU-005](#stt-tru-005).
 
 ```kotlin
@@ -1877,7 +2006,8 @@ Kotlin `who.smart.trust.hcert` · Rust `smart-trust-hcert`
 <a id="api-clock"></a>
 
 **`Clock`** (interface): Injected time source with configurable skew tolerance.
-Constrained by [STT-VER-005](#stt-ver-005).
+WIT: [`verifier.verify`](../../api/wit/pipeline.wit).
+Constrained by [STT-GEN-012](#stt-gen-012), [STT-VER-005](#stt-ver-005).
 
 ```kotlin
 kotlinx.datetime.Clock (injected), plus VerifierPolicy.clockSkew: Duration
@@ -1886,10 +2016,24 @@ kotlinx.datetime.Clock (injected), plus VerifierPolicy.clockSkew: Duration
 pub trait Clock { fn now(&self) -> SystemTime; }
 ```
 
+<a id="api-pending-signature"></a>
+
+**`PendingSignature`** (type): Result of issuer.prepare: the exact bytes to sign, the algorithm and the kid. Consumed by issuer.finish.
+WIT: [`issuer.pending-signature`](../../api/wit/pipeline.wit).
+Constrained by [STT-ISS-004](#stt-iss-004).
+
+```kotlin
+class PendingSignature : AutoCloseable { val toBeSigned: ByteArray; val algorithm: CoseAlgorithm; val kid: Kid }
+```
+```rust
+pub struct PendingSignature { .. } impl PendingSignature { pub fn to_be_signed(&self) -> &[u8] }
+```
+
 <a id="api-issuer"></a>
 
 **`HcertIssuer`** (function): Runs steps 3 to 9 for a payload and returns the HC1 string, optional QR matrix and an EncodingReport.
-Constrained by [STT-GEN-001](#stt-gen-001), [STT-GEN-009](#stt-gen-009), [STT-SEL-003](#stt-sel-003), [STT-CWT-003](#stt-cwt-003), [STT-CWT-004](#stt-cwt-004), [STT-ISS-001](#stt-iss-001), [STT-ISS-002](#stt-iss-002).
+WIT: [`issuer.prepare`](../../api/wit/pipeline.wit).
+Constrained by [STT-GEN-001](#stt-gen-001), [STT-GEN-009](#stt-gen-009), [STT-SEL-003](#stt-sel-003), [STT-CWT-003](#stt-cwt-003), [STT-CWT-004](#stt-cwt-004), [STT-ISS-001](#stt-iss-001), [STT-ISS-002](#stt-iss-002), [STT-ISS-004](#stt-iss-004).
 
 ```kotlin
 class HcertIssuer(val signer: Signer, val registry: SubclaimRegistry, val policy: IssuerPolicy) { suspend fun <T> issue(payload: T, codec: PayloadCodec<T>, validity: Validity): IssuedHcert }
@@ -1901,6 +2045,7 @@ impl<S: Signer> HcertIssuer<S> { pub fn issue<C: PayloadCodec>(&self, p: &C::Pay
 <a id="api-report"></a>
 
 **`EncodingReport`** (type): Sizes at every stage (CBOR, COSE, deflated, HC1 chars) plus QR version and error-correction level.
+WIT: [`types.encoding-report`](../../api/wit/types.wit).
 Constrained by [STT-QR-006](#stt-qr-006).
 
 ```kotlin
@@ -1913,6 +2058,7 @@ pub struct EncodingReport { pub cbor_bytes: usize, pub cose_bytes: usize, pub de
 <a id="api-verifier"></a>
 
 **`HcertVerifier`** (function): Runs QR Code Generation section 11 over an HC1 string and returns a VerificationResult.
+WIT: [`verifier.verify`](../../api/wit/pipeline.wit).
 Constrained by [STT-GEN-001](#stt-gen-001), [STT-GEN-009](#stt-gen-009), [STT-KID-002](#stt-kid-002), [STT-QR-005](#stt-qr-005), [STT-VER-001](#stt-ver-001).
 
 ```kotlin
@@ -1925,6 +2071,7 @@ impl HcertVerifier { pub fn verify(&self, hc1: &str) -> VerificationResult }
 <a id="api-result"></a>
 
 **`VerificationResult`** (type): Either Verified(claims, payload, dsc, diagnostics) or Failed(step, reason, diagnostics). Payload content is only reachable from Verified.
+WIT: [`verifier.verification-result`](../../api/wit/pipeline.wit).
 Constrained by [STT-VER-002](#stt-ver-002), [STT-VER-008](#stt-ver-008).
 
 ```kotlin
@@ -1937,6 +2084,7 @@ pub enum VerificationResult { Verified(VerifiedHcert), Failed(VerificationFailur
 <a id="api-cert-type"></a>
 
 **`CertificateTypeResolver`** (interface): Maps a decoded hcert entry to the EKU certificate type (test, vaccination, recovery, or unknown).
+Not in WIT: Native-only SPI; the WIT verifier uses the built-in default mapping (OI-03).
 Constrained by [STT-VER-004](#stt-ver-004).
 
 ```kotlin
@@ -1949,6 +2097,7 @@ pub trait CertificateTypeResolver { fn resolve(&self, subclaim: i64, payload: &C
 <a id="api-business-rules"></a>
 
 **`BusinessRuleHook`** (interface): Called with a verified payload. Its results are attached to the VerificationResult.
+Not in WIT: Host-side; run on verifier.verification-result after verify returns.
 Constrained by [STT-VER-007](#stt-ver-007).
 
 ```kotlin
@@ -1965,7 +2114,8 @@ Kotlin `who.smart.trust.testkit` · Rust `smart-trust-testkit`
 <a id="api-testkit"></a>
 
 **`TestVectors`** (type): Shared, language-neutral conformance vectors (JSON + PEM) and loaders in both languages.
-Constrained by [STT-ISS-003](#stt-iss-003), [STT-TST-001](#stt-tst-001), [STT-TST-004](#stt-tst-004), [STT-TST-005](#stt-tst-005).
+Not in WIT: Test-only; not part of the shipped contract.
+Constrained by [STT-ISS-003](#stt-iss-003), [STT-TST-001](#stt-tst-001), [STT-TST-004](#stt-tst-004), [STT-TST-005](#stt-tst-005), [STT-TST-007](#stt-tst-007).
 
 ```kotlin
 object TestVectors { val dvcXxa: List<HcertVector> }

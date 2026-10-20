@@ -1,0 +1,145 @@
+package who:smart-trust@0.1.0;
+
+/// End-to-end issuance (steps 3 to 9).
+///
+/// Signing is two-phase so that any key holder can sign without the core
+/// calling back into the host: prepare() returns the Sig_structure bytes,
+/// the caller signs them with an HSM, KMS, Android Keystore or WebCrypto,
+/// and finish() assembles the certificate. [STT-ISS-004, STT-COS-006]
+interface issuer {
+    use types.{cose-algorithm, kid, numeric-date, error-correction, encoding-report, validation-issue};
+    use payloads.{payload};
+    use qr.{qr-matrix};
+    use subclaims.{registry};
+
+    record validity {
+        iat: numeric-date,
+        /// Mandatory: exp is the only revocation mechanism. [STT-CWT-003]
+        exp: numeric-date,
+    }
+
+    record issue-request {
+        payload: payload,
+        /// CWT iss, alpha-2. [STT-CWT-005]
+        iss: option<string>,
+        validity: validity,
+        /// DSC whose key will sign; kid is derived from it. [STT-KID-001]
+        dsc-der: list<u8>,
+        alg: cose-algorithm,
+    }
+
+    record issuer-policy {
+        /// Refuse negative subclaims unless true. [STT-SEL-003]
+        allow-development-subclaims: bool,
+        error-correction: error-correction,
+        render-qr: bool,
+        /// Verify the result against dsc-der before returning.
+        /// [STT-ISS-002]
+        self-verify: bool,
+        /// Warn above this HC1 length, suggesting VHL. [STT-QR-006]
+        hc1-warn-chars: u32,
+    }
+
+    variant issue-error {
+        payload-invalid(list<validation-issue>),
+        development-subclaim-not-allowed(s32),
+        unknown-subclaim(s32),
+        /// iat before or exp after the DSC validity. [STT-CWT-004]
+        validity-outside-dsc,
+        bad-certificate(string),
+        bad-signature-format(string),
+        self-verify-failed(string),
+    }
+
+    record issued-hcert {
+        hc1: string,
+        /// Raw COSE_Sign1 for 8-bit-safe transports. [STT-GEN-009]
+        cose: list<u8>,
+        qr: option<qr-matrix>,
+        report: encoding-report,
+    }
+
+    resource pending-signature {
+        /// Bytes to sign (CBOR Sig_structure). [STT-COS-004]
+        to-be-signed: func() -> list<u8>;
+        algorithm: func() -> cose-algorithm;
+        kid: func() -> kid;
+    }
+
+    /// Phase 1: validate, build CWT, CBOR and protected header.
+    prepare: func(req: issue-request, reg: borrow<registry>, policy: issuer-policy) -> result<pending-signature, issue-error>;
+
+    /// Phase 2: attach the signature. ES256 accepts r||s or DER and always
+    /// emits r||s. [STT-COS-005]
+    finish: func(pending: pending-signature, signature: list<u8>) -> result<issued-hcert, issue-error>;
+
+    /// One call, using the host `signer` import. [STT-ISS-001]
+    issue: func(req: issue-request, reg: borrow<registry>, policy: issuer-policy) -> result<issued-hcert, issue-error>;
+}
+
+/// Verification (QR Code Generation section 11).
+interface verifier {
+    use types.{kid, numeric-date, decode-limits, cbor-bytes, step, failure-reason, diagnostic, cose-algorithm};
+    use payloads.{payload};
+    use trust.{trust-store, trusted-dsc};
+    use subclaims.{registry};
+
+    record verifier-policy {
+        limits: decode-limits,
+        /// Fail on more than one hcert entry (default true). [STT-SEL-004]
+        strict-single-subclaim: bool,
+        clock-skew-seconds: u32,
+        /// Also check the DSC X.509 validity period. [STT-VER-006]
+        check-dsc-validity: bool,
+        /// Narrow DSC lookup by iss. [STT-VER-010]
+        narrow-by-iss: bool,
+        /// Check DSC EKU against the certificate type. [STT-VER-004]
+        check-key-usage: bool,
+    }
+
+    record verified-hcert {
+        iss: option<string>,
+        iat: numeric-date,
+        exp: numeric-date,
+        subclaim: s32,
+        payload: payload,
+        /// The DSC that verified the signature.
+        dsc: trusted-dsc,
+        /// Other subclaims present (non-strict policy only).
+        other-subclaims: list<s32>,
+        /// Unknown CWT claims, as (encoded key, encoded value).
+        /// [STT-CWT-006]
+        other-claims: list<tuple<cbor-bytes, cbor-bytes>>,
+        diagnostics: list<diagnostic>,
+    }
+
+    record verification-failure {
+        step: step,
+        reason: failure-reason,
+        detail: string,
+        diagnostics: list<diagnostic>,
+    }
+
+    /// Payload content is only reachable through `verified`.
+    /// [STT-VER-002, STT-VER-008]
+    variant verification-result {
+        verified(verified-hcert),
+        failed(verification-failure),
+    }
+
+    /// `now` is passed in: no ambient clock. [STT-VER-005]
+    verify: func(hc1: string, store: borrow<trust-store>, reg: borrow<registry>, now: numeric-date, policy: verifier-policy) -> verification-result;
+
+    /// Same, for raw COSE_Sign1 bytes. [STT-GEN-009]
+    verify-cose: func(cose: list<u8>, store: borrow<trust-store>, reg: borrow<registry>, now: numeric-date, policy: verifier-policy) -> verification-result;
+
+    /// Decoded but NOT verified. Diagnostics only; never use for
+    /// decisions. [STT-VER-002]
+    record unverified-view {
+        alg: option<cose-algorithm>,
+        kid: option<kid>,
+        claims: cbor-bytes,
+    }
+
+    inspect-unverified: func(hc1: string, limits: decode-limits) -> result<unverified-view, verification-failure>;
+}

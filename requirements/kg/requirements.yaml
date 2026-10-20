@@ -72,11 +72,12 @@ requirements:
     api: [api-payload-codec, api-subclaim-registry]
 
   - id: STT-GEN-004
-    title: Kotlin first
+    title: Kotlin first, for JVM, Android and Node
     statement: >-
-      The first implementation SHALL be a Kotlin library. Pure steps (codec,
-      model, payloads, pipeline logic) SHALL live in Kotlin Multiplatform
-      common code. JVM and Android SHALL be the first supported targets.
+      The first implementation SHALL be a Kotlin Multiplatform library with
+      all pipeline logic in common code. It SHALL ship for three targets: JVM
+      (Java 11+), Android, and Node.js (Kotlin/JS IR, published to npm
+      with an @JsExport facade and generated TypeScript declarations).
       Other KMP targets MAY follow.
     conformance: SHALL
     category: non-functional
@@ -84,19 +85,26 @@ requirements:
     targets: [kotlin]
     derived_from:
       - src: dir-languages
+      - src: dir-targets
 
   - id: STT-GEN-005
-    title: Rust second
+    title: Rust second, for WebAssembly
     statement: >-
       The second implementation SHALL be a Rust library meeting this same
-      requirement set. The codec module SHOULD be usable without std (with
-      alloc), so that it can be embedded and exposed over FFI or WASM.
+      requirement set. It SHALL build for wasm32 as a WebAssembly component
+      implementing the WIT worlds in api/wit, and SHALL be transpiled with
+      jco into an npm package usable from Node.js and browsers. A native
+      crate SHALL also be published. The codec module SHOULD build without
+      std (with alloc).
     conformance: SHALL
     category: non-functional
     derivation: directive
     targets: [rust]
     derived_from:
       - src: dir-languages
+      - src: dir-targets
+      - src: std-wit
+      - src: std-jco
 
   - id: STT-GEN-006
     title: Kotlin and Rust behave the same
@@ -156,6 +164,58 @@ requirements:
       - src: hcert-4.1
         quote: "the HCERT container and its payloads may be transferred as-is, utilising any underlying, 8 bit safe, reliable data transport"
     api: [api-issuer, api-verifier]
+
+  - id: STT-GEN-010
+    title: API defined first, in WIT
+    statement: >-
+      The library API SHALL be defined in WIT (api/wit) and reviewed before
+      implementation. The WIT SHALL be the contract both implementations
+      follow: Rust exports it from its WebAssembly component, and Kotlin
+      follows it through documented mapping rules. Each WIT item SHALL cite
+      the requirement(s) it implements. Breaking WIT changes SHALL bump the
+      package version.
+    conformance: SHALL
+    category: architecture
+    derivation: directive
+    refines: [STT-GEN-006]
+    derived_from:
+      - src: dir-targets
+      - src: std-wit
+    issues: [OI-16]
+
+  - id: STT-GEN-011
+    title: Same JavaScript surface from Kotlin/JS and Rust/WASM
+    statement: >-
+      The Node.js packages built from Kotlin/JS and from the Rust WebAssembly
+      component SHALL expose the same TypeScript surface: the declarations
+      jco generates from the WIT (api/generated/ts). The Kotlin/JS
+      declarations SHALL type-check against it.
+    conformance: SHALL
+    category: architecture
+    derivation: derived
+    refines: [STT-GEN-006, STT-GEN-010]
+    derived_from:
+      - src: dir-targets
+      - src: std-jco
+    verified_by: [STT-TST-007]
+
+  - id: STT-GEN-012
+    title: Synchronous core with no I/O
+    statement: >-
+      The pipeline core SHALL do no network or file I/O and SHALL NOT read an
+      ambient clock. Trust material SHALL be loaded into a trust store by the
+      host, and the current time SHALL be passed as an argument. Fetching,
+      caching and refreshing trust lists SHALL live in separate,
+      platform-specific modules.
+    conformance: SHALL
+    category: architecture
+    derivation: derived
+    derived_from:
+      - src: std-wit
+      - src: qr-2.2
+        quote: "Works fully offline — Yes — verifier needs only the trust list"
+    api: [api-trust-provider, api-clock]
+    issues: [OI-15]
 
   # ===========================================================================
   # SEL: Step 1, select payload type
@@ -1304,6 +1364,27 @@ requirements:
         quote: "It is a documentation aid, not a production issuer: it uses fixed test keys in source"
     api: [api-testkit]
 
+  - id: STT-ISS-004
+    title: Two-phase signing
+    statement: >-
+      The issuer SHALL offer a two-phase flow: prepare returns the exact
+      bytes to sign (the Sig_structure), the caller signs them by any means,
+      including asynchronous ones such as WebCrypto or a remote KMS, and
+      finish assembles the certificate. For ES256, finish SHALL accept r||s or
+      DER and SHALL always emit r||s.
+    conformance: SHALL
+    category: api
+    derivation: derived
+    refines: [STT-COS-006]
+    steps: [step-5]
+    derived_from:
+      - src: hcert-6.2
+      - src: std-webcrypto
+      - src: qr-6
+        quote: "Converting between the two is the single most common interoperability bug in HCERT implementations."
+    api: [api-pending-signature, api-issuer]
+    issues: [OI-15]
+
   # ===========================================================================
   # SEC / NFR
   # ===========================================================================
@@ -1353,13 +1434,16 @@ requirements:
   - id: STT-NFR-002
     title: Distribution
     statement: >-
-      The Kotlin library SHALL be published to Maven Central and the Rust
-      library to crates.io, under coordinates still to be chosen.
+      The Kotlin library SHALL be published to Maven Central (JVM, Android
+      AAR) and to npm (Kotlin/JS). The Rust library SHALL be published to
+      crates.io, and its jco-transpiled WebAssembly component to npm. All
+      coordinates are still to be chosen.
     conformance: SHALL
     category: non-functional
     derivation: directive
     derived_from:
       - src: dir-languages
+      - src: dir-targets
     issues: [OI-14]
 
   # ===========================================================================
@@ -1460,3 +1544,19 @@ requirements:
     derived_from:
       - src: hcert-6.3
         quote: "a potential attacker may attempt to inject carefully crafted information designed to compromise the security of the system"
+
+  - id: STT-TST-007
+    title: One TypeScript conformance suite for both Node packages
+    statement: >-
+      A single TypeScript test suite, type-checked against
+      api/generated/ts and driven by the shared vectors, SHALL run in CI
+      against both the Kotlin/JS npm package and the jco-transpiled Rust
+      component, and SHALL pass on both.
+    conformance: SHALL
+    category: test
+    derivation: derived
+    refines: [STT-GEN-011]
+    derived_from:
+      - src: dir-targets
+      - src: doc-qr-example-json
+    api: [api-testkit]
