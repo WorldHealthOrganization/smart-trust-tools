@@ -1,0 +1,42 @@
+package who:smart-trust@0.1.0;
+
+/// Pure encoding, decoding and QR. No host imports.
+world hcert-codec {
+    export types;
+    export codec;
+    export cose;
+    export qr;
+}
+
+/// Verifier: what a scanning app or border system embeds.
+world hcert-verifier {
+    import terminology;
+    export types;
+    export codec;
+    export cose;
+    export subclaims;
+    export dvc;
+    export payloads;
+    export trust;
+    export verifier;
+}
+
+/// Issuer: what a clinic or national issuance service embeds.
+world hcert-issuer {
+    import signer;
+    import terminology;
+    export types;
+    export codec;
+    export cose;
+    export qr;
+    export subclaims;
+    export dvc;
+    export payloads;
+    export issuer;
+}
+
+/// Everything.
+world hcert {
+    include hcert-verifier;
+    include hcert-issuer;
+}

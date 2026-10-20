@@ -1,0 +1,329 @@
+# Source documents the library requirements are derived from.
+#
+# Every smart-trust document gets up to four URLs, so that a requirement can be
+# traced both today (while WorldHealthOrganization/smart-trust PR #129 is open)
+# and after that PR is merged to main and deployed:
+#
+#   pinned     GitHub blob at the exact commit the requirement was drafted
+#              against. Never changes. Always resolvable.
+#   preview    IG build of the PR branch (only for documents introduced or
+#              changed by an unmerged PR).
+#   ci         Continuous build of main. Valid once the change is on main.
+#   published  Canonical, released IG. Valid once the change is released.
+#
+# Section anchors are computed by tools/build_kg.py from the heading text,
+# using the same slug rule the IG and GitHub use (lower case, punctuation
+# dropped, spaces to hyphens; e.g. "3.2.7 Health Certificate Claim" ->
+# "327-health-certificate-claim", as already used by hcert_spec.md itself).
+
+repo: WorldHealthOrganization/smart-trust
+
+refs:
+  main:
+    sha: e277cce5dcb8d2134ef1625c3a38e27cdf19e835
+    label: smart-trust main at time of drafting (IG version 1.7.5 ci-build)
+  pr129:
+    sha: 50bcb25b387d7e7113ffc9e9046452580f9d67aa
+    label: smart-trust PR 129 head (QR Code Generation page)
+    pr: 129
+    branch: claude/intelligent-bell-usgxfu
+    # smart-base resolve_branch.py publishes branch builds under the last
+    # path component of the branch name.
+    preview_dir: intelligent-bell-usgxfu
+
+  phw:
+    repo: WorldHealthOrganization/smart-trust-phw
+    sha: fd3b5480e5df8001890d31ecc9761051c17c2cc5
+    label: smart-trust-phw main at time of drafting (DVCMin logical models)
+    sites:
+      published: https://smart.who.int/trust-phw
+      ci: https://worldhealthorganization.github.io/smart-trust-phw
+      preview: https://worldhealthorganization.github.io/smart-trust-phw/branches
+
+sites:
+  published: https://smart.who.int/trust
+  ci: https://worldhealthorganization.github.io/smart-trust
+  preview: https://worldhealthorganization.github.io/smart-trust/branches
+
+# status:
+#   deployed       on main and on the published IG
+#   pending-merge  introduced or changed by an open PR; ci/published URLs are
+#                  where the content will live once merged and deployed
+documents:
+
+  # ---- PR 129 pagecontent -------------------------------------------------
+
+  - id: doc-qr
+    title: QR Code Generation
+    path: input/pagecontent/qr_code_generation.md
+    page: qr_code_generation.html
+    ref: pr129
+    status: pending-merge
+    sections:
+      - {id: qr-intro, heading: "Generating a QR Code"}
+      - {id: qr-1, heading: "1. The pipeline at a glance"}
+      - {id: qr-2, heading: "2. Step 1 — Select the logical model for your use case"}
+      - {id: qr-2.1, heading: "2.1 Subclaims defined in this guide"}
+      - {id: qr-2.2, heading: "2.2 Choosing between a DVC and a VHL"}
+      - {id: qr-2.3, heading: "2.3 Choosing between a generic DVC and the ICVP"}
+      - {id: qr-2.4, heading: "2.4 Decision summary"}
+      - {id: qr-3, heading: "3. Step 2 — Assemble the payload"}
+      - {id: qr-4, heading: "4. Step 3 — Build the CWT claim set"}
+      - {id: qr-5, heading: "5. Step 4 — Serialise as CBOR"}
+      - {id: qr-6, heading: "6. Step 5 — Sign as a COSE_Sign1"}
+      - {id: qr-7, heading: "7. Step 6 — Compress"}
+      - {id: qr-8, heading: "8. Step 7 — Encode as Base45"}
+      - {id: qr-9, heading: "9. Step 8 — Prefix the context identifier"}
+      - {id: qr-10, heading: "10. Step 9 — Render the QR code"}
+      - {id: qr-11, heading: "11. Verifying: the same steps upwards"}
+      - {id: qr-12, heading: "12. Worked example — a newborn birth dose DVC"}
+      - {id: qr-12.1, heading: "12.1 Scenario"}
+      - {id: qr-12.3, heading: "12.3 Test issuer"}
+      - {id: qr-12.4, heading: "12.4 The payload"}
+      - {id: qr-12.5, heading: "12.5 Size at each stage"}
+      - {id: qr-12.6, heading: "12.6 The certificate"}
+      - {id: qr-13, heading: "13. Reference script"}
+
+  - id: doc-data-exchange
+    title: Data Exchange
+    path: input/pagecontent/data_exchange.md
+    page: data_exchange.html
+    ref: pr129
+    status: pending-merge
+    note: PR 129 includes qr_code_generation.md into this page, after the HCERT Specification.
+
+  - id: doc-changes
+    title: Change Log
+    path: input/pagecontent/changes.md
+    page: changes.html
+    ref: pr129
+    status: pending-merge
+    sections:
+      - {id: changes-1.7.5, heading: "v1.7.5"}
+
+  # ---- PR 129 artefacts (input/images is copied to the IG root) ------------
+
+  - id: doc-qr-example-json
+    title: DVC QR example, machine-readable summary (test participant XXA)
+    path: input/images/dvc-qr-example-XXA.json
+    page: dvc-qr-example-XXA.json
+    ref: pr129
+    status: pending-merge
+
+  - id: doc-qr-example-pem
+    title: DVC QR example, test DSC and SCA (PEM)
+    path: input/images/dvc-qr-example-XXA-dsc.pem
+    page: dvc-qr-example-XXA-dsc.pem
+    ref: pr129
+    status: pending-merge
+
+  - id: doc-qr-script
+    title: Reference generation script generate_dvc_qr.py
+    path: input/scripts/generate_dvc_qr.py
+    ref: pr129
+    status: pending-merge
+
+  # ---- smart-trust main ---------------------------------------------------
+
+  - id: doc-hcert
+    title: HCERT Specification
+    path: input/pagecontent/hcert_spec.md
+    page: hcert_spec.html
+    ref: main
+    status: deployed
+    sections:
+      - {id: hcert-2, heading: "2. Terminology"}
+      - {id: hcert-3.1, heading: "3.1 Structure of the Payload"}
+      - {id: hcert-3.2.1, heading: "3.2.1 CWT Structure Overview"}
+      - {id: hcert-3.2.2, heading: "3.2.2 Signature Algorithm"}
+      - {id: hcert-3.2.3, heading: "3.2.3 Key Identifier"}
+      - {id: hcert-3.2.4, heading: "3.2.4 Issuer"}
+      - {id: hcert-3.2.5, heading: "3.2.5 Expiration Time"}
+      - {id: hcert-3.2.6, heading: "3.2.6 Issued At"}
+      - {id: hcert-3.2.7, heading: "3.2.7 Health Certificate Claim"}
+      - {id: hcert-3.2.7.1, heading: "3.2.7.1 Subclaims"}
+      - {id: hcert-3.2.7.1.5, heading: "3.2.7.1.5 Smart Health Link (SHL)"}
+      - {id: hcert-4.1, heading: "4.1 Raw"}
+      - {id: hcert-4.2.1, heading: "4.2.1 Payload (CWT) Compression"}
+      - {id: hcert-4.2.2, heading: "4.2.2 QR 2D Barcode"}
+      - {id: hcert-5, heading: "5 Trusted List Format (DSC list)"}
+      - {id: hcert-5.1, heading: "5.1 Simplified SCA/DSC"}
+      - {id: hcert-6.1, heading: "6.1 HCERT Signature Validity Time"}
+      - {id: hcert-6.2, heading: "6.2 Key Management"}
+      - {id: hcert-6.3, heading: "6.3 Input Data Validation"}
+      - {id: hcert-A, heading: "Appendix A - Trust Management"}
+      - {id: hcert-A.1, heading: "A.1 The Key Identifier (`kid`s)"}
+      - {id: hcert-A.2, heading: "A.2 Extended Key Usage Identifiers"}
+
+  - id: doc-did-gdhcn
+    title: GDHCN Trustlists (DID)
+    path: input/pagecontent/concepts_did_gdhcn.md
+    page: concepts_did_gdhcn.html
+    ref: main
+    status: deployed
+    sections:
+      - {id: did-2.0.0, heading: "Trustlists 2.0.0"}
+      - {id: did-structure, heading: "DID trustlists structure"}
+      - {id: did-examples, heading: "Example DID documents"}
+      - {id: did-envs, heading: "Environments & Repositories"}
+
+  - id: doc-endpoints
+    title: Endpoints
+    path: input/pagecontent/endpoints.md
+    page: endpoints.html
+    ref: main
+    status: deployed
+    sections:
+      - {id: endpoints-trustlist, heading: "Trustlist Distribution Endpoints"}
+
+  - id: doc-trust-domains
+    title: Trust Domains
+    path: input/pagecontent/trust_domains.md
+    page: trust_domains.html
+    ref: main
+    status: deployed
+
+  - id: doc-reference-impl
+    title: Reference Implementations
+    path: input/pagecontent/reference_implementation.md
+    page: reference_implementation.html
+    ref: main
+    status: deployed
+
+  - id: doc-sd-hcert
+    title: HCert logical model
+    path: input/fsh/models/hcert.fsh
+    page: StructureDefinition-HCert.html
+    ref: main
+    status: deployed
+
+  - id: doc-sd-cwtpayload
+    title: CWTPayload logical model
+    path: input/fsh/models/cwt_payload.fsh
+    page: StructureDefinition-CWTPayload.html
+    ref: main
+    status: deployed
+
+  - id: doc-vs-domains
+    title: GDHCN Trust Domain value set
+    page: ValueSet-Domains.html
+    ref: main
+    status: deployed
+
+  - id: doc-vs-keyusage
+    title: GDHCN Key Usage value set
+    page: ValueSet-KeyUsage.html
+    ref: main
+    status: deployed
+
+  - id: doc-vs-participants
+    title: GDHCN Participants value set
+    page: ValueSet-Participants.html
+    ref: main
+    status: deployed
+
+  - id: doc-fhir-requirements
+    title: smart-trust FHIR Requirements (SGRequirements instances)
+    path: input/fsh/requirements/requirements.fsh
+    ref: main
+    status: deployed
+
+  # ---- smart-trust-phw logical models (pinned; vendored in models/fhir) ----
+
+  - id: ext-dvcmin
+    title: DVCMin logical model (trust-phw)
+    path: input/fsh/models/DVCMin.fsh
+    page: StructureDefinition-DVCMin.html
+    ref: phw
+    status: deployed
+  - id: ext-dvcmin-vx
+    title: DVCMinVaccineDetails logical model (trust-phw)
+    path: input/fsh/models/DVCMinVaccineDetails.fsh
+    page: StructureDefinition-DVCMinVaccineDetails.html
+    ref: phw
+    status: deployed
+  - id: ext-dvcmin-prequal
+    title: DVCMinPreQual profile (trust-phw)
+    path: input/fsh/models/DVCMinPreQual.fsh
+    page: StructureDefinition-DVCMinPreQual.html
+    ref: phw
+    status: deployed
+  - id: ext-phw-aliases
+    title: smart-trust-phw FSH aliases
+    path: input/fsh/Aliases.fsh
+    ref: phw
+    status: deployed
+
+  # ---- External logical models (other WHO SMART IGs) ---------------------
+
+  - id: ext-dvc-vaccines-vs
+    title: DVC - Vaccines value set (trust-phw)
+    url: http://smart.who.int/trust-phw/ValueSet-DVCVaccines.html
+  - id: ext-mtl-min
+    title: MedicationTreatmentLineMin logical model (ph4h)
+    url: http://smart.who.int/ph4h/StructureDefinition-MedicationTreatmentLineMin.html
+  - id: ext-ddcc
+    title: DDCC Implementation Guide
+    url: https://smart.who.int/ddcc/
+  - id: ext-icvp
+    title: ICVP Implementation Guide
+    url: https://smart.who.int/icvp
+
+  # ---- External standards -------------------------------------------------
+
+  - {id: std-rfc8392, title: "RFC 8392 CBOR Web Token (CWT)", url: "https://www.rfc-editor.org/rfc/rfc8392"}
+  - {id: std-rfc8152, title: "RFC 8152 CBOR Object Signing and Encryption (COSE)", url: "https://www.rfc-editor.org/rfc/rfc8152"}
+  - {id: std-rfc7049, title: "RFC 7049 CBOR (cited by the IG)", url: "https://www.rfc-editor.org/rfc/rfc7049"}
+  - {id: std-rfc8949, title: "RFC 8949 CBOR (obsoletes RFC 7049)", url: "https://www.rfc-editor.org/rfc/rfc8949"}
+  - {id: std-rfc8230, title: "RFC 8230 RSA algorithms with COSE (PS256)", url: "https://www.rfc-editor.org/rfc/rfc8230"}
+  - {id: std-rfc6979, title: "RFC 6979 Deterministic ECDSA", url: "https://www.rfc-editor.org/rfc/rfc6979"}
+  - {id: std-rfc1950, title: "RFC 1950 ZLIB", url: "https://www.rfc-editor.org/rfc/rfc1950"}
+  - {id: std-rfc1951, title: "RFC 1951 DEFLATE", url: "https://www.rfc-editor.org/rfc/rfc1951"}
+  - {id: std-base45-draft, title: "draft-faltstrom-base45 (cited by the IG)", url: "https://datatracker.ietf.org/doc/draft-faltstrom-base45"}
+  - {id: std-rfc9285, title: "RFC 9285 The Base45 Data Encoding", url: "https://www.rfc-editor.org/rfc/rfc9285"}
+  - id: std-iso18004
+    title: "ISO/IEC 18004:2015 QR Code"
+    url: "https://www.iso.org/standard/62021.html"
+    note: >-
+      Paywalled. Cited only because the HCERT Specification mandates it;
+      not used as a type or schema reference (dir-open-standards).
+  - {id: std-rfc5280, title: "RFC 5280 X.509 PKI Certificate Profile", url: "https://www.rfc-editor.org/rfc/rfc5280"}
+  - {id: std-rfc7517, title: "RFC 7517 JSON Web Key", url: "https://www.rfc-editor.org/rfc/rfc7517"}
+  - {id: std-did-core, title: "W3C DID Core", url: "https://www.w3.org/TR/did-core/"}
+
+  - {id: std-rfc8610, title: "RFC 8610 Concise Data Definition Language (CDDL)", url: "https://www.rfc-editor.org/rfc/rfc8610"}
+  - {id: std-rfc9682, title: "RFC 9682 Updates to the CDDL grammar", url: "https://www.rfc-editor.org/rfc/rfc9682"}
+  - {id: std-rfc9052, title: "RFC 9052 COSE: Structures and Process", url: "https://www.rfc-editor.org/rfc/rfc9052"}
+  - {id: std-rfc7493, title: "RFC 7493 I-JSON", url: "https://www.rfc-editor.org/rfc/rfc7493"}
+  - {id: std-json-ld, title: "W3C JSON-LD 1.1", url: "https://www.w3.org/TR/json-ld11/"}
+  - {id: std-shacl, title: "W3C Shapes Constraint Language (SHACL)", url: "https://www.w3.org/TR/shacl/"}
+  - {id: std-xsd2, title: "W3C XML Schema 1.1 Part 2: Datatypes", url: "https://www.w3.org/TR/xmlschema11-2/"}
+  - {id: std-fhir-datatypes, title: "HL7 FHIR R5 Data Types", url: "https://hl7.org/fhir/R5/datatypes.html"}
+  - {id: std-x680, title: "ITU-T X.680 ASN.1 (free)", url: "https://www.itu.int/rec/T-REC-X.680"}
+  - {id: std-wit, title: "WIT, WebAssembly Component Model IDL", url: "https://component-model.bytecodealliance.org/design/wit.html"}
+  - {id: std-jco, title: "jco: JavaScript toolchain for WebAssembly components", url: "https://github.com/bytecodealliance/jco"}
+  - {id: std-webcrypto, title: "W3C Web Cryptography API", url: "https://www.w3.org/TR/WebCryptoAPI/"}
+
+  # ---- Stakeholder directives (not in any spec) --------------------------
+
+  - id: dir-languages
+    title: "Stakeholder directive: Kotlin library first, Rust library second"
+    note: >-
+      Given by the requester on 2026-10-20 when commissioning these
+      requirements: "API requirements are intended for kotlin (first) and rust
+      (second) libraries."
+
+  - id: dir-targets
+    title: "Stakeholder directive: transpile targets and API-first"
+    note: >-
+      Given by the requester on 2026-10-20: Kotlin targets Node, Java (JVM)
+      and Android; Rust targets WebAssembly. The API set is to be defined
+      and reviewed first, in an OpenAPI-like but non-REST definition.
+
+  - id: dir-open-standards
+    title: "Stakeholder directive: open standards for types and schemas"
+    note: >-
+      Given by the requester on 2026-10-20: data types must trace to
+      standardized type systems, with no paywalled ISO standards. Wire
+      format in CDDL; payload models as JSON-LD derived from the FHIR
+      logical models; library API in WIT.

@@ -1,0 +1,40 @@
+name: Requirements KG and API contract
+
+on:
+  push:
+    paths: ["requirements/**", "api/**", "models/**", "vectors/**", "tools/**", ".github/workflows/requirements-kg.yml"]
+  pull_request:
+    paths: ["requirements/**", "api/**", "models/**", "vectors/**", "tools/**", ".github/workflows/requirements-kg.yml"]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: pip install pyyaml rdflib cbor2 base45 pycddl pyshacl
+      - name: Validate KG (incl. WIT references) and check generated files are current
+        run: python3 tools/build_kg.py --check
+      - name: Parse generated RDF
+        run: |
+          python3 -c "
+          import rdflib
+          from rdflib.compare import isomorphic
+          a = rdflib.Graph().parse('requirements/generated/kg.ttl', format='turtle')
+          b = rdflib.Graph().parse('requirements/generated/kg.jsonld', format='json-ld')
+          assert isomorphic(a, b), 'Turtle and JSON-LD differ'
+          print(len(a), 'triples')
+          "
+      - name: Validate WIT and check generated TypeScript is current
+        run: |
+          tools/gen_api_types.sh
+          git diff --exit-code -- api/generated/ts
+      - name: Check derived payload models are current
+        run: python3 tools/lm_derive.py --check
+      - name: Validate vectors against CDDL and SHACL
+        run: python3 tools/check_models.py

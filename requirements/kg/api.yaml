@@ -1,0 +1,324 @@
+# Language-neutral API surface the requirements constrain, with the intended
+# Kotlin (phase 1) and Rust (phase 2) shapes. The normative contract is the
+# WIT in api/wit/. `wit:` names the WIT item (interface.item) each element
+# corresponds to, and tools/build_kg.py checks that it exists. The Kotlin
+# and Rust lines are design sketches, not frozen signatures. Package and
+# crate names are placeholders (see OI-14).
+#
+# Kotlin:  Kotlin Multiplatform, package root `who.smart.trust` (placeholder)
+# Rust:    cargo workspace, crate prefix `smart-trust-` (placeholder)
+
+modules:
+  - {id: mod-model, name: model, description: "Subclaim registry, CWT and hcert claim types, payload codec SPI", kotlin: "who.smart.trust.model", rust: "smart-trust-model"}
+  - {id: mod-payload-dvc, name: payload-dvc, description: "DVCMin / DVCMinPreQual typed payloads", kotlin: "who.smart.trust.payload.dvc", rust: "smart-trust-payload-dvc"}
+  - {id: mod-codec, name: codec, description: "CBOR, ZLIB, Base45, HC1 prefix (pure, no crypto, no I/O)", kotlin: "who.smart.trust.codec", rust: "smart-trust-codec"}
+  - {id: mod-cose, name: cose, description: "COSE_Sign1, algorithms, kid, Signer SPI", kotlin: "who.smart.trust.cose", rust: "smart-trust-cose"}
+  - {id: mod-qr, name: qr, description: "QR symbol generation (module matrix), optional raster/SVG rendering", kotlin: "who.smart.trust.qr", rust: "smart-trust-qr"}
+  - {id: mod-trust, name: trust, description: "Trust list SPI, GDHCN DID trustlist v2 client, static lists", kotlin: "who.smart.trust.trustlist", rust: "smart-trust-trustlist"}
+  - {id: mod-pipeline, name: pipeline, description: "End-to-end HcertIssuer and HcertVerifier", kotlin: "who.smart.trust.hcert", rust: "smart-trust-hcert"}
+  - {id: mod-testkit, name: testkit, description: "Test vectors, test PKI, fixed clocks. Never a production dependency.", kotlin: "who.smart.trust.testkit", rust: "smart-trust-testkit"}
+
+elements:
+  # ---- model --------------------------------------------------------------
+  - id: api-subclaim
+    name: Subclaim
+    module: mod-model
+    wit: types.subclaim
+    kind: type
+    description: "An hcert subclaim number with its status (ASSIGNED, PROPOSED, DEVELOPMENT) and logical-model canonical URL."
+    kotlin: "data class Subclaim(val key: Int, val status: SubclaimStatus, val logicalModel: String?)"
+    rust: "pub struct Subclaim { pub key: i64, pub status: SubclaimStatus, pub logical_model: Option<String> }"
+  - id: api-subclaim-registry
+    name: SubclaimRegistry
+    module: mod-model
+    wit: subclaims.registry
+    kind: interface
+    description: "Lookup and registration of subclaims and their PayloadCodecs. Ships with the IG defaults."
+    kotlin: "interface SubclaimRegistry { fun lookup(key: Int): Subclaim?; fun codec(key: Int): PayloadCodec<*>?; fun register(subclaim: Subclaim, codec: PayloadCodec<*>) }"
+    rust: "pub trait SubclaimRegistry { fn lookup(&self, key: i64) -> Option<&Subclaim>; fn codec(&self, key: i64) -> Option<&dyn ErasedPayloadCodec>; }"
+  - id: api-payload-codec
+    name: PayloadCodec
+    module: mod-model
+    wit: dvc.to-cbor
+    kind: interface
+    description: "Converts a typed payload to and from a CBOR data item and validates it against its logical model."
+    kotlin: "interface PayloadCodec<T> { val subclaim: Int; fun toCbor(p: T): CborItem; fun fromCbor(i: CborItem): T; fun validate(p: T): List<ValidationIssue> }"
+    rust: "pub trait PayloadCodec { type Payload; const SUBCLAIM: i64; fn to_cbor(&self, p: &Self::Payload) -> CborValue; fn from_cbor(&self, v: &CborValue) -> Result<Self::Payload, PayloadError>; fn validate(&self, p: &Self::Payload) -> Vec<ValidationIssue>; }"
+  - id: api-raw-payload
+    name: RawPayload
+    module: mod-model
+    wit: payloads.raw-payload
+    kind: type
+    description: "Opaque CBOR payload for subclaims without a typed codec (DCC 1, DDCC 3/4, MTL -7 in v1)."
+    kotlin: "data class RawPayload(val subclaim: Int, val item: CborItem)"
+    rust: "pub struct RawPayload { pub subclaim: i64, pub item: CborValue }"
+  - id: api-vhl
+    name: VhlPayload
+    module: mod-model
+    wit: payloads.payload
+    kind: type
+    description: "Subclaim 5: URI of a Verifiable Health Link."
+    kotlin: "@JvmInline value class VhlPayload(val uri: String)"
+    rust: "pub struct VhlPayload(pub String);"
+  - id: api-cwt
+    name: CwtClaims
+    module: mod-model
+    wit: issuer.issue-request
+    kind: type
+    description: "CWT claim set: iss (1), iat (6), exp (4), hcert (-260), plus preserved unknown claims."
+    kotlin: "data class CwtClaims(val iss: String?, val iat: Instant, val exp: Instant, val hcert: HcertClaim, val other: Map<CborItem, CborItem> = emptyMap())"
+    rust: "pub struct CwtClaims { pub iss: Option<String>, pub iat: NumericDate, pub exp: NumericDate, pub hcert: HcertClaim, pub other: BTreeMap<CborValue, CborValue> }"
+  - id: api-hcert-claim
+    name: HcertClaim
+    module: mod-model
+    wit: verifier.verified-hcert
+    kind: type
+    description: "The -260 map. Issuance holds exactly one entry; decoding exposes every entry present."
+    kotlin: "class HcertClaim(val entries: Map<Int, CborItem>) { val single: Pair<Int, CborItem>? }"
+    rust: "pub struct HcertClaim { pub entries: BTreeMap<i64, CborValue> }"
+  - id: api-advisor
+    name: PayloadTypeAdvisor
+    module: mod-model
+    wit: subclaims.advise
+    kind: function
+    description: "Implements the QR Code Generation 2.4 decision tree, plus a size estimate."
+    kotlin: "fun advisePayloadType(facts: UseCaseFacts): PayloadAdvice"
+    rust: "pub fn advise_payload_type(facts: &UseCaseFacts) -> PayloadAdvice"
+  - id: api-terminology
+    name: TerminologyValidator
+    module: mod-model
+    wit: terminology.is-member
+    kind: interface
+    description: "Pluggable value-set membership check (PreQual product IDs, ICD-11 DVC vaccines, ISO 3166)."
+    kotlin: "fun interface TerminologyValidator { fun isMember(valueSet: String, code: String): Membership }"
+    rust: "pub trait TerminologyValidator { fn is_member(&self, value_set: &str, code: &str) -> Membership; }"
+
+  # ---- payload-dvc ----------------------------------------------------------
+  - id: api-dvcmin
+    name: DvcMin
+    module: mod-payload-dvc
+    wit: dvc.dvc-min
+    kind: type
+    description: "DVCMin with short element names n, dob, s, nt, id, dt, gn, vx, v."
+    kotlin: "data class DvcMin(val n: String, val dob: String, val s: String, val nt: String, val id: String? = null, val dt: String? = null, val gn: String? = null, val vx: DvcMinVaccineDetails, val v: String)"
+    rust: "pub struct DvcMin { pub n: String, pub dob: String, pub s: String, pub nt: String, pub id: Option<String>, pub dt: Option<String>, pub gn: Option<String>, pub vx: DvcMinVaccineDetails, pub v: String }"
+  - id: api-dvcmin-vx
+    name: DvcMinVaccineDetails
+    module: mod-payload-dvc
+    wit: dvc.dvc-min-vaccine-details
+    kind: type
+    description: "vp, dv, cn, is, bo."
+    kotlin: "data class DvcMinVaccineDetails(val vp: String, val dv: String, val cn: String? = null, val `is`: String? = null, val bo: String)"
+    rust: "pub struct DvcMinVaccineDetails { pub vp: String, pub dv: String, pub cn: Option<String>, pub is: Option<String>, pub bo: String }"
+  - id: api-dvc-split
+    name: DvcMin.perEvent
+    module: mod-payload-dvc
+    wit: dvc.per-event
+    kind: function
+    description: "Splits one visit with N administered vaccines into N DvcMin payloads (vx is 1..1)."
+    kotlin: "fun DvcMin.Companion.perEvent(subject: DvcSubject, events: List<DvcMinVaccineDetails>): List<DvcMin>"
+    rust: "pub fn per_event(subject: &DvcSubject, events: &[DvcMinVaccineDetails]) -> Vec<DvcMin>"
+
+  # ---- codec ----------------------------------------------------------------
+  - id: api-cbor
+    name: Cbor
+    module: mod-codec
+    wit: codec.cbor-deterministic
+    kind: function
+    description: "Deterministic CBOR encode; bounded decode."
+    kotlin: "object Cbor { fun encode(item: CborItem): ByteArray; fun decode(bytes: ByteArray, limits: DecodeLimits = DecodeLimits.DEFAULT): CborItem }"
+    rust: "pub fn encode(v: &CborValue) -> Vec<u8>; pub fn decode(b: &[u8], limits: &DecodeLimits) -> Result<CborValue, CodecError>"
+  - id: api-limits
+    name: DecodeLimits
+    module: mod-codec
+    wit: types.decode-limits
+    kind: type
+    description: "Upper bounds applied while decoding untrusted input: input length, inflated size, CBOR nesting depth, item count, string length."
+    kotlin: "data class DecodeLimits(val maxInputChars: Int, val maxInflatedBytes: Int, val maxDepth: Int, val maxItems: Int, val maxStringBytes: Int)"
+    rust: "pub struct DecodeLimits { pub max_input_chars: usize, pub max_inflated_bytes: usize, pub max_depth: usize, pub max_items: usize, pub max_string_bytes: usize }"
+  - id: api-zlib
+    name: Zlib
+    module: mod-codec
+    wit: codec.zlib-inflate
+    kind: function
+    description: "ZLIB (RFC 1950) wrapping DEFLATE (RFC 1951)."
+    kotlin: "object Zlib { fun compress(b: ByteArray, level: Int = 9): ByteArray; fun inflate(b: ByteArray, maxOut: Int): ByteArray }"
+    rust: "pub fn compress(b: &[u8], level: u32) -> Vec<u8>; pub fn inflate(b: &[u8], max_out: usize) -> Result<Vec<u8>, CodecError>"
+  - id: api-base45
+    name: Base45
+    module: mod-codec
+    wit: codec.base45-decode
+    kind: function
+    description: "RFC 9285 Base45, strict decode."
+    kotlin: "object Base45 { fun encode(b: ByteArray): String; fun decode(s: String): ByteArray }"
+    rust: "pub fn encode(b: &[u8]) -> String; pub fn decode(s: &str) -> Result<Vec<u8>, CodecError>"
+  - id: api-hc1
+    name: ContextIdentifier
+    module: mod-codec
+    wit: codec.detect-context
+    kind: function
+    description: "HC1: prefixing and detection of HC[1-9A-Z]: context identifiers."
+    kotlin: "object ContextIdentifier { const val HC1 = \"HC1:\"; fun detect(s: String): ContextId?; fun prefix(b45: String): String }"
+    rust: "pub const HC1: &str = \"HC1:\"; pub fn detect(s: &str) -> Option<ContextId>"
+
+  # ---- cose -----------------------------------------------------------------
+  - id: api-alg
+    name: CoseAlgorithm
+    module: mod-cose
+    wit: types.cose-algorithm
+    kind: enum
+    description: "ES256 (-7), PS256 (-37)."
+    kotlin: "enum class CoseAlgorithm(val id: Int) { ES256(-7), PS256(-37) }"
+    rust: "pub enum CoseAlgorithm { Es256 = -7, Ps256 = -37 }"
+  - id: api-kid
+    name: Kid
+    module: mod-cose
+    wit: cose.kid-from-dsc
+    kind: type
+    description: "8-byte key identifier with derivation from a DER DSC and base64/hex forms."
+    kotlin: "@JvmInline value class Kid(val bytes: ByteArray) { companion object { fun fromDsc(der: ByteArray): Kid; fun fromBase64(s: String): Kid }; fun toBase64(): String }"
+    rust: "pub struct Kid([u8; 8]); impl Kid { pub fn from_dsc(der: &[u8]) -> Kid; pub fn from_base64(s: &str) -> Result<Kid, KidError>; pub fn to_base64(&self) -> String }"
+  - id: api-signer
+    name: Signer
+    module: mod-cose
+    wit: signer.sign
+    kind: interface
+    description: "Signs Sig_structure bytes. Implementations may wrap an HSM, a KMS, Android Keystore, PKCS#11 or a software key."
+    kotlin: "interface Signer { val algorithm: CoseAlgorithm; val dsc: X509Certificate; suspend fun sign(toBeSigned: ByteArray): ByteArray }"
+    rust: "pub trait Signer { fn algorithm(&self) -> CoseAlgorithm; fn dsc_der(&self) -> &[u8]; fn sign(&self, tbs: &[u8]) -> Result<Vec<u8>, SignError>; }"
+  - id: api-sign1
+    name: CoseSign1
+    module: mod-cose
+    wit: cose.sign1
+    kind: type
+    description: "Parsed or built COSE_Sign1: protected bytes, unprotected map, payload, signature."
+    kotlin: "class CoseSign1(val protectedBytes: ByteArray, val unprotected: Map<Int, CborItem>, val payload: ByteArray, val signature: ByteArray) { fun sigStructure(): ByteArray; val alg: CoseAlgorithm?; val kid: Kid? }"
+    rust: "pub struct CoseSign1 { pub protected: Vec<u8>, pub unprotected: BTreeMap<i64, CborValue>, pub payload: Vec<u8>, pub signature: Vec<u8> }"
+  - id: api-ecdsa-format
+    name: EcdsaSignatureFormat
+    module: mod-cose
+    wit: cose.ecdsa-der-to-raw
+    kind: function
+    description: "Conversion between ASN.1 DER ECDSA-Sig-Value and fixed-width r||s."
+    kotlin: "object EcdsaSignatureFormat { fun derToRaw(der: ByteArray, n: Int = 32): ByteArray; fun rawToDer(raw: ByteArray): ByteArray }"
+    rust: "pub fn der_to_raw(der: &[u8], n: usize) -> Result<Vec<u8>, SigFormatError>; pub fn raw_to_der(raw: &[u8]) -> Result<Vec<u8>, SigFormatError>"
+
+  # ---- qr -------------------------------------------------------------------
+  - id: api-qr
+    name: QrEncoder
+    module: mod-qr
+    wit: qr.encode
+    kind: function
+    description: "Encodes an HC1 string as a single Alphanumeric-mode QR segment and returns the module matrix."
+    kotlin: "object QrEncoder { fun encode(hc1: String, ec: ErrorCorrection = ErrorCorrection.Q): QrMatrix }"
+    rust: "pub fn encode(hc1: &str, ec: ErrorCorrection) -> Result<QrMatrix, QrError>"
+  - id: api-qr-render
+    name: QrRenderer
+    module: mod-qr
+    wit: qr.to-svg
+    kind: function
+    description: "Optional: PNG/SVG rendering with integer module scaling, quiet zone, and physical-size helper."
+    kotlin: "fun QrMatrix.toSvg(opts: RenderOptions): String; fun QrMatrix.toPng(opts: RenderOptions): ByteArray; fun RenderOptions.Companion.forDiagonal(mm: Double, dpi: Int, matrix: QrMatrix): RenderOptions"
+    rust: "#[cfg(feature = \"svg\")] pub fn to_svg(m: &QrMatrix, o: &RenderOptions) -> String; #[cfg(feature = \"png\")] pub fn to_png(m: &QrMatrix, o: &RenderOptions) -> Vec<u8>"
+
+  # ---- trust ----------------------------------------------------------------
+  - id: api-trust-provider
+    name: TrustListProvider
+    module: mod-trust
+    wit: trust.trust-store
+    kind: interface
+    description: "Returns every trusted DSC that matches a kid, optionally narrowed by issuer, trust domain, participant and key usage."
+    kotlin: "interface TrustListProvider { suspend fun candidates(query: KeyQuery): List<TrustedDsc>; val lastUpdated: Instant? }"
+    rust: "pub trait TrustListProvider { fn candidates(&self, q: &KeyQuery) -> Result<Vec<TrustedDsc>, TrustError>; fn last_updated(&self) -> Option<SystemTime>; }"
+  - id: api-did-trustlist
+    name: GdhcnDidTrustList
+    module: mod-trust
+    wit: trust.did-trustlist-url
+    kind: type
+    description: "Client for GDHCN DID trustlist v2 (embedded and reference variants; DEV, UAT, PROD; domain/participant/usage path levels)."
+    kotlin: "class GdhcnDidTrustList(val environment: GdhcnEnvironment, val variant: Variant, val http: HttpFetcher, val cache: TrustListCache) : TrustListProvider"
+    rust: "pub struct GdhcnDidTrustList<F: HttpFetcher, C: TrustListCache> { .. } impl TrustListProvider for GdhcnDidTrustList<F, C>"
+  - id: api-static-trust
+    name: StaticTrustList
+    module: mod-trust
+    wit: trust.trust-store
+    kind: type
+    description: "In-memory list of DSCs (PEM/DER/JWKS), for tests, pinned national lists and fully offline deployments."
+    kotlin: "class StaticTrustList(dscs: List<X509Certificate>) : TrustListProvider { companion object { fun fromPem(pem: String): StaticTrustList; fun fromJwks(json: String): StaticTrustList } }"
+    rust: "pub struct StaticTrustList { .. } impl StaticTrustList { pub fn from_pem(pem: &str) -> Result<Self, TrustError>; pub fn from_jwks(json: &str) -> Result<Self, TrustError> }"
+
+  # ---- pipeline -------------------------------------------------------------
+  - id: api-clock
+    name: Clock
+    module: mod-pipeline
+    wit: verifier.verify
+    kind: interface
+    description: "Injected time source with configurable skew tolerance."
+    kotlin: "kotlinx.datetime.Clock (injected), plus VerifierPolicy.clockSkew: Duration"
+    rust: "pub trait Clock { fn now(&self) -> SystemTime; }"
+  - id: api-pending-signature
+    name: PendingSignature
+    module: mod-pipeline
+    wit: issuer.pending-signature
+    kind: type
+    description: "Result of issuer.prepare: the exact bytes to sign, the algorithm and the kid. Consumed by issuer.finish."
+    kotlin: "class PendingSignature : AutoCloseable { val toBeSigned: ByteArray; val algorithm: CoseAlgorithm; val kid: Kid }"
+    rust: "pub struct PendingSignature { .. } impl PendingSignature { pub fn to_be_signed(&self) -> &[u8] }"
+  - id: api-issuer
+    name: HcertIssuer
+    module: mod-pipeline
+    wit: issuer.prepare
+    kind: function
+    description: "Runs steps 3 to 9 for a payload and returns the HC1 string, optional QR matrix and an EncodingReport."
+    kotlin: "class HcertIssuer(val signer: Signer, val registry: SubclaimRegistry, val policy: IssuerPolicy) { suspend fun <T> issue(payload: T, codec: PayloadCodec<T>, validity: Validity): IssuedHcert }"
+    rust: "impl<S: Signer> HcertIssuer<S> { pub fn issue<C: PayloadCodec>(&self, p: &C::Payload, codec: &C, validity: Validity) -> Result<IssuedHcert, IssueError> }"
+  - id: api-report
+    name: EncodingReport
+    module: mod-pipeline
+    wit: types.encoding-report
+    kind: type
+    description: "Sizes at every stage (CBOR, COSE, deflated, HC1 chars) plus QR version and error-correction level."
+    kotlin: "data class EncodingReport(val cborBytes: Int, val coseBytes: Int, val deflatedBytes: Int, val hc1Chars: Int, val qrVersion: Int?, val ec: ErrorCorrection?, val warnings: List<String>)"
+    rust: "pub struct EncodingReport { pub cbor_bytes: usize, pub cose_bytes: usize, pub deflated_bytes: usize, pub hc1_chars: usize, pub qr_version: Option<u8>, pub warnings: Vec<String> }"
+  - id: api-verifier
+    name: HcertVerifier
+    module: mod-pipeline
+    wit: verifier.verify
+    kind: function
+    description: "Runs QR Code Generation section 11 over an HC1 string and returns a VerificationResult."
+    kotlin: "class HcertVerifier(val trust: TrustListProvider, val registry: SubclaimRegistry, val clock: Clock, val policy: VerifierPolicy) { suspend fun verify(hc1: String): VerificationResult }"
+    rust: "impl HcertVerifier { pub fn verify(&self, hc1: &str) -> VerificationResult }"
+  - id: api-result
+    name: VerificationResult
+    module: mod-pipeline
+    wit: verifier.verification-result
+    kind: type
+    description: "Either Verified(claims, payload, dsc, diagnostics) or Failed(step, reason, diagnostics). Payload content is only reachable from Verified."
+    kotlin: "sealed interface VerificationResult { data class Verified(...) : VerificationResult; data class Failed(val step: Step, val reason: FailureReason, ...) : VerificationResult }"
+    rust: "pub enum VerificationResult { Verified(VerifiedHcert), Failed(VerificationFailure) }"
+  - id: api-cert-type
+    name: CertificateTypeResolver
+    module: mod-pipeline
+    wit_note: "Native-only SPI; the WIT verifier uses the built-in default mapping (OI-03)."
+    kind: interface
+    description: "Maps a decoded hcert entry to the EKU certificate type (test, vaccination, recovery, or unknown)."
+    kotlin: "fun interface CertificateTypeResolver { fun resolve(subclaim: Int, payload: CborItem): CertificateType? }"
+    rust: "pub trait CertificateTypeResolver { fn resolve(&self, subclaim: i64, payload: &CborValue) -> Option<CertificateType>; }"
+  - id: api-business-rules
+    name: BusinessRuleHook
+    module: mod-pipeline
+    wit_note: "Host-side; run on verifier.verification-result after verify returns."
+    kind: interface
+    description: "Called with a verified payload. Its results are attached to the VerificationResult."
+    kotlin: "fun interface BusinessRuleHook { suspend fun evaluate(v: VerificationResult.Verified): List<RuleOutcome> }"
+    rust: "pub trait BusinessRuleHook { fn evaluate(&self, v: &VerifiedHcert) -> Vec<RuleOutcome>; }"
+
+  # ---- testkit --------------------------------------------------------------
+  - id: api-testkit
+    name: TestVectors
+    module: mod-testkit
+    wit_note: "Test-only; not part of the shipped contract."
+    kind: type
+    description: "Shared, language-neutral conformance vectors (JSON + PEM) and loaders in both languages."
+    kotlin: "object TestVectors { val dvcXxa: List<HcertVector> }"
+    rust: "pub fn dvc_xxa() -> Vec<HcertVector>"

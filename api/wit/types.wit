@@ -1,0 +1,117 @@
+package who:smart-trust@0.1.0;
+
+/// Types shared by every interface.
+///
+/// WIT has no recursive types, so arbitrary CBOR never crosses the API
+/// boundary as a tree: it crosses as encoded bytes (`cbor-bytes`). Typed
+/// payloads (DVCMin, VHL) cross as records.
+interface types {
+    /// COSE algorithm. es256 = -7 (primary), ps256 = -37 (secondary).
+    /// Both MUST be implemented. [STT-COS-002]
+    enum cose-algorithm { es256, ps256 }
+
+    /// 8-byte key identifier: first 8 bytes of SHA-256 over the DER DSC.
+    /// [STT-KID-001]
+    type kid = list<u8>;
+
+    /// CWT NumericDate: integer seconds since the Unix epoch. [STT-CWT-002]
+    type numeric-date = s64;
+
+    /// Encoded CBOR data item.
+    type cbor-bytes = list<u8>;
+
+    /// Status of an hcert subclaim number. [STT-SEL-001, STT-SEL-003]
+    enum subclaim-status {
+        /// Allocated by WHO (>= 0).
+        assigned,
+        /// Listed by WHO as proposed (>= 0), not yet assigned.
+        proposed,
+        /// Negative: development range, free to use, not stable.
+        development,
+    }
+
+    record subclaim {
+        key: s32,
+        status: subclaim-status,
+        /// Canonical URL of the logical model, if any.
+        logical-model: option<string>,
+        title: string,
+    }
+
+    /// Bounds applied while decoding untrusted input.
+    /// [STT-CBR-003, STT-ZIP-002]
+    record decode-limits {
+        max-input-chars: u32,
+        max-inflated-bytes: u32,
+        max-depth: u32,
+        max-items: u32,
+        max-string-bytes: u32,
+    }
+
+    /// QR error-correction level. Default q. [STT-QR-002]
+    enum error-correction { l, m, q, h }
+
+    enum severity { blocking, warning, information }
+
+    record validation-issue {
+        /// Element path, e.g. "vx.is".
+        path: string,
+        /// Stable machine code, e.g. "must-have-issuer-or-clinician-name".
+        code: string,
+        message: string,
+        severity: severity,
+    }
+
+    /// Pipeline stages, used to say where verification failed.
+    enum step {
+        prefix,
+        base45,
+        inflate,
+        cose,
+        header,
+        trust-lookup,
+        signature,
+        key-usage,
+        cwt,
+        time,
+        hcert,
+        payload,
+    }
+
+    /// Closed failure taxonomy, identical in Kotlin and Rust. [STT-VER-008]
+    enum failure-reason {
+        bad-prefix,
+        unsupported-context-version,
+        base45-invalid,
+        inflate-failed,
+        limit-exceeded,
+        cose-malformed,
+        header-invalid,
+        unsupported-algorithm,
+        kid-not-found,
+        signature-invalid,
+        key-usage-mismatch,
+        expired,
+        not-yet-valid,
+        hcert-missing,
+        multiple-subclaims,
+        payload-invalid,
+    }
+
+    record diagnostic {
+        step: step,
+        severity: severity,
+        message: string,
+    }
+
+    /// Sizes at each stage of issuance. [STT-QR-006]
+    record encoding-report {
+        cbor-bytes: u32,
+        cose-bytes: u32,
+        deflated-bytes: u32,
+        hc1-chars: u32,
+        qr-version: option<u8>,
+        error-correction: option<error-correction>,
+        warnings: list<string>,
+    }
+}
