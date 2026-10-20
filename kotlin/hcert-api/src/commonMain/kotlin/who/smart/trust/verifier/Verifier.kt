@@ -7,7 +7,6 @@ import who.smart.trust.subclaims.Registry
 import who.smart.trust.trust.TrustStore
 import who.smart.trust.trust.TrustedDsc
 import who.smart.trust.types.CborBytes
-import who.smart.trust.types.CoseAlgorithm
 import who.smart.trust.types.DecodeLimits
 import who.smart.trust.types.Diagnostic
 import who.smart.trust.types.FailureReason
@@ -15,17 +14,9 @@ import who.smart.trust.types.Kid
 import who.smart.trust.types.NumericDate
 import who.smart.trust.types.Step
 
-data class VerifierPolicy(
+data class VerifierOptions(
     val limits: DecodeLimits,
-    /** Fail on more than one hcert entry (default true). [STT-SEL-004] */
-    val strictSingleSubclaim: Boolean,
     val clockSkewSeconds: Int,
-    /** Also check the DSC X.509 validity period. [STT-VER-006] */
-    val checkDscValidity: Boolean,
-    /** Narrow DSC lookup by iss. [STT-VER-010] */
-    val narrowByIss: Boolean,
-    /** Check DSC EKU against the certificate type. [STT-VER-004] */
-    val checkKeyUsage: Boolean,
 )
 
 data class VerifiedHcert(
@@ -36,8 +27,6 @@ data class VerifiedHcert(
     val payload: Payload,
     /** The DSC that verified the signature. */
     val dsc: TrustedDsc,
-    /** Other subclaims present (non-strict policy only). */
-    val otherSubclaims: List<Int>,
     /**
      * Unknown CWT claims, as (encoded key, encoded value).
      * [STT-CWT-006]
@@ -64,26 +53,36 @@ sealed interface VerificationResult {
 }
 
 /**
- * Decoded but NOT verified. Diagnostics only; never use for
- * decisions. [STT-VER-002]
+ * Decoded, NOT verified: no trust lookup, no signature check. For
+ * display and triage where verification is impossible (an offline
+ * household visit, journey J2); never a basis for trust. [STT-VER-011]
  */
-data class UnverifiedView(
-    val alg: CoseAlgorithm? = null,
+data class UnverifiedHcert(
     val kid: Kid? = null,
-    val claims: CborBytes,
+    val iss: String? = null,
+    val iat: NumericDate? = null,
+    val exp: NumericDate? = null,
+    val subclaim: Int? = null,
+    /** The payload, when it decoded. */
+    val payload: Payload? = null,
+    val diagnostics: List<Diagnostic>,
 )
 
 /**
- * Verification (QR Code Generation section 11).
+ * Verification (QR Code Generation section 11): the steps in STT-VER-001
+ * order, each fixed by the IG rather than a policy switch. Exactly one hcert
+ * entry [STT-SEL-004]; trust-list presence is the DSC validity check
+ * [STT-VER-006]; EKU is checked against the certificate type [STT-VER-004].
  *
  * Implemented by the library (Kotlin and Rust) for the `verifier` WIT interface.
  */
 interface Verifier {
     /** `now` is passed in: no ambient clock. [STT-VER-005] */
-    fun verify(hc1: String, store: TrustStore, reg: Registry, now: NumericDate, policy: VerifierPolicy): VerificationResult
+    fun verify(hc1: String, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult
 
     /** Same, for raw COSE_Sign1 bytes. [STT-GEN-009] */
-    fun verifyCose(cose: ByteArray, store: TrustStore, reg: Registry, now: NumericDate, policy: VerifierPolicy): VerificationResult
+    fun verifyCose(cose: ByteArray, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult
 
-    fun inspectUnverified(hc1: String, limits: DecodeLimits): WitResult<UnverifiedView, VerificationFailure>
+    /** [STT-VER-011] */
+    fun readUnverified(hc1: String, reg: Registry, limits: DecodeLimits): WitResult<UnverifiedHcert, VerificationFailure>
 }

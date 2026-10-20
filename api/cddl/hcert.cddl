@@ -63,11 +63,24 @@ hcert = hcert-dcc / hcert-ddcc-vs / hcert-ddcc-tr / hcert-vhl / hcert-dvc / hcer
 hcert-dcc = { 1 => any }               ; HCertDCC (EU DCC core data set)
 hcert-ddcc-vs = { 3 => any }           ; DDCCCoreDataSetVS (proposed)
 hcert-ddcc-tr = { 4 => any }           ; DDCCCoreDataSetTR (proposed)
-hcert-vhl = { 5 => vhl-uri }           ; Verifiable Health Link URI (OI-06)
+hcert-vhl = { 5 => vhl-payload / vhl-uri } ; Verifiable Health Link [STT-VHL-002]
 hcert-dvc = { -6 => dvc-min }          ; DVCMin, development range (OI-09, OI-17)
 hcert-mtl = { -7 => any }              ; MedicationTreatmentLineMin, development range
 
-vhl-uri = tstr
+; The SMART Health Links payload format that IHE VHL reuses, as a CBOR map:
+; the primary form at key 5. [STT-VHL-001, STT-VHL-002] (OI-21, OI-23)
+vhl-payload = {
+  url: tstr,               ; https manifest URL (a FHIR List search)
+  key: tstr .size 43,      ; 32 random bytes, base64url
+  ? exp: int,              ; epoch seconds
+  ? flag: tstr .regexp "L?P?",
+  ? label: tstr .size (0..80),
+  ? v: int,
+  ? extension: { ? fhirBaseUrl: tstr, * tstr => any },
+}
+
+; IHE ITI-YY3's text form, still accepted on decode. [STT-VHL-003]
+vhl-uri = tstr .regexp "vhlink:/[A-Za-z0-9_-]+"
 
 ; Context identifier and Base45 text (step 8). [STT-HC1-001, STT-B45-001]
 hc1-string = tstr .regexp "HC1:[0-9A-Z $%*+./:-]+"

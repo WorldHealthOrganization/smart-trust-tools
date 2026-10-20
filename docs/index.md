@@ -17,11 +17,12 @@ SMART Trust implementation guide, in particular the QR Code Generation page of
 | [Overview](viewers/index.html) | The viewers' own landing page, with counts and the pipeline |
 | [Graph explorer](viewers/explorer.html) | The requirements knowledge graph, grouped and drillable |
 | [Traceability matrix](viewers/trace.html) | Every requirement against its sources, steps, API elements and issues |
-| [Requirements](viewers/requirements.html) | The 93 library requirements (cat-harness `req:` nodes) |
+| [Requirements](viewers/requirements.html) | The 80 library requirements (cat-harness `req:` nodes) |
 | [API contract](viewers/api.html) | The library API in WIT, with its TypeScript reference |
 | [Wire and payload models](viewers/models.html) | CDDL wire format; JSON-LD, SHACL and CDDL from the FHIR logical models |
 | [Kotlin skeleton](viewers/kotlin.html) | The Kotlin Multiplatform API generated from the WIT |
 | [Vocabulary](viewers/vocabulary.html) | The `stt:` terms the graph uses |
+| [User journeys](journeys.html) | What the library does for each step of journeys J1 to J4, and the gaps |
 
 ## Sources
 

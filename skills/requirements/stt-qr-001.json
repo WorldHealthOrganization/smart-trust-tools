@@ -1,6 +1,6 @@
 {
   "id": "req:stt-qr-001",
-  "title": "ISO/IEC 18004 QR in Alphanumeric mode",
+  "title": "QR-ready HC1 output; no QR encoding in the library",
   "description": "Restates QR Code Generation, 10. Step 9 — Render the QR code; HCERT Specification, 4.2.2 QR 2D Barcode; ISO/IEC 18004:2015 QR Code.",
   "status": "proposed",
   "actors": [
@@ -9,25 +9,25 @@
   "statements": [
     {
       "key": "statement",
-      "label": "ISO/IEC 18004 QR in Alphanumeric mode",
+      "label": "QR-ready HC1 output; no QR encoding in the library",
       "conformance": "SHALL",
-      "requirement": "The QR encoder SHALL produce an ISO/IEC 18004:2015 symbol carrying the whole HC1 string as Alphanumeric-mode (0010) data. It SHALL NOT fall back to byte mode, and SHALL fail if the input has characters outside the alphanumeric set.",
+      "requirement": "The HC1 string SHALL consist only of characters in the QR Alphanumeric set (the Base45 alphabet and the \"HC1:\" prefix), so that integrators can encode it as a single Alphanumeric-mode segment with error correction Q using any QR encoder. The libraries SHALL NOT encode or render QR symbols.",
       "category": "functional"
     }
   ],
   "tags": [
     "hcert-library",
     "functional",
-    "direct"
+    "derived"
   ],
   "stt": {
     "id": "STT-QR-001",
-    "derivation": "direct",
+    "derivation": "derived",
     "steps": [
       "step-9"
     ],
     "api": [
-      "api-qr"
+      "api-hc1"
     ],
     "sources": [
       {

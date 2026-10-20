@@ -25,8 +25,7 @@ Translation rules:
 - Invariants of the form `a.exists() or b.exists()` become `sh:or` in SHACL
   and a group choice in CDDL. Anything else is reported and kept as an
   annotation.
-- Value-set bindings are recorded, not enforced: the PreQual value set has no
-  published expansion (OI-11).
+- Value-set bindings are recorded, not enforced.
 
 ## Using the JSON-LD context
 

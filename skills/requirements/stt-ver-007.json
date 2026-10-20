@@ -31,7 +31,7 @@
       "step-verify"
     ],
     "api": [
-      "api-business-rules",
+      "api-verifier",
       "api-subclaim-registry"
     ],
     "sources": [

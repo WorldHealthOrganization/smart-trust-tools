@@ -2,12 +2,15 @@
 /**
  * `now` is passed in: no ambient clock. [STT-VER-005]
  */
-export function verify(hc1: string, store: TrustStore, reg: Registry, now: NumericDate, policy: VerifierPolicy): VerificationResult;
+export function verify(hc1: string, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult;
 /**
  * Same, for raw COSE_Sign1 bytes. [STT-GEN-009]
  */
-export function verifyCose(cose: Uint8Array, store: TrustStore, reg: Registry, now: NumericDate, policy: VerifierPolicy): VerificationResult;
-export function inspectUnverified(hc1: string, limits: DecodeLimits): UnverifiedView;
+export function verifyCose(cose: Uint8Array, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult;
+/**
+ * [STT-VER-011]
+ */
+export function readUnverified(hc1: string, reg: Registry, limits: DecodeLimits): UnverifiedHcert;
 export type Kid = import('./who-smart-trust-types.js').Kid;
 export type NumericDate = import('./who-smart-trust-types.js').NumericDate;
 export type DecodeLimits = import('./who-smart-trust-types.js').DecodeLimits;
@@ -15,30 +18,13 @@ export type CborBytes = import('./who-smart-trust-types.js').CborBytes;
 export type Step = import('./who-smart-trust-types.js').Step;
 export type FailureReason = import('./who-smart-trust-types.js').FailureReason;
 export type Diagnostic = import('./who-smart-trust-types.js').Diagnostic;
-export type CoseAlgorithm = import('./who-smart-trust-types.js').CoseAlgorithm;
 export type Payload = import('./who-smart-trust-payloads.js').Payload;
 export type TrustStore = import('./who-smart-trust-trust.js').TrustStore;
 export type TrustedDsc = import('./who-smart-trust-trust.js').TrustedDsc;
 export type Registry = import('./who-smart-trust-subclaims.js').Registry;
-export interface VerifierPolicy {
+export interface VerifierOptions {
   limits: DecodeLimits,
-  /**
-   * Fail on more than one hcert entry (default true). [STT-SEL-004]
-   */
-  strictSingleSubclaim: boolean,
   clockSkewSeconds: number,
-  /**
-   * Also check the DSC X.509 validity period. [STT-VER-006]
-   */
-  checkDscValidity: boolean,
-  /**
-   * Narrow DSC lookup by iss. [STT-VER-010]
-   */
-  narrowByIss: boolean,
-  /**
-   * Check DSC EKU against the certificate type. [STT-VER-004]
-   */
-  checkKeyUsage: boolean,
 }
 export interface VerifiedHcert {
   iss?: string,
@@ -50,10 +36,6 @@ export interface VerifiedHcert {
    * The DSC that verified the signature.
    */
   dsc: TrustedDsc,
-  /**
-   * Other subclaims present (non-strict policy only).
-   */
-  otherSubclaims: Int32Array,
   /**
    * Unknown CWT claims, as (encoded key, encoded value).
    * [STT-CWT-006]
@@ -81,11 +63,19 @@ export interface VerificationResultFailed {
   val: VerificationFailure,
 }
 /**
- * Decoded but NOT verified. Diagnostics only; never use for
- * decisions. [STT-VER-002]
+ * Decoded, NOT verified: no trust lookup, no signature check. For
+ * display and triage where verification is impossible (an offline
+ * household visit, journey J2); never a basis for trust. [STT-VER-011]
  */
-export interface UnverifiedView {
-  alg?: CoseAlgorithm,
+export interface UnverifiedHcert {
   kid?: Kid,
-  claims: CborBytes,
+  iss?: string,
+  iat?: NumericDate,
+  exp?: NumericDate,
+  subclaim?: number,
+  /**
+   * The payload, when it decoded.
+   */
+  payload?: Payload,
+  diagnostics: Array<Diagnostic>,
 }

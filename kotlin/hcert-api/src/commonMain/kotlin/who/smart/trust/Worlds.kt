@@ -5,60 +5,49 @@ import who.smart.trust.codec.Codec
 import who.smart.trust.cose.Cose
 import who.smart.trust.dvc.Dvc
 import who.smart.trust.issuer.Issuer
-import who.smart.trust.qr.Qr
-import who.smart.trust.signer.Signer
 import who.smart.trust.subclaims.Subclaims
-import who.smart.trust.terminology.Terminology
 import who.smart.trust.trust.Trust
 import who.smart.trust.verifier.Verifier
+import who.smart.trust.vhl.Vhl
 
 /**
- * Pure encoding, decoding and QR. No host imports.
+ * Pure encoding and decoding: the pipeline steps on their own. No host
+ * imports. [STT-GEN-002]
  *
- * WIT world `hcert-codec`. Exports: types, codec, cose, qr.
+ * WIT world `hcert-codec`. Exports: types, codec, cose.
  */
 interface HcertCodecWorld {
     val codec: Codec
     val cose: Cose
-    val qr: Qr
 }
 
 /**
  * Verifier: what a scanning app or border system embeds.
  *
- * WIT world `hcert-verifier`. Exports: types, codec, cose, subclaims, dvc, payloads, trust, verifier.
+ * WIT world `hcert-verifier`. Exports: types, codec, cose, subclaims, dvc, vhl, payloads, trust, verifier.
  */
 interface HcertVerifierWorld {
     val codec: Codec
     val cose: Cose
     val subclaims: Subclaims
     val dvc: Dvc
+    val vhl: Vhl
     val trust: Trust
     val verifier: Verifier
-}
-
-/** Creates a [HcertVerifierWorld] from the host-provided pieces it imports. */
-fun interface HcertVerifierFactory {
-    fun create(terminology: Terminology): HcertVerifierWorld
 }
 
 /**
  * Issuer: what a clinic or national issuance service embeds.
  *
- * WIT world `hcert-issuer`. Exports: types, codec, cose, qr, subclaims, dvc, payloads, issuer.
+ * WIT world `hcert-issuer`. Exports: types, codec, cose, subclaims, dvc, vhl, payloads, issuer.
  */
 interface HcertIssuerWorld {
     val codec: Codec
     val cose: Cose
-    val qr: Qr
     val subclaims: Subclaims
     val dvc: Dvc
+    val vhl: Vhl
     val issuer: Issuer
-}
-
-/** Creates a [HcertIssuerWorld] from the host-provided pieces it imports. */
-fun interface HcertIssuerFactory {
-    fun create(signer: Signer, terminology: Terminology): HcertIssuerWorld
 }
 
 /**
@@ -67,8 +56,3 @@ fun interface HcertIssuerFactory {
  * WIT world `hcert`. Exports: via hcert-verifier, hcert-issuer.
  */
 interface HcertWorld : HcertVerifierWorld, HcertIssuerWorld
-
-/** Creates a [HcertWorld] from the host-provided pieces it imports. */
-fun interface HcertFactory {
-    fun create(terminology: Terminology, signer: Signer): HcertWorld
-}

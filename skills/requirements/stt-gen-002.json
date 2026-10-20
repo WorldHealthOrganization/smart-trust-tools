@@ -14,7 +14,7 @@
       "key": "statement",
       "label": "Every step callable on its own",
       "conformance": "SHALL",
-      "requirement": "Each pipeline step SHALL be exposed as a separate public operation (payload codec, CWT build, CBOR, COSE sign/parse, ZLIB, Base45, HC1 prefix, QR) as well as through the end-to-end issuer and verifier, so that integrators can substitute or inspect any stage.",
+      "requirement": "Each pipeline step SHALL be exposed as a separate public operation (payload codec, CBOR, COSE sign/parse, ZLIB, Base45, HC1 prefix) as well as through the end-to-end issuer and verifier, so that integrators can substitute or inspect any stage.",
       "category": "architecture"
     }
   ],
@@ -31,8 +31,7 @@
       "api-sign1",
       "api-zlib",
       "api-base45",
-      "api-hc1",
-      "api-qr"
+      "api-hc1"
     ],
     "sources": [
       {

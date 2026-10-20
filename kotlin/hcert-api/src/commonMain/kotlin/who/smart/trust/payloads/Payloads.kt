@@ -3,19 +3,17 @@ package who.smart.trust.payloads
 
 import who.smart.trust.dvc.DvcMin
 import who.smart.trust.types.CborBytes
+import who.smart.trust.vhl.VhlPayload
 
 data class RawPayload(
     val subclaim: Int,
     val cbor: CborBytes,
 )
 
-/** [STT-PAY-009] */
 sealed interface Payload {
-    data class DvcMin(val value: DvcMin) : Payload
+    data class DvcMin(val value: who.smart.trust.dvc.DvcMin) : Payload
 
-    /** Subclaim 5: URI of a Verifiable Health Link. */
-    data class Vhl(val value: String) : Payload
+    data class Vhl(val value: VhlPayload) : Payload
 
-    /** Any subclaim without a typed codec (1, 3, 4, -7, custom). */
     data class Raw(val value: RawPayload) : Payload
 }

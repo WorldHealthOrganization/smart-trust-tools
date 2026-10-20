@@ -1,0 +1,45 @@
+{
+  "id": "req:stt-vhl-006",
+  "title": "ITI-YY5 manifest response",
+  "description": "Restates IHE VHL ITI-YY5, 2:3.YY5.4.2.2 Message Semantics; IHE VHL ITI-YY5, 2:3.YY5.4.2.4 Document Content Retrieval.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-vhl-005"
+  ],
+  "actors": [
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "ITI-YY5 manifest response",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL read the ITI-YY5 response, a FHIR searchset Bundle: the List with search.mode match and, when the Include DocumentReference option was used, the DocumentReferences with search.mode include. For each document it SHALL return the attachment URL and the decrypted content type (attachment.contentType); for List items whose DocumentReference is not included it SHALL return the reference for the host to read.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-VHL-006",
+    "derivation": "direct",
+    "api": [
+      "api-vhl-manifest"
+    ],
+    "issues": [
+      "OI-27"
+    ],
+    "sources": [
+      {
+        "src": "vhl-yy5-4.2.2",
+        "quote": "the Retrieve Manifest response is — at the FHIR level — an MHD ITI-66 response message"
+      },
+      {
+        "src": "vhl-yy5-4.2.4"
+      }
+    ]
+  }
+}

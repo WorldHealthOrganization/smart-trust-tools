@@ -56,17 +56,16 @@ Package `who:smart-trust@0.1.0` (placeholder namespace, OI-14).
                         │ hcert-codec   hcert-verifier       │
                         │ hcert-issuer  hcert (= both)       │
                         └────────────────────────────────────┘
- pipeline     issuer.wit ─ prepare / finish / issue
- (pipeline.wit) verifier ─ verify / verify-cose / inspect-unverified
+ pipeline     issuer ─ prepare / finish
+ (pipeline.wit) verifier ─ verify / verify-cose / read-unverified
                     │                 │
  domain       subclaims   dvc   payloads   trust (trust-store resource)
  (payload.wit, trust.wit)
                     │
- encoding     codec (CBOR, ZLIB, Base45, HC1)   cose (Sign1, kid, sigs)   qr
- (codec.wit, cose.wit, qr.wit)
+ encoding     codec (CBOR, ZLIB, Base45, HC1)   cose (Sign1, kid, sigs)
+ (codec.wit, cose.wit)
                     │
  base         types (shared records, enums, failure taxonomy)
- host-provided  signer, terminology   (host.wit; imported, not exported)
 ```
 
 | File | Interface | Pipeline step | Purpose |
@@ -74,15 +73,18 @@ Package `who:smart-trust@0.1.0` (placeholder namespace, OI-14).
 | `types.wit` | `types` | all | Shared records/enums; closed `failure-reason` taxonomy |
 | `codec.wit` | `codec` | 4, 6, 7, 8 | Deterministic CBOR, ZLIB, Base45, `HC1:` |
 | `cose.wit` | `cose` | 5 | COSE_Sign1 parse/verify, Sig_structure, kid, DER↔r‖s |
-| `payload.wit` | `subclaims` | 1 | Subclaim registry (resource), payload-type advisor |
-| `payload.wit` | `dvc` | 2 | DVCMin records, validation, per-event split, CBOR |
+| `payload.wit` | `subclaims` | 1 | Subclaim registry (resource) |
+| `payload.wit` | `dvc` | 2 | DVCMin records, validation, CBOR |
 | `payload.wit` | `payloads` | 2 | `payload` variant: dvc-min, vhl, raw |
-| `qr.wit` | `qr` | 9 | Alphanumeric QR module matrix, SVG, print sizing |
-| `trust.wit` | `trust` | trust | `trust-store` resource filled by the host; DID trustlist URL builder |
-| `pipeline.wit` | `issuer` | 3–9 | Two-phase `prepare`/`finish` signing, plus one-call `issue` |
+| `vhl.wit` | `vhl` | J4 | Verifiable Health Links (IHE ITI VHL): payload, `vhlink:/`, ITI-YY5 request and manifest, JWE dir / A256GCM, HTTP Message Signatures |
+| `trust.wit` | `trust` | trust | `trust-store` resource filled by the host: PEM, DER, DID trustlist v2 documents |
+| `pipeline.wit` | `issuer` | 3–8 | Two-phase `prepare`/`finish` signing |
 | `pipeline.wit` | `verifier` | verify | `verify` returns `verified` or `failed(step, reason)` |
-| `host.wit` | `signer`, `terminology` | — | Implemented by the host |
-| `worlds.wit` | — | — | What each deployable bundle exports and imports |
+| `worlds.wit` | — | — | What each deployable bundle exports |
+
+Step 9, the QR symbol, is not in the contract: the HC1 string uses only QR
+Alphanumeric characters, and integrators render it with their platform's QR
+encoder at error correction Q. [STT-QR-001]
 
 ### Design rules
 
@@ -91,13 +93,13 @@ Package `who:smart-trust@0.1.0` (placeholder namespace, OI-14).
    `trust-store`; the current time is a `now` argument. [STT-GEN-012]
 2. **Signing is two-phase.** `issuer.prepare` returns the bytes to sign;
    the caller signs them anywhere (HSM, KMS, Android Keystore, WebCrypto,
-   which is async) and passes the signature to `issuer.finish`.
-   `issuer.issue` with an imported `signer` is a convenience for synchronous
-   signers. [STT-ISS-004]
+   which is async) and passes the signature to `issuer.finish`. Nothing is
+   imported from the host. [STT-ISS-004]
 3. **Payload content is only reachable after verification.** `verify` returns
    a `verification-result` variant; only its `verified` case carries the
-   payload. `inspect-unverified` is the explicitly named escape hatch.
-   [STT-VER-002]
+   payload. `read-unverified` is the one explicitly named way to look at an
+   unverified certificate, and its result is a different type. [STT-VER-002,
+   STT-VER-011]
 4. **Expected failures are values, not exceptions.** Invalid certificates
    give `failed(step, reason)`. Note that `jco` maps WIT `result<_, E>` to a
    thrown `ComponentError` in JS; `verify` deliberately returns a variant,

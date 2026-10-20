@@ -40,6 +40,15 @@ refs:
       ci: https://worldhealthorganization.github.io/smart-trust-phw
       preview: https://worldhealthorganization.github.io/smart-trust-phw/branches
 
+  ihevhl:
+    repo: IHE/ITI.VHL
+    sha: 48201473ffa66725158e729b7478a01304944a6c
+    label: IHE ITI Verifiable Health Link (VHL) profile source at time of drafting
+    sites:
+      published: https://profiles.ihe.net/ITI/VHL
+      ci: https://build.fhir.org/ig/IHE/ITI.VHL
+      preview: https://build.fhir.org/ig/IHE/ITI.VHL/branches
+
 sites:
   published: https://smart.who.int/trust
   ci: https://worldhealthorganization.github.io/smart-trust
@@ -254,6 +263,50 @@ documents:
     ref: phw
     status: deployed
 
+  - id: ext-vhl-payload
+    title: HealthLinkPayload and VerifiableHealthLinkPayload logical models (trust-phw)
+    path: input/fsh/models/VerifiableHealthLinkPayload.fsh
+    page: StructureDefinition-VerifiableHealthLinkPayload.html
+    ref: phw
+    status: deployed
+
+  # ---- IHE ITI Verifiable Health Link profile ----------------------------
+
+  - id: doc-ihe-vhl
+    title: IHE ITI Verifiable Health Link (VHL)
+    path: input/pagecontent/volume-1.md
+    page: volume-1.html
+    ref: ihevhl
+    status: deployed
+    sections:
+      - {id: vhl-1.5.3, heading: "1:XX.5.3 Cryptographic Algorithm Selection"}
+  - id: doc-ihe-vhl-yy3
+    title: "IHE VHL ITI-YY3 Generate VHL"
+    path: input/pagecontent/ITI-YY3.md
+    page: ITI-YY3.html
+    ref: ihevhl
+    status: deployed
+    sections:
+      - {id: vhl-yy3-4.1.3, heading: "2:3.YY3.4.1.3 Expected Actions"}
+  - id: doc-ihe-vhl-yy4
+    title: "IHE VHL ITI-YY4 Provide VHL"
+    path: input/pagecontent/ITI-YY4.md
+    page: ITI-YY4.html
+    ref: ihevhl
+    status: deployed
+  - id: doc-ihe-vhl-yy5
+    title: "IHE VHL ITI-YY5 Retrieve Manifest"
+    path: input/pagecontent/ITI-YY5.md
+    page: ITI-YY5.html
+    ref: ihevhl
+    status: deployed
+    sections:
+      - {id: vhl-yy5-4.1.2, heading: "2:3.YY5.4.1.2 Message Semantics"}
+      - {id: vhl-yy5-4.1.3, heading: "2:3.YY5.4.1.3 Authentication Option - HTTP Message Signatures"}
+      - {id: vhl-yy5-4.2.2, heading: "2:3.YY5.4.2.2 Message Semantics"}
+      - {id: vhl-yy5-4.2.4, heading: "2:3.YY5.4.2.4 Document Content Retrieval"}
+      - {id: vhl-yy5-4.2.5, heading: "2:3.YY5.4.2.5 Document Encryption"}
+
   # ---- External logical models (other WHO SMART IGs) ---------------------
 
   - id: ext-dvc-vaccines-vs
@@ -295,6 +348,12 @@ documents:
   - {id: std-rfc9682, title: "RFC 9682 Updates to the CDDL grammar", url: "https://www.rfc-editor.org/rfc/rfc9682"}
   - {id: std-rfc9052, title: "RFC 9052 COSE: Structures and Process", url: "https://www.rfc-editor.org/rfc/rfc9052"}
   - {id: std-rfc7493, title: "RFC 7493 I-JSON", url: "https://www.rfc-editor.org/rfc/rfc7493"}
+  - {id: std-shl, title: "HL7 SMART Health Cards and Links: SMART Health Links", url: "https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html"}
+  - {id: std-rfc7516, title: "RFC 7516 JSON Web Encryption (JWE)", url: "https://www.rfc-editor.org/rfc/rfc7516"}
+  - {id: std-rfc7518, title: "RFC 7518 JSON Web Algorithms (JWA)", url: "https://www.rfc-editor.org/rfc/rfc7518"}
+  - {id: std-rfc4648, title: "RFC 4648 Base16, Base32 and Base64 encodings (base64url)", url: "https://www.rfc-editor.org/rfc/rfc4648"}
+  - {id: std-rfc9421, title: "RFC 9421 HTTP Message Signatures", url: "https://www.rfc-editor.org/rfc/rfc9421"}
+  - {id: std-rfc9530, title: "RFC 9530 Digest Fields (Content-Digest)", url: "https://www.rfc-editor.org/rfc/rfc9530"}
   - {id: std-json-ld, title: "W3C JSON-LD 1.1", url: "https://www.w3.org/TR/json-ld11/"}
   - {id: std-shacl, title: "W3C Shapes Constraint Language (SHACL)", url: "https://www.w3.org/TR/shacl/"}
   - {id: std-xsd2, title: "W3C XML Schema 1.1 Part 2: Datatypes", url: "https://www.w3.org/TR/xmlschema11-2/"}
@@ -319,6 +378,30 @@ documents:
       Given by the requester on 2026-10-20: Kotlin targets Node, Java (JVM)
       and Android; Rust targets WebAssembly. The API set is to be defined
       and reviewed first, in an OpenAPI-like but non-REST definition.
+
+  - id: dir-journeys
+    title: "Stakeholder directive: the library must carry the workshop user journeys"
+    note: >-
+      Given by the requester on 2026-10-20 (DRAFT journeys J1 to J5, a
+      cross-border birth and routine vaccination storyline): J1 a clinic in
+      Country A issues a DVC for newborn routine vaccines, printed as a QR;
+      J2 a community health worker in Country B, offline, reads the foreign
+      QR to register the child and refer, before any verification; J3 the
+      clinic verifies the DVC against the GDHCN trust list and imports it;
+      J4.0 a national portal issues one passcode-protected VHL QR per family
+      member (IPS, DVCs) on one shared phone; J4.1 a clinic abroad scans a
+      VHL, fetches and reads the records. OHS Player and OHS Stack are
+      consumers of the Kotlin library, not part of it: "need to make sure we
+      can do user journey".
+
+  - id: dir-vhl
+    title: "Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5"
+    note: >-
+      Given by the requester on 2026-10-20: subclaim 5 is a Verifiable Health
+      Link; the link payload follows the SMART Health Links payload format in
+      WHO and IHE alike; manifest retrieval, trust and encryption follow the
+      IHE ITI VHL profile (ITI-YY5); the single-file U flow is out of scope;
+      "CBOR map primary", reading a vhlink:/ string too.
 
   - id: dir-open-standards
     title: "Stakeholder directive: open standards for types and schemas"

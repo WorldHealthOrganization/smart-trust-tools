@@ -1,21 +1,21 @@
 package who:smart-trust@0.1.0;
 
-/// Pure encoding, decoding and QR. No host imports.
+/// Pure encoding and decoding: the pipeline steps on their own. No host
+/// imports. [STT-GEN-002]
 world hcert-codec {
     export types;
     export codec;
     export cose;
-    export qr;
 }
 
 /// Verifier: what a scanning app or border system embeds.
 world hcert-verifier {
-    import terminology;
     export types;
     export codec;
     export cose;
     export subclaims;
     export dvc;
+    export vhl;
     export payloads;
     export trust;
     export verifier;
@@ -23,14 +23,12 @@ world hcert-verifier {
 
 /// Issuer: what a clinic or national issuance service embeds.
 world hcert-issuer {
-    import signer;
-    import terminology;
     export types;
     export codec;
     export cose;
-    export qr;
     export subclaims;
     export dvc;
+    export vhl;
     export payloads;
     export issuer;
 }

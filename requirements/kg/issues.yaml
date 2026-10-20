@@ -77,6 +77,11 @@ issues:
       which is the authoritative list, describes it as Smart Health Link (SHL)
       and links the SMART Health Links spec. The two define different URI
       schemes and payloads.
+    resolution_hint: >-
+      Raised as WorldHealthOrganization/smart-trust#130: 3.2.7.1.5 becomes
+      Verifiable Health Link (IHE ITI VHL, SHL payload format), and the HCert
+      model types key 5 as the trust-phw VerifiableHealthLinkPayload, carried
+      as a CBOR map. The library follows that (STT-VHL-002).
 
   - id: OI-07
     title: "iss is a string in the spec but a Coding in the logical model"
@@ -113,15 +118,6 @@ issues:
       are computed (see sources.yaml) and cannot be checked until the PR is
       merged and deployed. Re-run tools/build_kg.py --check-links after
       deployment.
-
-  - id: OI-11
-    title: No access route is specified for the WHO PreQual vaccine database
-    upstream: true
-    sources: [qr-3, ext-dvcmin-prequal]
-    description: >-
-      DVCMinPreQual binds vp to PreQual product identifiers (required binding)
-      but there is no FHIR ValueSet, URL or API to resolve them. The library
-      can only offer a pluggable validator.
 
   - id: OI-12
     title: Base64 variant of kid in the DID trustlist is unspecified
@@ -226,4 +222,104 @@ issues:
       files stay spec-correct, and tools/check_models.py works around the
       first three. The schema avoids relying on the fourth. Cross-check with
       a second validator (e.g. cddlc) before upstreaming.
+
+  - id: OI-21
+    title: "IHE ITI-YY3 puts a vhlink:/ string at HCERT key 5; ITI-YY4 reads an object"
+    upstream: true
+    sources: [vhl-yy3-4.1.3, doc-ihe-vhl-yy4, doc-sd-hcert]
+    description: >-
+      ITI-YY3 step 5 base64url-encodes the minified payload JSON, prefixes it
+      with vhlink:/ and puts that text at claim -260 key 5. ITI-YY4 step 8 and
+      its example read key 5 as a decoded object. Text-in-CBOR also costs
+      about a third of the QR: on the ITI-YY3 example the string form is ~609
+      HC1 characters against ~422 for a CBOR map.
+    resolution_hint: >-
+      Patch prepared for the IHE editors (upstream/ihe-iti-vhl/): for the
+      HCERT carrier key 5 is the payload as a CBOR map; vhlink:/ stays the
+      text form for URI carriers; receivers also accept the string.
+      smart-trust#130 makes the same change on the WHO side.
+
+  - id: OI-22
+    title: IHE VHL examples break their own rules
+    upstream: true
+    sources: [vhl-yy3-4.1.3, doc-ihe-vhl-yy4]
+    description: >-
+      The ITI-YY3 example JSON has "extension" but its base64url encodes
+      "extensions". The ITI-YY4 example key is 44 characters and decodes to 33
+      bytes ("this is a secret key used for enc"), against the 43-character,
+      32-byte rule stated beside it.
+    resolution_hint: Fixed in the IHE patch in upstream/ihe-iti-vhl/.
+
+  - id: OI-23
+    title: "trust-phw Health Link payload types exp and v as strings and requires type"
+    upstream: true
+    sources: [ext-vhl-payload, std-shl, vhl-yy3-4.1.3]
+    description: >-
+      HealthLinkPayload types exp and v as string where SMART Health Links and
+      IHE VHL use numbers, and VerifiableHealthLinkPayload makes type 1..1,
+      a field neither SHL nor IHE has.
+    resolution_hint: >-
+      Raised as WorldHealthOrganization/smart-trust-phw#17: exp integer64,
+      v integer, VHL type 0..1 (absent inside an HCERT).
+
+  - id: OI-24
+    title: "IHE VHL leaves JWE alg/enc non-normative"
+    upstream: true
+    sources: [vhl-yy5-4.2.5, vhl-1.5.3]
+    description: >-
+      Document encryption names dir / A256GCM only in an example and defers to
+      "Cryptographic Algorithm Selection", which mandates nothing for
+      encryption (its only baseline is RS256 for signatures). Two conformant
+      implementations need not interoperate. SMART Health Links, which the
+      section cites, fixes dir / A256GCM.
+    resolution_hint: The library implements dir / A256GCM only and refuses anything else (STT-VHL-007).
+
+  - id: OI-25
+    title: "Manifest URL is List? in one place and List/_search? in another"
+    upstream: true
+    sources: [vhl-yy3-4.1.3, vhl-yy5-4.1.2]
+    description: >-
+      ITI-YY3 builds the manifest URL as .../List/_search?...; ITI-YY5 shows
+      .../List?... and says the receiver POSTs the parameters to _search. The
+      library accepts both and always POSTs to <base>/List/_search
+      (STT-VHL-005).
+
+  - id: OI-26
+    title: "IHE's Content-Digest example is not RFC 9530 syntax"
+    upstream: true
+    sources: [vhl-yy5-4.1.3, std-rfc9530]
+    description: >-
+      The ITI-YY5 example sends "Content-Digest: sha-256=X48E...=", but RFC
+      9530 makes the value a Structured Field byte sequence,
+      "sha-256=:X48E...=:". A sharer verifying strictly rejects the example
+      form. The library emits RFC 9530 syntax (STT-VHL-008).
+
+  - id: OI-27
+    title: No signed manifest in IHE VHL or SMART Health Links
+    upstream: true
+    sources: [vhl-yy5-4.2.2, dir-journeys]
+    description: >-
+      The journeys ask to "verify DVC and signed VHL manifests against the DEV
+      trust list". Neither specification signs the manifest: the VHL link is
+      signed (the HCERT), and the manifest's integrity rests on mutual TLS and
+      receiver authentication. Either the journey wording changes, or a
+      signed-manifest option is proposed upstream.
+
+  - id: OI-28
+    title: "How a receiver's keyid, and a DID trust list entry, map to keys"
+    upstream: true
+    sources: [vhl-yy5-4.1.3, doc-ihe-vhl]
+    description: >-
+      ITI-YY5 says keyid is "used to locate key in trust list" but not how; and
+      ITI-YY2's DID trust list is not tied to the COSE kid (8-byte SHA-256 of
+      the DSC) that ITI-YY4 uses to find the VHL signer.
+
+  - id: OI-29
+    title: "$generate-vhl sends the passcode in a GET query string"
+    upstream: true
+    sources: [vhl-yy3-4.1.3]
+    description: >-
+      ITI-YY3's $generate-vhl is a GET with passcode as a query parameter, so
+      the passcode lands in server and proxy logs. Host concern, not the
+      library's; noted for the policy track.
 

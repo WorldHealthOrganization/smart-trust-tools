@@ -3,11 +3,8 @@ package who.smart.trust.issuer
 
 import who.smart.trust.WitResult
 import who.smart.trust.payloads.Payload
-import who.smart.trust.qr.QrMatrix
 import who.smart.trust.subclaims.Registry
 import who.smart.trust.types.CoseAlgorithm
-import who.smart.trust.types.EncodingReport
-import who.smart.trust.types.ErrorCorrection
 import who.smart.trust.types.Kid
 import who.smart.trust.types.NumericDate
 import who.smart.trust.types.ValidationIssue
@@ -26,20 +23,8 @@ data class IssueRequest(
     /** DSC whose key will sign; kid is derived from it. [STT-KID-001] */
     val dscDer: ByteArray,
     val alg: CoseAlgorithm,
-)
-
-data class IssuerPolicy(
     /** Refuse negative subclaims unless true. [STT-SEL-003] */
     val allowDevelopmentSubclaims: Boolean,
-    val errorCorrection: ErrorCorrection,
-    val renderQr: Boolean,
-    /**
-     * Verify the result against dsc-der before returning.
-     * [STT-ISS-002]
-     */
-    val selfVerify: Boolean,
-    /** Warn above this HC1 length, suggesting VHL. [STT-QR-006] */
-    val hc1WarnChars: Int,
 )
 
 sealed interface IssueError {
@@ -55,16 +40,13 @@ sealed interface IssueError {
     data class BadCertificate(val value: String) : IssueError
 
     data class BadSignatureFormat(val value: String) : IssueError
-
-    data class SelfVerifyFailed(val value: String) : IssueError
 }
 
 data class IssuedHcert(
+    /** QR-ready: QR Alphanumeric characters only. [STT-QR-001] */
     val hc1: String,
     /** Raw COSE_Sign1 for 8-bit-safe transports. [STT-GEN-009] */
     val cose: ByteArray,
-    val qr: QrMatrix? = null,
-    val report: EncodingReport,
 )
 
 interface PendingSignature : AutoCloseable {
@@ -77,7 +59,7 @@ interface PendingSignature : AutoCloseable {
 }
 
 /**
- * End-to-end issuance (steps 3 to 9).
+ * End-to-end issuance (steps 3 to 8).
  *
  * Signing is two-phase so that any key holder can sign without the core
  * calling back into the host: prepare() returns the Sig_structure bytes,
@@ -88,14 +70,11 @@ interface PendingSignature : AutoCloseable {
  */
 interface Issuer {
     /** Phase 1: validate, build CWT, CBOR and protected header. */
-    fun prepare(req: IssueRequest, reg: Registry, policy: IssuerPolicy): WitResult<PendingSignature, IssueError>
+    fun prepare(req: IssueRequest, reg: Registry): WitResult<PendingSignature, IssueError>
 
     /**
      * Phase 2: attach the signature. ES256 accepts r||s or DER and always
      * emits r||s. [STT-COS-005]
      */
     fun finish(pending: PendingSignature, signature: ByteArray): WitResult<IssuedHcert, IssueError>
-
-    /** One call, using the host `signer` import. [STT-ISS-001] */
-    fun issue(req: IssueRequest, reg: Registry, policy: IssuerPolicy): WitResult<IssuedHcert, IssueError>
 }

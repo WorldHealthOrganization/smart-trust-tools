@@ -1,0 +1,43 @@
+{
+  "id": "req:stt-vhl-003",
+  "title": "vhlink:/ text form",
+  "description": "Restates IHE VHL ITI-YY3, 2:3.YY3.4.1.3 Expected Actions; RFC 4648.",
+  "status": "proposed",
+  "derivedFrom": [
+    "req:stt-vhl-001"
+  ],
+  "actors": [
+    "issuer",
+    "receiver"
+  ],
+  "statements": [
+    {
+      "key": "statement",
+      "label": "vhlink:/ text form",
+      "conformance": "SHALL",
+      "requirement": "The library SHALL convert a VHL payload to and from its text form: the minified JSON, base64url-encoded without padding (RFC 4648), prefixed with vhlink:/.",
+      "category": "functional"
+    }
+  ],
+  "tags": [
+    "hcert-library",
+    "functional",
+    "direct"
+  ],
+  "stt": {
+    "id": "STT-VHL-003",
+    "derivation": "direct",
+    "api": [
+      "api-vhl-link"
+    ],
+    "sources": [
+      {
+        "src": "vhl-yy3-4.1.3",
+        "quote": "Prefixed with vhlink:/"
+      },
+      {
+        "src": "std-rfc4648"
+      }
+    ]
+  }
+}

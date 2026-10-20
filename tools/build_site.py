@@ -321,7 +321,7 @@ def requirements_page(ref):
 
 def api_page(ref, M):
     files = sorted((ROOT / "api" / "wit").glob("*.wit"))
-    order = ["types.wit", "codec.wit", "cose.wit", "payload.wit", "qr.wit", "trust.wit", "pipeline.wit", "host.wit", "worlds.wit"]
+    order = ["types.wit", "codec.wit", "cose.wit", "payload.wit", "trust.wit", "pipeline.wit", "worlds.wit"]
     files.sort(key=lambda p: order.index(p.name) if p.name in order else 99)
     index, blocks = [], []
     for p in files:
