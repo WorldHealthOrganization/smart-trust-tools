@@ -33,7 +33,7 @@
   --radius: 6px;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-fa-scheme="light"]) {
     --bg: #0f1514; --surface: #151c1b; --surface-2: #1c2523; --line: #2c3a37;
     --fg: #e4ece9; --fg-2: #b2c0bb; --fg-3: #8a9893;
     --accent: #3cc4b2; --accent-ink: #062320; --link: #6cc3ea;
@@ -43,7 +43,7 @@
     color-scheme: dark;
   }
 }
-:root[data-theme="dark"] {
+:root[data-fa-scheme="dark"] {
   --bg: #0f1514; --surface: #151c1b; --surface-2: #1c2523; --line: #2c3a37;
   --fg: #e4ece9; --fg-2: #b2c0bb; --fg-3: #8a9893;
   --accent: #3cc4b2; --accent-ink: #062320; --link: #6cc3ea;

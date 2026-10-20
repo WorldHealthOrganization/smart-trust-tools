@@ -316,7 +316,7 @@ def requirements_page(ref):
     return ('<main class="page"><article class="prose req-doc">%s</article></main>'
             '<script src="assets/vendor/mermaid.min.js"></script>'
             '<script>if (window.mermaid) { mermaid.initialize({ startOnLoad: true, theme: '
-            'matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "neutral" }); }</script>') % body
+            '(document.documentElement.dataset.faScheme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark" ? "dark" : "neutral" }); }</script>') % body
 
 
 def api_page(ref, M):

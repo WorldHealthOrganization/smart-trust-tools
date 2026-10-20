@@ -618,7 +618,7 @@
     var restyle = function () { cy.style(style()); };
     var mq = window.matchMedia("(prefers-color-scheme: dark)");
     if (mq.addEventListener) mq.addEventListener("change", restyle);
-    new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ["data-fa-scheme"] });
     fromHash();
   }
 
