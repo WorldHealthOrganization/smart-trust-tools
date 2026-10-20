@@ -61,7 +61,7 @@
       "source": {
         "remote": {
           "repository": "litlfred/cat-harness",
-          "ref": "65125978b0c65d7c357060cf625c6def3f58b241",
+          "ref": "be2f3cfb2d9203e3bb9a71e320a31cd602b937ae",
           "overrides": {
             "cat-harness": {
               "whole": true
@@ -77,8 +77,8 @@
             "consent": {
               "by": "litlfred",
               "on": "2026-10-20",
-              "ref": "65125978b0c65d7c357060cf625c6def3f58b241",
-              "evidence": "Owner (litlfred), 2026-10-20, in the session that set up this repository: \"A, needs fhir-harness, main to root, branches STAGING\" (adopt cat-harness fully, need fhir-harness). The ref is the one litlfred/folio-assistant index.config.json pins at bb61e9b, adopted unchanged."
+              "ref": "be2f3cfb2d9203e3bb9a71e320a31cd602b937ae",
+              "evidence": "Owner (litlfred), 2026-10-20: \"repin_merge when ready PRs next 3 hrs\". Repinned to main together with cat-harness-tools main, whose node kinds (slice-index, slice-sqlite) the earlier pin lacked."
             }
           }
         }
@@ -89,7 +89,7 @@
       "source": {
         "remote": {
           "repository": "litlfred/cat-harness-tools",
-          "ref": "4e3ec4636b5f4d9d4f100ecdd7d550050cef993a",
+          "ref": "11c78dfd74a6ef005ffd7aa33dcb710f585a382c",
           "overrides": {
             "cat-harness-tools": {
               "whole": true
@@ -102,8 +102,8 @@
             "consent": {
               "by": "litlfred",
               "on": "2026-10-20",
-              "ref": "4e3ec4636b5f4d9d4f100ecdd7d550050cef993a",
-              "evidence": "Owner (litlfred), 2026-10-20, in the session that set up this repository: \"A, needs fhir-harness, main to root, branches STAGING\" (adopt cat-harness fully, need fhir-harness). The ref is the one litlfred/folio-assistant index.config.json pins at bb61e9b, adopted unchanged."
+              "ref": "11c78dfd74a6ef005ffd7aa33dcb710f585a382c",
+              "evidence": "Owner (litlfred), 2026-10-20: \"repin_merge when ready PRs next 3 hrs\". Repinned to main after merging litlfred/cat-harness-tools#477 (mount:remote --help, unknown-flag refusal, --plan honoured in the fan-out), opened from this repository's session."
             }
           }
         }
@@ -169,7 +169,9 @@
           "pre": [
             "check:req-nodes"
           ],
-          "sourceSteps": [],
+          "sourceSteps": [
+            "site:docs"
+          ],
           "siteSteps": [
             "site:viewers"
           ],

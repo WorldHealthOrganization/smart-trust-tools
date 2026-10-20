@@ -18,6 +18,7 @@
   "scripts": {
     "cat": "bun cat-harness-tools/scripts/run-script.ts",
     "check:req-nodes": "bun tools/check_req_nodes.ts",
-    "site:viewers": "bash tools/site_viewers.sh"
+    "site:viewers": "bash tools/site_viewers.sh",
+    "site:docs": "bash tools/site_docs.sh"
   }
 }
