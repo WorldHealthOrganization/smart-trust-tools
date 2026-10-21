@@ -1,0 +1,30 @@
+{
+  "@context": [
+    "https://litlfred.github.io/smart-trust-tools/ns/context/v1.jsonld",
+    {
+      "@base": "https://litlfred.github.io/folio/"
+    }
+  ],
+  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-actors/manifest.jsonld",
+  "@type": [
+    "cat-harness:SourceDocument"
+  ],
+  "title": "smart-trust ActorDefinitions (FSH)",
+  "contains": [
+    "library/who-smart-trust-actors/sections/s001-actors-fsh"
+  ],
+  "provenance": "ingested",
+  "inSubgraph": "https://litlfred.github.io/folio-assistant/smart-trust-tools/smart-trust-tools.jsonld#directory/library",
+  "meta": {
+    "doc_id": "who-smart-trust-actors",
+    "title_source": "text-heading",
+    "title_from": "structure.json metadata.title",
+    "source_file": "actors.fsh",
+    "source_sha256": "46fe7ca648eaa468b723d08cc3c21090f3d38fbca5203f058261953beedba3ef",
+    "arxiv": null,
+    "doi": null,
+    "document_class": null,
+    "extractor_validated": null,
+    "disposition": "ingested source material — attributed to its document, not folio content"
+  }
+}

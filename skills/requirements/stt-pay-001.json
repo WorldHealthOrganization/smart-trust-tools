@@ -4,7 +4,7 @@
   "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; DVCMin logical model (trust-phw). QR Code Generation, 3. Step 2 — Assemble the payload: “The DVC payload uses short element names because every byte is paid for twice”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

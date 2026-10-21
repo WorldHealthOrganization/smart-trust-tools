@@ -11,7 +11,7 @@
     "library/who-smart-trust-qr-code-generation/sections/s020-12-3-test-issuer"
   ],
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

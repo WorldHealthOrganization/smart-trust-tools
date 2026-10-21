@@ -4,8 +4,8 @@
   "description": "Restates QR Code Generation, 5. Step 4 — Serialise as CBOR; HCERT Specification, 3.2.7 Health Certificate Claim. QR Code Generation, 5. Step 4 — Serialise as CBOR: “Strings SHOULD be NFC-normalised. Decoders SHOULD be permissive about input that is not.”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

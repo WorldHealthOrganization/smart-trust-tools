@@ -4,8 +4,8 @@
   "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1. QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “For ES256 the COSE signature value is the fixed-width concatenation r || s, 32 bytes each — not the ASN.1 DER encoding”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

@@ -4,7 +4,7 @@
   "description": "Restates QR Code Generation, 7. Step 6 — Compress; HCERT Specification, 4.2.1 Payload (CWT) Compression. QR Code Generation, 7. Step 6 — Compress: “Compression comes after signing, so the verifier decompresses before it verifies.”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

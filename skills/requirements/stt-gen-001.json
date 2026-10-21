@@ -10,8 +10,8 @@
     "library/who-smart-trust-qr-code-generation/sections/s002-1-the-pipeline-at-a-glance"
   ],
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

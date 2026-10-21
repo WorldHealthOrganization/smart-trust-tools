@@ -4,8 +4,8 @@
   "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; RFC 8152 CBOR Object Signing and Encryption (COSE). QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “serialise it as CBOR, and sign those bytes.”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

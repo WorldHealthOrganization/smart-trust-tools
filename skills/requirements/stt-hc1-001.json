@@ -4,8 +4,8 @@
   "description": "Restates QR Code Generation, 9. Step 8 — Prefix the context identifier; HCERT Specification, 4.2.2 QR 2D Barcode. QR Code Generation, 9. Step 8 — Prefix the context identifier: “A future backwards-incompatible revision will use a new identifier, incrementing through [1-9] and then [A-Z].”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

@@ -4,7 +4,7 @@
   "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, A.1 The Key Identifier (`kid`s). QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “take the DER encoding of the DSC and use the first 8 bytes of its SHA-256 fingerprint”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

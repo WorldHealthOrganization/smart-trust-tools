@@ -4,8 +4,8 @@
   "description": "Restates HCERT Specification, 5.1 Simplified SCA/DSC. HCERT Specification, 5.1 Simplified SCA/DSC: “the primary validity mechanism is the presence of the certificate on the most recent version of that certificate list.”.",
   "status": "proposed",
   "actors": [
-    "receiver",
-    "issuer"
+    "vhl-receiver",
+    "vhl-sharer"
   ],
   "statements": [
     {

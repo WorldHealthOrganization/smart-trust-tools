@@ -4,7 +4,7 @@
   "description": "Engineering consequence of QR Code Generation, 4. Step 3 — Build the CWT claim set; HCERT Specification, 6.1 HCERT Signature Validity Time. QR Code Generation, 4. Step 3 — Build the CWT claim set: “exp is the only revocation mechanism this specification offers”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

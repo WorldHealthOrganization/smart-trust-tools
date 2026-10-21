@@ -5,7 +5,7 @@
     {
       "id": "hcert-issuing-system",
       "title": "HCERT issuing system",
-      "description": "A clinic system or national portal that issues HCERT certificates (smart-trust ActorDefinition Issuer), embedding the Kotlin or Rust library.",
+      "description": "The HCERT side of the VHL Sharer (smart-trust: Issuer): a clinic system or national portal that issues HCERT certificates, embedding the Kotlin or Rust library.",
       "actorKinds": [
         "system"
       ],
@@ -25,7 +25,7 @@
     {
       "id": "hcert-verifying-system",
       "title": "HCERT verifying system",
-      "description": "A clinic EMR, border system or CHW app that verifies, or triage-reads, an HCERT (smart-trust ActorDefinition Receiver).",
+      "description": "The HCERT side of the VHL Receiver (smart-trust: Receiver): a clinic EMR, border system or CHW app that verifies, or triage-reads, an HCERT.",
       "actorKinds": [
         "system"
       ],
@@ -42,7 +42,7 @@
     {
       "id": "hcert-key-holder",
       "title": "Signing key holder",
-      "description": "The HSM, KMS, Android Keystore or WebCrypto key that signs the bytes the issuing system prepares; the library never holds the private key.",
+      "description": "The HSM, KMS, Android Keystore or WebCrypto key of a Trust Network Participant that signs the bytes the issuing system prepares; the library never holds the private key.",
       "actorKinds": [
         "external"
       ],
@@ -54,7 +54,7 @@
     {
       "id": "vhl-sharer",
       "title": "VHL sharer",
-      "description": "The national portal or clinic that issues Verifiable Health Links and hosts their manifests (IHE ITI VHL Sharer).",
+      "description": "The IHE ITI VHL Sharer side: issues Verifiable Health Links and hosts their manifests.",
       "actorKinds": [
         "system"
       ],
@@ -74,7 +74,7 @@
     {
       "id": "vhl-receiver",
       "title": "VHL receiver",
-      "description": "The clinic abroad that scans a VHL, retrieves the manifest and reads the documents (IHE ITI VHL Receiver).",
+      "description": "The IHE ITI VHL Receiver side: scans a VHL, retrieves the manifest and reads the documents.",
       "actorKinds": [
         "system"
       ],

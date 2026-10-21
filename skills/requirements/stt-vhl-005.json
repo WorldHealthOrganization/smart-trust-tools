@@ -11,7 +11,7 @@
     "memory/dir-vhl"
   ],
   "actors": [
-    "receiver"
+    "vhl-receiver"
   ],
   "statements": [
     {

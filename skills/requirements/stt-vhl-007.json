@@ -13,8 +13,8 @@
     "memory/dir-vhl"
   ],
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

@@ -11,7 +11,7 @@
     "memory/dir-languages"
   ],
   "actors": [
-    "receiver"
+    "vhl-receiver"
   ],
   "statements": [
     {

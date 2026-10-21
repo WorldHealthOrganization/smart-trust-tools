@@ -4,7 +4,7 @@
   "description": "Engineering consequence of QR Code Generation, 2.1 Subclaims defined in this guide; HCERT Specification, 3.2.7.1 Subclaims. QR Code Generation, 2.1 Subclaims defined in this guide: “Do not treat a negative subclaim as a production allocation.”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

@@ -4,7 +4,7 @@
   "description": "Engineering consequence of QR Code Generation, 2.1 Subclaims defined in this guide; HCert logical model; MedicationTreatmentLineMin logical model (ph4h); DDCC Implementation Guide.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

@@ -43,7 +43,7 @@
       "graphTypologies": [
         "library"
       ],
-      "description": "The L1 sources the requirements cite, ingested section by section at a pinned commit: WHO SMART Trust pages (QR Code Generation from PR 129, HCERT specification, GDHCN DID trust lists, endpoints, trust domains, change log), its FSH (HCert, CWTPayload, the FHIR Requirements) and reference script, smart-trust-phw's DVCMin and Health Link payload models, and IHE ITI VHL Volume 1 with ITI-YY3, YY4 and YY5. Each entry has a licence.json."
+      "description": "The L1 sources the requirements cite, ingested section by section at a pinned commit: WHO SMART Trust pages (QR Code Generation from PR 129, HCERT specification, GDHCN DID trust lists, endpoints, trust domains, change log), its FSH (HCert, CWTPayload, the FHIR Requirements, the ActorDefinitions) and reference script, smart-trust-phw's DVCMin and Health Link payload models, and IHE ITI VHL Volume 1 with ITI-YY3, YY4 and YY5 and its ActorDefinitions. Each entry has a licence.json."
     },
     {
       "id": "external-schemas",
@@ -91,7 +91,7 @@
       "graphTypologies": [
         "scenarios"
       ],
-      "description": "The roles that play a lane in this instance's processes (issuing and verifying systems, the signing key holder, VHL sharer and receiver, the library maintainer), each with the skills its tasks need."
+      "description": "The actors this instance's requirements name, by the IHE ITI VHL names first (VHL Sharer, VHL Receiver, VHL Holder, Trust Anchor), then smart-trust's Trust Network Participant and this project's implementer, each naming its ActorDefinitions; and the roles that play a lane in its processes, each with the skills its tasks need."
     },
     {
       "id": "tools",

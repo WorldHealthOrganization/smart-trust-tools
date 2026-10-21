@@ -4,7 +4,7 @@
   "description": "Engineering consequence of QR Code Generation, 2.1 Subclaims defined in this guide; Trust Domains; GDHCN Trust Domain value set. QR Code Generation, 2.1 Subclaims defined in this guide: “The registered production trust domains are DDCC, IPS-PILGRIMAGE, PH4H and ICVP.”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {
