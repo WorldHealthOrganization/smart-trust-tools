@@ -190,7 +190,8 @@ object CborEncoder {
         when (item) {
             is CborItem.Int -> if (item.value >= 0) head(b, 0, item.value) else head(b, 1, -1 - item.value)
             is CborItem.Bytes -> { head(b, 2, item.value.size.toLong()); b.addAll(item.value) }
-            is CborItem.Text -> item.value.encodeToByteArray().let { head(b, 3, it.size.toLong()); b.addAll(it) }
+            // NFC on encode [STT-CBR-002]
+            is CborItem.Text -> Platform.nfc(item.value).encodeToByteArray().let { head(b, 3, it.size.toLong()); b.addAll(it) }
             is CborItem.Array -> { head(b, 4, item.items.size.toLong()); item.items.forEach { write(b, it) } }
             is CborItem.Map -> {
                 val encoded = item.entries.map { encode(it.first) to it.second }.sortedWith { x, y -> compareBytes(x.first, y.first) }

@@ -132,4 +132,6 @@ internal actual object Platform {
             false
         }
     }
+
+    actual fun nfc(text: String): String = text.asDynamic().normalize("NFC") as String
 }

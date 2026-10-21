@@ -9,6 +9,8 @@ satisfies:
   - "req:stt-vhl-004#statement"
   - "req:stt-vhl-007#statement"
   - "req:stt-vhl-010#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt
 ---
 
 # Issue a VHL

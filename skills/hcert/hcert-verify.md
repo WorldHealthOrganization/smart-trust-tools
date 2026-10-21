@@ -29,6 +29,8 @@ satisfies:
   - "req:stt-ver-009#statement"
   - "req:stt-ver-011#statement"
   - "req:stt-zip-002#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt
 ---
 
 # hcert-verify

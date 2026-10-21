@@ -44,6 +44,13 @@ gradle -p tools/hcert-kotlin :hcert-core:compileProductionLibraryKotlinJs  # Nod
 node tools/hcert-kotlin/hcert-core/node-smoke.mjs                          # the PR 129 vector on Node
 ```
 
+The tests are one file per skill (`SignCoseTest.kt` for `hcert-sign-cose`, and
+so on), and each test is named after the requirements it verifies
+(`` `STT-COS-002 … both ES256 and PS256 sign and verify` ``). The skill names its
+file in `tested-by:`, so the requirement graph shows which test verifies which
+requirement, and `check:req-nodes` fails on a test naming a requirement that
+does not exist.
+
 The tests sign with the throw-away keys in [`../../vectors/testkit/`](../../vectors/testkit/).
 Kotlin/JS uses the machine's Node.js; its npm packages (the mocha runner) come only from
 `kotlin-js-store/yarn.lock`, and Gradle artifacts only as listed in

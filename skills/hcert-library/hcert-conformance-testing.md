@@ -11,6 +11,10 @@ satisfies:
   - "req:stt-tst-006#statement"
   - "req:stt-tst-007#statement"
   - "req:stt-tst-008#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt
+  - tools/hcert-kotlin/hcert-core/node-smoke.mjs
+  - tools/check-models/check_models.py
 ---
 
 # hcert-conformance-testing

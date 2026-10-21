@@ -202,6 +202,7 @@ def requirements_page(ref, M, graph):
             rows = [("Derived from", o["derivedFrom"], True), ("Satisfies (smart-trust)", o["satisfies"], True),
                     ("Refines", o["refines"], False), ("Verified by", o["verifiedBy"], False),
                     ("Realized by skills", o["realizedBy"], False), ("Constrains (WIT)", o["constrainsApi"], False),
+                    ("Verified by tests", [by_id[e["s"]] for e in graph["edges"] if e["rel"] == "verifies" and e["t"] == r["id"]], False),
                     ("Open issues", o["affectedBy"], False)]
             blocks.append(
                 '<section class="req" id="%s"><h3>%s · %s</h3>'
@@ -466,6 +467,7 @@ KIND_SOURCES = [
     ("role", "scenarios/roles.json", "role graph"),
     ("api", "api/wit/*.wit", "WIT item (hcert-contract typology)"),
     ("issue", "beans/defs/*.md", "bean"),
+    ("test", "the files a skill's tested-by names", "a Kotlin test function named after the requirements it verifies, or a script"),
 ]
 
 REL_NOTES = [
@@ -479,6 +481,8 @@ REL_NOTES = [
     ("performedBy", "skill → role", "the role's skills"),
     ("constrainsApi", "requirement → WIT item", "an [STT-…] tag in the item's doc comment"),
     ("affectedBy", "requirement → issue", "the bean's Requirements affected"),
+    ("testedBy", "skill → test", "the skill's tested-by"),
+    ("verifies", "test → requirement", "the requirement ids a test is named after"),
     ("concerns", "issue → source", "the bean's Sources"),
     ("partOf", "section → entry, statement → requirement, item → interface", "structure"),
 ]

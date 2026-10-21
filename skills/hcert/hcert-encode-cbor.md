@@ -8,6 +8,8 @@ satisfies:
   - "req:stt-cbr-003#statement"
   - "req:stt-cbr-004#statement"
   - "req:stt-gen-001#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt
 ---
 
 # Step 4

@@ -9,6 +9,8 @@ satisfies:
   - "req:stt-sel-003#statement"
   - "req:stt-sel-004#statement"
   - "req:stt-sel-006#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt
 ---
 
 # Step 1

@@ -6,6 +6,8 @@ satisfies:
   - "req:stt-gen-001#statement"
   - "req:stt-hc1-001#statement"
   - "req:stt-qr-001#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/PrefixContextTest.kt
 ---
 
 # hcert-prefix-context

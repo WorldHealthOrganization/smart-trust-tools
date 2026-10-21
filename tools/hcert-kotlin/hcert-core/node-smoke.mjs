@@ -1,5 +1,6 @@
 // Runs the compiled Kotlin/JS library on Node against the PR 129 vector:
-// the same checks as the JVM tests' Pr129VectorTest, without a test framework.
+// the same checks as the JVM tests' ConformanceVectorsTest, without a test framework.
+// Verifies STT-GEN-004 (the library runs on Node) and STT-GEN-011 (the Kotlin/JS surface).
 //   gradle -p tools/hcert-kotlin :hcert-core:compileProductionLibraryKotlinJs && node tools/hcert-kotlin/hcert-core/node-smoke.mjs
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
