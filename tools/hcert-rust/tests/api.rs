@@ -64,3 +64,12 @@ fn stt_tst_001_the_pr129_vector_verifies_through_the_json_surface() {
     let err = parse(&call(r#"{"op":"nope"}"#)).unwrap();
     assert_eq!(err.get("ok"), Some(&Json::Bool(false)));
 }
+
+#[cfg(feature = "qr")]
+#[test]
+fn stt_qr_001_the_pr129_hc1_string_renders_as_the_version_16_q_symbol_the_page_states() {
+    let r = ok(&format!(r#"{{"op":"qrSvg","text":"{}"}}"#, pr129_hc1("hepb1")));
+    assert_eq!(r.get("version").and_then(Json::as_f64), Some(16.0));
+    assert_eq!(r.get("modules").and_then(Json::as_f64), Some(81.0));
+    assert!(st(&r, "svg").starts_with("<?xml") || st(&r, "svg").starts_with("<svg"));
+}

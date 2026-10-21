@@ -273,6 +273,21 @@ pub fn call(request: &str) -> String {
                 let kid = cose::kid_from_dsc(&der);
                 Ok(Obj::ok().hex("der", &der).str("pem", &pem).hex("kid", &kid).str("kidBase64", &cose::base64_encode(&kid, false)).done())
             }
+            // Step 9, for the demos only (feature `qr`): the HC1 string as a
+            // QR symbol, error correction Q. Base45 and the HC1: prefix are all
+            // in the Alphanumeric set, so the encoder's segmenter picks that mode.
+            #[cfg(feature = "qr")]
+            "qrSvg" => {
+                use qrcode::{render::svg, EcLevel, QrCode, Version};
+                let text = s(&a, "text")?;
+                let code = QrCode::with_error_correction_level(text.as_bytes(), EcLevel::Q).map_err(|e| format!("cannot encode: {e:?}"))?;
+                let version = match code.version() {
+                    Version::Normal(v) => v as i64,
+                    Version::Micro(v) => -(v as i64),
+                };
+                let svg = code.render::<svg::Color>().min_dimensions(240, 240).quiet_zone(true).build();
+                Ok(Obj::ok().num("version", version).str("errorCorrection", "Q").num("modules", code.width() as i64).str("svg", &svg).done())
+            }
             other => Err(format!("unknown op {other}")),
         }
     };

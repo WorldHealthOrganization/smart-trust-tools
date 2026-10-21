@@ -20,6 +20,18 @@ resolved at build time.
   Verification draws no randomness, and signing is the host's, so the
   WebAssembly build registers an entropy source that always fails. It does not
   import JavaScript (the `js` feature, through wasm-bindgen).
+- **Live demos only: `qrcode` 0.14.1 (feature `qr`).** This renders the HC1
+  string as an SVG QR symbol on the demo page. It sits behind a feature the
+  library proper never enables, because the library leaves rendering to the
+  host. The owner allowed one vetted, pinned QR encoder for the demos on
+  2026-10-21. Why this one:
+  - it is the most-used QR encoder on crates.io (23 million downloads);
+  - it is MIT or Apache-2.0;
+  - it is pure Rust, with no build script;
+  - without default features it has no dependencies.
+
+  A test checks it: the PR 129 string encodes as the version 16, level Q
+  symbol the page states, which is only possible in Alphanumeric mode.
 - **Tests only: `rand_core`.** It is already in the tree; the tests use it for
   a deterministic RNG to sign PS256 with.
 
@@ -110,3 +122,4 @@ None of them reaches the network or writes outside `OUT_DIR`.
 | `zerocopy-derive` | 0.8.61 | 2026-10-07 | proc-macro |
 | `zeroize` | 1.9.1 | 2026-10-06 | — |
 | `zeroize_derive` | 1.5.0 | 2026-06-12 | proc-macro |
+| `qrcode` | 0.14.1 | 2024-07-05 | — (demo feature `qr` only) |

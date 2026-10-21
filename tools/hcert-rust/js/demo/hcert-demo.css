@@ -89,3 +89,4 @@
 .hcert-demo .hd-skip { color: var(--hd-muted); }
 .hcert-demo .hd-detail { font-weight: 400; }
 .hcert-demo .hd-short { max-height: 8em; }
+.hcert-demo .hd-qr { display: block; max-width: 100%; height: auto; background: #fff; shape-rendering: crispEdges; image-rendering: pixelated; }

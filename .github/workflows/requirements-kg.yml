@@ -86,7 +86,9 @@ jobs:
         run: rustup show active-toolchain || rustup toolchain install
       - name: Test the library, natively
         run: cargo test --locked
-      - name: Build the WebAssembly module
-        run: cargo build --locked --release --target wasm32-unknown-unknown
+      - name: Test with the demos' QR encoder (feature qr)
+        run: cargo test --locked --features qr --test api
+      - name: Build the WebAssembly module, as the demos load it
+        run: cargo build --locked --release --features qr --target wasm32-unknown-unknown
       - name: Run the WebAssembly module on Node, with WebCrypto keys
         run: node js/smoke.mjs
