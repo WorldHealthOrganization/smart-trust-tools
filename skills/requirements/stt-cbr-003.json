@@ -1,7 +1,7 @@
 {
   "id": "req:stt-cbr-003",
   "title": "Bounded CBOR decoding",
-  "description": "Engineering consequence of HCERT Specification, 6.3 Input Data Validation.",
+  "description": "Engineering consequence of HCERT Specification, 6.3 Input Data Validation. HCERT Specification, 6.3 Input Data Validation: “all input fields MUST be properly validated by data types, lengths and contents”.",
   "status": "proposed",
   "actors": [
     "issuer",
@@ -33,22 +33,7 @@
     "security",
     "derived"
   ],
-  "stt": {
-    "id": "STT-CBR-003",
-    "derivation": "derived",
-    "steps": [
-      "step-4",
-      "step-verify"
-    ],
-    "api": [
-      "api-cbor",
-      "api-limits"
-    ],
-    "sources": [
-      {
-        "src": "hcert-6.3",
-        "quote": "all input fields MUST be properly validated by data types, lengths and contents"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-hcert-spec/sections/s025-6-3-input-data-validation"
+  ]
 }

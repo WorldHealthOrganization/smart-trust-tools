@@ -1,0 +1,9 @@
+{
+  "name": "vhl",
+  "version": "0.1.0",
+  "description": "Verifiable Health Links (IHE ITI VHL, SMART Health Links payload format) carried in an HCERT.",
+  "skills": [
+    "vhl-share",
+    "vhl-receive"
+  ]
+}

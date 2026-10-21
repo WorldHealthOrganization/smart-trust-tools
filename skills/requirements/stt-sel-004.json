@@ -1,7 +1,7 @@
 {
   "id": "req:stt-sel-004",
   "title": "Exactly one payload when issuing",
-  "description": "Engineering consequence of QR Code Generation, 2. Step 1 — Select the logical model for your use case; QR Code Generation, 4. Step 3 — Build the CWT claim set; HCERT Specification, 3.2.7 Health Certificate Claim.",
+  "description": "Engineering consequence of QR Code Generation, 2. Step 1 — Select the logical model for your use case; QR Code Generation, 4. Step 3 — Build the CWT claim set; HCERT Specification, 3.2.7 Health Certificate Claim. QR Code Generation, 2. Step 1 — Select the logical model for your use case: “An HCERT carries exactly one payload, identified by a subclaim inside the hcert claim”. QR Code Generation, 4. Step 3 — Build the CWT claim set: “Map whose single key is the subclaim chosen in Step 1”. HCERT Specification, 3.2.7 Health Certificate Claim: “Several different types of health certificate MAY exist under the same claim”.",
   "status": "proposed",
   "actors": [
     "issuer",
@@ -21,33 +21,9 @@
     "functional",
     "derived"
   ],
-  "stt": {
-    "id": "STT-SEL-004",
-    "derivation": "derived",
-    "steps": [
-      "step-1",
-      "step-3",
-      "step-verify"
-    ],
-    "api": [
-      "api-hcert-claim"
-    ],
-    "issues": [
-      "OI-02"
-    ],
-    "sources": [
-      {
-        "src": "qr-2",
-        "quote": "An HCERT carries exactly one payload, identified by a subclaim inside the hcert claim"
-      },
-      {
-        "src": "qr-4",
-        "quote": "Map whose single key is the subclaim chosen in Step 1"
-      },
-      {
-        "src": "hcert-3.2.7",
-        "quote": "Several different types of health certificate MAY exist under the same claim"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-logical-model-for-your-use-c",
+    "library/who-smart-trust-qr-code-generation/sections/s009-4-step-3-build-the-cwt-claim-set",
+    "library/who-smart-trust-hcert-spec/sections/s013-3-2-7-health-certificate-claim"
+  ]
 }

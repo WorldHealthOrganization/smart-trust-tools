@@ -6,7 +6,7 @@ files:
     input/pagecontent/ITI-YY5.md, 2:3.YY5.4.2.2, the Case B example Bundle,
     as published (doc002 to doc004 are abbreviated there to bare ids).
   jwe-dir-a256gcm.json: >-
-    Not from IHE. TEST ONLY: made by make-jwe-fixture.mjs with node:crypto,
+    Not from IHE. TEST ONLY: made by tools/vhl-jwe-fixture/make-jwe-fixture.mjs with node:crypto,
     independently of the library, to cross-check its JWE decryption.
 examples:
   iti-yy3-vhlink: >-

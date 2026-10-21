@@ -1,7 +1,7 @@
 {
   "id": "req:stt-tst-006",
   "title": "Fuzzing of decoders",
-  "description": "Engineering consequence of HCERT Specification, 6.3 Input Data Validation.",
+  "description": "Engineering consequence of HCERT Specification, 6.3 Input Data Validation. HCERT Specification, 6.3 Input Data Validation: “a potential attacker may attempt to inject carefully crafted information designed to compromise the security of the system”.",
   "status": "proposed",
   "actors": [
     "implementer"
@@ -20,14 +20,7 @@
     "test",
     "derived"
   ],
-  "stt": {
-    "id": "STT-TST-006",
-    "derivation": "derived",
-    "sources": [
-      {
-        "src": "hcert-6.3",
-        "quote": "a potential attacker may attempt to inject carefully crafted information designed to compromise the security of the system"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-hcert-spec/sections/s025-6-3-input-data-validation"
+  ]
 }

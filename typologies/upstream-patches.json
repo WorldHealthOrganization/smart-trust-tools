@@ -1,0 +1,15 @@
+{
+  "$schema": "folio-graph-typology/v1",
+  "kind": "upstream-patches",
+  "title": "Upstream patches",
+  "perInstance": true,
+  "renderable": false,
+  "holds": "state",
+  "summary": "Changes proposed to repositories this project may not push to (IHE), as git format-patch files for their maintainers to apply. Each names the open issue (bean) it resolves.",
+  "validatorNotApplicable": "git format-patch output, checked by `git apply --check` against the upstream commit it names, not by a schema.",
+  "avatar": {
+    "glyph": "M6 4v16M18 4v6a4 4 0 0 1-4 4H6M15 17l3 3 3-3",
+    "tone": 280,
+    "reads": "a branch merging back upstream"
+  }
+}

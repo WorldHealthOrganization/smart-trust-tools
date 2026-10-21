@@ -5,7 +5,7 @@
   "repository": "litlfred/smart-trust-tools",
   "iriBase": "https://litlfred.github.io/smart-trust-tools/",
   "title": "SMART Trust HCERT library tools",
-  "description": "Requirements, API contract (WIT), wire format (CDDL) and payload models for the Kotlin and Rust HCERT libraries, derived from the WHO SMART Trust implementation guide.",
+  "description": "Requirements, API contract (WIT), wire format (CDDL), payload models and the Kotlin library for HCERT and Verifiable Health Links, derived from the WHO SMART Trust implementation guide and IHE ITI VHL.",
   "needs": [
     "fhir-harness"
   ],
@@ -32,10 +32,146 @@
     {
       "id": "stt-skills",
       "path": "skills/",
-      "description": "The HCERT library requirements: one cat-harness req: node per STT requirement under skills/requirements/, derived from the WHO SMART Trust IG (QR Code Generation, HCERT specification, DID trust list) and its FHIR Requirements. tools/build_kg.py renders them, with the sources, steps, API elements and issues in requirements/kg/, into requirements/generated/.",
       "graphTypologies": [
         "skills"
-      ]
+      ],
+      "description": "The library requirements, one bootstrap req: node per requirement under skills/requirements/, and the skills that satisfy them in three packages: hcert (the pipeline of QR Code Generation, one skill per step, plus verification and the trust list), vhl (sharing and receiving a Verifiable Health Link) and hcert-library (architecture, contract maintenance, conformance testing, publishing the graph)."
+    },
+    {
+      "id": "library",
+      "path": "library/",
+      "graphTypologies": [
+        "library"
+      ],
+      "description": "The L1 sources the requirements cite, ingested section by section at a pinned commit: WHO SMART Trust pages (QR Code Generation from PR 129, HCERT specification, GDHCN DID trust lists, endpoints, trust domains, change log), its FSH (HCert, CWTPayload, the FHIR Requirements) and reference script, smart-trust-phw's DVCMin and Health Link payload models, and IHE ITI VHL Volume 1 with ITI-YY3, YY4 and YY5. Each entry has a licence.json."
+    },
+    {
+      "id": "external-schemas",
+      "path": "external-schemas/",
+      "graphTypologies": [
+        "external-schema"
+      ],
+      "description": "The open standards the requirements and the contract conform to or cite: IETF RFCs (CBOR, COSE, CWT, CDDL, Base45, ZLIB, JOSE, HTTP Message Signatures, Digest Fields), W3C (DID Core, JSON-LD, SHACL, WebCrypto), HL7 FHIR R5 and SMART Health Links, ITU-T X.680, WIT and jco, WHO SMART Trust and IHE ITI VHL."
+    },
+    {
+      "id": "references",
+      "path": "references/",
+      "graphTypologies": [
+        "references"
+      ],
+      "description": "Other WHO SMART guides and value sets the requirements cite (DDCC, ICVP, PH4H, the GDHCN value sets), as CSL-JSON references."
+    },
+    {
+      "id": "memory",
+      "path": "memory/",
+      "graphTypologies": [
+        "memory"
+      ],
+      "description": "Owner directives the requirements cite as derivedFrom: languages (Kotlin first, Rust second), targets, open standards only, the user journeys, and the VHL decisions of 2026-10-20."
+    },
+    {
+      "id": "beans",
+      "path": "beans/",
+      "graphTypologies": [
+        "beans"
+      ],
+      "description": "The open issues of this project, one bean each under beans/defs/, each naming the requirements it affects and the sources it concerns; tagged upstream when the fix belongs in a WHO or IHE repository."
+    },
+    {
+      "id": "processes",
+      "path": "processes/",
+      "graphTypologies": [
+        "processes"
+      ],
+      "description": "BPMN diagrams in the content concern group: issuing an HCERT QR code, verifying one, and sharing records by Verifiable Health Link. Lanes are roles from scenarios/roles.json; tasks name skills."
+    },
+    {
+      "id": "scenarios",
+      "path": "scenarios/",
+      "graphTypologies": [
+        "scenarios"
+      ],
+      "description": "The roles that play a lane in this instance's processes (issuing and verifying systems, the signing key holder, VHL sharer and receiver, the library maintainer), each with the skills its tasks need."
+    },
+    {
+      "id": "tools",
+      "path": "tools/",
+      "graphTypologies": [
+        "tools"
+      ],
+      "description": "One Tool per folder (tools/<id>/<id>.ts), with its code beside it: hcert-kotlin (the Kotlin library), wit2kotlin, gen-api-types, fetch-lms, lm-derive, check-models, vhl-jwe-fixture, check-req-nodes and build-site. tools/index.ts loads them."
+    },
+    {
+      "id": "toolchain",
+      "path": "toolchain/",
+      "graphTypologies": [
+        "code"
+      ],
+      "description": "The pinned Node (package-lock.json, installed with npm ci --ignore-scripts) and Python (hash-pinned requirements.txt) toolchains several Tools share, and node_tools.sh, which installs the Node one."
+    },
+    {
+      "id": "smart-trust-tools-typologies",
+      "path": "typologies/",
+      "graphTypologies": [
+        "typologies"
+      ],
+      "description": "The kinds this instance owns, for its own schemas: hcert-contract, hcert-generated-contract, hcert-test-vectors, fhir-logical-models, payload-models and upstream-patches."
+    },
+    {
+      "id": "hcert-contract-wit",
+      "path": "api/wit/",
+      "graphTypologies": [
+        "hcert-contract"
+      ],
+      "description": "The WIT package who:smart-trust that both libraries implement; doc comments cite requirements as [STT-...] tags."
+    },
+    {
+      "id": "hcert-contract-cddl",
+      "path": "api/cddl/",
+      "graphTypologies": [
+        "hcert-contract"
+      ],
+      "description": "The HCERT envelope in CDDL (RFC 8610): the CWT claims, hcert subclaims and the VHL payload map at key 5."
+    },
+    {
+      "id": "hcert-contract-ts",
+      "path": "api/generated/",
+      "graphTypologies": [
+        "hcert-generated-contract"
+      ],
+      "description": "The TypeScript view of the WIT contract, written by gen-api-types (jco)."
+    },
+    {
+      "id": "fhir-logical-models",
+      "path": "models/fhir/",
+      "graphTypologies": [
+        "fhir-logical-models"
+      ],
+      "description": "The DVCMin logical models as FHIR R5 StructureDefinitions at the smart-trust-phw commit SOURCE.yaml pins, and the R5 primitive patterns."
+    },
+    {
+      "id": "payload-models",
+      "path": "models/generated/",
+      "graphTypologies": [
+        "payload-models"
+      ],
+      "description": "The JSON-LD context, SHACL shapes and CDDL rules lm-derive writes from the logical models."
+    },
+    {
+      "id": "hcert-test-vectors",
+      "path": "vectors/",
+      "graphTypologies": [
+        "hcert-test-vectors"
+      ],
+      "description": "The smart-trust PR 129 DVC example and DSC, the IHE ITI VHL Case B manifest, the independent JWE fixture and the TEST-ONLY testkit keys."
+    },
+    {
+      "id": "upstream-patches",
+      "path": "upstream/",
+      "graphTypologies": [
+        "upstream-patches"
+      ],
+      "description": "Patches proposed to IHE ITI VHL, for its maintainers to apply."
     }
   ]
 }

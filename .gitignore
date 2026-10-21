@@ -4,7 +4,7 @@ node_modules/
 /site/
 .gradle/
 build/
-kotlin/.kotlin/
+tools/hcert-kotlin/.kotlin/
 # BEGIN index mounts (generated from index.config.json — do not edit)
 /fhir-harness/
 /folio-assistant-core/

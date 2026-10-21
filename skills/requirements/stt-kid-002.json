@@ -1,7 +1,7 @@
 {
   "id": "req:stt-kid-002",
   "title": "kid is a lookup hint, not unique",
-  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, 3.2.3 Key Identifier.",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, 3.2.3 Key Identifier. QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “a verifier that finds several DSCs with the same kid MUST try all of them”.",
   "status": "proposed",
   "actors": [
     "receiver",
@@ -28,25 +28,8 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-KID-002",
-    "derivation": "direct",
-    "steps": [
-      "step-verify",
-      "step-trust"
-    ],
-    "api": [
-      "api-trust-provider",
-      "api-verifier"
-    ],
-    "sources": [
-      {
-        "src": "qr-6",
-        "quote": "a verifier that finds several DSCs with the same kid MUST try all of them"
-      },
-      {
-        "src": "hcert-3.2.3"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s011-6-step-5-sign-as-a-cose-sign1",
+    "library/who-smart-trust-hcert-spec/sections/s009-3-2-3-key-identifier"
+  ]
 }

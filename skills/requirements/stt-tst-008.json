@@ -20,22 +20,9 @@
     "test",
     "derived"
   ],
-  "stt": {
-    "id": "STT-TST-008",
-    "derivation": "derived",
-    "api": [
-      "api-testkit"
-    ],
-    "sources": [
-      {
-        "src": "doc-qr-example-json"
-      },
-      {
-        "src": "std-rfc8610"
-      },
-      {
-        "src": "std-shacl"
-      }
-    ]
-  }
+  "reference": [
+    "vectors/smart-trust-pr129/dvc-qr-example-XXA.json",
+    "external-schemas/ietf-rfc8610",
+    "external-schemas/w3c-shacl"
+  ]
 }

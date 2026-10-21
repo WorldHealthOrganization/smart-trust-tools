@@ -6,6 +6,10 @@
   "derivedFrom": [
     "req:stt-gen-007"
   ],
+  "reference": [
+    "library/who-smart-trust-changes/sections/s018-v1-7-5",
+    "library/who-smart-trust-qr-code-generation/sections/s014-9-step-8-prefix-the-context-identifier"
+  ],
   "actors": [
     "implementer"
   ],
@@ -22,17 +26,5 @@
     "hcert-library",
     "non-functional",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-NFR-001",
-    "derivation": "derived",
-    "sources": [
-      {
-        "src": "changes-1.7.5"
-      },
-      {
-        "src": "qr-9"
-      }
-    ]
-  }
+  ]
 }

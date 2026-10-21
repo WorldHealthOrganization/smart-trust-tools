@@ -1,0 +1,59 @@
+{
+  "@context": [
+    "https://litlfred.github.io/smart-trust-tools/ns/context/v1.jsonld",
+    {
+      "@base": "https://litlfred.github.io/folio/"
+    }
+  ],
+  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-qr-code-generation/manifest.jsonld",
+  "@type": [
+    "cat-harness:SourceDocument"
+  ],
+  "title": "QR Code Generation",
+  "contains": [
+    "library/who-smart-trust-qr-code-generation/sections/s001-generating-a-qr-code",
+    "library/who-smart-trust-qr-code-generation/sections/s002-1-the-pipeline-at-a-glance",
+    "library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-logical-model-for-your-use-c",
+    "library/who-smart-trust-qr-code-generation/sections/s004-2-1-subclaims-defined-in-this-guide",
+    "library/who-smart-trust-qr-code-generation/sections/s005-2-2-choosing-between-a-dvc-and-a-vhl",
+    "library/who-smart-trust-qr-code-generation/sections/s006-2-3-choosing-between-a-generic-dvc-and-the-icvp",
+    "library/who-smart-trust-qr-code-generation/sections/s007-2-4-decision-summary",
+    "library/who-smart-trust-qr-code-generation/sections/s008-3-step-2-assemble-the-payload",
+    "library/who-smart-trust-qr-code-generation/sections/s009-4-step-3-build-the-cwt-claim-set",
+    "library/who-smart-trust-qr-code-generation/sections/s010-5-step-4-serialise-as-cbor",
+    "library/who-smart-trust-qr-code-generation/sections/s011-6-step-5-sign-as-a-cose-sign1",
+    "library/who-smart-trust-qr-code-generation/sections/s012-7-step-6-compress",
+    "library/who-smart-trust-qr-code-generation/sections/s013-8-step-7-encode-as-base45",
+    "library/who-smart-trust-qr-code-generation/sections/s014-9-step-8-prefix-the-context-identifier",
+    "library/who-smart-trust-qr-code-generation/sections/s015-10-step-9-render-the-qr-code",
+    "library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards",
+    "library/who-smart-trust-qr-code-generation/sections/s017-12-worked-example-a-newborn-birth-dose-dvc",
+    "library/who-smart-trust-qr-code-generation/sections/s018-12-1-scenario",
+    "library/who-smart-trust-qr-code-generation/sections/s019-12-2-host-country-schedule",
+    "library/who-smart-trust-qr-code-generation/sections/s020-12-3-test-issuer",
+    "library/who-smart-trust-qr-code-generation/sections/s021-12-4-the-payload",
+    "library/who-smart-trust-qr-code-generation/sections/s022-12-5-size-at-each-stage",
+    "library/who-smart-trust-qr-code-generation/sections/s023-12-6-the-certificate",
+    "library/who-smart-trust-qr-code-generation/sections/s024-13-reference-script"
+  ],
+  "provenance": "ingested",
+  "inSubgraph": "https://litlfred.github.io/folio-assistant/cat-harness.jsonld#directory/library",
+  "license": "CC-BY-NC-SA-3.0-IGO",
+  "licenceRecord": {
+    "status": "stated",
+    "id": "CC-BY-NC-SA-3.0-IGO",
+    "basis": "WorldHealthOrganization/smart-trust LICENSE at the ingested commit: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 IGO. Its own license.md page says Creative Commons Attribution 3.0 IGO instead (recorded as a bean). The text is held unmodified, with attribution, for non-commercial reference."
+  },
+  "meta": {
+    "doc_id": "who-smart-trust-qr-code-generation",
+    "title_source": "text-heading",
+    "title_from": "structure.json metadata.title",
+    "source_file": "qr_code_generation.md",
+    "source_sha256": "25cc22304a1d036e45cafbb48d5eb18639539ae12afabfc6bb0d73d6f36b0332",
+    "arxiv": null,
+    "doi": null,
+    "document_class": null,
+    "extractor_validated": null,
+    "disposition": "ingested source material — attributed to its document, not folio content"
+  }
+}

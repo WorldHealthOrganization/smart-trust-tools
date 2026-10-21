@@ -21,23 +21,8 @@
     "functional",
     "derived"
   ],
-  "stt": {
-    "id": "STT-CWT-006",
-    "derivation": "derived",
-    "steps": [
-      "step-3",
-      "step-verify"
-    ],
-    "api": [
-      "api-cwt"
-    ],
-    "sources": [
-      {
-        "src": "std-rfc8392"
-      },
-      {
-        "src": "hcert-3.2.7"
-      }
-    ]
-  }
+  "reference": [
+    "external-schemas/ietf-rfc8392",
+    "library/who-smart-trust-hcert-spec/sections/s013-3-2-7-health-certificate-claim"
+  ]
 }

@@ -1,10 +1,14 @@
 {
   "id": "req:stt-vhl-010",
   "title": "VHL with no I/O in the library",
-  "description": "Engineering consequence of IHE VHL ITI-YY5, 2:3.YY5.4.2.4 Document Content Retrieval; Stakeholder directive: the library must carry the workshop user journeys.",
+  "description": "Engineering consequence of IHE VHL ITI-YY5, 2:3.YY5.4.2.4 Document Content Retrieval; Stakeholder directive: the library must carry the workshop user journeys. IHE VHL ITI-YY5 Retrieve Manifest, 2:3.YY5.4.2.4 Document Content Retrieval: “Transport: Same ATNA secure channel used for ITI-YY5”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-gen-012"
+  ],
+  "reference": [
+    "library/ihe-iti-vhl-iti-yy5/sections/s018-2-3-yy5-4-2-4-document-content-retrieval",
+    "memory/dir-journeys"
   ],
   "actors": [
     "receiver",
@@ -23,21 +27,5 @@
     "hcert-library",
     "architecture",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-VHL-010",
-    "derivation": "derived",
-    "api": [
-      "api-vhl-manifest-request"
-    ],
-    "sources": [
-      {
-        "src": "vhl-yy5-4.2.4",
-        "quote": "Transport: Same ATNA secure channel used for ITI-YY5"
-      },
-      {
-        "src": "dir-journeys"
-      }
-    ]
-  }
+  ]
 }

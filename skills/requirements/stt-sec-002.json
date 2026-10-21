@@ -20,13 +20,7 @@
     "security",
     "derived"
   ],
-  "stt": {
-    "id": "STT-SEC-002",
-    "derivation": "derived",
-    "sources": [
-      {
-        "src": "hcert-6.2"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-hcert-spec/sections/s024-6-2-key-management"
+  ]
 }

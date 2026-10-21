@@ -7,7 +7,7 @@
 ;
 ; Payload rules (dvc-min, ...) are generated from the FHIR logical models
 ; into models/generated/<ig>.cddl. CDDL has no import mechanism, so this file
-; is concatenated with them for validation (tools/check_models.py).
+; is concatenated with them for validation (tools/check-models/check_models.py).
 ;
 ; Draft for upstreaming: the envelope belongs in WorldHealthOrganization/
 ; smart-trust and the payload rules with their logical models (OI-19).

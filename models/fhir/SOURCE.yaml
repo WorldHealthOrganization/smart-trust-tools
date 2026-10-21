@@ -1,4 +1,4 @@
-# Provenance of the vendored FHIR inputs. Regenerate with tools/fetch_lms.sh.
+# Provenance of the vendored FHIR inputs. Regenerate with tools/fetch-lms/fetch_lms.sh.
 logical_models:
   repo: WorldHealthOrganization/smart-trust-phw
   sha: fd3b5480e5df8001890d31ecc9761051c17c2cc5
@@ -15,4 +15,4 @@ primitives:
   note: >-
     Regexes for FHIR primitive types, taken from the core package. FHIR
     primitive regexes are implicitly anchored; the core package writes the
-    string regex with explicit ^...$, which tools/lm_derive.py strips.
+    string regex with explicit ^...$, which tools/lm-derive/lm_derive.py strips.

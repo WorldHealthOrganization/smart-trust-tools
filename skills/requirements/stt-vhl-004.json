@@ -6,6 +6,10 @@
   "derivedFrom": [
     "req:stt-vhl-001"
   ],
+  "reference": [
+    "library/ihe-iti-vhl-iti-yy3/sections/s010-2-3-yy3-4-1-3-expected-actions",
+    "external-schemas/hl7-smart-health-links"
+  ],
   "actors": [
     "issuer"
   ],
@@ -22,21 +26,5 @@
     "hcert-library",
     "security",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-VHL-004",
-    "derivation": "derived",
-    "api": [
-      "api-vhl-key"
-    ],
-    "sources": [
-      {
-        "src": "vhl-yy3-4.1.3",
-        "quote": null
-      },
-      {
-        "src": "std-shl"
-      }
-    ]
-  }
+  ]
 }

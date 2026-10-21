@@ -10,7 +10,7 @@ implements.
 
 - Source of truth: [`wit/`](wit/)
 - Generated TypeScript view for review: [`generated/ts/`](generated/ts/)
-  (`tools/gen_api_types.sh`)
+  (`tools/gen-api-types/gen_api_types.sh`)
 - Wire format: [`cddl/hcert.cddl`](cddl/hcert.cddl) (RFC 8610)
 
 ## Three layers, three open standards
@@ -145,7 +145,7 @@ encoder at error correction Q. [STT-QR-001]
 ## Reviewing a change
 
 1. Edit `wit/*.wit`.
-2. Run `tools/gen_api_types.sh`. It validates the WIT and regenerates
+2. Run `tools/gen-api-types/gen_api_types.sh`. It validates the WIT and regenerates
    `generated/ts/`.
 3. Review the WIT diff, and the TypeScript diff for how the change looks to a
    JS caller.

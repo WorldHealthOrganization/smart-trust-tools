@@ -35,15 +35,28 @@ To change a pin, edit `index.config.json` and run `bun run cat mount:remote`
 - **gh-pages is published by an agent, not a workflow.** main publishes to the
   root. Every other branch publishes to `STAGING/<branch-slug>/`. Never
   dispatch a GitHub workflow to publish.
-- **Generated is never edited by hand.** `requirements/generated/`,
-  `api/generated/`, `models/generated/` and `kotlin/hcert-api/` are written by
-  the generators under `tools/`. Change the source (`skills/requirements/*.json`, `requirements/kg/*.yaml`,
-  `api/wit/`, `api/cddl/`, the logical models) and re-run the generator.
+- **The graph is cat-harness nodes, nothing else.** Requirements are `req:`
+  nodes in `skills/requirements/`: `derivedFrom` names only the broader
+  requirement a requirement specialises, and `reference` (FHIR R5
+  `Requirements.reference`) what it is drawn from, each itself a node: a
+  library section, an external schema, a reference, a `memory/` directive, a
+  test vector, a smart-trust FHIR Requirements canonical. Skills `satisfy` them,
+  Tools satisfy skills, BPMN processes and roles use skills, and open issues are
+  beans. There is no second graph format. `bun run check:req-nodes` fails on an
+  edge that names no node.
+- **All code is in a Tool folder.** Every folder in `tools/` is one Tool,
+  `tools/<id>/<id>.ts` (`defineTool`), with the code that is that Tool's alone
+  beside it; `tools/hcert-kotlin/` is the Kotlin library. The pinned Node and
+  Python toolchains several Tools share are in `toolchain/`.
+- **Generated is never edited by hand.** `api/generated/`, `models/generated/`
+  and `tools/hcert-kotlin/hcert-api/` are written by the Tools `gen-api-types`,
+  `lm-derive` and `wit2kotlin`. Change the source (`api/wit/`, `api/cddl/`,
+  `models/fhir/`) and re-run the Tool.
 - **Every dependency is pinned and verified; nothing is resolved at run
-  time.** Node tools come from `tools/node/package-lock.json` (`npm ci
+  time.** Node tools come from `toolchain/node/package-lock.json` (`npm ci
   --ignore-scripts`, never `npx`), Python from the hashed
-  `tools/python/requirements.txt` (`pip install --require-hashes --no-deps`),
-  Gradle artifacts from `kotlin/gradle/verification-metadata.xml`, the harness
+  `toolchain/python/requirements.txt` (`pip install --require-hashes --no-deps`),
+  Gradle artifacts from `tools/hcert-kotlin/gradle/verification-metadata.xml`, the harness
   from `bun.lock` (bunfig `minimumReleaseAge`), and GitHub Actions by commit
   SHA. A new or bumped dependency is a release at least 14 days old, resolved
   with that cutoff (`npm --before`, `uv --exclude-newer`), and its install

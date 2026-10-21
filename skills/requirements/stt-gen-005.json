@@ -19,27 +19,13 @@
     "hcert-library",
     "non-functional",
     "directive",
-    "rust"
+    "rust",
+    "target:rust"
   ],
-  "stt": {
-    "id": "STT-GEN-005",
-    "derivation": "directive",
-    "targets": [
-      "rust"
-    ],
-    "sources": [
-      {
-        "src": "dir-languages"
-      },
-      {
-        "src": "dir-targets"
-      },
-      {
-        "src": "std-wit"
-      },
-      {
-        "src": "std-jco"
-      }
-    ]
-  }
+  "reference": [
+    "memory/dir-languages",
+    "memory/dir-targets",
+    "external-schemas/bytecodealliance-wit",
+    "external-schemas/bytecodealliance-jco"
+  ]
 }

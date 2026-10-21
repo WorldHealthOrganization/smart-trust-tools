@@ -1,7 +1,7 @@
 {
   "id": "req:stt-kid-001",
   "title": "kid derivation",
-  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, A.1 The Key Identifier (`kid`s).",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, A.1 The Key Identifier (`kid`s). QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “take the DER encoding of the DSC and use the first 8 bytes of its SHA-256 fingerprint”.",
   "status": "proposed",
   "actors": [
     "issuer"
@@ -27,24 +27,8 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-KID-001",
-    "derivation": "direct",
-    "steps": [
-      "step-5",
-      "step-trust"
-    ],
-    "api": [
-      "api-kid"
-    ],
-    "sources": [
-      {
-        "src": "qr-6",
-        "quote": "take the DER encoding of the DSC and use the first 8 bytes of its SHA-256 fingerprint"
-      },
-      {
-        "src": "hcert-A.1"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s011-6-step-5-sign-as-a-cose-sign1",
+    "library/who-smart-trust-hcert-spec/sections/s027-a-1-the-key-identifier-kid-s"
+  ]
 }

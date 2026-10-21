@@ -1,7 +1,7 @@
 {
   "id": "req:stt-cos-002",
   "title": "Both ES256 and PS256",
-  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, 3.2.2 Signature Algorithm; RFC 8230 RSA algorithms with COSE (PS256).",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, 3.2.2 Signature Algorithm; RFC 8230 RSA algorithms with COSE (PS256). QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “Both algorithms MUST be implemented, even though only one is used to sign any given certificate”.",
   "status": "proposed",
   "actors": [
     "issuer",
@@ -28,27 +28,9 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-COS-002",
-    "derivation": "direct",
-    "steps": [
-      "step-5",
-      "step-verify"
-    ],
-    "api": [
-      "api-alg"
-    ],
-    "sources": [
-      {
-        "src": "qr-6",
-        "quote": "Both algorithms MUST be implemented, even though only one is used to sign any given certificate"
-      },
-      {
-        "src": "hcert-3.2.2"
-      },
-      {
-        "src": "std-rfc8230"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s011-6-step-5-sign-as-a-cose-sign1",
+    "library/who-smart-trust-hcert-spec/sections/s008-3-2-2-signature-algorithm",
+    "external-schemas/ietf-rfc8230"
+  ]
 }

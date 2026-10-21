@@ -6,6 +6,10 @@
   "derivedFrom": [
     "req:stt-b45-001"
   ],
+  "reference": [
+    "external-schemas/ietf-rfc9285",
+    "library/who-smart-trust-hcert-spec/sections/s025-6-3-input-data-validation"
+  ],
   "actors": [
     "issuer",
     "receiver"
@@ -30,21 +34,5 @@
     "hcert-library",
     "security",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-B45-002",
-    "derivation": "derived",
-    "steps": [
-      "step-7",
-      "step-verify"
-    ],
-    "sources": [
-      {
-        "src": "std-rfc9285"
-      },
-      {
-        "src": "hcert-6.3"
-      }
-    ]
-  }
+  ]
 }

@@ -1,10 +1,14 @@
 {
   "id": "req:stt-gen-002",
   "title": "Every step callable on its own",
-  "description": "Engineering consequence of QR Code Generation, 1. The pipeline at a glance; QR Code Generation, Generating a QR Code.",
+  "description": "Engineering consequence of QR Code Generation, 1. The pipeline at a glance; QR Code Generation, Generating a QR Code. QR Code Generation, Generating a QR Code: “The first step below is therefore a selection step, and everything after it is mechanical.”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-gen-001"
+  ],
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s002-1-the-pipeline-at-a-glance",
+    "library/who-smart-trust-qr-code-generation/sections/s001-generating-a-qr-code"
   ],
   "actors": [
     "implementer"
@@ -22,25 +26,5 @@
     "hcert-library",
     "architecture",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-GEN-002",
-    "derivation": "derived",
-    "api": [
-      "api-cbor",
-      "api-sign1",
-      "api-zlib",
-      "api-base45",
-      "api-hc1"
-    ],
-    "sources": [
-      {
-        "src": "qr-1"
-      },
-      {
-        "src": "qr-intro",
-        "quote": "The first step below is therefore a selection step, and everything after it is mechanical."
-      }
-    ]
-  }
+  ]
 }

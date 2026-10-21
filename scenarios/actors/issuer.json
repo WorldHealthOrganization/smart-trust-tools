@@ -1,0 +1,11 @@
+{
+  "id": "issuer",
+  "title": "HCERT issuer",
+  "kind": "system",
+  "description": "A clinic system or national portal that issues certificates and Verifiable Health Links (smart-trust ActorDefinition Issuer, IHE ITI VHL Sharer), embedding the library.",
+  "roles": [
+    "hcert-issuing-system",
+    "vhl-sharer"
+  ],
+  "capabilities": []
+}

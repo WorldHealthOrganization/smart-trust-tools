@@ -19,21 +19,11 @@
     "hcert-library",
     "non-functional",
     "directive",
-    "kotlin"
+    "kotlin",
+    "target:kotlin"
   ],
-  "stt": {
-    "id": "STT-GEN-004",
-    "derivation": "directive",
-    "targets": [
-      "kotlin"
-    ],
-    "sources": [
-      {
-        "src": "dir-languages"
-      },
-      {
-        "src": "dir-targets"
-      }
-    ]
-  }
+  "reference": [
+    "memory/dir-languages",
+    "memory/dir-targets"
+  ]
 }

@@ -4,7 +4,7 @@ The payload schemas are **derived from the WHO SMART FHIR logical models**,
 not written by hand [STT-PAY-010].
 
 ```
-smart-trust-phw FSH ──sushi──▶ models/fhir/*.json ──tools/lm_derive.py──▶ models/generated/
+smart-trust-phw FSH ──sushi──▶ models/fhir/*.json ──lm-derive──▶ models/generated/
  (pinned commit)               (vendored, SOURCE.yaml)                    trust-phw.context.jsonld
                                                                           trust-phw.shacl.ttl
                                                                           trust-phw.cddl
@@ -42,11 +42,11 @@ Translation rules:
 ## Commands
 
 ```sh
-python3 tools/lm_derive.py            # regenerate models/generated (stdlib only)
-python3 tools/lm_derive.py --check    # CI: fail if stale
+python3 tools/lm-derive/lm_derive.py            # regenerate models/generated (stdlib only)
+python3 tools/lm-derive/lm_derive.py --check    # CI: fail if stale
 pip install cbor2 base45 pycddl pyshacl rdflib
-python3 tools/check_models.py         # CDDL + SHACL against vectors/, plus mutations
-tools/fetch_lms.sh [sha]              # recompile models/fhir from smart-trust-phw (needs network)
+python3 tools/check-models/check_models.py         # CDDL + SHACL against vectors/, plus mutations
+tools/fetch-lms/fetch_lms.sh [sha]              # recompile models/fhir from smart-trust-phw (needs network)
 ```
 
 ## Known issues
@@ -56,4 +56,4 @@ tools/fetch_lms.sh [sha]              # recompile models/fhir from smart-trust-p
 - OI-19: these artefacts should eventually be generated and published by the
   smart-trust-phw IG build. The HCERT envelope CDDL belongs in smart-trust.
 - OI-20: the CDDL validator used in CI (pycddl) deviates from RFC 8610.
-  `tools/check_models.py` works around it so the CDDL stays spec-correct.
+  `tools/check-models/check_models.py` works around it so the CDDL stays spec-correct.

@@ -1,10 +1,14 @@
 {
   "id": "req:stt-ver-011",
   "title": "Unverified read for triage",
-  "description": "Stakeholder directive, in the context of Stakeholder directive: the library must carry the workshop user journeys; QR Code Generation, 11. Verifying a certificate.",
+  "description": "Stakeholder directive, in the context of Stakeholder directive: the library must carry the workshop user journeys; QR Code Generation, 11. Verifying a certificate. Stakeholder directive: the library must carry the workshop user journeys: “lightweight QR scan reads basic vaccine metadata without requiring full cryptographic verification at the household edge”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-ver-002"
+  ],
+  "reference": [
+    "memory/dir-journeys",
+    "library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards"
   ],
   "actors": [
     "receiver"
@@ -22,24 +26,5 @@
     "hcert-library",
     "functional",
     "directive"
-  ],
-  "stt": {
-    "id": "STT-VER-011",
-    "derivation": "directive",
-    "steps": [
-      "step-verify"
-    ],
-    "api": [
-      "api-unverified"
-    ],
-    "sources": [
-      {
-        "src": "dir-journeys",
-        "quote": "lightweight QR scan reads basic vaccine metadata without requiring full cryptographic verification at the household edge"
-      },
-      {
-        "src": "qr-11"
-      }
-    ]
-  }
+  ]
 }

@@ -1,7 +1,7 @@
 {
   "id": "req:stt-pay-001",
   "title": "Typed DVCMin model",
-  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; DVCMin logical model (trust-phw).",
+  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; DVCMin logical model (trust-phw). QR Code Generation, 3. Step 2 — Assemble the payload: “The DVC payload uses short element names because every byte is paid for twice”.",
   "status": "proposed",
   "actors": [
     "issuer"
@@ -27,24 +27,8 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-PAY-001",
-    "derivation": "direct",
-    "steps": [
-      "step-2"
-    ],
-    "api": [
-      "api-dvcmin",
-      "api-payload-codec"
-    ],
-    "sources": [
-      {
-        "src": "qr-3",
-        "quote": "The DVC payload uses short element names because every byte is paid for twice"
-      },
-      {
-        "src": "ext-dvcmin"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s008-3-step-2-assemble-the-payload",
+    "library/who-smart-trust-phw-dvcmin"
+  ]
 }

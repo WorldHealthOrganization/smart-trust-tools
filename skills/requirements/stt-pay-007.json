@@ -1,10 +1,14 @@
 {
   "id": "req:stt-pay-007",
   "title": "Nationality is ISO 3166-1 alpha-3",
-  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; QR Code Generation, 12.3 Test issuer.",
+  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload; QR Code Generation, 12.3 Test issuer. QR Code Generation, 3. Step 2 — Assemble the payload: “Nationality, ISO 3166-1 alpha-3”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-pay-001"
+  ],
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s008-3-step-2-assemble-the-payload",
+    "library/who-smart-trust-qr-code-generation/sections/s020-12-3-test-issuer"
   ],
   "actors": [
     "issuer"
@@ -22,21 +26,5 @@
     "hcert-library",
     "functional",
     "direct"
-  ],
-  "stt": {
-    "id": "STT-PAY-007",
-    "derivation": "direct",
-    "steps": [
-      "step-2"
-    ],
-    "sources": [
-      {
-        "src": "qr-3",
-        "quote": "Nationality, ISO 3166-1 alpha-3"
-      },
-      {
-        "src": "qr-12.3"
-      }
-    ]
-  }
+  ]
 }

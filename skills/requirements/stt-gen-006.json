@@ -7,6 +7,9 @@
     "req:stt-gen-004",
     "req:stt-gen-005"
   ],
+  "reference": [
+    "memory/dir-languages"
+  ],
   "actors": [
     "implementer"
   ],
@@ -35,14 +38,5 @@
     "hcert-library",
     "architecture",
     "directive"
-  ],
-  "stt": {
-    "id": "STT-GEN-006",
-    "derivation": "directive",
-    "sources": [
-      {
-        "src": "dir-languages"
-      }
-    ]
-  }
+  ]
 }

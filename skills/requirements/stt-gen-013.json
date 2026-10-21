@@ -20,34 +20,14 @@
     "architecture",
     "directive"
   ],
-  "stt": {
-    "id": "STT-GEN-013",
-    "derivation": "directive",
-    "sources": [
-      {
-        "src": "dir-open-standards"
-      },
-      {
-        "src": "std-rfc8610"
-      },
-      {
-        "src": "std-fhir-datatypes"
-      },
-      {
-        "src": "std-xsd2"
-      },
-      {
-        "src": "std-json-ld"
-      },
-      {
-        "src": "std-shacl"
-      },
-      {
-        "src": "std-x680"
-      },
-      {
-        "src": "std-rfc7493"
-      }
-    ]
-  }
+  "reference": [
+    "memory/dir-open-standards",
+    "external-schemas/ietf-rfc8610",
+    "external-schemas/hl7-fhir-r5",
+    "external-schemas/w3c-xmlschema11-2",
+    "external-schemas/w3c-json-ld-1-1",
+    "external-schemas/w3c-shacl",
+    "external-schemas/itu-t-x680",
+    "external-schemas/ietf-rfc7493"
+  ]
 }

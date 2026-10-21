@@ -6,6 +6,10 @@
   "derivedFrom": [
     "req:stt-gen-006"
   ],
+  "reference": [
+    "vectors/smart-trust-pr129/dvc-qr-example-XXA.json",
+    "memory/dir-languages"
+  ],
   "actors": [
     "implementer"
   ],
@@ -22,20 +26,5 @@
     "hcert-library",
     "test",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-TST-005",
-    "derivation": "derived",
-    "api": [
-      "api-testkit"
-    ],
-    "sources": [
-      {
-        "src": "doc-qr-example-json"
-      },
-      {
-        "src": "dir-languages"
-      }
-    ]
-  }
+  ]
 }

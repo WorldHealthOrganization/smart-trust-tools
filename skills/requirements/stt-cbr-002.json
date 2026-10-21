@@ -1,7 +1,7 @@
 {
   "id": "req:stt-cbr-002",
   "title": "NFC normalisation",
-  "description": "Restates QR Code Generation, 5. Step 4 — Serialise as CBOR; HCERT Specification, 3.2.7 Health Certificate Claim.",
+  "description": "Restates QR Code Generation, 5. Step 4 — Serialise as CBOR; HCERT Specification, 3.2.7 Health Certificate Claim. QR Code Generation, 5. Step 4 — Serialise as CBOR: “Strings SHOULD be NFC-normalised. Decoders SHOULD be permissive about input that is not.”.",
   "status": "proposed",
   "actors": [
     "issuer",
@@ -21,21 +21,8 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-CBR-002",
-    "derivation": "direct",
-    "steps": [
-      "step-4",
-      "step-verify"
-    ],
-    "sources": [
-      {
-        "src": "qr-5",
-        "quote": "Strings SHOULD be NFC-normalised. Decoders SHOULD be permissive about input that is not."
-      },
-      {
-        "src": "hcert-3.2.7"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s010-5-step-4-serialise-as-cbor",
+    "library/who-smart-trust-hcert-spec/sections/s013-3-2-7-health-certificate-claim"
+  ]
 }

@@ -6,6 +6,10 @@
   "derivedFrom": [
     "req:stt-gen-006"
   ],
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards",
+    "memory/dir-languages"
+  ],
   "actors": [
     "receiver"
   ],
@@ -29,23 +33,5 @@
     "hcert-library",
     "api",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-VER-008",
-    "derivation": "derived",
-    "steps": [
-      "step-verify"
-    ],
-    "api": [
-      "api-result"
-    ],
-    "sources": [
-      {
-        "src": "qr-11"
-      },
-      {
-        "src": "dir-languages"
-      }
-    ]
-  }
+  ]
 }
