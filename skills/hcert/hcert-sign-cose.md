@@ -15,6 +15,8 @@ satisfies:
   - "req:stt-gen-009#statement"
   - "req:stt-iss-004#statement"
   - "req:stt-kid-001#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt
 ---
 
 # Step 5

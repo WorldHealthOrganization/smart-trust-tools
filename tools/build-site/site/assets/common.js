@@ -5,7 +5,7 @@
   var KIND_LABEL = {
     requirement: "Requirement", section: "Source section", document: "Source document",
     standard: "Standard", directive: "Owner directive", upstream: "smart-trust requirement",
-    skill: "Skill", api: "WIT item", tool: "Tool", process: "Process (BPMN)", role: "Role",
+    skill: "Skill", api: "WIT item", tool: "Tool", test: "Test", process: "Process (BPMN)", role: "Role",
     issue: "Open issue (bean)"
   };
   var URL_LABEL = {

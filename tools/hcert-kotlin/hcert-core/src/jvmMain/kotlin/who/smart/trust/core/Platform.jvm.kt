@@ -111,4 +111,6 @@ internal actual object Platform {
     } catch (e: java.security.NoSuchAlgorithmException) {
         Signature.getInstance("SHA256withRSA/PSS")
     }
+
+    actual fun nfc(text: String): String = java.text.Normalizer.normalize(text, java.text.Normalizer.Form.NFC)
 }

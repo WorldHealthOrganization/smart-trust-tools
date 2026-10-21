@@ -8,6 +8,10 @@ For every certificate in vectors/*/ :
     conforms to the generated shapes
 and a set of mutated payloads is rejected by both.
 
+Verifies STT-CBR-004 (the wire format is specified in CDDL), STT-PAY-010 (the
+payload models are derived from the FHIR logical models) and STT-TST-008
+(schema checks against the vectors).
+
 Requires: pip install cbor2 base45 pycddl pyshacl rdflib
 """
 

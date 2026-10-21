@@ -6,6 +6,8 @@ satisfies:
   - "req:stt-gen-001#statement"
   - "req:stt-zip-001#statement"
   - "req:stt-zip-002#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/CompressTest.kt
 ---
 
 # Step 6

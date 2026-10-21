@@ -18,6 +18,8 @@
  *   from;
  * - each success criterion names a requirement;
  * - each skill's `satisfies` names a requirement and one of its statements;
+ * - each file a skill's `tested-by` names exists, and every requirement id a
+ *   test in it is named after (`STT-XXX-nnn …`) names a requirement;
  * - each bean's "Requirements affected" and "Sources" resolve likewise.
  *
  *   bun tools/check-req-nodes/check.ts
@@ -94,6 +96,7 @@ function statementResolves(ref: string): boolean {
 }
 
 let skills = 0;
+let tests = 0;
 for (const pkg of readdirSync(join(ROOT, "skills"), { withFileTypes: true })) {
   if (!pkg.isDirectory() || pkg.name === "requirements") continue;
   for (const f of readdirSync(join(ROOT, "skills", pkg.name)).filter((n) => n.endsWith(".md"))) {
@@ -101,6 +104,21 @@ for (const pkg of readdirSync(join(ROOT, "skills"), { withFileTypes: true })) {
     const front = /^---\n([\s\S]*?)\n---/.exec(readFileSync(join(ROOT, "skills", pkg.name, f), "utf-8"))?.[1] ?? "";
     for (const m of front.matchAll(/^\s+- "(req:[^"]+)"/gm)) {
       if (!statementResolves(m[1]!)) problems.push(`skills/${pkg.name}/${f}: satisfies ${m[1]} names no requirement statement`);
+    }
+    const testedBy = /^tested-by:\n((?:\s+- .*\n?)+)/m.exec(front)?.[1] ?? "";
+    for (const m of testedBy.matchAll(/^\s+- (\S+)/gm)) {
+      const path = join(ROOT, m[1]!);
+      if (!existsSync(path)) {
+        problems.push(`skills/${pkg.name}/${f}: tested-by ${m[1]} does not exist`);
+        continue;
+      }
+      if (!path.endsWith(".kt")) continue;
+      for (const t of readFileSync(path, "utf-8").matchAll(/@Test\s+fun\s+`([^`]+)`/g)) {
+        tests++;
+        for (const id of t[1]!.match(/STT-[A-Z0-9]+-\d{3}/g) ?? []) {
+          if (!nodes.has(`req:${id.toLowerCase()}`)) problems.push(`${m[1]}: test "${t[1]}" names ${id}, which is no requirement`);
+        }
+      }
     }
   }
 }
@@ -118,5 +136,5 @@ for (const f of beans) {
 }
 
 for (const p of problems) console.error(`  ✗ ${p}`);
-console.log(`${files.length} requirement(s), ${skills} skill(s), ${beans.length} bean(s), ${upstream.size} smart-trust Requirements; ${problems.length} problem(s)`);
+console.log(`${files.length} requirement(s), ${skills} skill(s), ${tests} test(s), ${beans.length} bean(s), ${upstream.size} smart-trust Requirements; ${problems.length} problem(s)`);
 process.exit(problems.length ? 1 : 0);

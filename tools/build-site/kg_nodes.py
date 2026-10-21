@@ -16,12 +16,16 @@ Every node and edge here is read from a committed node, never restated:
   api           an item of the WIT contract, with the [STT-...] tags its doc
                 comment carries
   issue         beans/defs/*.md (Requirements affected, Sources)
+  test          a test a skill's `tested-by:` names: each Kotlin test function
+                (named `STT-XXX-nnn ...` after the requirements it verifies),
+                or a whole script for any other file
 
 Edges: derivedFrom (a requirement's `reference`), satisfies (a smart-trust
 canonical in `reference`), refines (its `derivedFrom`), verifiedBy,
 realizedBy (requirement to skill), constrainsApi, affectedBy, concerns,
 partOf, implementedBy (skill to Tool), usedIn (skill to process),
-performedBy (skill to role).
+performedBy (skill to role), testedBy (skill to test), verifies (test to
+requirement).
 """
 
 import collections
@@ -170,8 +174,29 @@ def load_skills():
             skills[fm["name"]] = {
                 "name": fm["name"], "package": pkg.name, "description": " ".join(str(fm.get("description", "")).split()),
                 "satisfies": [s.split("#")[0] for s in fm.get("satisfies", [])], "file": f.relative_to(ROOT).as_posix(),
+                "testedBy": list(fm.get("tested-by") or []),
             }
     return skills
+
+
+KOTLIN_TEST = re.compile(r"@Test\s+fun\s+`([^`]+)`")
+
+
+def load_tests(skills):
+    """The tests the skills' `tested-by:` name: {id: {name, file, reqs, skills}}."""
+    tests = collections.OrderedDict()
+    for s in skills.values():
+        for path in s["testedBy"]:
+            text = (ROOT / path).read_text()
+            found = KOTLIN_TEST.findall(text) if path.endswith(".kt") else []
+            for name in found or [None]:
+                tid = "test:%s::%s" % (pathlib.Path(path).name, name) if name else "test:" + path
+                t = tests.setdefault(tid, {
+                    "name": name or pathlib.Path(path).name, "file": path, "skills": [],
+                    "reqs": sorted(set(STT_TAG.findall(name if name else text))),
+                })
+                t["skills"].append(s["name"])
+    return tests
 
 
 def load_tools():
@@ -263,9 +288,10 @@ def provenance(entries):
 def load(with_tools=True):
     """The nodes. Without Tools when the harness is not mounted (CI): tools/index.ts imports it."""
     entries, sections = load_library()
+    skills = load_skills()
     return {
         "entries": entries, "sections": sections, "upstream": load_upstream(), "reqs": load_requirements(),
-        "skills": load_skills(), "tools": load_tools() if with_tools else {}, "processes": load_processes(),
+        "skills": skills, "tests": load_tests(skills), "tools": load_tools() if with_tools else {}, "processes": load_processes(),
         "roles": load_roles(), "beans": load_beans(), "wit": load_wit(),
     }
 
@@ -274,6 +300,7 @@ FAMILY = {
     "requirement": "requirement",
     "section": "source", "document": "source", "standard": "source", "directive": "source", "upstream": "source",
     "skill": "realization", "api": "realization", "tool": "realization", "process": "realization", "role": "realization",
+    "test": "realization",
     "issue": "issue",
 }
 
@@ -359,6 +386,14 @@ def build_graph(M):
         add("tool:" + t["id"], "tool", t["id"], t["title"], text=t["description"], file="tools/%s/%s.ts" % (t["id"], t["id"]))
         for s in t["satisfies"]:
             edge("skill:" + s, "tool:" + t["id"], "implementedBy")
+    for tid, t in M["tests"].items():
+        label = re.sub(r"^(?:STT-[A-Z0-9]+-\d{3}\s+)+", "", t["name"])
+        add(tid, "test", label, t["name"], file=t["file"], reqs=t["reqs"])
+        for s in t["skills"]:
+            edge("skill:" + s, tid, "testedBy")
+        for r in t["reqs"]:
+            if r in reqs_by_display:
+                edge(tid, r, "verifies")
     for p in M["processes"].values():
         add("process:" + p["id"], "process", p["name"], p["name"], text=p["doc"], file=p["file"])
         for s in p["skills"]:

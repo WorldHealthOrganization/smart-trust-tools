@@ -18,6 +18,9 @@ satisfies:
   - "req:stt-nfr-002#statement"
   - "req:stt-sec-001#statement"
   - "req:stt-sec-002#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt
+  - tools/hcert-kotlin/hcert-core/node-smoke.mjs
 ---
 
 # hcert-library-architecture

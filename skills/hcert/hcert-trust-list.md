@@ -12,6 +12,8 @@ satisfies:
   - "req:stt-tru-005#statement"
   - "req:stt-ver-006#statement"
   - "req:stt-ver-009#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt
 ---
 
 # hcert-trust-list

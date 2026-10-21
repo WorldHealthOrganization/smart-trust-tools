@@ -10,6 +10,8 @@ satisfies:
   - "req:stt-vhl-008#statement"
   - "req:stt-vhl-009#statement"
   - "req:stt-vhl-010#statement"
+tested-by:
+  - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt
 ---
 
 # Use a VHL

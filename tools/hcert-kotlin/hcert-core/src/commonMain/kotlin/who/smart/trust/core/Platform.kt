@@ -37,4 +37,6 @@ internal expect object Platform {
     fun aesGcmDecrypt(key: ByteArray, iv: ByteArray, aad: ByteArray, ciphertextAndTag: ByteArray): ByteArray
     /** Inflates raw DEFLATE (RFC 1951, no ZLIB header), as JWE "zip": "DEF" uses. */
     fun inflateRaw(data: ByteArray, maxOut: Int): ByteArray
+    /** [text] in Unicode Normalization Form C. [STT-CBR-002] */
+    fun nfc(text: String): String
 }
