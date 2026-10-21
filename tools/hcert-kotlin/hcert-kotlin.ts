@@ -25,7 +25,7 @@ export default toolFactory((t) =>
     },
     requires: { runtime: ["gradle", "java"], network: true },
     remedies: [
-      { host: "repo.maven.apache.org", error: "429", none: "Re-run through Google's mirror of Maven Central: `--init-script tools/hcert-kotlin/gradle/central-mirror.init.gradle`. The verification metadata still pins every artefact's sha256, so the mirror is trusted for nothing." },
+      { host: "repo.maven.apache.org", error: "429", none: "Re-run through Google's mirror of Maven Central: `--init-script gradle/central-mirror.init.gradle`. The verification metadata still pins every artefact's sha256, so the mirror is trusted for nothing." },
       { host: "plugins.gradle.org", none: "The Kotlin plugins are also on Maven Central; the same mirror init script serves them." },
     ],
   }),

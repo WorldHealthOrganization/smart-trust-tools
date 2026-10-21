@@ -29,7 +29,7 @@ object HcertNode {
 
     /** Decrypts a VHL document (JWE dir / A256GCM) and returns its text, or "error: ...". */
     fun decryptText(jwe: String, key: String): String = when (val r = HcertVhl.decrypt(jwe, key)) {
-        is who.smart.trust.WitResult.Ok -> r.value.content.decodeToString()
-        is who.smart.trust.WitResult.Err -> "error: ${r.error}"
+        is who.smart.trust.HcertResult.Ok -> r.value.content.decodeToString()
+        is who.smart.trust.HcertResult.Err -> "error: ${r.error}"
     }
 }

@@ -1,6 +1,6 @@
 package who.smart.trust.core
 
-import who.smart.trust.WitResult
+import who.smart.trust.HcertResult
 import who.smart.trust.dvc.Dvc
 import who.smart.trust.dvc.DvcMin
 import who.smart.trust.dvc.DvcMinVaccineDetails
@@ -102,18 +102,18 @@ object HcertDvc : Dvc {
         return CborItem.Map(subject)
     }
 
-    override fun fromCbor(cbor: CborBytes, limits: DecodeLimits): WitResult<DvcMin, List<ValidationIssue>> {
+    override fun fromCbor(cbor: CborBytes, limits: DecodeLimits): HcertResult<DvcMin, List<ValidationIssue>> {
         val root = try {
             cborDecode(cbor, limits)
         } catch (e: CborException) {
-            return WitResult.Err(listOf(issue("", "cbor", e.message!!)))
+            return HcertResult.Err(listOf(issue("", "cbor", e.message!!)))
         }
         return fromItem(root)
     }
 
-    internal fun fromItem(root: CborItem): WitResult<DvcMin, List<ValidationIssue>> {
+    internal fun fromItem(root: CborItem): HcertResult<DvcMin, List<ValidationIssue>> {
         val issues = mutableListOf<ValidationIssue>()
-        val map = root as? CborItem.Map ?: return WitResult.Err(listOf(issue("", "not-a-map", "DVCMin is not a CBOR map")))
+        val map = root as? CborItem.Map ?: return HcertResult.Err(listOf(issue("", "not-a-map", "DVCMin is not a CBOR map")))
         fun texts(m: CborItem.Map, prefix: String, known: Set<String>): kotlin.collections.Map<String, String> {
             val out = mutableMapOf<String, String>()
             for ((k, v) in m.entries) {
@@ -137,13 +137,13 @@ object HcertDvc : Dvc {
         }
         for (r in listOf("n", "dob", "s", "nt", "v")) if (r !in s && issues.none { it.path == r }) issues += issue(r, "required", "$r is required")
         for (r in listOf("vp", "dv", "bo")) if (vxItem != null && r !in vx && issues.none { it.path == "vx.$r" }) issues += issue("vx.$r", "required", "vx.$r is required")
-        if (issues.any { it.severity == Severity.BLOCKING }) return WitResult.Err(issues)
+        if (issues.any { it.severity == Severity.BLOCKING }) return HcertResult.Err(issues)
         // Unknown elements are kept, encoded, so newer versions still decode. [STT-PAY-008]
         val extensions = map.entries.mapNotNull { (k, v) ->
             val name = (k as CborItem.Text).value
             if (name in subjectKeys) null else name to CborEncoder.encode(v)
         }
-        return WitResult.Ok(
+        return HcertResult.Ok(
             DvcMin(
                 n = s.getValue("n"), dob = s.getValue("dob"), s = s.getValue("s"), nt = s.getValue("nt"),
                 id = s["id"], dt = s["dt"], gn = s["gn"],

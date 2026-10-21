@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import who.smart.trust.WitResult
+import who.smart.trust.HcertResult
 import who.smart.trust.issuer.IssueRequest
 import who.smart.trust.issuer.Validity
 import who.smart.trust.payloads.Payload
@@ -25,9 +25,9 @@ import who.smart.trust.vhl.VhlPayload
 
 private val repo = File(System.getProperty("repo.root"))
 private fun file(path: String) = File(repo, path).readText()
-private fun <T, E> WitResult<T, E>.get(): T = when (this) {
-    is WitResult.Ok -> value
-    is WitResult.Err -> throw AssertionError("expected Ok, got $error")
+private fun <T, E> HcertResult<T, E>.get(): T = when (this) {
+    is HcertResult.Ok -> value
+    is HcertResult.Err -> throw AssertionError("expected Ok, got $error")
 }
 
 /** The IHE ITI-YY3 example payload. */
@@ -61,7 +61,7 @@ class VhlPayloadTest {
         val upstream = "vhlink:/eyJ1cmwiOiJodHRwczovL3ZobC1zaGFyZXIuZXhhbXBsZS5vcmcvTGlzdC9fc2VhcmNoP19pZD1hYmMxMjNkZWY0NTYmY29kZT1mb2xkZXImc3RhdHVzPWN1cnJlbnQmcGF0aWVudC5pZGVudGlmaWVyPXVybjpvaWQ6Mi4xNi44NDAuMS4xMTM4ODMuMi40LjYuM3xQQVNTUE9SVDEyMyZfaW5jbHVkZT1MaXN0Oml0ZW0iLCJrZXkiOiI4NkY4TFk1TGxXQWExLU9TX0ZnclRuWU5xRkhKUDJleTVSU0tMSkJOOWprIiwiZXhwIjoxNzM1Njg5NjAwLCJmbGFnIjoiTFAiLCJsYWJlbCI6IlBhdGllbnQgSGVhbHRoIFN1bW1hcnkiLCJ2IjoxLCJleHRlbnNpb25zIjp7ImZoaXJCYXNlVXJsIjoiaHR0cHM6Ly92aGwtc2hhcmVyLmV4YW1wbGUub3JnIn19"
         val p = HcertVhl.fromVhlink(upstream).get()
         assertEquals(ihe.copy(fhirBaseUrl = null), p) // its "extensions" is not the payload's "extension"
-        assertIs<VhlError.NotAVhlink>((HcertVhl.fromVhlink("shlink:/abc") as WitResult.Err).error)
+        assertIs<VhlError.NotAVhlink>((HcertVhl.fromVhlink("shlink:/abc") as HcertResult.Err).error)
     }
 
     @Test fun newKeyIs32RandomBytes() {
@@ -138,10 +138,10 @@ class VhlManifestTest {
     @Test fun listUrlFormAndRefusals() {
         val list = ihe.copy(url = "https://vhl-sharer.example.org/List?_id=abc&code=folder&status=current&patient.identifier=s%7Cv", flag = null)
         assertEquals("https://vhl-sharer.example.org/List/_search", HcertVhl.buildManifestRequest(list, "Clinic B", null, null).get().url)
-        assertIs<VhlError.Manifest>((HcertVhl.buildManifestRequest(ihe, "Clinic B", null, null) as WitResult.Err).error) // P without passcode
-        assertIs<VhlError.Manifest>((HcertVhl.buildManifestRequest(list, "Clinic B", "1234", null) as WitResult.Err).error) // passcode without P
+        assertIs<VhlError.Manifest>((HcertVhl.buildManifestRequest(ihe, "Clinic B", null, null) as HcertResult.Err).error) // P without passcode
+        assertIs<VhlError.Manifest>((HcertVhl.buildManifestRequest(list, "Clinic B", "1234", null) as HcertResult.Err).error) // passcode without P
         val noId = list.copy(url = "https://vhl-sharer.example.org/List?code=folder&status=current&patient.identifier=s%7Cv")
-        assertIs<VhlError.Manifest>((HcertVhl.buildManifestRequest(noId, "Clinic B", null, null) as WitResult.Err).error)
+        assertIs<VhlError.Manifest>((HcertVhl.buildManifestRequest(noId, "Clinic B", null, null) as HcertResult.Err).error)
     }
 
     @Test fun caseBBundleFromIhe() {
@@ -158,7 +158,7 @@ class VhlManifestTest {
         val d = HcertVhl.parseManifest(bundle).get().single()
         assertEquals("DocumentReference/d1", d.reference)
         assertNull(d.url)
-        assertIs<VhlError.Manifest>((HcertVhl.parseManifest("""{"resourceType":"Bundle","type":"document"}""") as WitResult.Err).error)
+        assertIs<VhlError.Manifest>((HcertVhl.parseManifest("""{"resourceType":"Bundle","type":"document"}""") as HcertResult.Err).error)
     }
 }
 
@@ -179,12 +179,12 @@ class VhlJweTest {
         val jwe = HcertVhl.encrypt("hello".encodeToByteArray(), "text/plain", key).get()
         assertEquals("", jwe.split('.')[1])
         assertEquals("hello", HcertVhl.decrypt(jwe, key).get().content.decodeToString())
-        assertIs<VhlError.DecryptFailed>((HcertVhl.decrypt(jwe, HcertVhl.newKey()) as WitResult.Err).error)
+        assertIs<VhlError.DecryptFailed>((HcertVhl.decrypt(jwe, HcertVhl.newKey()) as HcertResult.Err).error)
         val parts = jwe.split('.').toMutableList()
         parts[3] = Base64Std.encodeUrl(Base64Std.decode(parts[3]).also { it[0] = (it[0].toInt() xor 1).toByte() })
-        assertIs<VhlError.DecryptFailed>((HcertVhl.decrypt(parts.joinToString("."), key) as WitResult.Err).error)
+        assertIs<VhlError.DecryptFailed>((HcertVhl.decrypt(parts.joinToString("."), key) as HcertResult.Err).error)
         val a128 = Base64Std.encodeUrl("""{"alg":"dir","enc":"A128GCM"}""".encodeToByteArray()) + ".." + jwe.substringAfter("..")
-        assertIs<VhlError.Unsupported>((HcertVhl.decrypt(a128, key) as WitResult.Err).error)
+        assertIs<VhlError.Unsupported>((HcertVhl.decrypt(a128, key) as HcertResult.Err).error)
     }
 }
 

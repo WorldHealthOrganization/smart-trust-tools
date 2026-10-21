@@ -1,7 +1,9 @@
 package who.smart.trust.core
 
-import who.smart.trust.HcertWorld
-import who.smart.trust.WitResult
+import who.smart.trust.HcertResult
+import who.smart.trust.codec.Codec
+import who.smart.trust.cose.Cose
+import who.smart.trust.dvc.Dvc
 import who.smart.trust.issuer.IssueError
 import who.smart.trust.issuer.IssueRequest
 import who.smart.trust.issuer.IssuedHcert
@@ -11,6 +13,8 @@ import who.smart.trust.payloads.Payload
 import who.smart.trust.payloads.RawPayload
 import who.smart.trust.subclaims.PayloadKind
 import who.smart.trust.subclaims.Registry
+import who.smart.trust.subclaims.Subclaims
+import who.smart.trust.trust.Trust
 import who.smart.trust.trust.TrustStore
 import who.smart.trust.trust.TrustedDsc
 import who.smart.trust.types.CoseAlgorithm
@@ -27,6 +31,7 @@ import who.smart.trust.verifier.VerificationResult
 import who.smart.trust.verifier.VerifiedHcert
 import who.smart.trust.verifier.Verifier
 import who.smart.trust.verifier.VerifierOptions
+import who.smart.trust.vhl.Vhl
 
 internal object Claim {
     const val ISS = 1L
@@ -54,14 +59,14 @@ object HcertIssuer : Issuer {
     }
 
     private fun invalid(path: String, code: String, message: String) =
-        WitResult.Err(IssueError.PayloadInvalid(listOf(ValidationIssue(path, code, message, Severity.BLOCKING))))
+        HcertResult.Err(IssueError.PayloadInvalid(listOf(ValidationIssue(path, code, message, Severity.BLOCKING))))
 
-    override fun prepare(req: IssueRequest, reg: Registry): WitResult<PendingSignature, IssueError> {
+    override fun prepare(req: IssueRequest, reg: Registry): HcertResult<PendingSignature, IssueError> {
         val (subclaim, body) = when (val p = req.payload) {
             is Payload.DvcMin -> {
-                val key = reg.subclaimFor(PayloadKind.DVC_MIN) ?: return WitResult.Err(IssueError.UnknownSubclaim(-6))
+                val key = reg.subclaimFor(PayloadKind.DVC_MIN) ?: return HcertResult.Err(IssueError.UnknownSubclaim(-6))
                 val issues = HcertDvc.validate(p.value).filter { it.severity == Severity.BLOCKING }
-                if (issues.isNotEmpty()) return WitResult.Err(IssueError.PayloadInvalid(issues))
+                if (issues.isNotEmpty()) return HcertResult.Err(IssueError.PayloadInvalid(issues))
                 val item = try {
                     HcertDvc.item(p.value)
                 } catch (e: Exception) {
@@ -70,9 +75,9 @@ object HcertIssuer : Issuer {
                 key to item
             }
             is Payload.Vhl -> {
-                val key = reg.subclaimFor(PayloadKind.VHL) ?: return WitResult.Err(IssueError.UnknownSubclaim(5))
+                val key = reg.subclaimFor(PayloadKind.VHL) ?: return HcertResult.Err(IssueError.UnknownSubclaim(5))
                 val issues = HcertVhl.validate(p.value, null).filter { it.severity == Severity.BLOCKING }
-                if (issues.isNotEmpty()) return WitResult.Err(IssueError.PayloadInvalid(issues))
+                if (issues.isNotEmpty()) return HcertResult.Err(IssueError.PayloadInvalid(issues))
                 key to HcertVhl.toItem(p.value) // a CBOR map, not a vhlink:/ string [STT-VHL-002]
             }
             is Payload.Raw -> {
@@ -84,18 +89,18 @@ object HcertIssuer : Issuer {
                 p.value.subclaim to item
             }
         }
-        if (reg.lookup(subclaim) == null) return WitResult.Err(IssueError.UnknownSubclaim(subclaim))
-        if (subclaim < 0 && !req.allowDevelopmentSubclaims) return WitResult.Err(IssueError.DevelopmentSubclaimNotAllowed(subclaim))
+        if (reg.lookup(subclaim) == null) return HcertResult.Err(IssueError.UnknownSubclaim(subclaim))
+        if (subclaim < 0 && !req.allowDevelopmentSubclaims) return HcertResult.Err(IssueError.DevelopmentSubclaimNotAllowed(subclaim))
         req.iss?.let { if (!alpha2.matches(it)) return invalid("iss", "not-alpha2", "iss must be two upper-case letters") }
         if (req.validity.exp <= req.validity.iat) return invalid("exp", "exp-not-after-iat", "exp must be after iat")
 
         val dsc = try {
             Platform.certificate(req.dscDer)
         } catch (e: Exception) {
-            return WitResult.Err(IssueError.BadCertificate(e.message ?: "unreadable certificate"))
+            return HcertResult.Err(IssueError.BadCertificate(e.message ?: "unreadable certificate"))
         }
         // [STT-CWT-004]
-        if (req.validity.iat < dsc.notBefore || req.validity.exp > dsc.notAfter) return WitResult.Err(IssueError.ValidityOutsideDsc)
+        if (req.validity.iat < dsc.notBefore || req.validity.exp > dsc.notAfter) return HcertResult.Err(IssueError.ValidityOutsideDsc)
 
         val kid = HcertCose.kidFromDsc(req.dscDer)
         val claims = buildList<Pair<CborItem, CborItem>> {
@@ -108,22 +113,22 @@ object HcertIssuer : Issuer {
         val protected = CborEncoder.encode(
             CborItem.Map(listOf(CborItem.Int(1) to CborItem.Int(req.alg.label()), CborItem.Int(4) to CborItem.Bytes(kid))),
         )
-        return WitResult.Ok(Pending(protected, payload, req.alg, kid, req.dscDer.copyOf()))
+        return HcertResult.Ok(Pending(protected, payload, req.alg, kid, req.dscDer.copyOf()))
     }
 
-    override fun finish(pending: PendingSignature, signature: ByteArray): WitResult<IssuedHcert, IssueError> {
-        val p = pending as? Pending ?: return WitResult.Err(IssueError.BadSignatureFormat("not a PendingSignature from prepare"))
+    override fun finish(pending: PendingSignature, signature: ByteArray): HcertResult<IssuedHcert, IssueError> {
+        val p = pending as? Pending ?: return HcertResult.Err(IssueError.BadSignatureFormat("not a PendingSignature from prepare"))
         val sig = when (p.alg) {
             CoseAlgorithm.ES256 -> if (signature.size == 64) signature else try {
                 EcdsaSignature.derToRaw(signature)
             } catch (e: IllegalArgumentException) {
-                return WitResult.Err(IssueError.BadSignatureFormat("ES256 signature is neither 64-byte r||s nor DER: ${e.message}"))
+                return HcertResult.Err(IssueError.BadSignatureFormat("ES256 signature is neither 64-byte r||s nor DER: ${e.message}"))
             }
             CoseAlgorithm.PS256 -> signature
         }
         // A signature from the wrong key is caught here, not by the first verifier.
         if (!Platform.verify(p.alg, p.dscDer, p.tbs, sig)) {
-            return WitResult.Err(IssueError.BadSignatureFormat("the signature does not verify with the DSC's public key"))
+            return HcertResult.Err(IssueError.BadSignatureFormat("the signature does not verify with the DSC's public key"))
         }
         val cose = CborEncoder.encode(
             CborItem.Tag(
@@ -131,7 +136,7 @@ object HcertIssuer : Issuer {
                 CborItem.Array(listOf(CborItem.Bytes(p.protected), CborItem.Map(emptyList()), CborItem.Bytes(p.payload), CborItem.Bytes(sig))),
             ),
         )
-        return WitResult.Ok(IssuedHcert(HcertCodec.toHc1(cose), cose))
+        return HcertResult.Ok(IssuedHcert(HcertCodec.toHc1(cose), cose))
     }
 }
 
@@ -171,8 +176,8 @@ object HcertVerifier : Verifier {
     private fun front(hc1: String, limits: who.smart.trust.types.DecodeLimits): ByteArray {
         if (hc1.length > limits.maxInputChars) throw Fail(Step.PREFIX, FailureReason.LIMIT_EXCEEDED, "input exceeds ${limits.maxInputChars} characters")
         val (version, rest) = when (val c = HcertCodec.detectContext(hc1)) {
-            is WitResult.Ok -> c.value
-            is WitResult.Err -> throw Fail(Step.PREFIX, FailureReason.BAD_PREFIX, "no HC[1-9A-Z]: context identifier")
+            is HcertResult.Ok -> c.value
+            is HcertResult.Err -> throw Fail(Step.PREFIX, FailureReason.BAD_PREFIX, "no HC[1-9A-Z]: context identifier")
         }
         if (version != "1") throw Fail(Step.PREFIX, FailureReason.UNSUPPORTED_CONTEXT_VERSION, "context identifier HC$version")
         val deflated = try {
@@ -195,10 +200,10 @@ object HcertVerifier : Verifier {
         failed(f.step, f.reason, f.detail)
     }
 
-    override fun readUnverified(hc1: String, reg: Registry, limits: who.smart.trust.types.DecodeLimits): WitResult<UnverifiedHcert, VerificationFailure> = try {
-        WitResult.Ok(unverified(front(hc1, limits), reg, limits))
+    override fun readUnverified(hc1: String, reg: Registry, limits: who.smart.trust.types.DecodeLimits): HcertResult<UnverifiedHcert, VerificationFailure> = try {
+        HcertResult.Ok(unverified(front(hc1, limits), reg, limits))
     } catch (f: Fail) {
-        WitResult.Err(VerificationFailure(f.step, f.reason, f.detail, emptyList()))
+        HcertResult.Err(VerificationFailure(f.step, f.reason, f.detail, emptyList()))
     }
 
     /** [STT-VER-011] Everything here is unverified; the first diagnostic says so. */
@@ -236,8 +241,8 @@ object HcertVerifier : Verifier {
 
     private fun parse(cose: ByteArray, limits: who.smart.trust.types.DecodeLimits): who.smart.trust.cose.Sign1 =
         when (val r = HcertCose.parseSign1(cose, limits)) {
-            is WitResult.Ok -> r.value
-            is WitResult.Err -> throw when (val e = r.error) {
+            is HcertResult.Ok -> r.value
+            is HcertResult.Err -> throw when (val e = r.error) {
                 is who.smart.trust.cose.CoseError.HeaderInvalid -> Fail(Step.HEADER, FailureReason.HEADER_INVALID, e.value)
                 is who.smart.trust.cose.CoseError.UnsupportedAlgorithm -> Fail(Step.HEADER, FailureReason.UNSUPPORTED_ALGORITHM, "alg ${e.value}")
                 is who.smart.trust.cose.CoseError.Malformed ->
@@ -256,16 +261,16 @@ object HcertVerifier : Verifier {
         if (subclaim == reg.subclaimFor(PayloadKind.VHL)) {
             // A CBOR map, or the vhlink:/ string IHE ITI-YY3 describes. [STT-VHL-002]
             val p = when (val r = HcertVhl.fromItem(body)) {
-                is WitResult.Ok -> r.value
-                is WitResult.Err -> throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, "VHL payload: ${r.error}")
+                is HcertResult.Ok -> r.value
+                is HcertResult.Err -> throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, "VHL payload: ${r.error}")
             }
             HcertVhl.validate(p, null).firstOrNull { it.severity == Severity.BLOCKING }
                 ?.let { throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, "${it.path}: ${it.message}") }
             Payload.Vhl(p)
         } else if (subclaim == reg.subclaimFor(PayloadKind.DVC_MIN)) {
             val dvc = when (val r = HcertDvc.fromItem(body)) {
-                is WitResult.Ok -> r.value
-                is WitResult.Err -> throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, r.error.joinToString("; ") { "${it.path}: ${it.message}" })
+                is HcertResult.Ok -> r.value
+                is HcertResult.Err -> throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, r.error.joinToString("; ") { "${it.path}: ${it.message}" })
             }
             HcertDvc.validate(dvc).firstOrNull { it.severity == Severity.BLOCKING }
                 ?.let { throw Fail(Step.PAYLOAD, FailureReason.PAYLOAD_INVALID, "${it.path}: ${it.message}") }
@@ -287,7 +292,7 @@ object HcertVerifier : Verifier {
         // Trust lookup, then every candidate until one verifies [STT-KID-002]
         val candidates = store.candidates(kid)
         if (candidates.isEmpty()) throw Fail(Step.TRUST_LOOKUP, FailureReason.KID_NOT_FOUND, "no trusted DSC has kid ${kid.toHex()}")
-        val dsc: TrustedDsc = candidates.firstOrNull { HcertCose.verifySign1(s, it.der) is WitResult.Ok }
+        val dsc: TrustedDsc = candidates.firstOrNull { HcertCose.verifySign1(s, it.der) is HcertResult.Ok }
             ?: throw Fail(Step.SIGNATURE, FailureReason.SIGNATURE_INVALID, "no DSC with kid ${kid.toHex()} verifies the signature")
         // [STT-VER-006] presence on the trust list is the validity check; the X.509 period is reported.
         if (now < dsc.notBefore || now > dsc.notAfter) diagnostics += Diagnostic(Step.TRUST_LOOKUP, Severity.WARNING, "the DSC is outside its X.509 validity period")
@@ -342,14 +347,18 @@ object HcertVerifier : Verifier {
     }
 }
 
-/** The whole contract, implemented. */
-object Hcert : HcertWorld {
-    override val codec = HcertCodec
-    override val cose = HcertCose
-    override val subclaims = HcertSubclaims
-    override val dvc = HcertDvc
-    override val trust = HcertTrust
-    override val issuer = HcertIssuer
-    override val vhl = HcertVhl
-    override val verifier = HcertVerifier
+/**
+ * The library's entry point: each part of the API, by what it does. Depend on
+ * this and call what you need; what is not called is shrunk away (R8 on
+ * Android, dead-code elimination on Kotlin/JS).
+ */
+object Hcert {
+    val codec: Codec = HcertCodec
+    val cose: Cose = HcertCose
+    val subclaims: Subclaims = HcertSubclaims
+    val dvc: Dvc = HcertDvc
+    val trust: Trust = HcertTrust
+    val issuer: Issuer = HcertIssuer
+    val vhl: Vhl = HcertVhl
+    val verifier: Verifier = HcertVerifier
 }

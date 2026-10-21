@@ -1,6 +1,6 @@
 package who.smart.trust.core
 
-import who.smart.trust.WitResult
+import who.smart.trust.HcertResult
 import who.smart.trust.trust.Trust
 import who.smart.trust.trust.TrustError
 import who.smart.trust.trust.TrustStore
@@ -15,32 +15,32 @@ import who.smart.trust.types.Kid
 class HcertTrustStore : TrustStore {
     private val dscs = mutableListOf<TrustedDsc>()
 
-    private fun add(der: ByteArray, domain: String? = null, participant: String? = null): WitResult<Int, TrustError> {
-        if (dscs.any { it.der.contentEquals(der) }) return WitResult.Ok(0)
+    private fun add(der: ByteArray, domain: String? = null, participant: String? = null): HcertResult<Int, TrustError> {
+        if (dscs.any { it.der.contentEquals(der) }) return HcertResult.Ok(0)
         val info = try {
             Platform.certificate(der)
         } catch (e: Exception) {
-            return WitResult.Err(TrustError.Parse("not an X.509 certificate: ${e.message}"))
+            return HcertResult.Err(TrustError.Parse("not an X.509 certificate: ${e.message}"))
         }
         dscs += TrustedDsc(der, HcertCose.kidFromDsc(der), info.country, info.notBefore, info.notAfter, info.extendedKeyUsages, domain, participant)
-        return WitResult.Ok(1)
+        return HcertResult.Ok(1)
     }
 
-    override fun addDer(der: ByteArray): WitResult<Int, TrustError> = add(der)
+    override fun addDer(der: ByteArray): HcertResult<Int, TrustError> = add(der)
 
-    override fun addPem(pem: String): WitResult<Int, TrustError> {
+    override fun addPem(pem: String): HcertResult<Int, TrustError> {
         val blocks = try {
             Pem.blocks(pem)
         } catch (e: IllegalArgumentException) {
-            return WitResult.Err(TrustError.Parse("bad base64 in a PEM block"))
+            return HcertResult.Err(TrustError.Parse("bad base64 in a PEM block"))
         }
-        if (blocks.isEmpty()) return WitResult.Err(TrustError.Parse("no CERTIFICATE block"))
+        if (blocks.isEmpty()) return HcertResult.Err(TrustError.Parse("no CERTIFICATE block"))
         var n = 0
         for (b in blocks) when (val r = add(b)) {
-            is WitResult.Ok -> n += r.value
-            is WitResult.Err -> return r
+            is HcertResult.Ok -> n += r.value
+            is HcertResult.Err -> return r
         }
-        return WitResult.Ok(n)
+        return HcertResult.Ok(n)
     }
 
     /**
@@ -51,30 +51,30 @@ class HcertTrustStore : TrustStore {
      * the `trustlist:<domain>:<participant>:<usage>` DID path; "-" is the
      * wildcard.
      */
-    override fun addDidDocument(json: String): WitResult<Int, TrustError> {
+    override fun addDidDocument(json: String): HcertResult<Int, TrustError> {
         val doc = try {
             parseJson(json) as? Map<*, *>
         } catch (e: IllegalArgumentException) {
-            return WitResult.Err(TrustError.Parse(e.message ?: "invalid JSON"))
-        } ?: return WitResult.Err(TrustError.Parse("DID document is not a JSON object"))
-        val methods = doc["verificationMethod"] as? List<*> ?: return WitResult.Err(TrustError.Parse("no verificationMethod array"))
+            return HcertResult.Err(TrustError.Parse(e.message ?: "invalid JSON"))
+        } ?: return HcertResult.Err(TrustError.Parse("DID document is not a JSON object"))
+        val methods = doc["verificationMethod"] as? List<*> ?: return HcertResult.Err(TrustError.Parse("no verificationMethod array"))
         var n = 0
         for (m in methods) {
             val vm = m as? Map<*, *> ?: continue
             val x5c = (vm["publicKeyJwk"] as? Map<*, *>)?.get("x5c") as? List<*> ?: continue
-            val first = x5c.firstOrNull() as? String ?: return WitResult.Err(TrustError.Parse("x5c entry is not a string"))
+            val first = x5c.firstOrNull() as? String ?: return HcertResult.Err(TrustError.Parse("x5c entry is not a string"))
             val der = try {
                 Base64Std.decode(first)
             } catch (e: IllegalArgumentException) {
-                return WitResult.Err(TrustError.Parse("x5c entry is not base64"))
+                return HcertResult.Err(TrustError.Parse("x5c entry is not base64"))
             }
             val (domain, participant) = pathOf(vm["id"] as? String ?: doc["id"] as? String)
             when (val r = add(der, domain, participant)) {
-                is WitResult.Ok -> n += r.value
-                is WitResult.Err -> return r
+                is HcertResult.Ok -> n += r.value
+                is HcertResult.Err -> return r
             }
         }
-        return WitResult.Ok(n)
+        return HcertResult.Ok(n)
     }
 
     private fun pathOf(did: String?): Pair<String?, String?> {

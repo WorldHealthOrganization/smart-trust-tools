@@ -11,7 +11,7 @@ import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
-import who.smart.trust.WitResult
+import who.smart.trust.HcertResult
 import who.smart.trust.dvc.DvcMin
 import who.smart.trust.dvc.DvcMinVaccineDetails
 import who.smart.trust.issuer.IssueError
@@ -33,9 +33,9 @@ private val options = VerifierOptions(DEFAULT_LIMITS, clockSkewSeconds = 300)
 /** 2026-10-20T00:00:00Z, inside the PR 129 vector's validity. */
 private const val NOW = 1792454400L
 
-private fun <T, E> WitResult<T, E>.ok(): T = when (this) {
-    is WitResult.Ok -> value
-    is WitResult.Err -> throw AssertionError("expected Ok, got $error")
+private fun <T, E> HcertResult<T, E>.ok(): T = when (this) {
+    is HcertResult.Ok -> value
+    is HcertResult.Err -> throw AssertionError("expected Ok, got $error")
 }
 
 /** QR Code Generation 12: the PR 129 DVC example, verified as published. [STT-TST-001] */
@@ -84,7 +84,7 @@ class Pr129VectorTest {
         assertEquals("XM9V38", (u.payload as Payload.DvcMin).value.vx.vp)
         assertTrue(u.diagnostics.first().message.startsWith("NOT VERIFIED"))
         val bad = HcertVerifier.readUnverified("HC1:abc", reg, DEFAULT_LIMITS)
-        assertEquals(FailureReason.BASE45_INVALID, (bad as WitResult.Err).error.reason)
+        assertEquals(FailureReason.BASE45_INVALID, (bad as HcertResult.Err).error.reason)
     }
 
     @Test fun expiredAndNotYetValid() {
@@ -248,17 +248,17 @@ class IssueVerifyTest {
 
     @Test fun developmentSubclaimNeedsOptIn() {
         val r = HcertIssuer.prepare(request(Payload.DvcMin(dvc), esDer, CoseAlgorithm.ES256, dev = false), reg)
-        assertEquals(IssueError.DevelopmentSubclaimNotAllowed(-6), (r as WitResult.Err).error)
+        assertEquals(IssueError.DevelopmentSubclaimNotAllowed(-6), (r as HcertResult.Err).error)
     }
 
     @Test fun validityMustFitTheDsc() {
         val req = request(Payload.DvcMin(dvc), esDer, CoseAlgorithm.ES256).copy(validity = Validity(now, now + 20L * 365 * 86400))
-        assertEquals(IssueError.ValidityOutsideDsc, (HcertIssuer.prepare(req, reg) as WitResult.Err).error)
+        assertEquals(IssueError.ValidityOutsideDsc, (HcertIssuer.prepare(req, reg) as HcertResult.Err).error)
     }
 
     @Test fun invalidPayloadIsRefused() {
         val bad = dvc.copy(nt = "LA", vx = dvc.vx.copy(`is` = null, cn = null))
-        val e = (HcertIssuer.prepare(request(Payload.DvcMin(bad), esDer, CoseAlgorithm.ES256), reg) as WitResult.Err).error
+        val e = (HcertIssuer.prepare(request(Payload.DvcMin(bad), esDer, CoseAlgorithm.ES256), reg) as HcertResult.Err).error
         val codes = (e as IssueError.PayloadInvalid).value.map { it.code }.toSet()
         assertEquals(setOf("not-alpha3", "must-have-issuer-or-clinician-name"), codes)
     }
@@ -267,7 +267,7 @@ class IssueVerifyTest {
         val pending = HcertIssuer.prepare(request(Payload.DvcMin(dvc), esDer, CoseAlgorithm.ES256), reg).ok()
         val other = java.security.KeyPairGenerator.getInstance("EC").apply { initialize(256) }.generateKeyPair()
         val sig = Signature.getInstance("SHA256withECDSA").run { initSign(other.private); update(pending.toBeSigned()); sign() }
-        assertIs<IssueError.BadSignatureFormat>((HcertIssuer.finish(pending, sig) as WitResult.Err).error)
+        assertIs<IssueError.BadSignatureFormat>((HcertIssuer.finish(pending, sig) as HcertResult.Err).error)
     }
 
     @Test fun didDocumentLoadsTheDsc() {

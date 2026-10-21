@@ -6,7 +6,7 @@ export default toolFactory((t) =>
     id: "wit2kotlin",
     title: "Kotlin skeleton from the WIT contract",
     description:
-      "Generate the Kotlin declarations in tools/hcert-kotlin/hcert-api from api/wit by fixed mapping rules: records to data classes, variants to sealed interfaces, resources to AutoCloseable interfaces, result<T, E> to WitResult, worlds to bundle interfaces with a factory.",
+      "Generate the Kotlin declarations in tools/hcert-kotlin/hcert-api from api/wit by fixed mapping rules: records to data classes, variants to sealed interfaces, resources to AutoCloseable interfaces, result<T, E> to HcertResult; worlds are not generated, and no Kotlin name or KDoc mentions WIT.",
     install: { none: true },
     invoke: { shell: "python3 tools/wit2kotlin/wit2kotlin.py" },
     io: {
