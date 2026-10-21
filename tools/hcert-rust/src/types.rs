@@ -197,15 +197,51 @@ pub enum IssueError {
     BadSignatureFormat(String),
 }
 
-macro_rules! display_debug {
-    ($($t:ty),*) => {$(
-        impl fmt::Display for $t {
-            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { fmt::Debug::fmt(self, f) }
+impl fmt::Display for CodecError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            CodecError::Base45Invalid(m) | CodecError::InflateFailed(m) | CodecError::LimitExceeded(m) | CodecError::CborMalformed(m) => f.write_str(m),
+            CodecError::BadPrefix => f.write_str("no HC[1-9A-Z]: context identifier"),
+            CodecError::UnsupportedContextVersion(v) => write!(f, "unsupported context identifier {v}"),
         }
-        impl std::error::Error for $t {}
-    )*};
+    }
 }
-display_debug!(CodecError, CoseError, TrustError, IssueError);
+
+impl fmt::Display for CoseError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            CoseError::Malformed(m) | CoseError::HeaderInvalid(m) | CoseError::BadSignatureFormat(m) | CoseError::BadCertificate(m) => f.write_str(m),
+            CoseError::UnsupportedAlgorithm(a) => write!(f, "unsupported alg {a}"),
+            CoseError::SignatureInvalid => f.write_str("the signature does not verify"),
+        }
+    }
+}
+
+impl fmt::Display for TrustError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            TrustError::Parse(m) => f.write_str(m),
+            TrustError::UnknownTrustDomain(d) => write!(f, "trust domain {d} is not in the loaded code system"),
+        }
+    }
+}
+
+impl fmt::Display for IssueError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            IssueError::PayloadInvalid(v) => write!(f, "payload invalid: {}", v.iter().map(|i| format!("{}: {}", i.path, i.message)).collect::<Vec<_>>().join("; ")),
+            IssueError::DevelopmentSubclaimNotAllowed(s) => write!(f, "subclaim {s} is in the development range and the issuer did not opt in"),
+            IssueError::UnknownSubclaim(s) => write!(f, "subclaim {s} is not in the registry"),
+            IssueError::ValidityOutsideDsc => f.write_str("iat and exp must fall inside the DSC's validity"),
+            IssueError::BadCertificate(m) | IssueError::BadSignatureFormat(m) => f.write_str(m),
+        }
+    }
+}
+
+impl std::error::Error for CodecError {}
+impl std::error::Error for CoseError {}
+impl std::error::Error for TrustError {}
+impl std::error::Error for IssueError {}
 
 /// Lower-case hex, for messages and the JavaScript surface.
 pub fn to_hex(b: &[u8]) -> String {

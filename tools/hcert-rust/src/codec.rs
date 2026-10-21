@@ -55,7 +55,9 @@ fn inflate_with(data: &[u8], max_out: usize, format: DataFormat) -> Result<Vec<u
                 }
             }
             Err(MZError::Buf) if input.is_empty() => return Err(CodecError::InflateFailed("truncated ZLIB stream".into())),
-            Err(e) => return Err(CodecError::InflateFailed(format!("invalid ZLIB data: {e:?}"))),
+            Err(MZError::Data) => return Err(CodecError::InflateFailed("the ZLIB stream is corrupt".into())),
+            Err(MZError::Param) => return Err(CodecError::InflateFailed("not a ZLIB stream: the header is wrong".into())),
+            Err(e) => return Err(CodecError::InflateFailed(format!("invalid ZLIB data ({e:?})"))),
         }
     }
 }

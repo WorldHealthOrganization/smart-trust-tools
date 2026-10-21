@@ -164,10 +164,7 @@ pub fn call(request: &str) -> String {
                     dsc_der: hex(&a, "dsc")?,
                     allow_development_subclaims: true,
                 };
-                let p = issuer::prepare(&req, &reg).map_err(|e| match e {
-                    IssueError::PayloadInvalid(v) => format!("payload invalid: {}", v.iter().map(|x| format!("{}: {}", x.path, x.message)).collect::<Vec<_>>().join("; ")),
-                    other => other.to_string(),
-                })?;
+                let p = issuer::prepare(&req, &reg).map_err(|e| e.to_string())?;
                 Ok(Obj::ok()
                     .hex("protected", &p.protected)
                     .str("protectedDiagnostic", &diag_of(&p.protected))

@@ -24,5 +24,11 @@ node tools/hcert-rust/js/smoke.mjs
 with WebCrypto. Private keys stay non-extractable CryptoKeys and never enter
 the module. The module imports nothing.
 
+`js/demo/` holds the live demos for the smart-trust QR Code Generation page:
+one widget per pipeline step, plus verify, all sharing one certificate.
+`bundle-demo.sh <dir>` builds the module reproducibly (paths are remapped,
+so the same commit gives the same sha256) and writes the bundle and its
+`SOURCE.md` to `<dir>`.
+
 [`DEPENDENCIES.md`](DEPENDENCIES.md) lists every pinned crate and the review
 of each build script.
