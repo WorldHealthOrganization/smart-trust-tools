@@ -116,11 +116,17 @@ for (const pkg of readdirSync(join(ROOT, "skills"), { withFileTypes: true })) {
         problems.push(`skills/${pkg.name}/${f}: tested-by ${m[1]} does not exist`);
         continue;
       }
-      if (!path.endsWith(".kt")) continue;
-      for (const t of readFileSync(path, "utf-8").matchAll(/@Test\s+fun\s+`([^`]+)`/g)) {
+      const text = readFileSync(path, "utf-8");
+      // Kotlin names a test `STT-XXX-nnn …`; Rust `stt_xxx_nnn_…`.
+      const names = path.endsWith(".kt")
+        ? [...text.matchAll(/@Test\s+fun\s+`([^`]+)`/g)].map((t) => [t[1]!, t[1]!.match(/STT-[A-Z0-9]+-\d{3}/g) ?? []] as const)
+        : path.endsWith(".rs")
+          ? [...text.matchAll(/#\[test\]\s*fn\s+(stt_[a-z0-9_]+)\s*\(/g)].map((t) => [t[1]!, [...t[1]!.matchAll(/(?:^|_)stt_([a-z0-9]+)_(\d{3})(?=_)/g)].map((m) => `STT-${m[1]!.toUpperCase()}-${m[2]}`)] as const)
+          : [];
+      for (const [name, ids] of names) {
         tests++;
-        for (const id of t[1]!.match(/STT-[A-Z0-9]+-\d{3}/g) ?? []) {
-          if (!nodes.has(`req:${id.toLowerCase()}`)) problems.push(`${m[1]}: test "${t[1]}" names ${id}, which is no requirement`);
+        for (const id of ids) {
+          if (!nodes.has(`req:${id.toLowerCase()}`)) problems.push(`${m[1]}: test "${name}" names ${id}, which is no requirement`);
         }
       }
     }

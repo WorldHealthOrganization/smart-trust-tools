@@ -14,6 +14,7 @@ satisfies:
   - "req:stt-ver-009#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt
+  - tools/hcert-rust/tests/trust_list.rs
 ---
 
 # hcert-trust-list

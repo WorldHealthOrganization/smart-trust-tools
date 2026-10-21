@@ -1,0 +1,66 @@
+//! The JSON surface the WebAssembly demo calls, run natively: every step in
+//! order, then verify (STT-GEN-002, STT-GEN-005).
+
+mod common;
+use common::*;
+use hcert::api::call;
+use hcert::json::{parse, Json};
+use hcert::types::CoseAlgorithm;
+
+fn ok(req: &str) -> Json {
+    let r = parse(&call(req)).unwrap();
+    assert_eq!(r.get("ok"), Some(&Json::Bool(true)), "{req} -> {r:?}");
+    r
+}
+fn st<'a>(j: &'a Json, k: &str) -> &'a str {
+    j.get(k).and_then(Json::as_str).unwrap_or_else(|| panic!("{k} missing in {j:?}"))
+}
+
+const DVC: &str = r#"{"n":"Test CHILD","dob":"2026-09-28","s":"female","nt":"LAO","gn":"Test MOTHER","vx":{"vp":"XM9V38","dv":"2026-09-28","is":"org-test","bo":"HEPB-TEST"},"v":"1.0.0"}"#;
+
+#[test]
+fn stt_gen_002_every_step_is_its_own_call_and_they_compose_to_a_verifiable_hc1() {
+    let assembled = ok(&format!(r#"{{"op":"assemblePayload","dvc":{DVC}}}"#));
+    assert_eq!(assembled.get("issues").unwrap().as_arr().unwrap().len(), 0);
+    let cwt = ok(&format!(r#"{{"op":"buildCwt","payload":"{}","iss":"XX","iat":{TESTKIT_NOW},"exp":{},"subclaim":-6}}"#, st(&assembled, "cbor"), TESTKIT_NOW + 86400));
+    assert!(st(&cwt, "diagnostic").contains("-260: {"));
+    let det = ok(&format!(r#"{{"op":"cborDeterministic","cbor":"{}"}}"#, st(&cwt, "cwt")));
+    assert_eq!(st(&det, "cbor"), st(&cwt, "cwt"));
+
+    let dsc = hcert::types::to_hex(&es_der());
+    let prep = ok(&format!(r#"{{"op":"prepare","dvc":{DVC},"iss":"XX","iat":{TESTKIT_NOW},"exp":{},"alg":"ES256","dsc":"{dsc}"}}"#, TESTKIT_NOW + 86400));
+    assert_eq!(st(&prep, "cwt"), st(&cwt, "cwt"), "prepare builds the same CWT as the separate steps");
+    let sig = sign(CoseAlgorithm::Es256, &hcert::types::from_hex(st(&prep, "toBeSigned")).unwrap());
+    let fin = ok(&format!(
+        r#"{{"op":"finish","protected":"{}","cwt":"{}","alg":"ES256","dsc":"{dsc}","signature":"{}"}}"#,
+        st(&prep, "protected"),
+        st(&prep, "cwt"),
+        hcert::types::to_hex(&sig)
+    ));
+    // steps 6 to 8 by hand give the same string
+    let z = ok(&format!(r#"{{"op":"compress","data":"{}"}}"#, st(&fin, "cose")));
+    let b45 = ok(&format!(r#"{{"op":"base45Encode","data":"{}"}}"#, st(&z, "data")));
+    let hc1 = ok(&format!(r#"{{"op":"prefix","text":"{}"}}"#, st(&b45, "text")));
+    assert_eq!(st(&hc1, "hc1"), st(&fin, "hc1"));
+
+    let layers = ok(&format!(r#"{{"op":"decodeLayers","hc1":"{}"}}"#, st(&fin, "hc1")));
+    assert_eq!(st(&layers, "cose"), st(&fin, "cose"));
+    let pem = read("vectors/testkit/es256-dsc.pem").replace('\n', "\\n");
+    let v = ok(&format!(r#"{{"op":"verify","hc1":"{}","trustPem":"{pem}","now":{TESTKIT_NOW}}}"#, st(&fin, "hc1")));
+    assert_eq!(st(&v, "status"), "verified");
+    assert_eq!(st(v.get("payload").unwrap(), "n"), "Test CHILD");
+    let late = ok(&format!(r#"{{"op":"verify","hc1":"{}","trustPem":"{pem}","now":{}}}"#, st(&fin, "hc1"), TESTKIT_NOW + 86400 * 2));
+    assert_eq!((st(&late, "step"), st(&late, "reason")), ("TIME", "EXPIRED"));
+}
+
+#[test]
+fn stt_tst_001_the_pr129_vector_verifies_through_the_json_surface() {
+    let pem = read(PR129_DSC).replace('\n', "\\n");
+    let v = ok(&format!(r#"{{"op":"verify","hc1":"{}","trustPem":"{pem}","now":{NOW}}}"#, pr129_hc1("bcg")));
+    assert_eq!(st(&v, "status"), "verified");
+    assert_eq!(st(&v, "kid"), "58733e058aaa6621");
+    let bad = parse(&call(r#"{"op":"verify","hc1":"HC1:abc","now":0}"#)).unwrap();
+    assert_eq!(st(&bad, "reason"), "BASE45_INVALID");
+    let err = parse(&call(r#"{"op":"nope"}"#)).unwrap();
+    assert_eq!(err.get("ok"), Some(&Json::Bool(false)));
+}

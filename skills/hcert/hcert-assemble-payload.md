@@ -15,6 +15,7 @@ satisfies:
   - "req:stt-pay-010#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt
+  - tools/hcert-rust/tests/payload.rs
 ---
 
 # Step 2

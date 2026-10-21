@@ -10,6 +10,7 @@ satisfies:
   - "req:stt-gen-001#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt
+  - tools/hcert-rust/tests/encode_cbor.rs
 ---
 
 # Step 4

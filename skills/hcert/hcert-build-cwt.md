@@ -14,6 +14,7 @@ satisfies:
   - "req:stt-sel-004#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt
+  - tools/hcert-rust/tests/build_cwt_sign_cose.rs
 ---
 
 # Step 3
