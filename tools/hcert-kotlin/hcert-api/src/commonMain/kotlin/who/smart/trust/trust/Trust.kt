@@ -7,6 +7,12 @@ import who.smart.trust.types.NumericDate
 
 sealed interface TrustError {
     data class Parse(val value: String) : TrustError
+
+    /**
+     * A DID document names a trust domain the loaded GDHCN Trust Domain
+     * code system does not hold. [STT-SEL-006]
+     */
+    data class UnknownTrustDomain(val value: String) : TrustError
 }
 
 data class TrustedDsc(
@@ -39,6 +45,19 @@ interface TrustStore : AutoCloseable {
      * variant. [STT-TRU-002]
      */
     fun addDidDocument(json: String): HcertResult<Int, TrustError>
+
+    /**
+     * The trust domains a DID document may name, read from a GDHCN
+     * Trust Domain CodeSystem (FHIR JSON) the host fetched. Data, not
+     * an enum: once loaded, a DID document naming another domain is
+     * refused whole; before, any domain is kept as given. Loading
+     * again replaces the set. Returns the number of codes.
+     * [STT-SEL-006]
+     */
+    fun loadTrustDomains(codesystemJson: String): HcertResult<Int, TrustError>
+
+    /** The loaded trust domain codes; empty when none are loaded. */
+    fun trustDomains(): List<String>
 
     /** Every DSC with this kid (kids are not unique). [STT-KID-002] */
     fun candidates(k: Kid): List<TrustedDsc>

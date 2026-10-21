@@ -28,6 +28,14 @@ for (const name of ["hepb1", "bcg"]) {
   expect(`${name} unknown kid`, JSON.parse(HcertNode.verifySummary(hc1, "", NOW)), { status: "failed", reason: "KID_NOT_FOUND" });
 }
 expect("bad prefix", JSON.parse(HcertNode.verifySummary("HC2:00", pem, NOW)), { status: "failed", reason: "UNSUPPORTED_CONTEXT_VERSION" });
+// The shared negative vectors (STT-TST-005): the same file the JVM suite loads.
+const negative = JSON.parse(readFileSync(join(repo, "vectors/negative/negative-vectors.json"), "utf8"));
+for (const c of negative.cases) {
+  const trust = (c.trust ?? negative.defaults.trust).map((p) => readFileSync(join(repo, p), "utf8")).join("\n");
+  const now = c.now ?? negative.defaults.now;
+  const got = c.coseHex ? HcertNode.verifyCoseSummary(c.coseHex, trust, now) : HcertNode.verifySummary(c.hc1, trust, now);
+  expect(`negative ${c.id}`, JSON.parse(got), { status: "failed", step: c.expect.step, reason: c.expect.reason });
+}
 // VHL document decryption on Node, against a JWE made by node:crypto alone.
 const jwe = JSON.parse(readFileSync(join(repo, "vectors/ihe-vhl/jwe-dir-a256gcm.json"), "utf8"));
 for (const k of ["jwe", "jweZipDef"]) {

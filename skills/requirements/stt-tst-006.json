@@ -11,7 +11,7 @@
       "key": "statement",
       "label": "Fuzzing of decoders",
       "conformance": "SHALL",
-      "requirement": "The Base45, ZLIB, CBOR, COSE and full verifier entry points SHALL be fuzzed in CI (cargo-fuzz for Rust, Jazzer or kotlinx-fuzz for Kotlin). No input may crash them, hang them, or exceed DecodeLimits.",
+      "requirement": "The Base45, ZLIB, CBOR, COSE and full verifier entry points SHALL be fuzzed in CI. No input may crash them, hang them, or exceed DecodeLimits. Rust SHALL use a coverage-guided fuzzer (cargo-fuzz). Kotlin SHALL use a seeded mutation fuzzer in its own test suite, which needs no dependency; a coverage-guided JVM fuzzer (Jazzer) MAY replace it once it can be pinned under the dependency policy.",
       "category": "test"
     }
   ],

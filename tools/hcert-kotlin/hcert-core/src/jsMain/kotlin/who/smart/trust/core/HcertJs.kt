@@ -13,11 +13,17 @@ import who.smart.trust.verifier.VerifierOptions
 @JsExport
 object HcertNode {
     /** Verifies [hc1] against the PEM DSCs in [trustPem] at [now] (Unix seconds); returns a JSON summary without payload content. */
-    fun verifySummary(hc1: String, trustPem: String, now: Double): String {
-        val store = HcertTrustStore()
-        store.addPem(trustPem)
-        val r = HcertVerifier.verify(hc1, store, SubclaimRegistry(), now.toLong(), VerifierOptions(DEFAULT_LIMITS, 300))
-        return when (r) {
+    fun verifySummary(hc1: String, trustPem: String, now: Double): String =
+        summary(HcertVerifier.verify(hc1, store(trustPem), SubclaimRegistry(), now.toLong(), VerifierOptions(DEFAULT_LIMITS, 300)))
+
+    /** As [verifySummary], for raw COSE_Sign1 bytes given as hex, without the QR layers. [STT-TST-005] */
+    fun verifyCoseSummary(coseHex: String, trustPem: String, now: Double): String =
+        summary(HcertVerifier.verifyCose(coseHex.chunked(2).map { it.toInt(16).toByte() }.toByteArray(), store(trustPem), SubclaimRegistry(), now.toLong(), VerifierOptions(DEFAULT_LIMITS, 300)))
+
+    private fun store(trustPem: String) = HcertTrustStore().apply { if (trustPem.isNotBlank()) addPem(trustPem) }
+
+    private fun summary(r: VerificationResult): String =
+        when (r) {
             is VerificationResult.Verified -> {
                 val v = r.value
                 val kind = if (v.payload is Payload.DvcMin) "dvc-min" else "raw"
@@ -25,7 +31,6 @@ object HcertNode {
             }
             is VerificationResult.Failed -> """{"status":"failed","step":"${r.value.step}","reason":"${r.value.reason}"}"""
         }
-    }
 
     /** Decrypts a VHL document (JWE dir / A256GCM) and returns its text, or "error: ...". */
     fun decryptText(jwe: String, key: String): String = when (val r = HcertVhl.decrypt(jwe, key)) {

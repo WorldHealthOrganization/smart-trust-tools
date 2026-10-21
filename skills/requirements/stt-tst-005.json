@@ -8,7 +8,8 @@
   ],
   "reference": [
     "vectors/smart-trust-pr129/dvc-qr-example-XXA.json",
-    "memory/dir-languages"
+    "memory/dir-languages",
+    "vectors/negative/negative-vectors.json"
   ],
   "actors": [
     "implementer"

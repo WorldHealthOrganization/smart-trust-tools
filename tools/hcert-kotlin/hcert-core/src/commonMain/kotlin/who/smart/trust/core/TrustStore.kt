@@ -15,6 +15,36 @@ import who.smart.trust.types.Kid
 class HcertTrustStore : TrustStore {
     private val dscs = mutableListOf<TrustedDsc>()
 
+    /** Loaded from the GDHCN Trust Domain code system; null until loaded. [STT-SEL-006] */
+    private var domains: Set<String>? = null
+
+    /**
+     * Reads the codes of a FHIR CodeSystem, as the GDHCN Trust Domain code
+     * systems (production, UAT, DEV) publish them. Nested concepts count too.
+     */
+    override fun loadTrustDomains(codesystemJson: String): HcertResult<Int, TrustError> {
+        val doc = try {
+            parseJson(codesystemJson) as? Map<*, *>
+        } catch (e: IllegalArgumentException) {
+            return HcertResult.Err(TrustError.Parse(e.message ?: "invalid JSON"))
+        } ?: return HcertResult.Err(TrustError.Parse("CodeSystem is not a JSON object"))
+        if (doc["resourceType"] != "CodeSystem") return HcertResult.Err(TrustError.Parse("not a FHIR CodeSystem"))
+        val codes = mutableSetOf<String>()
+        fun walk(concepts: Any?) {
+            for (c in concepts as? List<*> ?: return) {
+                val m = c as? Map<*, *> ?: continue
+                (m["code"] as? String)?.let { codes += it }
+                walk(m["concept"])
+            }
+        }
+        walk(doc["concept"])
+        if (codes.isEmpty()) return HcertResult.Err(TrustError.Parse("CodeSystem has no concepts"))
+        domains = codes
+        return HcertResult.Ok(codes.size)
+    }
+
+    override fun trustDomains(): List<String> = domains?.sorted() ?: emptyList()
+
     private fun add(der: ByteArray, domain: String? = null, participant: String? = null): HcertResult<Int, TrustError> {
         if (dscs.any { it.der.contentEquals(der) }) return HcertResult.Ok(0)
         val info = try {
@@ -49,7 +79,8 @@ class HcertTrustStore : TrustStore {
      * certificate. DID URL references, as the reference variant lists, are
      * the host's to fetch and load. Trust domain and participant come from
      * the `trustlist:<domain>:<participant>:<usage>` DID path; "-" is the
-     * wildcard.
+     * wildcard. Once trust domains are loaded, a named domain must be one of
+     * them.
      */
     override fun addDidDocument(json: String): HcertResult<Int, TrustError> {
         val doc = try {
@@ -58,6 +89,12 @@ class HcertTrustStore : TrustStore {
             return HcertResult.Err(TrustError.Parse(e.message ?: "invalid JSON"))
         } ?: return HcertResult.Err(TrustError.Parse("DID document is not a JSON object"))
         val methods = doc["verificationMethod"] as? List<*> ?: return HcertResult.Err(TrustError.Parse("no verificationMethod array"))
+        // A domain the loaded code system does not hold refuses the whole
+        // document before anything is added. [STT-SEL-006]
+        domains?.let { known ->
+            val named = methods.mapNotNull { m -> pathOf((m as? Map<*, *>)?.get("id") as? String ?: doc["id"] as? String).first }
+            named.firstOrNull { it !in known }?.let { return HcertResult.Err(TrustError.UnknownTrustDomain(it)) }
+        }
         var n = 0
         for (m in methods) {
             val vm = m as? Map<*, *> ?: continue

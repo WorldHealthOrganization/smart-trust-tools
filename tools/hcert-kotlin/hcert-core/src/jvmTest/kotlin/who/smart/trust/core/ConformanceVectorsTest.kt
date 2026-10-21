@@ -45,16 +45,23 @@ class ConformanceVectorsTest {
         assertEquals(295, cose.size)
     }
 
-    @Test fun `STT-TST-004 negative cases fail at the named step with the named reason`() {
-        val late = assertIs<VerificationResult.Failed>(HcertVerifier.verify(hc1("bcg"), store, reg, 1822206600L + 301, OPTIONS)).value
-        assertEquals(FailureReason.EXPIRED, late.reason)
-        val early = assertIs<VerificationResult.Failed>(HcertVerifier.verify(hc1("bcg"), store, reg, 1790670600L - 301, OPTIONS)).value
-        assertEquals(FailureReason.NOT_YET_VALID, early.reason)
-        val unknown = assertIs<VerificationResult.Failed>(HcertVerifier.verify(hc1("bcg"), HcertTrustStore(), reg, NOW, OPTIONS)).value
-        assertEquals(Step.TRUST_LOOKUP to FailureReason.KID_NOT_FOUND, unknown.step to unknown.reason)
-        val cose = HcertCodec.fromHc1(hc1("bcg"), DEFAULT_LIMITS).ok()
-        cose[cose.size - 1] = (cose[cose.size - 1].toInt() xor 1).toByte()
-        val tampered = assertIs<VerificationResult.Failed>(HcertVerifier.verify(HcertCodec.toHc1(cose), store, reg, NOW, OPTIONS)).value
-        assertEquals(Step.SIGNATURE to FailureReason.SIGNATURE_INVALID, tampered.step to tampered.reason)
+    @Test fun `STT-TST-004 STT-TST-005 the shared negative vectors fail at the named step with the named reason`() {
+        val doc = parseJson(readRepo("vectors/negative/negative-vectors.json")) as Map<*, *>
+        val defaults = doc["defaults"] as Map<*, *>
+        val cases = doc["cases"] as List<*>
+        assertTrue(cases.size >= 15)
+        for (c in cases.map { it as Map<*, *> }) {
+            val id = c["id"] as String
+            val trust = HcertTrustStore().apply { for (p in (c["trust"] ?: defaults["trust"]) as List<*>) addPem(readRepo(p as String)).ok() }
+            val now = ((c["now"] ?: defaults["now"]) as Number).toLong()
+            val options = OPTIONS.copy(clockSkewSeconds = ((defaults["clockSkewSeconds"]) as Number).toInt())
+            val r = when (val hex = c["coseHex"] as String?) {
+                null -> HcertVerifier.verify(c["hc1"] as String, trust, reg, now, options)
+                else -> HcertVerifier.verifyCose(hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray(), trust, reg, now, options)
+            }
+            val f = assertIs<VerificationResult.Failed>(r, id).value
+            val expect = c["expect"] as Map<*, *>
+            assertEquals(expect["step"] to expect["reason"], f.step.name to f.reason.name, id)
+        }
     }
 }
