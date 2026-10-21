@@ -21,7 +21,7 @@ export default toolFactory((t) =>
     selection: {
       when: "A Rust program or a web page issues or verifies an HCERT, or a demo shows the QR Code Generation steps live; or the second implementation is checked against the first on the shared vectors.",
       limits: "No VHL payload or JWE yet. The WebAssembly build is a core module with a JSON call surface (js/hcert.mjs), not yet the WIT component jco transpiles (STT-GEN-005). No coverage-guided fuzzing in CI (cargo-fuzz needs nightly); the seeded fuzzer runs instead.",
-      cost: "Seconds once the crates are cached; the first build downloads the 62 crates Cargo.lock pins.",
+      cost: "Seconds once the crates are cached; the first build downloads the 63 crates Cargo.lock pins.",
     },
     requires: { runtime: ["cargo", "node"], network: true },
     remedies: [

@@ -225,7 +225,17 @@ const DEMOS = {
 
   qr() {
     const h = state.out.hc1;
-    return h && [note(`This is the string a QR encoder renders, in Alphanumeric mode (every character above is in the Base45 alphabet) at error correction Q. It is ${h.length} characters long. Any QR encoder library can render it; this page does not include one.`)];
+    if (!h) return null;
+    const q = hcert.call("qrSvg", { text: h });
+    if (!q.ok) return [note(`No QR symbol: ${q.error}`)];
+    const svg = new DOMParser().parseFromString(q.svg, "image/svg+xml").documentElement;
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", `QR code of the HC1 string above, version ${q.version}, error correction ${q.errorCorrection}`);
+    svg.setAttribute("class", "hd-qr");
+    return [
+      field(`QR symbol · version ${q.version} (${q.modules} × ${q.modules} modules) · error correction ${q.errorCorrection} · Alphanumeric mode`, svg),
+      note("TEST ONLY: signed by this page's own key, so it verifies only on this page. Scan it with a phone and paste the text into the verifier below. Rendered in your browser by the qrcode crate (pinned, MIT/Apache-2.0)."),
+    ];
   },
 
   verify(root) {

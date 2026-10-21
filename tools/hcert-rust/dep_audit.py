@@ -13,7 +13,7 @@ Usage:
 import json,urllib.request,datetime,subprocess,sys
 CUTOFF = datetime.date(2026, 10, 7)
 cut = CUTOFF
-d=json.loads(subprocess.run(["cargo","metadata","--format-version","1","--locked","--manifest-path",str(__import__("pathlib").Path(__file__).with_name("Cargo.toml"))],capture_output=True,text=True,check=True).stdout)
+d=json.loads(subprocess.run(["cargo","metadata","--format-version","1","--locked","--all-features","--manifest-path",str(__import__("pathlib").Path(__file__).with_name("Cargo.toml"))],capture_output=True,text=True,check=True).stdout)
 used={n['id'] for n in d['resolve']['nodes']}
 bad=0
 for p in sorted(d['packages'],key=lambda p:p['name']):
