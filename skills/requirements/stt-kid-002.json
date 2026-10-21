@@ -4,8 +4,8 @@
   "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, 3.2.3 Key Identifier. QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “a verifier that finds several DSCs with the same kid MUST try all of them”.",
   "status": "proposed",
   "actors": [
-    "receiver",
-    "issuer"
+    "vhl-receiver",
+    "vhl-sharer"
   ],
   "statements": [
     {

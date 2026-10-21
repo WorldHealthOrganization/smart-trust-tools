@@ -4,7 +4,7 @@
   "description": "Restates QR Code Generation, 2.1 Subclaims defined in this guide; HCERT Specification, 3.2.7.1 Subclaims; HCert logical model. QR Code Generation, 2.1 Subclaims defined in this guide: “These are the subclaims enumerated by the HCert logical model.”. HCERT Specification, 3.2.7.1 Subclaims: “While the logical model enlists assigned sub claims, the ones listed in this specification are considered authoritative”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

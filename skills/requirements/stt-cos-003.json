@@ -4,8 +4,8 @@
   "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, 3.2.3 Key Identifier. QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “verifiers MUST accept both placements — but when it appears in both, the protected one wins.”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

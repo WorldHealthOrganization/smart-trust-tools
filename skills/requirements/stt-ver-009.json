@@ -4,8 +4,8 @@
   "description": "Engineering consequence of QR Code Generation, 2.2 Choosing between a DVC and a VHL; QR Code Generation, 12.1 Scenario. QR Code Generation, 2.2 Choosing between a DVC and a VHL: “Works fully offline — Yes — verifier needs only the trust list”.",
   "status": "proposed",
   "actors": [
-    "receiver",
-    "issuer"
+    "vhl-receiver",
+    "vhl-sharer"
   ],
   "statements": [
     {

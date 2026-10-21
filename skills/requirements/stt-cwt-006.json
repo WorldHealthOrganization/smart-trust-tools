@@ -4,8 +4,8 @@
   "description": "Engineering consequence of RFC 8392 CBOR Web Token (CWT); HCERT Specification, 3.2.7 Health Certificate Claim.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

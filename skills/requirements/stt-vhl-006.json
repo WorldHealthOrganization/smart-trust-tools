@@ -11,7 +11,7 @@
     "library/ihe-iti-vhl-iti-yy5/sections/s018-2-3-yy5-4-2-4-document-content-retrieval"
   ],
   "actors": [
-    "receiver"
+    "vhl-receiver"
   ],
   "statements": [
     {

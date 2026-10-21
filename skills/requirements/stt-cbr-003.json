@@ -4,8 +4,8 @@
   "description": "Engineering consequence of HCERT Specification, 6.3 Input Data Validation. HCERT Specification, 6.3 Input Data Validation: “all input fields MUST be properly validated by data types, lengths and contents”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

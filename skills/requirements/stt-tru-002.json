@@ -15,8 +15,8 @@
     "external-schemas/w3c-did-core"
   ],
   "actors": [
-    "trust-network-participant",
-    "issuer"
+    "trust-anchor",
+    "vhl-sharer"
   ],
   "statements": [
     {

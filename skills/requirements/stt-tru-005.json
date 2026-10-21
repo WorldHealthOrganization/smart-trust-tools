@@ -10,7 +10,7 @@
     "library/who-smart-trust-hcert-spec/sections/s026-appendix-a-trust-management"
   ],
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

@@ -4,7 +4,7 @@
   "description": "Engineering consequence of QR Code Generation, 11. Verifying: the same steps upwards. QR Code Generation, 11. Verifying: the same steps upwards: “Confirm the HC1: prefix and strip it.”.",
   "status": "proposed",
   "actors": [
-    "receiver"
+    "vhl-receiver"
   ],
   "statements": [
     {

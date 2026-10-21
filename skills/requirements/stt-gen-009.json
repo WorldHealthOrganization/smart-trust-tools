@@ -4,8 +4,8 @@
   "description": "Engineering consequence of HCERT Specification, 4.1 Raw. HCERT Specification, 4.1 Raw: “the HCERT container and its payloads may be transferred as-is, utilising any underlying, 8 bit safe, reliable data transport”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

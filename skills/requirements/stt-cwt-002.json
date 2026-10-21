@@ -4,7 +4,7 @@
   "description": "Restates HCERT Specification, 3.2.5 Expiration Time; HCERT Specification, 3.2.6 Issued At; RFC 8392 CBOR Web Token (CWT). HCERT Specification, 3.2.5 Expiration Time: “SHALL hold a timestamp in the integer NumericDate format”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

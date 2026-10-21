@@ -11,8 +11,8 @@
     "library/who-smart-trust-hcert-spec/sections/s025-6-3-input-data-validation"
   ],
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

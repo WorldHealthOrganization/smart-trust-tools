@@ -4,7 +4,7 @@
   "description": "Engineering consequence of QR Code Generation, 5. Step 4 — Serialise as CBOR; Reference generation script generate_dvc_qr.py; RFC 8949 CBOR (obsoletes RFC 7049).",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

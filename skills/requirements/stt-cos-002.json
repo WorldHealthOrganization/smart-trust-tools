@@ -4,8 +4,8 @@
   "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; HCERT Specification, 3.2.2 Signature Algorithm; RFC 8230 RSA algorithms with COSE (PS256). QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “Both algorithms MUST be implemented, even though only one is used to sign any given certificate”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

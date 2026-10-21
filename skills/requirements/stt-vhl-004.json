@@ -11,7 +11,7 @@
     "external-schemas/hl7-smart-health-links"
   ],
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

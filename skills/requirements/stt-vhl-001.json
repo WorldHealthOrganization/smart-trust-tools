@@ -4,8 +4,8 @@
   "description": "Restates SMART Health Links; IHE VHL ITI-YY3, 2:3.YY3.4.1.3 Expected Actions; VerifiableHealthLinkPayload logical model (trust-phw); Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5. IHE VHL ITI-YY3 Generate VHL, 2:3.YY3.4.1.3 Expected Actions: “Create the VHL payload (using the SHL payload format)”. Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5: “Single file - ignore”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

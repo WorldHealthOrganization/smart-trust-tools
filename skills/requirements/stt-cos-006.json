@@ -4,7 +4,7 @@
   "description": "Engineering consequence of HCERT Specification, 6.2 Key Management; QR Code Generation, 13. Reference script. HCERT Specification, 6.2 Key Management: “Use of HSMs for signing health certificates is highly encouraged.”. QR Code Generation, 13. Reference script: “a real issuer holds its private keys in an HSM”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

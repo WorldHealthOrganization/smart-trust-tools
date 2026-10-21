@@ -10,7 +10,7 @@
     "library/who-smart-trust-hcert-spec/sections/s013-3-2-7-health-certificate-claim"
   ],
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

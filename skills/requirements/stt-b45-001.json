@@ -4,7 +4,7 @@
   "description": "Restates QR Code Generation, 8. Step 7 — Encode as Base45; HCERT Specification, 4.2.2 QR 2D Barcode; RFC 9285 The Base45 Data Encoding. QR Code Generation, 8. Step 7 — Encode as Base45: “its 45-character alphabet is exactly the QR Alphanumeric character set”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

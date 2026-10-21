@@ -4,7 +4,7 @@
   "description": "Engineering consequence of QR Code Generation, 12.6 The certificate; GDHCN Trustlists (DID), Example DID documents. QR Code Generation, 12.6 The certificate: “The kid for both is WHM+BYqqZiE= (hex 58733e058aaa6621).”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

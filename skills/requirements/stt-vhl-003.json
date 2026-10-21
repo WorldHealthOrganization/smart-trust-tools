@@ -11,8 +11,8 @@
     "external-schemas/ietf-rfc4648"
   ],
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

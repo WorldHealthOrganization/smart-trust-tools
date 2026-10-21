@@ -12,7 +12,7 @@
     "library/who-smart-trust-qr-code-generation/sections/s011-6-step-5-sign-as-a-cose-sign1"
   ],
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

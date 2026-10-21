@@ -4,7 +4,7 @@
   "description": "Engineering consequence of HCERT Specification, 3.2.4 Issuer; QR Code Generation, 12.3 Test issuer. QR Code Generation, 12.3 Test issuer: “GDHCN participant codes are ISO 3166-1 alpha-3, while the CWT iss claim and the X.509 country attribute take the alpha-2 form”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

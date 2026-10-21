@@ -10,7 +10,7 @@
     "library/ihe-iti-vhl-iti-yy4"
   ],
   "actors": [
-    "receiver"
+    "vhl-receiver"
   ],
   "statements": [
     {

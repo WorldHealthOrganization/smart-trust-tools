@@ -10,7 +10,7 @@
     "library/who-smart-trust-qr-code-generation/sections/s008-3-step-2-assemble-the-payload"
   ],
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

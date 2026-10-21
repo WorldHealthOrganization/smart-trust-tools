@@ -4,7 +4,7 @@
   "description": "Restates QR Code Generation, 4. Step 3 — Build the CWT claim set; QR Code Generation, 5. Step 4 — Serialise as CBOR; QR Code Generation, 12.4 The payload; HCERT Specification, 3.2.1 CWT Structure Overview. QR Code Generation, 4. Step 3 — Build the CWT claim set: “Place the payload under its subclaim, inside the hcert claim, inside a CWT claim set”. QR Code Generation, 5. Step 4 — Serialise as CBOR: “The JSON shown throughout this page and in the logical models is schema notation only”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

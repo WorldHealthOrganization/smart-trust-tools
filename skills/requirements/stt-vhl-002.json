@@ -13,8 +13,8 @@
     "library/ihe-iti-vhl-iti-yy4"
   ],
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

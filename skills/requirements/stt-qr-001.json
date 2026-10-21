@@ -4,7 +4,7 @@
   "description": "Restates QR Code Generation, 10. Step 9 — Render the QR code; HCERT Specification, 4.2.2 QR 2D Barcode; ISO/IEC 18004:2015 QR Code. HCERT Specification, 4.2.2 QR 2D Barcode: “The Alphanumeric (Mode 2/QR Code symbols 0010) MUST be used in conjunction with Base45.”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

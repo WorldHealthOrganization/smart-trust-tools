@@ -4,7 +4,7 @@
   "description": "Restates QR Code Generation, 4. Step 3 — Build the CWT claim set; HCERT Specification, 3.2.5 Expiration Time; HCERT Specification, 3.2.6 Issued At. QR Code Generation, 4. Step 3 — Build the CWT claim set: “MUST NOT predate the DSC validity period ... MUST NOT exceed the DSC validity period”.",
   "status": "proposed",
   "actors": [
-    "issuer"
+    "vhl-sharer"
   ],
   "statements": [
     {

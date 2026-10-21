@@ -11,8 +11,8 @@
     "memory/dir-journeys"
   ],
   "actors": [
-    "receiver",
-    "issuer"
+    "vhl-receiver",
+    "vhl-sharer"
   ],
   "statements": [
     {

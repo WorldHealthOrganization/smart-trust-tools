@@ -4,8 +4,8 @@
   "description": "Engineering consequence of HCERT Specification, 3.2.7 Health Certificate Claim. HCERT Specification, 3.2.7 Health Certificate Claim: “Decoding applications SHOULD however be permissive and robust in these aspects”.",
   "status": "proposed",
   "actors": [
-    "issuer",
-    "receiver"
+    "vhl-sharer",
+    "vhl-receiver"
   ],
   "statements": [
     {

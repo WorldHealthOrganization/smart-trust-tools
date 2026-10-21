@@ -4,7 +4,7 @@
   "description": "Engineering consequence of QR Code Generation, 11. Verifying: the same steps upwards; HCERT Specification, A.2 Extended Key Usage Identifiers. HCERT Specification, A.2 Extended Key Usage Identifiers: “If one or more are present, the verifiers SHALL verify the key usage against the stored HCERT.”.",
   "status": "proposed",
   "actors": [
-    "receiver"
+    "vhl-receiver"
   ],
   "statements": [
     {
