@@ -61,7 +61,7 @@
       "source": {
         "remote": {
           "repository": "litlfred/cat-harness",
-          "ref": "be2f3cfb2d9203e3bb9a71e320a31cd602b937ae",
+          "ref": "643c7880812bd499d9f1a9dc17ef97937ddb0c59",
           "overrides": {
             "cat-harness": {
               "whole": true
@@ -76,9 +76,9 @@
           "trust": {
             "consent": {
               "by": "litlfred",
-              "on": "2026-10-20",
-              "ref": "be2f3cfb2d9203e3bb9a71e320a31cd602b937ae",
-              "evidence": "Owner (litlfred), 2026-10-20: \"repin_merge when ready PRs next 3 hrs\". Repinned to main together with cat-harness-tools main, whose node kinds (slice-index, slice-sqlite) the earlier pin lacked."
+              "on": "2026-10-21",
+              "ref": "643c7880812bd499d9f1a9dc17ef97937ddb0c59",
+              "evidence": "Owner (litlfred), 2026-10-21: \"It really needs to look at all of the actors and the dependency of the loaded harness\" and \"Merge when green\". Repinned to main after merging litlfred/cat-harness#391 (neededActors: the actors an instance may name are the platform's, every needed instance's and its own)."
             }
           }
         }
@@ -89,7 +89,7 @@
       "source": {
         "remote": {
           "repository": "litlfred/cat-harness-tools",
-          "ref": "76e0549f0da5d22888b392ec656f3d7d269ea80b",
+          "ref": "137a56a9028446cd24ba02b237b84109c8c4622b",
           "overrides": {
             "cat-harness-tools": {
               "whole": true
@@ -102,8 +102,8 @@
             "consent": {
               "by": "litlfred",
               "on": "2026-10-21",
-              "ref": "76e0549f0da5d22888b392ec656f3d7d269ea80b",
-              "evidence": "Owner (litlfred), 2026-10-20, reported the badge bar drawn twice on the published site (\"partially repeated bar\") and asked for gh-pages to be rebuilt. Repinned to main after merging litlfred/cat-harness-tools#500 (withPlatformUi adds no second docs-ui.js) and #503 (a non-Markdown file is ingested verbatim), both opened from this repository's session."
+              "ref": "137a56a9028446cd24ba02b237b84109c8c4622b",
+              "evidence": "Owner (litlfred), 2026-10-21: \"It really needs to look at all of the actors and the dependency of the loaded harness\" and \"Merge when green\". Repinned to main after merging litlfred/cat-harness-tools#507 (kg-audit --instance resolves actors with neededActors)."
             }
           }
         }
