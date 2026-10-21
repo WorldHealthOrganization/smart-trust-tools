@@ -16,8 +16,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-003",
-          "criterion": "Cross-implementation interoperability (req:stt-tst-003) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-COS-002 passes in each implementation's suite (Kotlin: `STT-COS-002 STT-GEN-001 both ES256 and PS256 sign and verify` (SignCoseTest.kt)).",
           "verification": "test"
         }
       ]

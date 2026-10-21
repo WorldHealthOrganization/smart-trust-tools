@@ -12,7 +12,14 @@
       "label": "Base45 per RFC 9285",
       "conformance": "SHALL",
       "requirement": "Base45 encoding and decoding SHALL follow RFC 9285, the published form of the draft the IG cites.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-B45-001 passes in each implementation's suite (Kotlin: `STT-B45-001 the RFC 9285 section 4-3 examples` (Base45Test.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

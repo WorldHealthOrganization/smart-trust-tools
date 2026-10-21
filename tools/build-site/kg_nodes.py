@@ -19,13 +19,18 @@ Every node and edge here is read from a committed node, never restated:
   test          a test a skill's `tested-by:` names: each Kotlin test function
                 (named `STT-XXX-nnn ...` after the requirements it verifies),
                 or a whole script for any other file
+  test-plan     test/plans/*.test-plan.json (test-plan/v1), whose assertion
+                ids are requirement statements' success criteria
 
 Edges: derivedFrom (a requirement's `reference`), satisfies (a smart-trust
-canonical in `reference`), refines (its `derivedFrom`), verifiedBy,
+canonical in `reference`), refines (its `derivedFrom`),
 realizedBy (requirement to skill), constrainsApi, affectedBy, concerns,
 partOf, implementedBy (skill to Tool), usedIn (skill to process),
 performedBy (skill to role), testedBy (skill to test), verifies (test to
-requirement).
+requirement), assesses (test plan to requirement, through an assertion on
+one of its success criteria), planCase (test plan to the skill a case is
+named after), precededBy (test plan to the plan that must pass first).
+A requirement's success criteria are data on its node.
 """
 
 import collections
@@ -160,7 +165,7 @@ def load_requirements():
             "derivation": next((t for t in tags if t in ("direct", "derived", "directive")), ""),
             "targets": [t.split(":", 1)[1] for t in tags if t.startswith("target:")] or ["kotlin", "rust"],
             "derivedFrom": n.get("derivedFrom", []), "reference": n.get("reference", []),
-            "verifiedBy": [c["key"] for s in n["statements"] for c in s.get("successCriteria", [])],
+            "criteria": [dict(statement=s["key"], **c) for s in n["statements"] for c in s.get("successCriteria", [])],
             "area": display_id(n["id"]).split("-")[1], "file": p.relative_to(ROOT).as_posix(),
         }
     return reqs
@@ -285,6 +290,15 @@ def provenance(entries):
     return [{"repository": r, "commit": c, "ref": ref} for (r, c), ref in seen.items()]
 
 
+def load_plans():
+    plans = collections.OrderedDict()
+    for f in sorted((ROOT / "test" / "plans").glob("*.test-plan.json")):
+        p = json.loads(f.read_text())
+        p["file"] = f.relative_to(ROOT).as_posix()
+        plans[p["id"]] = p
+    return plans
+
+
 def load(with_tools=True):
     """The nodes. Without Tools when the harness is not mounted (CI): tools/index.ts imports it."""
     entries, sections = load_library()
@@ -292,7 +306,7 @@ def load(with_tools=True):
     return {
         "entries": entries, "sections": sections, "upstream": load_upstream(), "reqs": load_requirements(),
         "skills": skills, "tests": load_tests(skills), "tools": load_tools() if with_tools else {}, "processes": load_processes(),
-        "roles": load_roles(), "beans": load_beans(), "wit": load_wit(),
+        "roles": load_roles(), "beans": load_beans(), "wit": load_wit(), "plans": load_plans(),
     }
 
 
@@ -300,7 +314,7 @@ FAMILY = {
     "requirement": "requirement",
     "section": "source", "document": "source", "standard": "source", "directive": "source", "upstream": "source",
     "skill": "realization", "api": "realization", "tool": "realization", "process": "realization", "role": "realization",
-    "test": "realization",
+    "test": "realization", "test-plan": "realization",
     "issue": "issue",
 }
 
@@ -367,14 +381,12 @@ def build_graph(M):
     for r in M["reqs"].values():
         add(r["id"], "requirement", r["id"], r["title"], area=r["area"], statement=r["statement"],
             conformance=r["conformance"], category=r["category"], derivation=r["derivation"], targets=r["targets"],
-            iri=r["iri"], file=r["file"])
+            iri=r["iri"], file=r["file"], criteria=r["criteria"])
     for r in M["reqs"].values():
         for d in r["derivedFrom"]:
             edge(r["id"], display_id(d), "refines")
         for d in r["reference"]:
             edge(r["id"], add_source(d), "satisfies" if d.startswith(UPSTREAM) else "derivedFrom")
-        for v in r["verifiedBy"]:
-            edge(r["id"], display_id("req:" + v), "verifiedBy")
 
     order = {s: i + 1 for i, s in enumerate(PIPELINE)}
     for s in M["skills"].values():
@@ -410,6 +422,19 @@ def build_graph(M):
                 edge(tag, key, "constrainsApi")
         if w["name"] != w["module"]:
             edge(key, "wit:" + w["module"], "partOf")
+    for p in M["plans"].values():
+        pid = "plan:" + p["id"]
+        cases = [dict(id=c["id"], description=c.get("description", ""), assertions=[a["id"] for a in c["assertions"]]) for c in p["testCases"]]
+        add(pid, "test-plan", p["id"], p["title"], text=p.get("description", ""), status=p["status"], version=p["version"],
+            scope=p["scope"], cases=cases, exit=p["exitCriteria"].get("description", p["exitCriteria"]["decision"]), file=p["file"])
+        for rid in dict.fromkeys(a["id"].split("#")[0] for c in p["testCases"] for a in c["assertions"]):
+            edge(pid, display_id(rid), "assesses")
+        for c in p["testCases"]:
+            if "skill:" + c["id"] in nodes:
+                edge(pid, "skill:" + c["id"], "planCase")
+        for d in p.get("dependencies", []):
+            if d.get("predecessor"):
+                edge(pid, "plan:" + d["predecessor"], "precededBy")
     for b in M["beans"].values():
         add(b["id"], "issue", b["id"], b["title"], text=b["text"], hint=b["hint"], upstream=b["upstream"],
             status=b["status"], file=b["file"])

@@ -12,7 +12,14 @@
       "label": "Camera scanning out of scope",
       "conformance": "SHALL",
       "requirement": "Decoding QR images from a camera or file is out of scope for the core libraries. The verifier entry point SHALL be the scanned text (HC1 string) or raw COSE bytes.",
-      "category": "scope"
+      "category": "scope",
+      "successCriteria": [
+        {
+          "key": "text-entry",
+          "criterion": "Inspection of the public API finds the verifier's entry points take the HC1 text or COSE bytes, and no image or camera type.",
+          "verification": "inspection"
+        }
+      ]
     }
   ],
   "tags": [

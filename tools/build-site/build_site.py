@@ -200,9 +200,10 @@ def requirements_page(ref, M, graph):
         for r in rs:
             o = out[r["id"]]
             rows = [("Derived from", o["derivedFrom"], True), ("Satisfies (smart-trust)", o["satisfies"], True),
-                    ("Refines", o["refines"], False), ("Verified by", o["verifiedBy"], False),
+                    ("Refines", o["refines"], False),
                     ("Realized by skills", o["realizedBy"], False), ("Constrains (WIT)", o["constrainsApi"], False),
                     ("Verified by tests", [by_id[e["s"]] for e in graph["edges"] if e["rel"] == "verifies" and e["t"] == r["id"]], False),
+                    ("Test plans", [by_id[e["s"]] for e in graph["edges"] if e["rel"] == "assesses" and e["t"] == r["id"]], False),
                     ("Open issues", o["affectedBy"], False)]
             blocks.append(
                 '<section class="req" id="%s"><h3>%s · %s</h3>'
@@ -468,13 +469,13 @@ KIND_SOURCES = [
     ("api", "api/wit/*.wit", "WIT item (hcert-contract typology)"),
     ("issue", "beans/defs/*.md", "bean"),
     ("test", "the files a skill's tested-by names", "a Kotlin test function named after the requirements it verifies, or a script"),
+    ("test-plan", "test/plans/*.test-plan.json", "test-plan/v1 (cat-harness), shaped after FHIR R5 TestPlan"),
 ]
 
 REL_NOTES = [
     ("derivedFrom", "requirement → source", "reference of the req: node (FHIR Requirements.reference)"),
     ("satisfies", "requirement → smart-trust", "a smart-trust FHIR Requirements canonical in reference"),
     ("refines", "requirement → requirement", "derivedFrom of the req: node"),
-    ("verifiedBy", "requirement → requirement", "a success criterion's key"),
     ("realizedBy", "requirement → skill", "the skill's satisfies"),
     ("implementedBy", "skill → Tool", "the Tool's satisfies"),
     ("usedIn", "skill → process", "a BPMN task's skill ref"),
@@ -483,6 +484,9 @@ REL_NOTES = [
     ("affectedBy", "requirement → issue", "the bean's Requirements affected"),
     ("testedBy", "skill → test", "the skill's tested-by"),
     ("verifies", "test → requirement", "the requirement ids a test is named after"),
+    ("assesses", "test plan → requirement", "an assertion id, a success criterion req:<id>#<statement>/<criterion>"),
+    ("planCase", "test plan → skill", "a case named after the skill"),
+    ("precededBy", "test plan → test plan", "a dependency's predecessor"),
     ("concerns", "issue → source", "the bean's Sources"),
     ("partOf", "section → entry, statement → requirement, item → interface", "structure"),
 ]

@@ -15,8 +15,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-004",
-          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-VER-004 passes in each implementation's suite (Kotlin: `STT-VER-004 a DSC whose key usage allows test certificates only cannot sign a vaccination` (VerifyTest.kt); `STT-VER-004 a DCC is a test, vaccination or recovery certificate by its own entry` (VerifyTest.kt)).",
           "verification": "test"
         }
       ]

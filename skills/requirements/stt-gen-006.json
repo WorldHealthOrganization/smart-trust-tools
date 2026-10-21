@@ -22,14 +22,14 @@
       "category": "architecture",
       "successCriteria": [
         {
-          "key": "stt-tst-001",
-          "criterion": "PR 129 example as a conformance vector (req:stt-tst-001) passes.",
+          "key": "same-vectors",
+          "criterion": "The Kotlin and Rust suites load the same files in vectors/ and reach the same verdict, step and reason on every case.",
           "verification": "test"
         },
         {
-          "key": "stt-tst-003",
-          "criterion": "Cross-implementation interoperability (req:stt-tst-003) passes.",
-          "verification": "test"
+          "key": "same-surface",
+          "criterion": "A reviewer comparing the two public APIs against api/wit finds the same operations, options and failure taxonomy, named idiomatically.",
+          "verification": "review"
         }
       ]
     }

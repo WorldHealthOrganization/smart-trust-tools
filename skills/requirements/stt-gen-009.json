@@ -13,7 +13,14 @@
       "label": "Raw transport besides QR",
       "conformance": "SHALL",
       "requirement": "The issuer SHALL be able to return the signed COSE_Sign1 bytes without the barcode encodings, and the verifier SHALL accept COSE_Sign1 bytes directly, for 8-bit-safe transports (NFC, Bluetooth, app-to-app).",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-GEN-009 passes in each implementation's suite (Kotlin: `STT-GEN-009 the COSE bytes travel without the QR layers too` (PrefixContextTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

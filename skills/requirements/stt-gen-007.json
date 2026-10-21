@@ -12,7 +12,19 @@
       "label": "HCERT Specification is authoritative",
       "conformance": "SHALL",
       "requirement": "Where the QR Code Generation walkthrough and the HCERT Specification differ, the library SHALL follow the HCERT Specification. Each release SHALL state which HCERT Specification version and which smart-trust IG version it implements (currently 1.1.1 and 1.7.5).",
-      "category": "non-functional"
+      "category": "non-functional",
+      "successCriteria": [
+        {
+          "key": "spec-wins",
+          "criterion": "A reviewer finds that every point where the library follows the HCERT Specification over the QR Code Generation walkthrough is recorded as such in the requirements or beans.",
+          "verification": "review"
+        },
+        {
+          "key": "versions-stated",
+          "criterion": "Each release's notes name the HCERT Specification version and the smart-trust IG version it implements.",
+          "verification": "inspection"
+        }
+      ]
     }
   ],
   "tags": [

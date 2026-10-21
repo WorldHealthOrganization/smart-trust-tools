@@ -18,7 +18,14 @@
       "label": "Static trust lists",
       "conformance": "SHALL",
       "requirement": "The trust store SHALL load DSCs from PEM and DER, for tests, pinned bilateral or national lists, and fully offline deployments.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-TRU-005 passes in each implementation's suite (Kotlin: `STT-TRU-005 a static list of PEM certificates loads` (TrustListTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

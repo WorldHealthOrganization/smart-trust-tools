@@ -12,7 +12,14 @@
       "label": "Other payloads",
       "conformance": "SHALL",
       "requirement": "Subclaim 5 SHALL have a typed codec holding a URI string. Subclaims 1, 3, 4 and -7 SHALL at least be issuable and verifiable as raw CBOR payloads. Typed codecs for them MAY follow.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-PAY-009 passes in each implementation's suite (Kotlin: `STT-PAY-009 STT-GEN-003 another payload passes through the core untouched` (AssemblePayloadTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

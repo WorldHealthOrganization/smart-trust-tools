@@ -24,7 +24,14 @@
       "label": "GDHCN DID trustlist v2 documents",
       "conformance": "SHALL",
       "requirement": "The trust store SHALL load GDHCN DID trustlist v2 documents, embedded and reference variants, reading DSCs from verificationMethod publicKeyJwk (x5c) with the kid as the fragment. Fetching the documents, caching them and checking their proofs are the host's.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-TRU-002 passes in each implementation's suite (Kotlin: `STT-TRU-002 a GDHCN DID trustlist v2 document loads its DSCs` (TrustListTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

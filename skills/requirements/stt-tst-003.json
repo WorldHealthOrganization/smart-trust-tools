@@ -19,7 +19,14 @@
       "label": "Cross-implementation interoperability",
       "conformance": "SHALL",
       "requirement": "Certificates issued by each library (ES256 and PS256) SHALL verify in the other library and in the smart-trust reference script's verify routine. Certificates issued by the reference script SHALL verify in both libraries.",
-      "category": "test"
+      "category": "test",
+      "successCriteria": [
+        {
+          "key": "cross-verify",
+          "criterion": "Certificates issued by each library with ES256 and PS256 verify in the other library and in the smart-trust reference script, and the reference script's certificates verify in both.",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

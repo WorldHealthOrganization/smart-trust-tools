@@ -12,7 +12,14 @@
       "label": "Negative vectors",
       "conformance": "SHALL",
       "requirement": "The shared vector set SHALL include failing cases with the expected failure reason for each: tampered payload, tampered protected header, wrong or unknown kid, duplicate kid with only the second DSC valid, a DER-encoded ES256 signature, expired, iat before the DSC validity, EKU mismatch, missing or unsupported prefix (HC2:), invalid Base45, decompression bomb, deeply nested CBOR, multiple subclaims, and a DVC without is or cn.",
-      "category": "test"
+      "category": "test",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-TST-004 passes in each implementation's suite (Kotlin: `STT-TST-004 STT-TST-005 the shared negative vectors fail at the named step with the named reason` (ConformanceVectorsTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

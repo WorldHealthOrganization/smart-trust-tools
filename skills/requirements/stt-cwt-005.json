@@ -12,7 +12,14 @@
       "label": "iss is an optional alpha-2 string",
       "conformance": "SHALL",
       "requirement": "iss SHALL be optional and SHALL be encoded as a text string. When present, the issuer SHALL require two upper-case letters, the alpha-2 form used in iss and in the DSC's X.509 C attribute.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-CWT-005 passes in each implementation's suite (Kotlin: `STT-CWT-005 iss is optional, and alpha-2 when present` (BuildCwtTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

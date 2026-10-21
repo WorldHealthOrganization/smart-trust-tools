@@ -23,8 +23,8 @@
       "category": "security",
       "successCriteria": [
         {
-          "key": "stt-tst-004",
-          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-B45-002 passes in each implementation's suite (Kotlin: `STT-B45-002 lower case, a dangling character and an out-of-range triple are refused` (Base45Test.kt)).",
           "verification": "test"
         }
       ]

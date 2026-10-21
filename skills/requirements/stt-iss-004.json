@@ -20,7 +20,14 @@
       "label": "Two-phase signing",
       "conformance": "SHALL",
       "requirement": "Issuance SHALL be two-phase: prepare returns the exact bytes to sign (the Sig_structure), the caller signs them by any means, including asynchronous ones such as WebCrypto or a remote KMS, and finish assembles the certificate and returns the HC1 string and the COSE bytes. For ES256, finish SHALL accept r||s or DER and SHALL always emit r||s.",
-      "category": "api"
+      "category": "api",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-ISS-004 passes in each implementation's suite (Kotlin: `STT-COS-004 STT-ISS-004 what is signed is the Signature1 structure prepare returns` (SignCoseTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

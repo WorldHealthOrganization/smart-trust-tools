@@ -15,8 +15,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-001",
-          "criterion": "PR 129 example as a conformance vector (req:stt-tst-001) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-CWT-001 passes in each implementation's suite (Kotlin: `STT-CWT-001 STT-CWT-002 claim keys are integers and dates are integer NumericDates` (BuildCwtTest.kt)).",
           "verification": "test"
         }
       ]

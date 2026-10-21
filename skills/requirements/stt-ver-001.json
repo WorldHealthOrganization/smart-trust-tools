@@ -18,7 +18,14 @@
       "label": "Verification order",
       "conformance": "SHALL",
       "requirement": "The verifier SHALL run the QR Code Generation section 11 sequence in order: prefix, Base45, inflate, COSE parse, header validation, trust lookup by kid, signature verification, EKU check, CWT decode and time checks, subclaim dispatch, business rules.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-VER-001 passes in each implementation's suite (Kotlin: `STT-VER-001 STT-VER-002 a tampered payload fails at the signature, before any payload is read` (VerifyTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

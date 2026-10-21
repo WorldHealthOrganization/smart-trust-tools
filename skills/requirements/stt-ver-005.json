@@ -15,8 +15,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-004",
-          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-VER-005 passes in each implementation's suite (Kotlin: `STT-VER-005 time is the clock the caller passes, with the skew it allows` (VerifyTest.kt)).",
           "verification": "test"
         }
       ]

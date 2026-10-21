@@ -15,8 +15,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-001",
-          "criterion": "PR 129 example as a conformance vector (req:stt-tst-001) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-PAY-001 passes in each implementation's suite (Kotlin: `STT-PAY-001 STT-PAY-002 STT-PAY-005 a newborn's DVCMin, with no identity document, round-trips as typed fields` (AssemblePayloadTest.kt); `STT-TST-001 STT-PAY-001 both PR 129 certificates verify and decode as published` (ConformanceVectorsTest.kt)).",
           "verification": "test"
         }
       ]

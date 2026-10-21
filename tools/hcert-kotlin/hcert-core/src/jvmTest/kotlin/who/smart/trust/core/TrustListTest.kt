@@ -66,4 +66,25 @@ class TrustListTest {
         for (env in listOf("UAT", "DEV")) assertEquals(4, HcertTrustStore().loadTrustDomains(readRepo("vectors/gdhcn-trust-domains/CodeSystem-Domains-$env.json")).ok())
         assertIs<TrustError.Parse>(store.loadTrustDomains("""{"resourceType":"ValueSet"}""").err())
     }
+
+    @Test fun `STT-TRU-001 bad trust material is refused with a typed error and nothing is added`() {
+        val store = HcertTrustStore()
+        val pem = readRepo("vectors/smart-trust-pr129/dvc-qr-example-XXA-dsc.pem")
+        assertEquals(2, store.addPem(pem).ok()) // the DSC and its CSCA
+        assertEquals(0, store.addPem(pem).ok(), "a certificate given twice is held once")
+        val dsc = store.candidates(Base64Std.decode("WHM+BYqqZiE=")).single()
+        assertEquals(0, store.addDer(dsc.der).ok())
+        for (bad in listOf(
+            "no certificate here",
+            "-----BEGIN CERTIFICATE-----\n!!!!\n-----END CERTIFICATE-----",
+            "-----BEGIN CERTIFICATE-----\nAAAA\n-----END CERTIFICATE-----",
+        )) assertIs<TrustError.Parse>(HcertTrustStore().addPem(bad).err(), bad)
+        assertIs<TrustError.Parse>(HcertTrustStore().addDer(byteArrayOf(0x30, 0x03, 0x02, 0x01, 0x01)).err())
+        for (bad in listOf("{", "[]", "{}", """{"verificationMethod": [{"id": "did:web:x:v2:trustlist:DDCC:XX:DSC#k", "publicKeyJwk": {"x5c": [7]}}]}""",
+                """{"verificationMethod": [{"id": "did:web:x:v2:trustlist:DDCC:XX:DSC#k", "publicKeyJwk": {"x5c": ["!!"]}}]}"""))
+            assertIs<TrustError.Parse>(HcertTrustStore().addDidDocument(bad).err(), bad)
+        for (bad in listOf("{", "[]", """{"resourceType": "CodeSystem", "concept": []}"""))
+            assertIs<TrustError.Parse>(HcertTrustStore().loadTrustDomains(bad).err(), bad)
+        assertEquals(1, store.candidates(dsc.kid).size)
+    }
 }

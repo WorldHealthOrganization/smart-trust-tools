@@ -12,7 +12,14 @@
       "label": "Byte-exact CBOR vector",
       "conformance": "SHALL",
       "requirement": "Encoding the PR 129 example claim sets with deterministic CBOR SHALL give exactly the payload bytes inside the committed COSE_Sign1: 210 bytes for hepb1 and 209 for bcg. Signed, deflated and HC1 sizes SHALL NOT be asserted exactly, because signatures are randomized.",
-      "category": "test"
+      "category": "test",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-TST-002 passes in each implementation's suite (Kotlin: `STT-TST-002 STT-CBR-001 deterministic re-encoding reproduces the issued CWT byte for byte` (ConformanceVectorsTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

@@ -15,8 +15,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-001",
-          "criterion": "PR 129 example as a conformance vector (req:stt-tst-001) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-KID-001 passes in each implementation's suite (Kotlin: `STT-TRU-001 STT-KID-001 a DSC is found by its kid, the first 8 bytes of its SHA-256` (TrustListTest.kt); `STT-TST-001 STT-KID-001 the vector's kid is the DSC's` (ConformanceVectorsTest.kt)).",
           "verification": "test"
         }
       ]

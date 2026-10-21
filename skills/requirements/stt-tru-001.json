@@ -20,7 +20,14 @@
       "label": "Trust store",
       "conformance": "SHALL",
       "requirement": "Trust material SHALL be held in a trust store that the host fills with DSCs it has obtained, and that returns every trusted DSC matching a kid. The store SHALL do no network or file I/O (STT-GEN-012).",
-      "category": "api"
+      "category": "api",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-TRU-001 passes in each implementation's suite (Kotlin: `STT-TRU-001 STT-KID-001 a DSC is found by its kid, the first 8 bytes of its SHA-256` (TrustListTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

@@ -13,7 +13,14 @@
       "label": "Exactly one payload when issuing",
       "conformance": "SHALL",
       "requirement": "The issuer SHALL emit an hcert (-260) map with exactly one entry. The verifier SHALL fail verification with MultipleSubclaims when there is more than one entry, and with HcertMissing when there is none.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-SEL-004 passes in each implementation's suite (Kotlin: `STT-SEL-004 an issued HCERT carries exactly one payload` (SelectPayloadTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

@@ -22,7 +22,14 @@
       "label": "VHL payload at HCERT key 5 as a CBOR map",
       "conformance": "SHALL",
       "requirement": "The issuer SHALL carry the VHL payload at HCERT claim -260 key 5 as a CBOR map with text keys, exp and v as CBOR integers. The verifier SHALL read key 5 as that map, and SHALL also accept a vhlink:/ text string there, so that VHLs built to IHE ITI-YY3 still verify.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-VHL-002 passes in each implementation's suite (Kotlin: `STT-VHL-002 the payload is a CBOR map at HCERT key 5, and verifies` (VhlShareTest.kt); `STT-VHL-002 STT-VHL-003 a vhlink string at key 5 still verifies, and the map is smaller` (VhlShareTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

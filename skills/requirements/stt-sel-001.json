@@ -12,7 +12,14 @@
       "label": "Built-in subclaim registry",
       "conformance": "SHALL",
       "requirement": "The library SHALL ship a subclaim registry containing 1 (HCertDCC), 3 (DDCCCoreDataSetVS), 4 (DDCCCoreDataSetTR), 5 (VHL URI), -6 (DVCMin) and -7 (MedicationTreatmentLineMin), each with its status (Assigned, Proposed, Development range) and logical-model canonical URL.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-SEL-001 passes in each implementation's suite (Kotlin: `STT-SEL-001 the registry holds the subclaims the guide defines` (SelectPayloadTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

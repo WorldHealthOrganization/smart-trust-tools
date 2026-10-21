@@ -22,13 +22,8 @@
       "category": "security",
       "successCriteria": [
         {
-          "key": "stt-tst-004",
-          "criterion": "Negative vectors (req:stt-tst-004) passes.",
-          "verification": "test"
-        },
-        {
-          "key": "stt-tst-006",
-          "criterion": "Fuzzing of decoders (req:stt-tst-006) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-VER-003 passes in each implementation's suite (Kotlin: `STT-VER-003 a protected header with an unsupported alg is refused` (SignCoseTest.kt)).",
           "verification": "test"
         }
       ]

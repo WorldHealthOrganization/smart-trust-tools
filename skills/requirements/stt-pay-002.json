@@ -19,7 +19,14 @@
       "label": "Typed DVCMinVaccineDetails model",
       "conformance": "SHALL",
       "requirement": "The library SHALL provide the vx structure with vp 1..1, dv 1..1, cn 0..1, is 0..1 and bo 1..1.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-PAY-002 passes in each implementation's suite (Kotlin: `STT-PAY-001 STT-PAY-002 STT-PAY-005 a newborn's DVCMin, with no identity document, round-trips as typed fields` (AssemblePayloadTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

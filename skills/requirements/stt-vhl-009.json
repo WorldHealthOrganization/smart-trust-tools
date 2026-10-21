@@ -18,7 +18,14 @@
       "label": "VHL expiry",
       "conformance": "SHALL",
       "requirement": "Validating a VHL payload against a caller-supplied now SHALL report an expired link when the payload's exp has passed, in addition to the HCERT exp check made by the verifier.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-VHL-009 passes in each implementation's suite (Kotlin: `STT-VHL-009 an expired link fails verification, by its own exp` (VhlReceiveTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

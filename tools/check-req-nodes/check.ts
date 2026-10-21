@@ -16,11 +16,15 @@
  *   Requirements.fsh, with its statement key if one is given). The field is
  *   FHIR R5 `Requirements.reference`, the artefacts a requirement was drawn
  *   from;
- * - each success criterion names a requirement;
+ * - every statement carries at least one success criterion;
  * - each skill's `satisfies` names a requirement and one of its statements;
  * - each file a skill's `tested-by` names exists, and every requirement id a
  *   test in it is named after (`STT-XXX-nnn …`) names a requirement;
- * - each bean's "Requirements affected" and "Sources" resolve likewise.
+ * - each bean's "Requirements affected" and "Sources" resolve likewise;
+ * - each test plan in test/plans/ parses as `test-plan/v1`, its requirements
+ *   name requirements, each assertion id is a success criterion
+ *   (`req:<id>#<statement>/<criterion>`), each fixed data path and generated
+ *   template exists, and each predecessor names a plan here.
  *
  *   bun tools/check-req-nodes/check.ts
  */
@@ -28,6 +32,8 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { basename, join } from "node:path";
 
 import { RequirementSchema } from "@litlfred/bootstrap-tools/schemas/requirement.ts";
+
+import { TestPlanSchema } from "../../cat-harness/schemas/test-plan.ts";
 
 const ROOT = join(import.meta.dir, "..", "..");
 const REQ_DIR = join(ROOT, "skills", "requirements");
@@ -82,9 +88,7 @@ for (const { file, node } of nodes.values()) {
     if (d.startsWith("req:") || !resolves(d)) problems.push(`${file}: reference ${d} names no source node`);
   }
   for (const s of node.statements ?? []) {
-    for (const c of s.successCriteria ?? []) {
-      if (!nodes.has(`req:${c.key}`)) problems.push(`${file}: success criterion ${c.key} names no requirement`);
-    }
+    if (!s.successCriteria?.length) problems.push(`${file}: statement ${s.key} has no success criterion`);
   }
 }
 
@@ -135,6 +139,37 @@ for (const f of beans) {
   }
 }
 
+/** `req:<id>#<statement key>/<criterion key>`, checked against the statement's criteria. */
+function criterionResolves(ref: string): boolean {
+  const m = /^(req:[^#]+)#([^/]+)\/(.+)$/.exec(ref);
+  const s = m && (nodes.get(m[1]!)?.node.statements ?? []).find((x: { key: string }) => x.key === m[2]);
+  return !!s && (s.successCriteria ?? []).some((c: { key: string }) => c.key === m![3]);
+}
+
+const planDir = join(ROOT, "test", "plans");
+const plans = existsSync(planDir) ? readdirSync(planDir).filter((n) => n.endsWith(".test-plan.json")).sort() : [];
+const planIds = new Set(plans.map((f) => JSON.parse(readFileSync(join(planDir, f), "utf-8")).id));
+for (const f of plans) {
+  const where = `test/plans/${f}`;
+  const r = TestPlanSchema.safeParse(JSON.parse(readFileSync(join(planDir, f), "utf-8")));
+  if (!r.success) {
+    for (const i of r.error.issues) problems.push(`${where}: ${i.path.join(".") || "(root)"}: ${i.message}`);
+    continue;
+  }
+  const plan = r.data;
+  for (const q of plan.requirements) if (!statementResolves(q)) problems.push(`${where}: requirement ${q} names no requirement`);
+  for (const c of plan.testCases) {
+    for (const a of c.assertions) if (!criterionResolves(a.id)) problems.push(`${where}: case ${c.id}: assertion ${a.id} names no success criterion`);
+    for (const d of c.testData) {
+      const path = d.kind === "fixed" ? d.path : d.template;
+      if (!existsSync(join(ROOT, path))) problems.push(`${where}: case ${c.id}: test data ${path} does not exist`);
+    }
+  }
+  for (const d of plan.dependencies) {
+    if (d.predecessor && !planIds.has(d.predecessor)) problems.push(`${where}: predecessor ${d.predecessor} names no plan`);
+  }
+}
+
 for (const p of problems) console.error(`  ✗ ${p}`);
-console.log(`${files.length} requirement(s), ${skills} skill(s), ${tests} test(s), ${beans.length} bean(s), ${upstream.size} smart-trust Requirements; ${problems.length} problem(s)`);
+console.log(`${files.length} requirement(s), ${skills} skill(s), ${tests} test(s), ${beans.length} bean(s), ${plans.length} test plan(s), ${upstream.size} smart-trust Requirements; ${problems.length} problem(s)`);
 process.exit(problems.length ? 1 : 0);

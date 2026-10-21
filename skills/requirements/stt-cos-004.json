@@ -13,7 +13,14 @@
       "label": "Sig_structure",
       "conformance": "SHALL",
       "requirement": "The signature input SHALL be the CBOR encoding of [\"Signature1\", protected header bytes exactly as transmitted, empty external_aad, payload bytes]. The verifier SHALL use the received protected bytes and SHALL NOT re-encode the decoded header.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-COS-004 passes in each implementation's suite (Kotlin: `STT-COS-004 STT-ISS-004 what is signed is the Signature1 structure prepare returns` (SignCoseTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [
