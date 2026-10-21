@@ -8,6 +8,9 @@ interface trust {
 
     variant trust-error {
         parse(string),
+        /// A DID document names a trust domain the loaded GDHCN Trust Domain
+        /// code system does not hold. [STT-SEL-006]
+        unknown-trust-domain(string),
     }
 
     record trusted-dsc {
@@ -33,6 +36,15 @@ interface trust {
         /// A GDHCN DID trustlist v2 document, embedded or reference
         /// variant. [STT-TRU-002]
         add-did-document: func(json: string) -> result<u32, trust-error>;
+        /// The trust domains a DID document may name, read from a GDHCN
+        /// Trust Domain CodeSystem (FHIR JSON) the host fetched. Data, not
+        /// an enum: once loaded, a DID document naming another domain is
+        /// refused whole; before, any domain is kept as given. Loading
+        /// again replaces the set. Returns the number of codes.
+        /// [STT-SEL-006]
+        load-trust-domains: func(codesystem-json: string) -> result<u32, trust-error>;
+        /// The loaded trust domain codes; empty when none are loaded.
+        trust-domains: func() -> list<string>;
         /// Every DSC with this kid (kids are not unique). [STT-KID-002]
         candidates: func(k: kid) -> list<trusted-dsc>;
         size: func() -> u32;

@@ -23,6 +23,7 @@
   "reference": [
     "library/who-smart-trust-qr-code-generation/sections/s004-2-1-subclaims-defined-in-this-guide",
     "library/who-smart-trust-trust-domains",
-    "references/who-trust-gdhcn-trust-domain-vs"
+    "references/who-trust-gdhcn-trust-domain-vs",
+    "vectors/gdhcn-trust-domains/CodeSystem-Domains.json"
   ]
 }

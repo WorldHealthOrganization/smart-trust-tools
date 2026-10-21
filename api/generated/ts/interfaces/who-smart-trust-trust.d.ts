@@ -1,9 +1,17 @@
 /** @module Interface who:smart-trust/trust@0.1.0 **/
 export type Kid = import('./who-smart-trust-types.js').Kid;
 export type NumericDate = import('./who-smart-trust-types.js').NumericDate;
-export type TrustError = TrustErrorParse;
+export type TrustError = TrustErrorParse | TrustErrorUnknownTrustDomain;
 export interface TrustErrorParse {
   tag: 'parse',
+  val: string,
+}
+/**
+ * A DID document names a trust domain the loaded GDHCN Trust Domain
+ * code system does not hold. [STT-SEL-006]
+ */
+export interface TrustErrorUnknownTrustDomain {
+  tag: 'unknown-trust-domain',
   val: string,
 }
 export interface TrustedDsc {
@@ -37,6 +45,19 @@ export class TrustStore implements Disposable {
   * variant. [STT-TRU-002]
   */
   addDidDocument(json: string): number;
+  /**
+  * The trust domains a DID document may name, read from a GDHCN
+  * Trust Domain CodeSystem (FHIR JSON) the host fetched. Data, not
+  * an enum: once loaded, a DID document naming another domain is
+  * refused whole; before, any domain is kept as given. Loading
+  * again replaces the set. Returns the number of codes.
+  * [STT-SEL-006]
+  */
+  loadTrustDomains(codesystemJson: string): number;
+  /**
+  * The loaded trust domain codes; empty when none are loaded.
+  */
+  trustDomains(): Array<string>;
   /**
   * Every DSC with this kid (kids are not unique). [STT-KID-002]
   */

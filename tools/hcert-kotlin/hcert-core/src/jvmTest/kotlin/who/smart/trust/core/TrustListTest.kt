@@ -2,6 +2,8 @@ package who.smart.trust.core
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import who.smart.trust.trust.TrustError
 
 /** Skill `hcert-trust-list`: the trust store the host fills. */
 class TrustListTest {
@@ -35,5 +37,33 @@ class TrustListTest {
         val store = HcertTrustStore()
         assertEquals(2, store.addPem(Testkit.esPem + "\n" + Testkit.psPem).ok())
         assertEquals(2, store.size())
+    }
+
+    private fun did(domain: String) = """{"id":"did:web:tng-cdn.who.int:v2:trustlist:$domain:XXA:DSC","verificationMethod":[
+      {"id":"did:web:tng-cdn.who.int:v2:trustlist:$domain:XXA:DSC#k1","type":"JsonWebKey2020",
+       "publicKeyJwk":{"kty":"EC","crv":"P-256","x5c":["${Base64Std.encode(Testkit.esDer)}"]}}]}"""
+
+    @Test fun `STT-SEL-006 trust domains are read from the GDHCN code system, not a closed list`() {
+        val store = HcertTrustStore()
+        assertEquals(emptyList(), store.trustDomains())
+        assertEquals(1, store.addDidDocument(did("FUTURE")).ok()) // nothing loaded: kept as given
+        assertEquals("FUTURE", store.candidates(HcertCose.kidFromDsc(Testkit.esDer)).single().domain)
+
+        store.clear()
+        val production = readRepo("vectors/gdhcn-trust-domains/CodeSystem-Domains.json")
+        assertEquals(4, store.loadTrustDomains(production).ok())
+        assertEquals(listOf("DDCC", "ICVP", "IPS-PILGRIMAGE", "PH4H"), store.trustDomains())
+        assertEquals(1, store.addDidDocument(did("DDCC")).ok())
+        assertEquals(TrustError.UnknownTrustDomain("FUTURE"), store.addDidDocument(did("FUTURE")).err())
+        assertEquals(1, store.size()) // refused whole, nothing added
+        store.clear()
+        assertEquals(1, store.addDidDocument(did("-")).ok()) // the wildcard names no domain
+
+        // A domain registered later is a new code in the data, not a new library release.
+        val withFuture = production.replace("\"concept\" : [", "\"concept\" : [{\"code\":\"FUTURE\"},")
+        assertEquals(5, store.loadTrustDomains(withFuture).ok())
+        assertEquals(1, HcertTrustStore().apply { loadTrustDomains(withFuture).ok() }.addDidDocument(did("FUTURE")).ok())
+        for (env in listOf("UAT", "DEV")) assertEquals(4, HcertTrustStore().loadTrustDomains(readRepo("vectors/gdhcn-trust-domains/CodeSystem-Domains-$env.json")).ok())
+        assertIs<TrustError.Parse>(store.loadTrustDomains("""{"resourceType":"ValueSet"}""").err())
     }
 }
