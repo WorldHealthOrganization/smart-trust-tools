@@ -68,3 +68,25 @@ jobs:
       - name: Run hcert-core on Node against the PR 129 vector
         run: node tools/hcert-kotlin/hcert-core/node-smoke.mjs
 
+
+  rust:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/hcert-rust
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+      # rust-toolchain.toml pins the compiler (1.97.0) and the wasm32 target;
+      # rustup on the runner installs exactly that. Cargo.lock pins every crate
+      # with its checksum, and --locked refuses to resolve anything new.
+      - name: Install the pinned toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - name: Test the library, natively
+        run: cargo test --locked
+      - name: Build the WebAssembly module
+        run: cargo build --locked --release --target wasm32-unknown-unknown
+      - name: Run the WebAssembly module on Node, with WebCrypto keys
+        run: node js/smoke.mjs

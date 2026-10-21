@@ -17,6 +17,7 @@ satisfies:
   - "req:stt-kid-001#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt
+  - tools/hcert-rust/tests/build_cwt_sign_cose.rs
 ---
 
 # Step 5

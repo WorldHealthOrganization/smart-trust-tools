@@ -185,6 +185,25 @@ def load_skills():
 
 
 KOTLIN_TEST = re.compile(r"@Test\s+fun\s+`([^`]+)`")
+RUST_TEST = re.compile(r"#\[test\]\s*fn\s+(stt_[a-z0-9_]+)\s*\(")
+RUST_ID = re.compile(r"stt_([a-z0-9]+)_(\d{3})_")
+
+
+def rust_test_name(fn):
+    """`stt_tst_001_stt_kid_001_the_kid` -> `STT-TST-001 STT-KID-001 the kid`."""
+    head = ""
+    while (m := RUST_ID.match(fn)):
+        head += "STT-%s-%s " % (m.group(1).upper(), m.group(2))
+        fn = fn[m.end():]
+    return head + fn.replace("_", " ")
+
+
+def test_names(path, text):
+    if path.endswith(".kt"):
+        return KOTLIN_TEST.findall(text)
+    if path.endswith(".rs"):
+        return [rust_test_name(f) for f in RUST_TEST.findall(text)]
+    return []
 
 
 def load_tests(skills):
@@ -193,7 +212,7 @@ def load_tests(skills):
     for s in skills.values():
         for path in s["testedBy"]:
             text = (ROOT / path).read_text()
-            found = KOTLIN_TEST.findall(text) if path.endswith(".kt") else []
+            found = test_names(path, text)
             for name in found or [None]:
                 tid = "test:%s::%s" % (pathlib.Path(path).name, name) if name else "test:" + path
                 t = tests.setdefault(tid, {

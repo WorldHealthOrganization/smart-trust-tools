@@ -1,0 +1,41 @@
+# The HCERT library in Rust: the second implementation of the requirement set
+# (STT-GEN-005), for native targets and wasm32. Every dependency is a
+# RustCrypto crate STT-SEC-002 names, or miniz_oxide for DEFLATE and
+# unicode-normalization for NFC; versions are pinned in Cargo.lock, each a
+# release at least 14 days old (DEPENDENCIES.md). Build with --locked.
+[package]
+name = "hcert"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.82"
+license = "Apache-2.0"
+description = "SMART Trust HCERT: issue and verify WHO GDHCN health certificates"
+publish = false
+
+[lib]
+crate-type = ["rlib", "cdylib"]
+
+[dependencies]
+p256 = { version = "=0.13.2", default-features = false, features = ["ecdsa", "pkcs8", "std"] }
+rsa = { version = "=0.9.10", default-features = false, features = ["std", "sha2"] }
+sha2 = { version = "=0.10.9", default-features = false, features = ["std", "oid"] }
+x509-cert = { version = "=0.2.5", default-features = false, features = ["std"] }
+miniz_oxide = { version = "=0.8.9", default-features = false, features = ["with-alloc"] }
+unicode-normalization = { version = "=0.1.25", default-features = false, features = ["std"] }
+
+# Verification needs no randomness and signing is the host's, so on wasm32
+# the entropy source is one that always fails, instead of a JavaScript import.
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "=0.2.17", features = ["custom"] }
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[dev-dependencies]
+# Already in the tree through p256 and rsa; the tests use it for an RNG to
+# sign PS256 with, and for no other purpose.
+rand_core = { version = "=0.6.4", default-features = false }

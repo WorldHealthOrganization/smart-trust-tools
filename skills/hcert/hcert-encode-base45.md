@@ -8,6 +8,7 @@ satisfies:
   - "req:stt-gen-001#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/Base45Test.kt
+  - tools/hcert-rust/tests/base45.rs
 ---
 
 # Step 7

@@ -8,6 +8,7 @@ satisfies:
   - "req:stt-qr-001#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/PrefixContextTest.kt
+  - tools/hcert-rust/tests/prefix_context.rs
 ---
 
 # hcert-prefix-context

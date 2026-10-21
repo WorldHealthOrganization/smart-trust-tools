@@ -11,6 +11,7 @@ satisfies:
   - "req:stt-sel-006#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt
+  - tools/hcert-rust/tests/payload.rs
 ---
 
 # Step 1

@@ -20,7 +20,7 @@ export default toolFactory((t) =>
     satisfies: ["hcert-select-payload", "hcert-assemble-payload", "hcert-build-cwt", "hcert-encode-cbor", "hcert-sign-cose", "hcert-compress", "hcert-encode-base45", "hcert-prefix-context", "hcert-verify", "hcert-trust-list", "vhl-share", "vhl-receive", "hcert-library-architecture"],
     selection: {
       when: "An application on the JVM, Android or Node issues, verifies or reads an HCERT, or shares or receives a VHL; or a change to the contract or the core is built and tested.",
-      limits: "No QR rendering (the host renders the HC1 string), no HTTP (the host sends the ITI-YY5 request it builds), no key storage (the host signs the bytes prepare-sign returns). Rust (WebAssembly) is the second implementation and is not here yet.",
+      limits: "No QR rendering (the host renders the HC1 string), no HTTP (the host sends the ITI-YY5 request it builds), no key storage (the host signs the bytes prepare-sign returns). Rust (native and WebAssembly) is the second implementation, in tools/hcert-rust.",
       cost: "About a minute cold for the JVM and JS tests; Gradle downloads only artefacts the verification metadata lists.",
     },
     requires: { runtime: ["gradle", "java"], network: true },

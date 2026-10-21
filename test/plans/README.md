@@ -128,7 +128,17 @@ The Rust suite runs the same plan, with these additions:
   Android runtime yet. The JVM tests cover the common code, not the platform
   crypto Android provides.
 - **WHO-ITB data:** bean OI-33.
-- **Rust:** the six steps above, once the Rust library exists.
+- **Rust:** `tools/hcert-rust` exists, and steps 1 and 2 above run in CI:
+  - 34 native tests load the same vectors, and agree with Kotlin on every
+    negative vector's step and reason;
+  - the WebAssembly module runs on Node with WebCrypto keys.
+
+  Still to do: the seeded fuzzer runs in CI, but coverage-guided
+  `cargo-fuzz` needs nightly and doesn't. Also to do: the coverage floor
+  (`cargo-llvm-cov` isn't pinned yet), cross-verification with Kotlin
+  (STT-TST-003), the TypeScript suite (STT-TST-007), and the WIT component
+  transpiled with jco (STT-GEN-005). The demo uses a plain WebAssembly
+  module with a JSON call surface.
 - **Release review:** the inspection and review criteria (STT-GEN-007, 008,
   013, NFR-001, 002, QR-005, and TST-010's `never-lowered`) need a
   release-review record. There is none until a first release.
