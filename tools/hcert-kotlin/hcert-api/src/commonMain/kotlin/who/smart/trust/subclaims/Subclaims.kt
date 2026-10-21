@@ -28,7 +28,7 @@ interface Registry : AutoCloseable {
  * move from -6 to an assigned number without an API break.
  * [STT-SEL-001, STT-SEL-002, STT-SEL-003]
  *
- * Implemented by the library (Kotlin and Rust) for the `subclaims` WIT interface.
+ * Implemented by the library.
  */
 interface Subclaims {
     /** Starts with the IG defaults: 1, 3, 4, 5, -6, -7; VHL is 5. [STT-SEL-001] */

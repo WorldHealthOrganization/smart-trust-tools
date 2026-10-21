@@ -1,6 +1,6 @@
 package who.smart.trust.core
 
-import who.smart.trust.WitResult
+import who.smart.trust.HcertResult
 import who.smart.trust.types.NumericDate
 import who.smart.trust.types.Severity
 import who.smart.trust.types.ValidationIssue
@@ -72,13 +72,13 @@ object HcertVhl : Vhl {
 
     override fun toVhlink(p: VhlPayload): String = PREFIX + Base64Std.encodeUrl(json(p).encodeToByteArray())
 
-    override fun fromVhlink(text: String): WitResult<VhlPayload, VhlError> {
-        if (!text.startsWith(PREFIX)) return WitResult.Err(VhlError.NotAVhlink("no vhlink:/ prefix"))
+    override fun fromVhlink(text: String): HcertResult<VhlPayload, VhlError> {
+        if (!text.startsWith(PREFIX)) return HcertResult.Err(VhlError.NotAVhlink("no vhlink:/ prefix"))
         val obj = try {
             parseJson(Base64Std.decode(text.substring(PREFIX.length)).decodeToString(throwOnInvalidSequence = true)) as? Map<*, *>
         } catch (e: Exception) {
-            return WitResult.Err(VhlError.NotAVhlink("the text after vhlink:/ is not base64url JSON"))
-        } ?: return WitResult.Err(VhlError.NotAVhlink("the payload is not a JSON object"))
+            return HcertResult.Err(VhlError.NotAVhlink("the text after vhlink:/ is not base64url JSON"))
+        } ?: return HcertResult.Err(VhlError.NotAVhlink("the payload is not a JSON object"))
         return fromFields(obj.mapKeys { it.key as String }) { it as? Map<*, *> }
     }
 
@@ -97,13 +97,13 @@ object HcertVhl : Vhl {
     )
 
     /** Key 5 as the CBOR map, or as a vhlink:/ text string (IHE ITI-YY3). [STT-VHL-002] */
-    internal fun fromItem(item: CborItem): WitResult<VhlPayload, VhlError> = when (item) {
+    internal fun fromItem(item: CborItem): HcertResult<VhlPayload, VhlError> = when (item) {
         is CborItem.Text -> fromVhlink(item.value)
         is CborItem.Map -> {
             val fields = item.entries.mapNotNull { (k, v) -> (k as? CborItem.Text)?.value?.let { it to cborToValue(v) } }.toMap()
             fromFields(fields) { it as? Map<*, *> }
         }
-        else -> WitResult.Err(VhlError.Invalid(listOf(issue("", "not-a-map", "key 5 is neither a CBOR map nor a vhlink:/ string"))))
+        else -> HcertResult.Err(VhlError.Invalid(listOf(issue("", "not-a-map", "key 5 is neither a CBOR map nor a vhlink:/ string"))))
     }
 
     private fun cborToValue(i: CborItem): Any? = when (i) {
@@ -113,7 +113,7 @@ object HcertVhl : Vhl {
         else -> i
     }
 
-    private fun fromFields(f: Map<String, Any?>, asMap: (Any?) -> Map<*, *>?): WitResult<VhlPayload, VhlError> {
+    private fun fromFields(f: Map<String, Any?>, asMap: (Any?) -> Map<*, *>?): HcertResult<VhlPayload, VhlError> {
         val issues = mutableListOf<ValidationIssue>()
         fun text(k: String, required: Boolean): String? = when (val v = f[k]) {
             null -> { if (required) issues += issue(k, "required", "$k is required"); null }
@@ -132,7 +132,7 @@ object HcertVhl : Vhl {
             url = url ?: "", key = key ?: "", exp = integer("exp"), flag = text("flag", false), label = text("label", false),
             v = integer("v")?.toInt(), fhirBaseUrl = asMap(f["extension"])?.get("fhirBaseUrl") as? String,
         )
-        return if (issues.isEmpty()) WitResult.Ok(p) else WitResult.Err(VhlError.Invalid(issues))
+        return if (issues.isEmpty()) HcertResult.Ok(p) else HcertResult.Err(VhlError.Invalid(issues))
     }
 
     override fun newKey(): String = Base64Std.encodeUrl(Platform.randomBytes(32))
@@ -166,48 +166,48 @@ object HcertVhl : Vhl {
         return out.toByteArray().decodeToString()
     }
 
-    override fun buildManifestRequest(p: VhlPayload, recipient: String, passcode: String?, embeddedLengthMax: Int?): WitResult<ManifestRequest, VhlError> {
+    override fun buildManifestRequest(p: VhlPayload, recipient: String, passcode: String?, embeddedLengthMax: Int?): HcertResult<ManifestRequest, VhlError> {
         val blocking = validate(p, null).filter { it.severity == Severity.BLOCKING }
-        if (blocking.isNotEmpty()) return WitResult.Err(VhlError.Invalid(blocking))
-        if (recipient.isBlank()) return WitResult.Err(VhlError.Manifest("recipient is required"))
+        if (blocking.isNotEmpty()) return HcertResult.Err(VhlError.Invalid(blocking))
+        if (recipient.isBlank()) return HcertResult.Err(VhlError.Manifest("recipient is required"))
         val needsPasscode = p.flag?.contains('P') == true
-        if (needsPasscode && passcode.isNullOrEmpty()) return WitResult.Err(VhlError.Manifest("the link has the P flag: a passcode is required"))
-        if (!needsPasscode && passcode != null) return WitResult.Err(VhlError.Manifest("the link has no P flag: no passcode is sent"))
+        if (needsPasscode && passcode.isNullOrEmpty()) return HcertResult.Err(VhlError.Manifest("the link has the P flag: a passcode is required"))
+        if (!needsPasscode && passcode != null) return HcertResult.Err(VhlError.Manifest("the link has no P flag: no passcode is sent"))
         val path = p.url.substringBefore('?').trimEnd('/')
         val base = when {
             path.endsWith("/List/_search") -> path.removeSuffix("/List/_search")
             path.endsWith("/List") -> path.removeSuffix("/List")
-            else -> return WitResult.Err(VhlError.Manifest("the manifest URL is not a List search"))
+            else -> return HcertResult.Err(VhlError.Manifest("the manifest URL is not a List search"))
         }
         val params = p.url.substringAfter('?', "").split('&').filter { it.isNotEmpty() }.map {
             percentDecode(it.substringBefore('=').replace('+', ' ')) to percentDecode(it.substringAfter('=', "").replace('+', ' '))
         }
         val names = params.map { it.first }
         for (r in listOf("_id", "code", "status", "patient.identifier")) {
-            if (names.count { it == r } != 1) return WitResult.Err(VhlError.Manifest("the manifest URL needs exactly one $r"))
+            if (names.count { it == r } != 1) return HcertResult.Err(VhlError.Manifest("the manifest URL needs exactly one $r"))
         }
         params.firstOrNull { it.first == "_include" }?.let {
-            if (it.second != "List:item") return WitResult.Err(VhlError.Manifest("_include must be List:item"))
+            if (it.second != "List:item") return HcertResult.Err(VhlError.Manifest("_include must be List:item"))
         }
         val body = (params + listOfNotNull(
             "recipient" to recipient,
             passcode?.let { "passcode" to it },
             embeddedLengthMax?.let { "embeddedLengthMax" to it.toString() },
         )).joinToString("&") { (k, v) -> formEncode(k) + "=" + formEncode(v) }
-        return WitResult.Ok(ManifestRequest("$base/List/_search", FORM, body))
+        return HcertResult.Ok(ManifestRequest("$base/List/_search", FORM, body))
     }
 
-    override fun parseManifest(bundleJson: String): WitResult<List<ManifestDocument>, VhlError> {
+    override fun parseManifest(bundleJson: String): HcertResult<List<ManifestDocument>, VhlError> {
         val bundle = try {
             parseJson(bundleJson) as? Map<*, *>
         } catch (e: IllegalArgumentException) {
-            return WitResult.Err(VhlError.Manifest(e.message ?: "invalid JSON"))
-        } ?: return WitResult.Err(VhlError.Manifest("not a JSON object"))
-        if (bundle["resourceType"] != "Bundle" || bundle["type"] != "searchset") return WitResult.Err(VhlError.Manifest("not a searchset Bundle"))
+            return HcertResult.Err(VhlError.Manifest(e.message ?: "invalid JSON"))
+        } ?: return HcertResult.Err(VhlError.Manifest("not a JSON object"))
+        if (bundle["resourceType"] != "Bundle" || bundle["type"] != "searchset") return HcertResult.Err(VhlError.Manifest("not a searchset Bundle"))
         val entries = (bundle["entry"] as? List<*>).orEmpty().mapNotNull { it as? Map<*, *> }
         fun mode(e: Map<*, *>) = (e["search"] as? Map<*, *>)?.get("mode") as? String
         val lists = entries.filter { (it["resource"] as? Map<*, *>)?.get("resourceType") == "List" && mode(it) != "include" }
-        if (lists.isEmpty()) return WitResult.Err(VhlError.Manifest("the Bundle holds no matching List"))
+        if (lists.isEmpty()) return HcertResult.Err(VhlError.Manifest("the Bundle holds no matching List"))
         val included = mutableMapOf<String, Map<*, *>>()
         for (e in entries) {
             val r = e["resource"] as? Map<*, *> ?: continue
@@ -240,7 +240,7 @@ object HcertVhl : Vhl {
                 }
             }
         }
-        return WitResult.Ok(docs)
+        return HcertResult.Ok(docs)
     }
 
     // ---- JWE Compact, dir / A256GCM (RFC 7516, RFC 7518) ----
@@ -248,49 +248,49 @@ object HcertVhl : Vhl {
     private fun keyBytes(key: String): ByteArray? =
         runCatching { Base64Std.decode(key) }.getOrNull()?.takeIf { base64url.matches(key) && it.size == 32 }
 
-    override fun encrypt(content: ByteArray, contentType: String, key: String): WitResult<String, VhlError> {
-        val k = keyBytes(key) ?: return WitResult.Err(VhlError.Invalid(listOf(issue("key", "bad-key", "key must be 43 base64url characters encoding 32 bytes"))))
+    override fun encrypt(content: ByteArray, contentType: String, key: String): HcertResult<String, VhlError> {
+        val k = keyBytes(key) ?: return HcertResult.Err(VhlError.Invalid(listOf(issue("key", "bad-key", "key must be 43 base64url characters encoding 32 bytes"))))
         val header = "{\"alg\":\"dir\",\"enc\":\"A256GCM\",\"cty\":\"" + contentType.replace("\\", "\\\\").replace("\"", "\\\"") + "\"}"
         val h = Base64Std.encodeUrl(header.encodeToByteArray())
         val iv = Platform.randomBytes(12)
         val sealed = Platform.aesGcmEncrypt(k, iv, h.encodeToByteArray(), content)
         val ct = sealed.copyOfRange(0, sealed.size - 16)
         val tag = sealed.copyOfRange(sealed.size - 16, sealed.size)
-        return WitResult.Ok("$h..${Base64Std.encodeUrl(iv)}.${Base64Std.encodeUrl(ct)}.${Base64Std.encodeUrl(tag)}")
+        return HcertResult.Ok("$h..${Base64Std.encodeUrl(iv)}.${Base64Std.encodeUrl(ct)}.${Base64Std.encodeUrl(tag)}")
     }
 
-    override fun decrypt(jwe: String, key: String): WitResult<Decrypted, VhlError> {
-        val k = keyBytes(key) ?: return WitResult.Err(VhlError.Invalid(listOf(issue("key", "bad-key", "key must be 43 base64url characters encoding 32 bytes"))))
+    override fun decrypt(jwe: String, key: String): HcertResult<Decrypted, VhlError> {
+        val k = keyBytes(key) ?: return HcertResult.Err(VhlError.Invalid(listOf(issue("key", "bad-key", "key must be 43 base64url characters encoding 32 bytes"))))
         val parts = jwe.trim().split('.')
-        if (parts.size != 5) return WitResult.Err(VhlError.DecryptFailed("JWE Compact has 5 parts, found ${parts.size}"))
-        if (parts[1].isNotEmpty()) return WitResult.Err(VhlError.Unsupported("an encrypted key is present: alg is not dir"))
+        if (parts.size != 5) return HcertResult.Err(VhlError.DecryptFailed("JWE Compact has 5 parts, found ${parts.size}"))
+        if (parts[1].isNotEmpty()) return HcertResult.Err(VhlError.Unsupported("an encrypted key is present: alg is not dir"))
         val header = try {
             parseJson(Base64Std.decode(parts[0]).decodeToString()) as? Map<*, *>
         } catch (e: Exception) {
             null
-        } ?: return WitResult.Err(VhlError.DecryptFailed("the protected header is not base64url JSON"))
+        } ?: return HcertResult.Err(VhlError.DecryptFailed("the protected header is not base64url JSON"))
         if (header["alg"] != "dir" || header["enc"] != "A256GCM") {
-            return WitResult.Err(VhlError.Unsupported("alg ${header["alg"]} / enc ${header["enc"]}; only dir / A256GCM"))
+            return HcertResult.Err(VhlError.Unsupported("alg ${header["alg"]} / enc ${header["enc"]}; only dir / A256GCM"))
         }
         val zip = header["zip"]
-        if (zip != null && zip != "DEF") return WitResult.Err(VhlError.Unsupported("zip $zip"))
+        if (zip != null && zip != "DEF") return HcertResult.Err(VhlError.Unsupported("zip $zip"))
         val (iv, ct, tag) = try {
             Triple(Base64Std.decode(parts[2]), Base64Std.decode(parts[3]), Base64Std.decode(parts[4]))
         } catch (e: IllegalArgumentException) {
-            return WitResult.Err(VhlError.DecryptFailed("a JWE part is not base64url"))
+            return HcertResult.Err(VhlError.DecryptFailed("a JWE part is not base64url"))
         }
-        if (iv.size != 12 || tag.size != 16) return WitResult.Err(VhlError.DecryptFailed("A256GCM needs a 96-bit IV and a 128-bit tag"))
+        if (iv.size != 12 || tag.size != 16) return HcertResult.Err(VhlError.DecryptFailed("A256GCM needs a 96-bit IV and a 128-bit tag"))
         val plain = try {
             Platform.aesGcmDecrypt(k, iv, parts[0].encodeToByteArray(), ct + tag)
         } catch (e: IllegalArgumentException) {
-            return WitResult.Err(VhlError.DecryptFailed("the tag does not verify: wrong key or altered content"))
+            return HcertResult.Err(VhlError.DecryptFailed("the tag does not verify: wrong key or altered content"))
         }
         val content = if (zip == "DEF") try {
             Platform.inflateRaw(plain, MAX_DOCUMENT_BYTES)
         } catch (e: Exception) {
-            return WitResult.Err(VhlError.DecryptFailed("zip DEF content does not inflate: ${e.message}"))
+            return HcertResult.Err(VhlError.DecryptFailed("zip DEF content does not inflate: ${e.message}"))
         } else plain
-        return WitResult.Ok(Decrypted(header["cty"] as? String, content))
+        return HcertResult.Ok(Decrypted(header["cty"] as? String, content))
     }
 
     // ---- HTTP Message Signatures (RFC 9421) and Content-Digest (RFC 9530) ----
@@ -310,12 +310,12 @@ object HcertVhl : Vhl {
         return SignatureBase(digest, "sig1=$params", base.encodeToByteArray())
     }
 
-    override fun signatureHeader(signature: ByteArray, alg: String): WitResult<String, VhlError> {
+    override fun signatureHeader(signature: ByteArray, alg: String): HcertResult<String, VhlError> {
         val sig = if (alg == "ecdsa-p256-sha256" && signature.size != 64) try {
             EcdsaSignature.derToRaw(signature)
         } catch (e: IllegalArgumentException) {
-            return WitResult.Err(VhlError.Unsupported("ecdsa-p256-sha256 signature is neither r||s nor DER"))
+            return HcertResult.Err(VhlError.Unsupported("ecdsa-p256-sha256 signature is neither r||s nor DER"))
         } else signature
-        return WitResult.Ok("sig1=:" + Base64Std.encode(sig) + ":")
+        return HcertResult.Ok("sig1=:" + Base64Std.encode(sig) + ":")
     }
 }

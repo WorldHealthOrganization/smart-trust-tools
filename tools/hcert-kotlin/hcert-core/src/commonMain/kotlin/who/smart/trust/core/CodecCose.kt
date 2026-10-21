@@ -1,6 +1,6 @@
 package who.smart.trust.core
 
-import who.smart.trust.WitResult
+import who.smart.trust.HcertResult
 import who.smart.trust.codec.Codec
 import who.smart.trust.codec.CodecError
 import who.smart.trust.cose.Base64Alphabet
@@ -43,49 +43,49 @@ object HcertCodec : Codec {
 
     override fun base45Encode(data: ByteArray): String = Base45.encode(data)
 
-    override fun base45Decode(text: String): WitResult<ByteArray, CodecError> = try {
-        WitResult.Ok(Base45.decode(text))
+    override fun base45Decode(text: String): HcertResult<ByteArray, CodecError> = try {
+        HcertResult.Ok(Base45.decode(text))
     } catch (e: IllegalArgumentException) {
-        WitResult.Err(CodecError.Base45Invalid(e.message ?: "invalid Base45"))
+        HcertResult.Err(CodecError.Base45Invalid(e.message ?: "invalid Base45"))
     }
 
     override fun zlibCompress(data: ByteArray, level: Int): ByteArray = Platform.deflate(data, level)
 
-    override fun zlibInflate(data: ByteArray, maxOut: Int): WitResult<ByteArray, CodecError> = try {
-        WitResult.Ok(Platform.inflate(data, maxOut))
+    override fun zlibInflate(data: ByteArray, maxOut: Int): HcertResult<ByteArray, CodecError> = try {
+        HcertResult.Ok(Platform.inflate(data, maxOut))
     } catch (e: LimitException) {
-        WitResult.Err(CodecError.LimitExceeded(e.message ?: "inflate limit"))
+        HcertResult.Err(CodecError.LimitExceeded(e.message ?: "inflate limit"))
     } catch (e: IllegalArgumentException) {
-        WitResult.Err(CodecError.InflateFailed(e.message ?: "invalid ZLIB data"))
+        HcertResult.Err(CodecError.InflateFailed(e.message ?: "invalid ZLIB data"))
     }
 
-    override fun detectContext(text: String): WitResult<Pair<String, String>, CodecError> {
-        val m = context.find(text) ?: return WitResult.Err(CodecError.BadPrefix)
-        return WitResult.Ok(m.groupValues[1] to text.substring(m.range.last + 1))
+    override fun detectContext(text: String): HcertResult<Pair<String, String>, CodecError> {
+        val m = context.find(text) ?: return HcertResult.Err(CodecError.BadPrefix)
+        return HcertResult.Ok(m.groupValues[1] to text.substring(m.range.last + 1))
     }
 
     override fun toHc1(cose: ByteArray): String = "HC1:" + Base45.encode(Platform.deflate(cose, 9))
 
-    override fun fromHc1(text: String, limits: DecodeLimits): WitResult<ByteArray, CodecError> {
+    override fun fromHc1(text: String, limits: DecodeLimits): HcertResult<ByteArray, CodecError> {
         if (text.length > limits.maxInputChars) {
-            return WitResult.Err(CodecError.LimitExceeded("input of ${text.length} characters exceeds ${limits.maxInputChars}"))
+            return HcertResult.Err(CodecError.LimitExceeded("input of ${text.length} characters exceeds ${limits.maxInputChars}"))
         }
         val (version, rest) = when (val c = detectContext(text)) {
-            is WitResult.Ok -> c.value
-            is WitResult.Err -> return c
+            is HcertResult.Ok -> c.value
+            is HcertResult.Err -> return c
         }
-        if (version != "1") return WitResult.Err(CodecError.UnsupportedContextVersion("HC$version"))
+        if (version != "1") return HcertResult.Err(CodecError.UnsupportedContextVersion("HC$version"))
         val deflated = when (val b = base45Decode(rest)) {
-            is WitResult.Ok -> b.value
-            is WitResult.Err -> return b
+            is HcertResult.Ok -> b.value
+            is HcertResult.Err -> return b
         }
         return zlibInflate(deflated, limits.maxInflatedBytes)
     }
 
-    override fun cborDeterministic(cbor: CborBytes, limits: DecodeLimits): WitResult<CborBytes, CodecError> = try {
-        WitResult.Ok(CborEncoder.encode(cborDecode(cbor, limits)))
+    override fun cborDeterministic(cbor: CborBytes, limits: DecodeLimits): HcertResult<CborBytes, CodecError> = try {
+        HcertResult.Ok(CborEncoder.encode(cborDecode(cbor, limits)))
     } catch (e: CborException) {
-        WitResult.Err(if (e.limit) CodecError.LimitExceeded(e.message!!) else CodecError.CborMalformed(e.message!!))
+        HcertResult.Err(if (e.limit) CodecError.LimitExceeded(e.message!!) else CodecError.CborMalformed(e.message!!))
     }
 }
 
@@ -98,78 +98,78 @@ object HcertCose : Cose {
         Base64Alphabet.URL_SAFE -> Base64Std.encodeUrl(k)
     }
 
-    override fun kidFromBase64(text: String): WitResult<Kid, CoseError> = try {
-        WitResult.Ok(Base64Std.decode(text))
+    override fun kidFromBase64(text: String): HcertResult<Kid, CoseError> = try {
+        HcertResult.Ok(Base64Std.decode(text))
     } catch (e: IllegalArgumentException) {
-        WitResult.Err(CoseError.Malformed("kid is not base64"))
+        HcertResult.Err(CoseError.Malformed("kid is not base64"))
     }
 
-    override fun parseSign1(bytes: ByteArray, limits: DecodeLimits): WitResult<Sign1, CoseError> {
+    override fun parseSign1(bytes: ByteArray, limits: DecodeLimits): HcertResult<Sign1, CoseError> {
         val item = try {
             cborDecode(bytes, limits)
         } catch (e: CborException) {
-            return WitResult.Err(CoseError.Malformed(e.message!!))
+            return HcertResult.Err(CoseError.Malformed(e.message!!))
         }
         val tagged = item is CborItem.Tag
-        if (item is CborItem.Tag && item.tag != COSE_SIGN1_TAG) return WitResult.Err(CoseError.Malformed("tag ${item.tag} is not COSE_Sign1 (18)"))
+        if (item is CborItem.Tag && item.tag != COSE_SIGN1_TAG) return HcertResult.Err(CoseError.Malformed("tag ${item.tag} is not COSE_Sign1 (18)"))
         val arr = (if (item is CborItem.Tag) item.item else item) as? CborItem.Array
-            ?: return WitResult.Err(CoseError.Malformed("COSE_Sign1 is not an array"))
-        if (arr.items.size != 4) return WitResult.Err(CoseError.Malformed("COSE_Sign1 has ${arr.items.size} elements, not 4"))
-        val protected = (arr.items[0] as? CborItem.Bytes)?.value ?: return WitResult.Err(CoseError.Malformed("protected header is not a byte string"))
-        val unprotected = arr.items[1] as? CborItem.Map ?: return WitResult.Err(CoseError.Malformed("unprotected header is not a map"))
-        val payload = (arr.items[2] as? CborItem.Bytes)?.value ?: return WitResult.Err(CoseError.Malformed("payload is not a byte string"))
-        val signature = (arr.items[3] as? CborItem.Bytes)?.value ?: return WitResult.Err(CoseError.Malformed("signature is not a byte string"))
+            ?: return HcertResult.Err(CoseError.Malformed("COSE_Sign1 is not an array"))
+        if (arr.items.size != 4) return HcertResult.Err(CoseError.Malformed("COSE_Sign1 has ${arr.items.size} elements, not 4"))
+        val protected = (arr.items[0] as? CborItem.Bytes)?.value ?: return HcertResult.Err(CoseError.Malformed("protected header is not a byte string"))
+        val unprotected = arr.items[1] as? CborItem.Map ?: return HcertResult.Err(CoseError.Malformed("unprotected header is not a map"))
+        val payload = (arr.items[2] as? CborItem.Bytes)?.value ?: return HcertResult.Err(CoseError.Malformed("payload is not a byte string"))
+        val signature = (arr.items[3] as? CborItem.Bytes)?.value ?: return HcertResult.Err(CoseError.Malformed("signature is not a byte string"))
 
         val ph = if (protected.isEmpty()) CborItem.Map(emptyList()) else try {
-            cborDecode(protected, limits) as? CborItem.Map ?: return WitResult.Err(CoseError.HeaderInvalid("protected header is not a map"))
+            cborDecode(protected, limits) as? CborItem.Map ?: return HcertResult.Err(CoseError.HeaderInvalid("protected header is not a map"))
         } catch (e: CborException) {
-            return WitResult.Err(CoseError.HeaderInvalid(e.message!!))
+            return HcertResult.Err(CoseError.HeaderInvalid(e.message!!))
         }
         for (h in listOf(ph, unprotected)) {
-            if (h.entries.map { it.first }.toSet().size != h.entries.size) return WitResult.Err(CoseError.HeaderInvalid("duplicate header label"))
+            if (h.entries.map { it.first }.toSet().size != h.entries.size) return HcertResult.Err(CoseError.HeaderInvalid("duplicate header label"))
         }
-        if (unprotected[1L] != null) return WitResult.Err(CoseError.HeaderInvalid("alg must be in the protected header"))
-        val algItem = ph[1L] ?: return WitResult.Err(CoseError.HeaderInvalid("no alg in the protected header"))
-        val algLabel = (algItem as? CborItem.Int)?.value ?: return WitResult.Err(CoseError.HeaderInvalid("alg is not an integer"))
-        val alg = algorithmOf(algLabel) ?: return WitResult.Err(CoseError.UnsupportedAlgorithm(algLabel.toInt()))
-        fun kidOf(h: CborItem.Map): WitResult<ByteArray?, CoseError> {
-            val k = h[4L] ?: return WitResult.Ok(null)
-            val b = (k as? CborItem.Bytes)?.value ?: return WitResult.Err(CoseError.HeaderInvalid("kid is not a byte string"))
-            if (b.size != 8) return WitResult.Err(CoseError.HeaderInvalid("kid is ${b.size} bytes, not 8"))
-            return WitResult.Ok(b)
+        if (unprotected[1L] != null) return HcertResult.Err(CoseError.HeaderInvalid("alg must be in the protected header"))
+        val algItem = ph[1L] ?: return HcertResult.Err(CoseError.HeaderInvalid("no alg in the protected header"))
+        val algLabel = (algItem as? CborItem.Int)?.value ?: return HcertResult.Err(CoseError.HeaderInvalid("alg is not an integer"))
+        val alg = algorithmOf(algLabel) ?: return HcertResult.Err(CoseError.UnsupportedAlgorithm(algLabel.toInt()))
+        fun kidOf(h: CborItem.Map): HcertResult<ByteArray?, CoseError> {
+            val k = h[4L] ?: return HcertResult.Ok(null)
+            val b = (k as? CborItem.Bytes)?.value ?: return HcertResult.Err(CoseError.HeaderInvalid("kid is not a byte string"))
+            if (b.size != 8) return HcertResult.Err(CoseError.HeaderInvalid("kid is ${b.size} bytes, not 8"))
+            return HcertResult.Ok(b)
         }
-        val pk = when (val r = kidOf(ph)) { is WitResult.Ok -> r.value; is WitResult.Err -> return r }
-        val uk = when (val r = kidOf(unprotected)) { is WitResult.Ok -> r.value; is WitResult.Err -> return r }
-        return WitResult.Ok(Sign1(protected, payload, signature, alg, pk ?: uk, kidInProtected = pk != null, tagged = tagged))
+        val pk = when (val r = kidOf(ph)) { is HcertResult.Ok -> r.value; is HcertResult.Err -> return r }
+        val uk = when (val r = kidOf(unprotected)) { is HcertResult.Ok -> r.value; is HcertResult.Err -> return r }
+        return HcertResult.Ok(Sign1(protected, payload, signature, alg, pk ?: uk, kidInProtected = pk != null, tagged = tagged))
     }
 
     override fun sigStructure(protected: ByteArray, payload: ByteArray): ByteArray = CborEncoder.encode(
         CborItem.Array(listOf(CborItem.Text("Signature1"), CborItem.Bytes(protected), CborItem.Bytes(ByteArray(0)), CborItem.Bytes(payload))),
     )
 
-    override fun verifySign1(s: Sign1, dscDer: ByteArray): WitResult<Unit, CoseError> {
-        val alg = s.alg ?: return WitResult.Err(CoseError.HeaderInvalid("no alg"))
+    override fun verifySign1(s: Sign1, dscDer: ByteArray): HcertResult<Unit, CoseError> {
+        val alg = s.alg ?: return HcertResult.Err(CoseError.HeaderInvalid("no alg"))
         if (alg == CoseAlgorithm.ES256 && s.signature.size != 64) {
-            return WitResult.Err(CoseError.BadSignatureFormat("ES256 signature is ${s.signature.size} bytes, not 64"))
+            return HcertResult.Err(CoseError.BadSignatureFormat("ES256 signature is ${s.signature.size} bytes, not 64"))
         }
         try {
             Platform.certificate(dscDer)
         } catch (e: Exception) {
-            return WitResult.Err(CoseError.BadCertificate(e.message ?: "unreadable certificate"))
+            return HcertResult.Err(CoseError.BadCertificate(e.message ?: "unreadable certificate"))
         }
         val ok = Platform.verify(alg, dscDer, sigStructure(s.protected, s.payload), s.signature)
-        return if (ok) WitResult.Ok(Unit) else WitResult.Err(CoseError.SignatureInvalid)
+        return if (ok) HcertResult.Ok(Unit) else HcertResult.Err(CoseError.SignatureInvalid)
     }
 
-    override fun ecdsaDerToRaw(der: ByteArray): WitResult<ByteArray, CoseError> = try {
-        WitResult.Ok(EcdsaSignature.derToRaw(der))
+    override fun ecdsaDerToRaw(der: ByteArray): HcertResult<ByteArray, CoseError> = try {
+        HcertResult.Ok(EcdsaSignature.derToRaw(der))
     } catch (e: IllegalArgumentException) {
-        WitResult.Err(CoseError.BadSignatureFormat(e.message ?: "bad DER"))
+        HcertResult.Err(CoseError.BadSignatureFormat(e.message ?: "bad DER"))
     }
 
-    override fun ecdsaRawToDer(raw: ByteArray): WitResult<ByteArray, CoseError> = try {
-        WitResult.Ok(EcdsaSignature.rawToDer(raw))
+    override fun ecdsaRawToDer(raw: ByteArray): HcertResult<ByteArray, CoseError> = try {
+        HcertResult.Ok(EcdsaSignature.rawToDer(raw))
     } catch (e: IllegalArgumentException) {
-        WitResult.Err(CoseError.BadSignatureFormat(e.message ?: "bad r||s"))
+        HcertResult.Err(CoseError.BadSignatureFormat(e.message ?: "bad r||s"))
     }
 }
