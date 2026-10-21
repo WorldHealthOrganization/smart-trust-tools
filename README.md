@@ -9,7 +9,7 @@ needs `fhir-harness`); [`AGENTS.md`](AGENTS.md) is the cold start.
 ## Viewers
 
 **https://litlfred.github.io/smart-trust-tools/** is published to `gh-pages` by
-an agent with `bun run cat stage-local` (main to the root, other branches to
+an agent with `bun cat-harness-tools/scripts/stage-local.ts --repo .` (main to the root, other branches to
 `STAGING/<branch>/`), never by a workflow. Its viewers, under `viewers/`, are
 the graph explorer, the traceability matrix, the requirements, the WIT contract
 with its TypeScript reference, the Kotlin API and the wire and payload models.
