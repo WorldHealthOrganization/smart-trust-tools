@@ -172,6 +172,14 @@
         "upstream-patches"
       ],
       "description": "Patches proposed to IHE ITI VHL, for its maintainers to apply."
+    },
+    {
+      "id": "test-plans",
+      "path": "test/plans/",
+      "description": "Test plans for the libraries: one test-plan/v1 document per plan (cat-harness schemas/test-plan.ts, shaped after FHIR R5 TestPlan). Each assertion id is a requirement statement's success criterion, req:<id>#<statement>/<criterion>. hcert-library-conformance is the plan any implementation (Kotlin, Rust) runs; who-itb-agreement compares a library with the WHO Interoperability Test Bed's HCERT tracks.",
+      "graphTypologies": [
+        "test-plan"
+      ]
     }
   ]
 }

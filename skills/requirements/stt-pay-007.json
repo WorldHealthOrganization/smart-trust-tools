@@ -19,7 +19,14 @@
       "label": "Nationality is ISO 3166-1 alpha-3",
       "conformance": "SHALL",
       "requirement": "Validation SHALL check that nt is an ISO 3166-1 alpha-3 code, including user-assigned codes such as XXA, which is used for testing.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-PAY-007 passes in each implementation's suite (Kotlin: `STT-PAY-004 STT-PAY-007 an invalid payload is refused, naming each rule` (AssemblePayloadTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

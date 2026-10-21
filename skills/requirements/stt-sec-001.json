@@ -12,7 +12,14 @@
       "label": "No payload content in logs",
       "conformance": "SHALL NOT",
       "requirement": "The libraries SHALL NOT log payload content, HC1 strings or decoded claims at any default log level. A QR code holds readable personal data.",
-      "category": "security"
+      "category": "security",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-SEC-001 passes in each implementation's suite (Kotlin: `STT-SEC-001 a failure's message does not carry the payload` (VerifyTest.kt); `STT-SEC-001 the core writes nothing to a log or console` (ArchitectureTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

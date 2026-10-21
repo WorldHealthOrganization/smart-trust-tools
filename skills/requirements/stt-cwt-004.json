@@ -15,8 +15,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-004",
-          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-CWT-004 passes in each implementation's suite (Kotlin: `STT-CWT-004 the validity must fit inside the DSC's` (BuildCwtTest.kt)).",
           "verification": "test"
         }
       ]

@@ -12,7 +12,14 @@
       "label": "Test keys never in production artifacts",
       "conformance": "SHALL NOT",
       "requirement": "Fixed test keys and test PKI (such as the XXA SCA and DSC) SHALL only ship in the testkit module. Production modules SHALL NOT contain or accept them by default.",
-      "category": "security"
+      "category": "security",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-ISS-003 passes in each implementation's suite (Kotlin: `STT-ISS-003 no private key, and no test key, is in the library's sources` (ArchitectureTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

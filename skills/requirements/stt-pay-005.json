@@ -19,7 +19,14 @@
       "label": "Subjects with no identity document",
       "conformance": "SHALL",
       "requirement": "The DVCMin model SHALL allow id and dt to be absent and SHALL support gn (parent or guardian) for subjects such as newborns.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-PAY-005 passes in each implementation's suite (Kotlin: `STT-PAY-001 STT-PAY-002 STT-PAY-005 a newborn's DVCMin, with no identity document, round-trips as typed fields` (AssemblePayloadTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

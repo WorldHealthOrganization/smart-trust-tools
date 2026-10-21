@@ -12,7 +12,14 @@
       "label": "Distribution",
       "conformance": "SHALL",
       "requirement": "The Kotlin library SHALL be published to Maven Central (JVM, Android AAR) and to npm (Kotlin/JS). The Rust library SHALL be published to crates.io, and its jco-transpiled WebAssembly component to npm. All coordinates are still to be chosen.",
-      "category": "non-functional"
+      "category": "non-functional",
+      "successCriteria": [
+        {
+          "key": "published",
+          "criterion": "The Maven Central, npm and crates.io coordinates resolve to the released artefacts of each library.",
+          "verification": "inspection"
+        }
+      ]
     }
   ],
   "tags": [

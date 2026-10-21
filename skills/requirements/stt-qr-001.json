@@ -12,7 +12,14 @@
       "label": "QR-ready HC1 output; no QR encoding in the library",
       "conformance": "SHALL",
       "requirement": "The HC1 string SHALL consist only of characters in the QR Alphanumeric set (the Base45 alphabet and the \"HC1:\" prefix), so that integrators can encode it as a single Alphanumeric-mode segment with error correction Q using any QR encoder. The libraries SHALL NOT encode or render QR symbols.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-QR-001 passes in each implementation's suite (Kotlin: `STT-QR-001 the output is a QR-ready string in the Alphanumeric alphabet` (PrefixContextTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

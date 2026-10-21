@@ -12,7 +12,14 @@
       "label": "kid text forms",
       "conformance": "SHALL",
       "requirement": "Kid SHALL convert to and from hex, standard base64 and URL-safe base64. Trust-list matching SHALL compare the kid bytes, not their text form.",
-      "category": "api"
+      "category": "api",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-KID-003 passes in each implementation's suite (Kotlin: `STT-KID-003 a kid reads and writes as standard and URL-safe base64` (TrustListTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

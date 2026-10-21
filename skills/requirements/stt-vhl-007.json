@@ -22,7 +22,14 @@
       "label": "Document encryption: JWE dir / A256GCM",
       "conformance": "SHALL",
       "requirement": "Document binaries SHALL be encrypted and decrypted as JWE Compact Serialization (RFC 7516) with alg dir and enc A256GCM (RFC 7518), the VHL key as the content key and the protected header as additional authenticated data, following SMART Health Links. Decryption SHALL refuse any other alg or enc, SHALL accept zip DEF, and SHALL fail on a bad tag. Encryption SHALL set cty to the document's content type.",
-      "category": "security"
+      "category": "security",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-VHL-007 passes in each implementation's suite (Kotlin: `STT-VHL-007 decrypts what node crypto encrypted, with and without zip DEF` (VhlReceiveTest.kt); `STT-VHL-007 a wrong key, a changed byte and another enc are refused` (VhlReceiveTest.kt); `STT-VHL-007 a document is encrypted as compact JWE dir A256GCM` (VhlShareTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

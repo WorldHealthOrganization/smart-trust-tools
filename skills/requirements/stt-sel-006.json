@@ -12,7 +12,14 @@
       "label": "Trust domain codes come from the value set",
       "conformance": "SHALL",
       "requirement": "Trust domain codes (currently DDCC, IPS-PILGRIMAGE, PH4H, ICVP) SHALL be treated as data loaded from, or checked against, the GDHCN Trust Domain value set. They SHALL NOT be a closed enum.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-SEL-006 passes in each implementation's suite (Kotlin: `STT-SEL-006 trust domains are read from the GDHCN code system, not a closed list` (TrustListTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

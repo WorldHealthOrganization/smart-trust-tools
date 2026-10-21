@@ -12,7 +12,14 @@
       "label": "Types and schemas trace to open standards",
       "conformance": "SHALL",
       "requirement": "Every data type in the API contract, wire schema and payload models SHALL trace to an openly available standard: IETF CBOR/CDDL (RFC 8949, RFC 8610) for the wire format, HL7 FHIR data types and W3C XSD datatypes for payload elements, W3C JSON-LD and SHACL for payload semantics, ITU-T X.680 for certificates, and I-JSON (RFC 7493) for JSON files. Paywalled standards SHALL NOT be used as type or schema references.",
-      "category": "architecture"
+      "category": "architecture",
+      "successCriteria": [
+        {
+          "key": "open-standards",
+          "criterion": "Every type in api/wit, api/cddl and models/ cites a node in external-schemas/ or references/ for an openly available standard, and none cites a paywalled one.",
+          "verification": "inspection"
+        }
+      ]
     }
   ],
   "tags": [

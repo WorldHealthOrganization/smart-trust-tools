@@ -20,7 +20,14 @@
       "label": "vhlink:/ text form",
       "conformance": "SHALL",
       "requirement": "The library SHALL convert a VHL payload to and from its text form: the minified JSON, base64url-encoded without padding (RFC 4648), prefixed with vhlink:/.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-VHL-003 passes in each implementation's suite (Kotlin: `STT-VHL-002 STT-VHL-003 a vhlink string at key 5 still verifies, and the map is smaller` (VhlShareTest.kt); `STT-VHL-003 vhlink round-trips, and reads the IHE example link` (VhlShareTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

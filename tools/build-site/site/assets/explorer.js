@@ -13,24 +13,25 @@
   var SHAPE = {
     requirement: "round-rectangle", section: "rectangle", document: "cut-rectangle", standard: "cut-rectangle",
     directive: "star", upstream: "diamond", skill: "hexagon", api: "ellipse", tool: "barrel",
-    process: "round-tag", role: "vee", test: "rhomboid", issue: "triangle"
+    process: "round-tag", role: "vee", test: "rhomboid", "test-plan": "tag", issue: "triangle"
   };
   var SHAPE_NOTE = [
     ["round-rectangle", "requirement"], ["rectangle", "source section"], ["cut-rectangle", "document or standard"],
     ["star", "owner directive"], ["diamond", "smart-trust FHIR requirement"], ["hexagon", "skill"],
-    ["barrel", "Tool"], ["rhomboid", "test"], ["round-tag", "process (BPMN)"], ["vee", "role"],
+    ["barrel", "Tool"], ["rhomboid", "test"], ["tag", "test plan"], ["round-tag", "process (BPMN)"], ["vee", "role"],
     ["ellipse", "WIT item or interface"], ["triangle", "open issue (bean)"]
   ];
   var COLUMN = { directive: 0, standard: 0, document: 0, section: 0, upstream: 0, requirement: 1,
-    skill: 2, api: 2, issue: 2, tool: 3, test: 3, process: 3, role: 3 };
+    skill: 2, api: 2, issue: 2, tool: 3, test: 3, "test-plan": 3, process: 3, role: 3 };
   var KIND_ORDER = { directive: 0, document: 1, section: 1, standard: 2, upstream: 3, requirement: 0,
-    skill: 0, api: 1, issue: 2, tool: 0, test: 1, process: 2, role: 3 };
+    skill: 0, api: 1, issue: 2, tool: 0, test: 1, "test-plan": 1, process: 2, role: 3 };
   var COLUMN_TITLE = ["Sources and smart-trust requirements", "Library requirements", "Skills · WIT · open issues",
-    "Tools · tests · processes · roles"];
+    "Tools · tests · test plans · processes · roles"];
   var CARD_W = 230, COL_GAP = 300;
   var REL_LABEL = {
     derivedFrom: ["Derived from", "Source for"], satisfies: ["Satisfies (smart-trust)", "Satisfied by"],
-    refines: ["Refines", "Refined by"], verifiedBy: ["Verified by", "Verifies"],
+    refines: ["Refines", "Refined by"],
+    assesses: ["Assesses", "Test plans"], planCase: ["Cases (skills)", "In test plans"], precededBy: ["Preceded by", "Precedes"],
     realizedBy: ["Skills", "Realizes"], constrainsApi: ["WIT items", "Constrained by"],
     implementedBy: ["Tools", "Skills"], usedIn: ["Processes", "Skills"], performedBy: ["Roles", "Skills"],
     testedBy: ["Tests", "Tests the skill"], verifies: ["Verifies", "Verified by tests"],
@@ -51,7 +52,7 @@
     "grp:phw": "smart-trust-phw logical models", "grp:other-igs": "Other WHO SMART IGs",
     "grp:st-artefacts": "smart-trust models, Requirements & script", "grp:vectors": "Test vectors",
     "grp:issues-up": "Open issues to fix upstream", "grp:issues-local": "Open issues in this project",
-    "grp:tools": "Tools", "grp:tests": "Tests", "grp:processes": "Processes (BPMN)", "grp:roles": "Roles"
+    "grp:tools": "Tools", "grp:tests": "Tests", "grp:plans": "Test plans", "grp:processes": "Processes (BPMN)", "grp:roles": "Roles"
   };
 
   var G, cy, groups = {}, groupOf = {}, hidden = {}, stack = [], view = null;
@@ -72,6 +73,7 @@
       case "process": return "grp:processes";
       case "role": return "grp:roles";
       case "test": return "grp:tests";
+      case "test-plan": return "grp:plans";
       case "issue": return n.upstream ? "grp:issues-up" : "grp:issues-local";
     }
     return "grp:other";
@@ -137,7 +139,8 @@
       "barrel": '<path d="M3 2h8q2 5 0 10H3q-2-5 0-10z"/>',
       "round-tag": '<path d="M2 3h7l4 4-4 4H2z"/>',
       "vee": '<path d="M1 2l6 3 6-3-6 10z"/>',
-      "rhomboid": '<path d="M4 3h9l-3 8H1z"/>'
+      "rhomboid": '<path d="M4 3h9l-3 8H1z"/>',
+      "tag": '<path d="M1 3h8l4 4-4 4H1z"/>'
     }[shape];
     return '<svg class="glyph" viewBox="0 0 14 14" aria-hidden="true" fill="' + color + '">' + p + "</svg>";
   }
@@ -521,10 +524,13 @@
       h.push('<p class="d-statement">' + esc(n.statement) + "</p>");
       h.push(fileLink(n));
       h.push('<div class="d-actions small"><a href="requirements.html#' + esc(n.id.toLowerCase()) + '">In the requirements document</a> · <a href="trace.html#' + esc(n.id) + '">In the matrix</a></div>');
-      ["derivedFrom", "satisfies", "realizedBy", "constrainsApi", "refines", "verifiedBy", "affectedBy"].forEach(function (r) { h.push(relSection(id, r, "out")); });
+      if (n.criteria && n.criteria.length) h.push('<div class="d-sec"><h4>Success criteria</h4><ul class="small">' + n.criteria.map(function (c) {
+        return '<li><span class="chip">' + esc(c.verification) + '</span> <span class="mono">' + esc(c.key) + "</span> " + esc(c.criterion) + "</li>";
+      }).join("") + "</ul></div>");
+      ["derivedFrom", "satisfies", "realizedBy", "constrainsApi", "refines", "affectedBy"].forEach(function (r) { h.push(relSection(id, r, "out")); });
       h.push(relSection(id, "verifies", "in"));
+      h.push(relSection(id, "assesses", "in"));
       h.push(relSection(id, "refines", "in"));
-      h.push(relSection(id, "verifiedBy", "in"));
     } else if (n.kind === "issue") {
       h.push('<div class="chips"><span class="issue-mark">open</span>' + (n.upstream ? '<span class="chip">fix upstream</span>' : '<span class="chip">this project</span>') + "</div>");
       h.push('<p class="small">' + esc(n.text) + "</p>");
@@ -543,10 +549,21 @@
       h.push(fileLink(n));
       h.push(relSection(id, "realizedBy", "in"));
       ["implementedBy", "testedBy", "usedIn", "performedBy"].forEach(function (r) { h.push(relSection(id, r, "out")); });
+      h.push(relSection(id, "planCase", "in"));
     } else if (n.kind === "test") {
       h.push(fileLink(n));
       h.push(relSection(id, "verifies", "out"));
       h.push(relSection(id, "testedBy", "in"));
+    } else if (n.kind === "test-plan") {
+      h.push('<div class="chips"><span class="chip">' + esc(n.status) + '</span><span class="chip">v' + esc(n.version) + '</span><span class="chip">scope: ' + esc(n.scope.kind) + (n.scope.target ? " " + esc(n.scope.target) : ", any implementation") + "</span></div>");
+      h.push('<p class="small">' + esc(n.text) + "</p>");
+      h.push('<p class="small"><strong>Exit criteria:</strong> ' + esc(n.exit) + "</p>");
+      h.push(fileLink(n));
+      h.push('<div class="d-sec"><h4>Cases (' + n.cases.length + ')</h4><ul class="small">' + n.cases.map(function (c) {
+        return '<li><span class="mono">' + esc(c.id) + "</span> · " + c.assertions.length + " assertion" + (c.assertions.length === 1 ? "" : "s") + "</li>";
+      }).join("") + "</ul></div>");
+      ["precededBy", "planCase", "assesses"].forEach(function (r) { h.push(relSection(id, r, "out")); });
+      h.push(relSection(id, "precededBy", "in"));
     } else if (n.kind === "tool" || n.kind === "process" || n.kind === "role") {
       if (n.text) h.push('<p class="small">' + esc(n.text) + "</p>");
       if (n.actorKinds) h.push('<div class="chips">' + n.actorKinds.map(function (a) { return '<span class="chip">' + esc(a) + "</span>"; }).join("") + "</div>");

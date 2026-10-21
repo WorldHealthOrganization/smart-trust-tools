@@ -19,7 +19,14 @@
       "label": "One immunization event per DVC",
       "conformance": "SHALL",
       "requirement": "A DVCMin SHALL carry exactly one vx. The library SHALL provide a helper that turns one visit with N administered vaccines into N payloads, one per vaccine, and so N certificates.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-PAY-003 passes in each implementation's suite (Kotlin: `STT-PAY-003 one immunization event per DVC` (AssemblePayloadTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

@@ -12,7 +12,14 @@
       "label": "Kotlin first, for JVM, Android and Node",
       "conformance": "SHALL",
       "requirement": "The first implementation SHALL be a Kotlin Multiplatform library with all pipeline logic in common code. It SHALL ship for three targets: JVM (Java 11+), Android, and Node.js (Kotlin/JS IR, published to npm with an @JsExport facade and generated TypeScript declarations). Other KMP targets MAY follow.",
-      "category": "non-functional"
+      "category": "non-functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-GEN-004 passes in each implementation's suite (Kotlin: node-smoke.mjs; `STT-SEC-002 STT-GEN-004 cryptography comes from the platform, with no third-party runtime dependency` (ArchitectureTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

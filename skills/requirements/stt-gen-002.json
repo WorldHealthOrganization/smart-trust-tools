@@ -19,7 +19,14 @@
       "label": "Every step callable on its own",
       "conformance": "SHALL",
       "requirement": "Each pipeline step SHALL be exposed as a separate public operation (payload codec, CBOR, COSE sign/parse, ZLIB, Base45, HC1 prefix) as well as through the end-to-end issuer and verifier, so that integrators can substitute or inspect any stage.",
-      "category": "architecture"
+      "category": "architecture",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-GEN-002 passes in each implementation's suite (Kotlin: `STT-GEN-002 every step is callable on its own, and the steps compose to the pipeline` (ArchitectureTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

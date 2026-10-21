@@ -16,8 +16,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-004",
-          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-KID-002 passes in each implementation's suite (Kotlin: `STT-VER-006 STT-KID-002 a kid nobody trusts fails the trust lookup` (VerifyTest.kt)).",
           "verification": "test"
         }
       ]

@@ -19,7 +19,14 @@
       "label": "Versioning and spec traceability",
       "conformance": "SHALL",
       "requirement": "Releases SHALL follow semantic versioning. A change to the wire format or to subclaim defaults SHALL be a major or minor version change, as documented in a changelog that cites the smart-trust change (changes.md entry) it implements.",
-      "category": "non-functional"
+      "category": "non-functional",
+      "successCriteria": [
+        {
+          "key": "semver",
+          "criterion": "Each release's version and changelog follow semantic versioning, and every wire-format or subclaim-default change cites the smart-trust changes.md entry it implements.",
+          "verification": "inspection"
+        }
+      ]
     }
   ],
   "tags": [

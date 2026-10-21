@@ -12,7 +12,14 @@
       "label": "NumericDate integers",
       "conformance": "SHALL",
       "requirement": "iat and exp SHALL be encoded as integer NumericDate (seconds since the epoch). The decoder SHOULD accept floating-point NumericDate and truncate it.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-CWT-002 passes in each implementation's suite (Kotlin: `STT-CWT-001 STT-CWT-002 claim keys are integers and dates are integer NumericDates` (BuildCwtTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

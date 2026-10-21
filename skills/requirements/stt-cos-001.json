@@ -12,7 +12,14 @@
       "label": "COSE_Sign1 structure",
       "conformance": "SHALL",
       "requirement": "The issuer SHALL emit 18([protected bstr, unprotected map, payload bstr, signature bstr]). The verifier SHALL accept the tagged form and SHOULD also accept an untagged COSE_Sign1 array.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-COS-001 passes in each implementation's suite (Kotlin: `STT-COS-001 STT-COS-003 a tagged COSE_Sign1 with alg and kid in the protected header` (SignCoseTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

@@ -15,7 +15,7 @@
 
   function rowData(n) {
     var out = function (rel) { return S.related(G, n.id, rel, "out"); };
-    var verified = out("verifiedBy").concat(S.related(G, n.id, "verifies", "in"));
+    var verified = S.related(G, n.id, "verifies", "in");
     return {
       n: n, satisfies: out("satisfies"), steps: out("realizedBy"), api: out("constrainsApi"),
       verified: verified, issues: out("affectedBy"), sources: out("derivedFrom"),

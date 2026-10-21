@@ -18,7 +18,14 @@
       "label": "Payload-agnostic core",
       "conformance": "SHALL",
       "requirement": "The modules for steps 3 to 9 SHALL NOT depend on any payload logical model. Payloads SHALL be plugged in through a PayloadCodec registered against a subclaim.",
-      "category": "architecture"
+      "category": "architecture",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-GEN-003 passes in each implementation's suite (Kotlin: `STT-PAY-009 STT-GEN-003 another payload passes through the core untouched` (AssemblePayloadTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

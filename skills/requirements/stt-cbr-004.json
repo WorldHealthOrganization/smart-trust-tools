@@ -15,8 +15,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-008",
-          "criterion": "Schema checks against the vectors (req:stt-tst-008) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-CBR-004 passes in each implementation's suite (Kotlin: check_models.py).",
           "verification": "test"
         }
       ]

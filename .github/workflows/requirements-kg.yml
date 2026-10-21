@@ -34,6 +34,8 @@ jobs:
         run: |
           tools/gen-api-types/gen_api_types.sh
           git diff --exit-code -- api/generated/ts
+      - name: Library test plan is current with the success criteria
+        run: python3 tools/test-plan/make_test_plan.py --check
       - name: Check derived payload models are current
         run: python3 tools/lm-derive/lm_derive.py --check
       - name: Validate vectors against CDDL and SHACL
@@ -62,7 +64,7 @@ jobs:
       # plugin and library Gradle resolves; an unlisted or changed artifact
       # fails the build.
       - name: Compile (JVM + JS) and run the hcert-core tests on the JVM
-        run: gradle -p tools/hcert-kotlin --no-daemon compileKotlinJvm compileKotlinJs :hcert-core:jvmTest :hcert-core:compileProductionLibraryKotlinJs
+        run: gradle -p tools/hcert-kotlin --no-daemon compileKotlinJvm compileKotlinJs :hcert-core:jvmTest :hcert-core:jvmTestCoverageCheck :hcert-core:compileProductionLibraryKotlinJs
       - name: Run hcert-core on Node against the PR 129 vector
         run: node tools/hcert-kotlin/hcert-core/node-smoke.mjs
 

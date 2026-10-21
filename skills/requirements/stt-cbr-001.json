@@ -15,8 +15,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-002",
-          "criterion": "Byte-exact CBOR vector (req:stt-tst-002) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-CBR-001 passes in each implementation's suite (Kotlin: `STT-CBR-001 maps are encoded in deterministic key order, whatever order they were built in` (EncodeCborTest.kt); `STT-TST-002 STT-CBR-001 deterministic re-encoding reproduces the issued CWT byte for byte` (ConformanceVectorsTest.kt)).",
           "verification": "test"
         }
       ]

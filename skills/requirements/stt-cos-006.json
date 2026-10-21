@@ -12,7 +12,14 @@
       "label": "No private keys required in-process",
       "conformance": "SHALL",
       "requirement": "The issuer SHALL NOT need access to private key material: issuance is prepare, then the caller signs the returned bytes by any means (HSM, KMS, PKCS#11, Android Keystore, WebCrypto), then finish (STT-ISS-004). A software ES256 and PS256 signer SHALL be provided for tests only, in the testkit module.",
-      "category": "security"
+      "category": "security",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-COS-006 passes in each implementation's suite (Kotlin: `STT-COS-006 the library holds no private key, and refuses a signature from another key` (SignCoseTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

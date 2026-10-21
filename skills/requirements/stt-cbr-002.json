@@ -13,7 +13,14 @@
       "label": "NFC normalisation",
       "conformance": "SHOULD",
       "requirement": "The encoder SHOULD NFC-normalise text strings. The decoder SHALL accept strings that are not normalised, and comparison helpers SHALL behave as if both sides were normalised to NFC.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-CBR-002 passes in each implementation's suite (Kotlin: `STT-CBR-002 text is NFC-normalised on encode, and a non-normalised string still decodes` (EncodeCborTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

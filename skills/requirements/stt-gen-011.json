@@ -23,8 +23,8 @@
       "category": "architecture",
       "successCriteria": [
         {
-          "key": "stt-tst-007",
-          "criterion": "One TypeScript conformance suite for both Node packages (req:stt-tst-007) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-GEN-011 passes in each implementation's suite (Kotlin: node-smoke.mjs).",
           "verification": "test"
         }
       ]

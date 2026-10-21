@@ -22,8 +22,8 @@
       "category": "api",
       "successCriteria": [
         {
-          "key": "stt-tst-004",
-          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-VER-008 passes in each implementation's suite (Kotlin: `STT-VER-008 STT-VER-009 every failure is a value naming its step and reason, offline` (VerifyTest.kt)).",
           "verification": "test"
         }
       ]

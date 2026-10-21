@@ -19,7 +19,14 @@
       "label": "Issuance and verification of the full HCERT QR pipeline",
       "conformance": "SHALL",
       "requirement": "The library SHALL implement issuance (steps 1 to 9) and verification (QR Code Generation section 11) of HCERT QR codes.",
-      "category": "scope"
+      "category": "scope",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-GEN-001 passes in each implementation's suite (Kotlin: `STT-COS-002 STT-GEN-001 both ES256 and PS256 sign and verify` (SignCoseTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

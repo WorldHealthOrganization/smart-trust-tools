@@ -12,7 +12,14 @@
       "label": "CBOR is the wire format; JSON is optional",
       "conformance": "SHALL",
       "requirement": "The library SHALL work entirely on in-memory structures and CBOR. It SHALL NOT need a JSON representation to issue or verify. A JSON view of payloads MAY be provided for display and debugging.",
-      "category": "architecture"
+      "category": "architecture",
+      "successCriteria": [
+        {
+          "key": "no-json",
+          "criterion": "Inspection of the issue and verify paths finds no JSON encoding or decoding.",
+          "verification": "inspection"
+        }
+      ]
     }
   ],
   "tags": [

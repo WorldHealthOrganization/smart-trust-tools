@@ -22,13 +22,8 @@
       "category": "security",
       "successCriteria": [
         {
-          "key": "stt-tst-004",
-          "criterion": "Negative vectors (req:stt-tst-004) passes.",
-          "verification": "test"
-        },
-        {
-          "key": "stt-tst-006",
-          "criterion": "Fuzzing of decoders (req:stt-tst-006) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-ZIP-002 passes in each implementation's suite (Kotlin: `STT-ZIP-002 a decompression bomb stops at the limit` (CompressTest.kt)).",
           "verification": "test"
         }
       ]

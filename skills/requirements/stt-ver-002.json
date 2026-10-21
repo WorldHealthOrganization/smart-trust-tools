@@ -19,7 +19,14 @@
       "label": "No payload access before the signature is verified",
       "conformance": "SHALL",
       "requirement": "The API SHALL make the payload and claims reachable only through a successful verification result type. Code that inspects an unverified payload SHALL go through an explicitly named unsafe or diagnostic call.",
-      "category": "security"
+      "category": "security",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-VER-002 passes in each implementation's suite (Kotlin: `STT-VER-001 STT-VER-002 a tampered payload fails at the signature, before any payload is read` (VerifyTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

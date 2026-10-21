@@ -18,7 +18,14 @@
       "label": "Registry is extensible",
       "conformance": "SHALL",
       "requirement": "Integrators SHALL be able to register more subclaims and their codecs, and override the defaults, at runtime, without forking the library.",
-      "category": "api"
+      "category": "api",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-SEL-002 passes in each implementation's suite (Kotlin: `STT-SEL-002 a host registers its own subclaim and issues under it` (SelectPayloadTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

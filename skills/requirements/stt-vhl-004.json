@@ -19,7 +19,14 @@
       "label": "VHL key generation",
       "conformance": "SHALL",
       "requirement": "The library SHALL generate a VHL key as 32 bytes from the platform's cryptographically secure random generator, encoded as 43 base64url characters.",
-      "category": "security"
+      "category": "security",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-VHL-004 passes in each implementation's suite (Kotlin: `STT-VHL-004 a new key is 32 random bytes, base64url without padding` (VhlShareTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

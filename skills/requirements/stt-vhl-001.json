@@ -13,7 +13,14 @@
       "label": "VHL payload in the SMART Health Links payload format",
       "conformance": "SHALL",
       "requirement": "The library SHALL model the VHL payload as the SMART Health Links payload format that IHE VHL reuses: url (required, https), key (required, 43 base64url characters encoding 32 bytes), exp (optional integer, epoch seconds), flag (optional; the letters L and P in alphabetical order), label (optional, at most 80 characters), v (optional integer, default 1) and extension.fhirBaseUrl (optional). Validation SHALL report each violation. The single-file U flag is out of scope and SHALL be reported as unsupported.",
-      "category": "functional"
+      "category": "functional",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-VHL-001 passes in each implementation's suite (Kotlin: `STT-VHL-001 the IHE ITI-YY3 example payload is valid, and each rule is enforced` (VhlShareTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

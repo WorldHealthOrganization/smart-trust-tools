@@ -12,7 +12,14 @@
       "label": "PR 129 example as a conformance vector",
       "conformance": "SHALL",
       "requirement": "Both libraries SHALL verify the two HC1 strings in dvc-qr-example-XXA.json against dvc-qr-example-XXA-dsc.pem, with the clock fixed inside 2026-09-29T08:30Z to 2027-09-29T08:30Z. Each SHALL give kid WHM+BYqqZiE=, subclaim -6, and payloads equal to those in the JSON. The committed files SHALL be used as-is; they SHALL NOT be regenerated.",
-      "category": "test"
+      "category": "test",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-TST-001 passes in each implementation's suite (Kotlin: `STT-TST-001 STT-KID-001 the vector's kid is the DSC's` (ConformanceVectorsTest.kt); `STT-TST-001 STT-PAY-001 both PR 129 certificates verify and decode as published` (ConformanceVectorsTest.kt)).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

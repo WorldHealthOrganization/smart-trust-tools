@@ -12,7 +12,14 @@
       "label": "Schema checks against the vectors",
       "conformance": "SHALL",
       "requirement": "CI SHALL validate every conformance vector against the CDDL (COSE_Sign1, protected header, CWT claims) and its payload against the SHACL shapes through the JSON-LD context. It SHALL also check that mutated payloads (invariant broken, bad FHIR date, missing required element, bad FHIR id) are rejected and that valid variants (cn only, partial date) are accepted, by both CDDL and SHACL.",
-      "category": "test"
+      "category": "test",
+      "successCriteria": [
+        {
+          "key": "test",
+          "criterion": "A test named after STT-TST-008 passes in each implementation's suite (Kotlin: check_models.py).",
+          "verification": "test"
+        }
+      ]
     }
   ],
   "tags": [

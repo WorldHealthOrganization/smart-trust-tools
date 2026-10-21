@@ -21,8 +21,8 @@
       "category": "functional",
       "successCriteria": [
         {
-          "key": "stt-tst-004",
-          "criterion": "Negative vectors (req:stt-tst-004) passes.",
+          "key": "test",
+          "criterion": "A test named after STT-PAY-004 passes in each implementation's suite (Kotlin: `STT-PAY-004 STT-PAY-007 an invalid payload is refused, naming each rule` (AssemblePayloadTest.kt)).",
           "verification": "test"
         }
       ]
