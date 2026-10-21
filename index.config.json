@@ -89,7 +89,7 @@
       "source": {
         "remote": {
           "repository": "litlfred/cat-harness-tools",
-          "ref": "11c78dfd74a6ef005ffd7aa33dcb710f585a382c",
+          "ref": "76e0549f0da5d22888b392ec656f3d7d269ea80b",
           "overrides": {
             "cat-harness-tools": {
               "whole": true
@@ -101,9 +101,9 @@
           "trust": {
             "consent": {
               "by": "litlfred",
-              "on": "2026-10-20",
-              "ref": "11c78dfd74a6ef005ffd7aa33dcb710f585a382c",
-              "evidence": "Owner (litlfred), 2026-10-20: \"repin_merge when ready PRs next 3 hrs\". Repinned to main after merging litlfred/cat-harness-tools#477 (mount:remote --help, unknown-flag refusal, --plan honoured in the fan-out), opened from this repository's session."
+              "on": "2026-10-21",
+              "ref": "76e0549f0da5d22888b392ec656f3d7d269ea80b",
+              "evidence": "Owner (litlfred), 2026-10-20, reported the badge bar drawn twice on the published site (\"partially repeated bar\") and asked for gh-pages to be rebuilt. Repinned to main after merging litlfred/cat-harness-tools#500 (withPlatformUi adds no second docs-ui.js) and #503 (a non-Markdown file is ingested verbatim), both opened from this repository's session."
             }
           }
         }
