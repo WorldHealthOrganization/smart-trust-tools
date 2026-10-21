@@ -1,7 +1,7 @@
 {
   "id": "req:stt-gen-009",
   "title": "Raw transport besides QR",
-  "description": "Engineering consequence of HCERT Specification, 4.1 Raw.",
+  "description": "Engineering consequence of HCERT Specification, 4.1 Raw. HCERT Specification, 4.1 Raw: “the HCERT container and its payloads may be transferred as-is, utilising any underlying, 8 bit safe, reliable data transport”.",
   "status": "proposed",
   "actors": [
     "issuer",
@@ -21,22 +21,7 @@
     "functional",
     "derived"
   ],
-  "stt": {
-    "id": "STT-GEN-009",
-    "derivation": "derived",
-    "steps": [
-      "step-5",
-      "step-verify"
-    ],
-    "api": [
-      "api-issuer",
-      "api-verifier"
-    ],
-    "sources": [
-      {
-        "src": "hcert-4.1",
-        "quote": "the HCERT container and its payloads may be transferred as-is, utilising any underlying, 8 bit safe, reliable data transport"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-hcert-spec/sections/s015-4-1-raw"
+  ]
 }

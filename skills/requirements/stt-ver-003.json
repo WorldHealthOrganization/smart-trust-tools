@@ -1,10 +1,14 @@
 {
   "id": "req:stt-ver-003",
   "title": "Defensive protected-header parsing",
-  "description": "Restates QR Code Generation, 11. Verifying: the same steps upwards; HCERT Specification, 6.3 Input Data Validation.",
+  "description": "Restates QR Code Generation, 11. Verifying: the same steps upwards; HCERT Specification, 6.3 Input Data Validation. QR Code Generation, 11. Verifying: the same steps upwards: “Parsing the protected header necessarily happens before signature verification, which makes it an attack surface”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-ver-001"
+  ],
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards",
+    "library/who-smart-trust-hcert-spec/sections/s025-6-3-input-data-validation"
   ],
   "actors": [
     "receiver"
@@ -34,21 +38,5 @@
     "hcert-library",
     "security",
     "direct"
-  ],
-  "stt": {
-    "id": "STT-VER-003",
-    "derivation": "direct",
-    "steps": [
-      "step-verify"
-    ],
-    "sources": [
-      {
-        "src": "qr-11",
-        "quote": "Parsing the protected header necessarily happens before signature verification, which makes it an attack surface"
-      },
-      {
-        "src": "hcert-6.3"
-      }
-    ]
-  }
+  ]
 }

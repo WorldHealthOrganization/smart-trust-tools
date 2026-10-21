@@ -1,10 +1,13 @@
 {
   "id": "req:stt-pay-004",
   "title": "Issuer-or-clinician invariant",
-  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload.",
+  "description": "Restates QR Code Generation, 3. Step 2 — Assemble the payload. QR Code Generation, 3. Step 2 — Assemble the payload: “At least one of is or cn must be present”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-pay-002"
+  ],
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s008-3-step-2-assemble-the-payload"
   ],
   "actors": [
     "issuer"
@@ -29,18 +32,5 @@
     "hcert-library",
     "functional",
     "direct"
-  ],
-  "stt": {
-    "id": "STT-PAY-004",
-    "derivation": "direct",
-    "steps": [
-      "step-2"
-    ],
-    "sources": [
-      {
-        "src": "qr-3",
-        "quote": "At least one of is or cn must be present"
-      }
-    ]
-  }
+  ]
 }

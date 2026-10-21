@@ -1,28 +1,45 @@
 # smart-trust-tools
-tools for the smart-trust repo
+
+Requirements, API contract, wire format and payload models for the SMART Trust
+HCERT and Verifiable Health Link libraries (Kotlin first, for the JVM, Android
+and Node; Rust second, for WebAssembly), derived from the WHO SMART Trust
+implementation guide. It is a cat-harness downstream (`smart-trust-tools.json`,
+needs `fhir-harness`); [`AGENTS.md`](AGENTS.md) is the cold start.
 
 ## Viewers
 
-The site is built and pushed to the `gh-pages` branch with `tools/publish_site.sh` (run by
-hand, not by a workflow) and served by GitHub Pages:
-**https://litlfred.github.io/smart-trust-tools/**. It includes the graph explorer, the
-traceability matrix, the requirements, the WIT API contract with its TypeScript reference, and
-the wire and payload models. Build it locally with `tools/build_site.sh` (needs Python and
-Node.js).
+**https://litlfred.github.io/smart-trust-tools/** is published to `gh-pages` by
+an agent with `bun run cat stage-local` (main to the root, other branches to
+`STAGING/<branch>/`), never by a workflow. Its viewers, under `viewers/`, are
+the graph explorer, the traceability matrix, the requirements, the WIT contract
+with its TypeScript reference, the Kotlin API and the wire and payload models.
 
-## Contents
+## The knowledge graph
 
-- [`api/`](api/): the library API contract, defined first in WIT
-  (WebAssembly Component Model IDL), with a generated TypeScript view for
-  review. Start with [`api/README.md`](api/README.md).
-- [`models/`](models/): payload models derived from the WHO SMART FHIR
-  logical models: JSON-LD context, SHACL shapes and CDDL.
-- [`vectors/`](vectors/): conformance vectors (the PR 129 DVC example).
-- [`kotlin/`](kotlin/): the Kotlin Multiplatform API skeleton generated from the WIT.
-- [`requirements/`](requirements/): requirements knowledge graph for the
-  SMART Trust HCERT API libraries (Kotlin first, Rust second), derived from
-  the WHO SMART Trust IG. Start with
-  [`requirements/generated/REQUIREMENTS.md`](requirements/generated/REQUIREMENTS.md).
-- [`tools/`](tools/): `build_kg.py` (requirements graph), `lm_derive.py`
-  (logical models to JSON-LD/SHACL/CDDL), `check_models.py` (schemas against
-  vectors), `gen_api_types.sh` (WIT to TypeScript), `fetch_lms.sh`.
+Every part of the graph is a cat-harness node, declared in
+`smart-trust-tools.json`:
+
+- [`skills/requirements/`](skills/requirements/): one `req:` node per library
+  requirement, each `derivedFrom` the sources below.
+- [`library/`](library/): the WHO SMART Trust, smart-trust-phw and IHE ITI VHL
+  pages and FSH the requirements cite, ingested section by section at a pinned
+  commit.
+- [`external-schemas/`](external-schemas/), [`references/`](references/),
+  [`memory/`](memory/): the open standards, other WHO guides and owner
+  directives the requirements cite.
+- [`skills/`](skills/): the HCERT pipeline steps, VHL and library maintenance
+  as skills that `satisfy` the requirements;
+  [`processes/`](processes/) and [`scenarios/roles.json`](scenarios/roles.json)
+  put them in BPMN processes and roles.
+- [`tools/`](tools/): one Tool per folder satisfying the skills, with its code:
+  [`tools/hcert-kotlin/`](tools/hcert-kotlin/) is the Kotlin library; the others
+  generate the contract's views, check the graph and the models, and build the
+  viewers.
+- [`api/`](api/) (the WIT contract and CDDL), [`models/`](models/) (FHIR
+  logical models and what is derived from them) and [`vectors/`](vectors/)
+  (test vectors): the schemas, each directory a kind of its own
+  ([`typologies/`](typologies/)).
+- [`beans/`](beans/): the open issues, each naming the requirements and
+  sources it affects.
+
+`bun run check:req-nodes` fails if any edge names no node.

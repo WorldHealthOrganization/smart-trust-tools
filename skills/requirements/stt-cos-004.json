@@ -1,7 +1,7 @@
 {
   "id": "req:stt-cos-004",
   "title": "Sig_structure",
-  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; RFC 8152 CBOR Object Signing and Encryption (COSE).",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1; RFC 8152 CBOR Object Signing and Encryption (COSE). QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “serialise it as CBOR, and sign those bytes.”.",
   "status": "proposed",
   "actors": [
     "issuer",
@@ -21,24 +21,8 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-COS-004",
-    "derivation": "direct",
-    "steps": [
-      "step-5",
-      "step-verify"
-    ],
-    "api": [
-      "api-sign1"
-    ],
-    "sources": [
-      {
-        "src": "qr-6",
-        "quote": "serialise it as CBOR, and sign those bytes."
-      },
-      {
-        "src": "std-rfc8152"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s011-6-step-5-sign-as-a-cose-sign1",
+    "external-schemas/ietf-rfc8152"
+  ]
 }

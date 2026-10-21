@@ -1,0 +1,10 @@
+{
+  "id": "trust-network-participant",
+  "title": "Trust network participant",
+  "kind": "external",
+  "description": "A GDHCN participant whose Document Signer Certificates sign certificates; its signing key stays in its HSM, KMS or platform keystore.",
+  "roles": [
+    "hcert-key-holder"
+  ],
+  "capabilities": []
+}

@@ -1,7 +1,7 @@
 {
   "id": "req:stt-cos-005",
   "title": "Fixed-width r||s ECDSA signatures",
-  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1.",
+  "description": "Restates QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1. QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “For ES256 the COSE signature value is the fixed-width concatenation r || s, 32 bytes each — not the ASN.1 DER encoding”.",
   "status": "proposed",
   "actors": [
     "issuer",
@@ -28,21 +28,7 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-COS-005",
-    "derivation": "direct",
-    "steps": [
-      "step-5",
-      "step-verify"
-    ],
-    "api": [
-      "api-ecdsa-format"
-    ],
-    "sources": [
-      {
-        "src": "qr-6",
-        "quote": "For ES256 the COSE signature value is the fixed-width concatenation r || s, 32 bytes each — not the ASN.1 DER encoding"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s011-6-step-5-sign-as-a-cose-sign1"
+  ]
 }

@@ -1,7 +1,7 @@
 {
   "id": "req:stt-sec-001",
   "title": "No payload content in logs",
-  "description": "Engineering consequence of QR Code Generation, 2.2 Choosing between a DVC and a VHL; HCERT Specification, 6.1 HCERT Signature Validity Time.",
+  "description": "Engineering consequence of QR Code Generation, 2.2 Choosing between a DVC and a VHL; HCERT Specification, 6.1 HCERT Signature Validity Time. QR Code Generation, 2.2 Choosing between a DVC and a VHL: “All data is in the QR and is readable by anyone who scans it”.",
   "status": "proposed",
   "actors": [
     "implementer"
@@ -20,17 +20,8 @@
     "security",
     "derived"
   ],
-  "stt": {
-    "id": "STT-SEC-001",
-    "derivation": "derived",
-    "sources": [
-      {
-        "src": "qr-2.2",
-        "quote": "All data is in the QR and is readable by anyone who scans it"
-      },
-      {
-        "src": "hcert-6.1"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s005-2-2-choosing-between-a-dvc-and-a-vhl",
+    "library/who-smart-trust-hcert-spec/sections/s023-6-1-hcert-signature-validity-time"
+  ]
 }

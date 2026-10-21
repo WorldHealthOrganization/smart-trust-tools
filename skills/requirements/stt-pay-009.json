@@ -20,31 +20,10 @@
     "functional",
     "derived"
   ],
-  "stt": {
-    "id": "STT-PAY-009",
-    "derivation": "derived",
-    "steps": [
-      "step-2"
-    ],
-    "api": [
-      "api-raw-payload"
-    ],
-    "issues": [
-      "OI-06"
-    ],
-    "sources": [
-      {
-        "src": "qr-2.1"
-      },
-      {
-        "src": "doc-sd-hcert"
-      },
-      {
-        "src": "ext-mtl-min"
-      },
-      {
-        "src": "ext-ddcc"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s004-2-1-subclaims-defined-in-this-guide",
+    "library/who-smart-trust-hcert-model",
+    "references/who-ph4h-medication-treatment-line-min",
+    "references/who-ddcc-ig"
+  ]
 }

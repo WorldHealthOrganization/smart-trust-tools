@@ -1,9 +1,0 @@
-{
-  "entryPoints": [
-    "../../api/generated/ts/hcert.d.ts"
-  ],
-  "tsconfig": "./tsconfig.typedoc.json",
-  "name": "who:smart-trust API (TypeScript view)",
-  "readme": "none",
-  "excludePrivate": true
-}

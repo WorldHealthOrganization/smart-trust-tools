@@ -1,0 +1,11 @@
+{
+  "id": "receiver",
+  "title": "HCERT receiver",
+  "kind": "system",
+  "description": "A clinic EMR, border system or CHW app that verifies or triage-reads a certificate and uses a Verifiable Health Link (smart-trust ActorDefinition Receiver, IHE ITI VHL Receiver).",
+  "roles": [
+    "hcert-verifying-system",
+    "vhl-receiver"
+  ],
+  "capabilities": []
+}

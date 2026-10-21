@@ -1,7 +1,7 @@
 {
   "id": "req:stt-ver-005",
   "title": "Time checks with an injected clock",
-  "description": "Restates QR Code Generation, 11. Verifying: the same steps upwards; HCERT Specification, 3.2.5 Expiration Time; HCERT Specification, 3.2.6 Issued At.",
+  "description": "Restates QR Code Generation, 11. Verifying: the same steps upwards; HCERT Specification, 3.2.5 Expiration Time; HCERT Specification, 3.2.6 Issued At. QR Code Generation, 11. Verifying: the same steps upwards: “Decode the CBOR payload and check exp and iat against the current time.”. HCERT Specification, 3.2.5 Expiration Time: “after which a Verifier MUST reject the Payload as expired”.",
   "status": "proposed",
   "actors": [
     "receiver"
@@ -27,27 +27,9 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-VER-005",
-    "derivation": "direct",
-    "steps": [
-      "step-verify"
-    ],
-    "api": [
-      "api-verifier"
-    ],
-    "sources": [
-      {
-        "src": "qr-11",
-        "quote": "Decode the CBOR payload and check exp and iat against the current time."
-      },
-      {
-        "src": "hcert-3.2.5",
-        "quote": "after which a Verifier MUST reject the Payload as expired"
-      },
-      {
-        "src": "hcert-3.2.6"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards",
+    "library/who-smart-trust-hcert-spec/sections/s011-3-2-5-expiration-time",
+    "library/who-smart-trust-hcert-spec/sections/s012-3-2-6-issued-at"
+  ]
 }

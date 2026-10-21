@@ -1,7 +1,7 @@
 {
   "id": "req:stt-cwt-002",
   "title": "NumericDate integers",
-  "description": "Restates HCERT Specification, 3.2.5 Expiration Time; HCERT Specification, 3.2.6 Issued At; RFC 8392 CBOR Web Token (CWT).",
+  "description": "Restates HCERT Specification, 3.2.5 Expiration Time; HCERT Specification, 3.2.6 Issued At; RFC 8392 CBOR Web Token (CWT). HCERT Specification, 3.2.5 Expiration Time: “SHALL hold a timestamp in the integer NumericDate format”.",
   "status": "proposed",
   "actors": [
     "issuer"
@@ -20,23 +20,9 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-CWT-002",
-    "derivation": "direct",
-    "steps": [
-      "step-3"
-    ],
-    "sources": [
-      {
-        "src": "hcert-3.2.5",
-        "quote": "SHALL hold a timestamp in the integer NumericDate format"
-      },
-      {
-        "src": "hcert-3.2.6"
-      },
-      {
-        "src": "std-rfc8392"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-hcert-spec/sections/s011-3-2-5-expiration-time",
+    "library/who-smart-trust-hcert-spec/sections/s012-3-2-6-issued-at",
+    "external-schemas/ietf-rfc8392"
+  ]
 }

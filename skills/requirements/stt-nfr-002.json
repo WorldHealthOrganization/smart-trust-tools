@@ -20,19 +20,8 @@
     "non-functional",
     "directive"
   ],
-  "stt": {
-    "id": "STT-NFR-002",
-    "derivation": "directive",
-    "issues": [
-      "OI-14"
-    ],
-    "sources": [
-      {
-        "src": "dir-languages"
-      },
-      {
-        "src": "dir-targets"
-      }
-    ]
-  }
+  "reference": [
+    "memory/dir-languages",
+    "memory/dir-targets"
+  ]
 }

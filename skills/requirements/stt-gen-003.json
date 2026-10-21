@@ -1,10 +1,13 @@
 {
   "id": "req:stt-gen-003",
   "title": "Payload-agnostic core",
-  "description": "Engineering consequence of QR Code Generation, Generating a QR Code.",
+  "description": "Engineering consequence of QR Code Generation, Generating a QR Code. QR Code Generation, Generating a QR Code: “The container, the signature and the transport encoding are the same for every GDHCN trust domain ... What changes from one use case to the next is only the payload”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-gen-001"
+  ],
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s001-generating-a-qr-code"
   ],
   "actors": [
     "implementer"
@@ -22,19 +25,5 @@
     "hcert-library",
     "architecture",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-GEN-003",
-    "derivation": "derived",
-    "api": [
-      "api-payload-codec",
-      "api-subclaim-registry"
-    ],
-    "sources": [
-      {
-        "src": "qr-intro",
-        "quote": "The container, the signature and the transport encoding are the same for every GDHCN trust domain ... What changes from one use case to the next is only the payload"
-      }
-    ]
-  }
+  ]
 }

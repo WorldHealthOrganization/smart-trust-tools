@@ -20,20 +20,8 @@
     "test",
     "derived"
   ],
-  "stt": {
-    "id": "STT-TST-002",
-    "derivation": "derived",
-    "issues": [
-      "OI-01",
-      "OI-05"
-    ],
-    "sources": [
-      {
-        "src": "qr-12.5"
-      },
-      {
-        "src": "doc-qr-example-json"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s022-12-5-size-at-each-stage",
+    "vectors/smart-trust-pr129/dvc-qr-example-XXA.json"
+  ]
 }

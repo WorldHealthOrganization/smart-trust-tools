@@ -1,7 +1,7 @@
 {
   "id": "req:stt-qr-005",
   "title": "Camera scanning out of scope",
-  "description": "Engineering consequence of QR Code Generation, 11. Verifying: the same steps upwards.",
+  "description": "Engineering consequence of QR Code Generation, 11. Verifying: the same steps upwards. QR Code Generation, 11. Verifying: the same steps upwards: “Confirm the HC1: prefix and strip it.”.",
   "status": "proposed",
   "actors": [
     "receiver"
@@ -20,20 +20,7 @@
     "scope",
     "derived"
   ],
-  "stt": {
-    "id": "STT-QR-005",
-    "derivation": "derived",
-    "steps": [
-      "step-verify"
-    ],
-    "api": [
-      "api-verifier"
-    ],
-    "sources": [
-      {
-        "src": "qr-11",
-        "quote": "Confirm the HC1: prefix and strip it."
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards"
+  ]
 }

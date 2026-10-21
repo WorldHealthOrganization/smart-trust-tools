@@ -6,6 +6,10 @@
   "derivedFrom": [
     "req:stt-gen-006"
   ],
+  "reference": [
+    "memory/dir-targets",
+    "external-schemas/bytecodealliance-wit"
+  ],
   "actors": [
     "implementer"
   ],
@@ -22,20 +26,5 @@
     "hcert-library",
     "architecture",
     "directive"
-  ],
-  "stt": {
-    "id": "STT-GEN-010",
-    "derivation": "directive",
-    "issues": [
-      "OI-16"
-    ],
-    "sources": [
-      {
-        "src": "dir-targets"
-      },
-      {
-        "src": "std-wit"
-      }
-    ]
-  }
+  ]
 }

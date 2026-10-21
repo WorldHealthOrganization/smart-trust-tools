@@ -1,7 +1,7 @@
 {
   "id": "req:stt-vhl-001",
   "title": "VHL payload in the SMART Health Links payload format",
-  "description": "Restates SMART Health Links; IHE VHL ITI-YY3, 2:3.YY3.4.1.3 Expected Actions; VerifiableHealthLinkPayload logical model (trust-phw); Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5.",
+  "description": "Restates SMART Health Links; IHE VHL ITI-YY3, 2:3.YY3.4.1.3 Expected Actions; VerifiableHealthLinkPayload logical model (trust-phw); Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5. IHE VHL ITI-YY3 Generate VHL, 2:3.YY3.4.1.3 Expected Actions: “Create the VHL payload (using the SHL payload format)”. Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5: “Single file - ignore”.",
   "status": "proposed",
   "actors": [
     "issuer",
@@ -21,32 +21,10 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-VHL-001",
-    "derivation": "direct",
-    "api": [
-      "api-vhl-payload"
-    ],
-    "issues": [
-      "OI-22",
-      "OI-23"
-    ],
-    "sources": [
-      {
-        "src": "std-shl",
-        "quote": null
-      },
-      {
-        "src": "vhl-yy3-4.1.3",
-        "quote": "Create the VHL payload (using the SHL payload format)"
-      },
-      {
-        "src": "ext-vhl-payload"
-      },
-      {
-        "src": "dir-vhl",
-        "quote": "Single file - ignore"
-      }
-    ]
-  }
+  "reference": [
+    "external-schemas/hl7-smart-health-links",
+    "library/ihe-iti-vhl-iti-yy3/sections/s010-2-3-yy3-4-1-3-expected-actions",
+    "library/who-smart-trust-phw-health-link-payload",
+    "memory/dir-vhl"
+  ]
 }

@@ -7,6 +7,10 @@
     "req:stt-gen-010",
     "req:stt-gen-004"
   ],
+  "reference": [
+    "memory/dir-targets",
+    "external-schemas/bytecodealliance-wit"
+  ],
   "actors": [
     "implementer"
   ],
@@ -15,7 +19,7 @@
       "key": "statement",
       "label": "Kotlin API skeleton generated from the WIT",
       "conformance": "SHALL",
-      "requirement": "The Kotlin API (types and interfaces, no behaviour) SHALL be generated from the WIT contract by tools/wit2kotlin.py, following the WIT to Kotlin mapping rules in api/README.md, into a Kotlin Multiplatform module targeting the JVM and Node.js. Kotlin implementations SHALL implement the generated interfaces. CI SHALL fail when the generated skeleton is out of date with the WIT or does not compile.",
+      "requirement": "The Kotlin API (types and interfaces, no behaviour) SHALL be generated from the WIT contract by tools/wit2kotlin/wit2kotlin.py, following the WIT to Kotlin mapping rules in api/README.md, into a Kotlin Multiplatform module targeting the JVM and Node.js. Kotlin implementations SHALL implement the generated interfaces. CI SHALL fail when the generated skeleton is out of date with the WIT or does not compile.",
       "category": "architecture"
     }
   ],
@@ -23,17 +27,5 @@
     "hcert-library",
     "architecture",
     "directive"
-  ],
-  "stt": {
-    "id": "STT-GEN-014",
-    "derivation": "directive",
-    "sources": [
-      {
-        "src": "dir-targets"
-      },
-      {
-        "src": "std-wit"
-      }
-    ]
-  }
+  ]
 }

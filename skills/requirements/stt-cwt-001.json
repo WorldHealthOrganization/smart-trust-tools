@@ -1,7 +1,7 @@
 {
   "id": "req:stt-cwt-001",
   "title": "Integer claim keys",
-  "description": "Restates QR Code Generation, 4. Step 3 — Build the CWT claim set; QR Code Generation, 5. Step 4 — Serialise as CBOR; QR Code Generation, 12.4 The payload; HCERT Specification, 3.2.1 CWT Structure Overview.",
+  "description": "Restates QR Code Generation, 4. Step 3 — Build the CWT claim set; QR Code Generation, 5. Step 4 — Serialise as CBOR; QR Code Generation, 12.4 The payload; HCERT Specification, 3.2.1 CWT Structure Overview. QR Code Generation, 4. Step 3 — Build the CWT claim set: “Place the payload under its subclaim, inside the hcert claim, inside a CWT claim set”. QR Code Generation, 5. Step 4 — Serialise as CBOR: “The JSON shown throughout this page and in the logical models is schema notation only”.",
   "status": "proposed",
   "actors": [
     "issuer"
@@ -27,30 +27,10 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-CWT-001",
-    "derivation": "direct",
-    "steps": [
-      "step-3"
-    ],
-    "api": [
-      "api-cwt"
-    ],
-    "sources": [
-      {
-        "src": "qr-4",
-        "quote": "Place the payload under its subclaim, inside the hcert claim, inside a CWT claim set"
-      },
-      {
-        "src": "qr-5",
-        "quote": "The JSON shown throughout this page and in the logical models is schema notation only"
-      },
-      {
-        "src": "qr-12.4"
-      },
-      {
-        "src": "hcert-3.2.1"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s009-4-step-3-build-the-cwt-claim-set",
+    "library/who-smart-trust-qr-code-generation/sections/s010-5-step-4-serialise-as-cbor",
+    "library/who-smart-trust-qr-code-generation/sections/s021-12-4-the-payload",
+    "library/who-smart-trust-hcert-spec/sections/s007-3-2-1-cwt-structure-overview"
+  ]
 }

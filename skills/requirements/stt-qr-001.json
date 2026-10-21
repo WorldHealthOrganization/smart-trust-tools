@@ -1,7 +1,7 @@
 {
   "id": "req:stt-qr-001",
   "title": "QR-ready HC1 output; no QR encoding in the library",
-  "description": "Restates QR Code Generation, 10. Step 9 — Render the QR code; HCERT Specification, 4.2.2 QR 2D Barcode; ISO/IEC 18004:2015 QR Code.",
+  "description": "Restates QR Code Generation, 10. Step 9 — Render the QR code; HCERT Specification, 4.2.2 QR 2D Barcode; ISO/IEC 18004:2015 QR Code. HCERT Specification, 4.2.2 QR 2D Barcode: “The Alphanumeric (Mode 2/QR Code symbols 0010) MUST be used in conjunction with Base45.”.",
   "status": "proposed",
   "actors": [
     "issuer"
@@ -20,26 +20,8 @@
     "functional",
     "derived"
   ],
-  "stt": {
-    "id": "STT-QR-001",
-    "derivation": "derived",
-    "steps": [
-      "step-9"
-    ],
-    "api": [
-      "api-hc1"
-    ],
-    "sources": [
-      {
-        "src": "qr-10"
-      },
-      {
-        "src": "hcert-4.2.2",
-        "quote": "The Alphanumeric (Mode 2/QR Code symbols 0010) MUST be used in conjunction with Base45."
-      },
-      {
-        "src": "std-iso18004"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s015-10-step-9-render-the-qr-code",
+    "library/who-smart-trust-hcert-spec/sections/s018-4-2-2-qr-2d-barcode"
+  ]
 }

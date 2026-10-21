@@ -1,10 +1,16 @@
 {
   "id": "req:stt-vhl-007",
   "title": "Document encryption: JWE dir / A256GCM",
-  "description": "Restates IHE VHL ITI-YY5, 2:3.YY5.4.2.5 Document Encryption; RFC 7516; RFC 7518; Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5.",
+  "description": "Restates IHE VHL ITI-YY5, 2:3.YY5.4.2.5 Document Encryption; RFC 7516; RFC 7518; Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5. IHE VHL ITI-YY5 Retrieve Manifest, 2:3.YY5.4.2.5 Document Encryption: “VHL document binaries are encrypted following the SMART Health Links — Encrypting and Decrypting Files convention”. Stakeholder directive: Verifiable Health Links follow IHE VHL, CBOR map at key 5: “Encryption as VHL”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-vhl-001"
+  ],
+  "reference": [
+    "library/ihe-iti-vhl-iti-yy5/sections/s019-2-3-yy5-4-2-5-document-encryption",
+    "external-schemas/ietf-rfc7516",
+    "external-schemas/ietf-rfc7518",
+    "memory/dir-vhl"
   ],
   "actors": [
     "issuer",
@@ -23,31 +29,5 @@
     "hcert-library",
     "security",
     "direct"
-  ],
-  "stt": {
-    "id": "STT-VHL-007",
-    "derivation": "direct",
-    "api": [
-      "api-vhl-jwe"
-    ],
-    "issues": [
-      "OI-24"
-    ],
-    "sources": [
-      {
-        "src": "vhl-yy5-4.2.5",
-        "quote": "VHL document binaries are encrypted following the SMART Health Links — Encrypting and Decrypting Files convention"
-      },
-      {
-        "src": "std-rfc7516"
-      },
-      {
-        "src": "std-rfc7518"
-      },
-      {
-        "src": "dir-vhl",
-        "quote": "Encryption as VHL"
-      }
-    ]
-  }
+  ]
 }

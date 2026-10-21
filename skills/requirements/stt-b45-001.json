@@ -1,7 +1,7 @@
 {
   "id": "req:stt-b45-001",
   "title": "Base45 per RFC 9285",
-  "description": "Restates QR Code Generation, 8. Step 7 — Encode as Base45; HCERT Specification, 4.2.2 QR 2D Barcode; RFC 9285 The Base45 Data Encoding.",
+  "description": "Restates QR Code Generation, 8. Step 7 — Encode as Base45; HCERT Specification, 4.2.2 QR 2D Barcode; RFC 9285 The Base45 Data Encoding. QR Code Generation, 8. Step 7 — Encode as Base45: “its 45-character alphabet is exactly the QR Alphanumeric character set”.",
   "status": "proposed",
   "actors": [
     "issuer"
@@ -20,29 +20,9 @@
     "functional",
     "direct"
   ],
-  "stt": {
-    "id": "STT-B45-001",
-    "derivation": "direct",
-    "steps": [
-      "step-7"
-    ],
-    "api": [
-      "api-base45"
-    ],
-    "issues": [
-      "OI-04"
-    ],
-    "sources": [
-      {
-        "src": "qr-8",
-        "quote": "its 45-character alphabet is exactly the QR Alphanumeric character set"
-      },
-      {
-        "src": "hcert-4.2.2"
-      },
-      {
-        "src": "std-rfc9285"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s013-8-step-7-encode-as-base45",
+    "library/who-smart-trust-hcert-spec/sections/s018-4-2-2-qr-2d-barcode",
+    "external-schemas/ietf-rfc9285"
+  ]
 }

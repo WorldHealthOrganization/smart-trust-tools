@@ -1,11 +1,12 @@
 {
   "id": "req:stt-ver-007",
   "title": "Dispatch to logical model, then business rules",
-  "description": "Restates QR Code Generation, 11. Verifying: the same steps upwards.",
+  "description": "Restates QR Code Generation, 11. Verifying: the same steps upwards. QR Code Generation, 11. Verifying: the same steps upwards: “Read the hcert claim, dispatch on the subclaim to the right logical model, and only then apply business rules.”.",
   "status": "proposed",
-  "derivedFrom": [
+  "reference": [
     "http://smart.who.int/trust/Requirements/UtilizeVDHC#UtilizeVDHC-display-verified-content",
-    "http://smart.who.int/trust/Requirements/UtilizeVDHC#UtilizeVDHC-execute-business-rule"
+    "http://smart.who.int/trust/Requirements/UtilizeVDHC#UtilizeVDHC-execute-business-rule",
+    "library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards"
   ],
   "actors": [
     "receiver"
@@ -23,22 +24,5 @@
     "hcert-library",
     "functional",
     "direct"
-  ],
-  "stt": {
-    "id": "STT-VER-007",
-    "derivation": "direct",
-    "steps": [
-      "step-verify"
-    ],
-    "api": [
-      "api-verifier",
-      "api-subclaim-registry"
-    ],
-    "sources": [
-      {
-        "src": "qr-11",
-        "quote": "Read the hcert claim, dispatch on the subclaim to the right logical model, and only then apply business rules."
-      }
-    ]
-  }
+  ]
 }

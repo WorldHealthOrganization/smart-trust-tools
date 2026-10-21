@@ -1,7 +1,7 @@
 {
   "id": "req:stt-pay-010",
   "title": "Payload models derived from FHIR logical models",
-  "description": "Stakeholder directive, in the context of Stakeholder directive: open standards for types and schemas; DVCMin logical model (trust-phw); DVCMinVaccineDetails logical model (trust-phw); W3C JSON-LD 1.1; W3C Shapes Constraint Language (SHACL).",
+  "description": "Stakeholder directive, in the context of Stakeholder directive: open standards for types and schemas; DVCMin logical model (trust-phw); DVCMinVaccineDetails logical model (trust-phw); W3C JSON-LD 1.1; W3C Shapes Constraint Language (SHACL). DVCMin logical model (trust-phw): “Minimal DVC payload for use within an HCERT Payload”.",
   "status": "proposed",
   "actors": [
     "issuer"
@@ -27,34 +27,11 @@
     "architecture",
     "directive"
   ],
-  "stt": {
-    "id": "STT-PAY-010",
-    "derivation": "directive",
-    "steps": [
-      "step-2"
-    ],
-    "issues": [
-      "OI-17",
-      "OI-18",
-      "OI-19"
-    ],
-    "sources": [
-      {
-        "src": "dir-open-standards"
-      },
-      {
-        "src": "ext-dvcmin",
-        "quote": "Minimal DVC payload for use within an HCERT Payload"
-      },
-      {
-        "src": "ext-dvcmin-vx"
-      },
-      {
-        "src": "std-json-ld"
-      },
-      {
-        "src": "std-shacl"
-      }
-    ]
-  }
+  "reference": [
+    "memory/dir-open-standards",
+    "library/who-smart-trust-phw-dvcmin",
+    "library/who-smart-trust-phw-dvcmin-vaccine-details",
+    "external-schemas/w3c-json-ld-1-1",
+    "external-schemas/w3c-shacl"
+  ]
 }

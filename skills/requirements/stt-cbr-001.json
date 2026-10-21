@@ -27,28 +27,9 @@
     "functional",
     "derived"
   ],
-  "stt": {
-    "id": "STT-CBR-001",
-    "derivation": "derived",
-    "steps": [
-      "step-4"
-    ],
-    "api": [
-      "api-cbor"
-    ],
-    "issues": [
-      "OI-05"
-    ],
-    "sources": [
-      {
-        "src": "qr-5"
-      },
-      {
-        "src": "doc-qr-script"
-      },
-      {
-        "src": "std-rfc8949"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s010-5-step-4-serialise-as-cbor",
+    "library/who-smart-trust-dvc-qr-script",
+    "external-schemas/ietf-rfc8949"
+  ]
 }

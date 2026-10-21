@@ -6,6 +6,10 @@
   "derivedFrom": [
     "req:stt-gen-006"
   ],
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s024-13-reference-script",
+    "memory/dir-languages"
+  ],
   "actors": [
     "implementer"
   ],
@@ -22,17 +26,5 @@
     "hcert-library",
     "test",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-TST-003",
-    "derivation": "derived",
-    "sources": [
-      {
-        "src": "qr-13"
-      },
-      {
-        "src": "dir-languages"
-      }
-    ]
-  }
+  ]
 }

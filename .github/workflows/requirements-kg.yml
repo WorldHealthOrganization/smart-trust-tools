@@ -1,17 +1,17 @@
-name: Requirements KG and API contract
+name: Requirements graph, API contract and Kotlin library
 
 # Every dependency is pinned: actions by commit SHA, Python by hash
-# (tools/python/requirements.txt), Node tools by lockfile integrity
-# (tools/node/package-lock.json, installed with --ignore-scripts), Gradle by
+# (toolchain/python/requirements.txt), Node tools by lockfile integrity
+# (toolchain/node/package-lock.json, installed with --ignore-scripts), Gradle by
 # verification metadata.
 permissions:
   contents: read
 
 on:
   push:
-    paths: ["requirements/**", "skills/**", "api/**", "models/**", "vectors/**", "tools/**", "kotlin/**", ".github/workflows/requirements-kg.yml"]
+    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "tools/**", "toolchain/**", ".github/workflows/requirements-kg.yml"]
   pull_request:
-    paths: ["requirements/**", "skills/**", "api/**", "models/**", "vectors/**", "tools/**", "kotlin/**", ".github/workflows/requirements-kg.yml"]
+    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "tools/**", "toolchain/**", ".github/workflows/requirements-kg.yml"]
 
 jobs:
   check:
@@ -25,27 +25,19 @@ jobs:
         with:
           node-version: "22"
       - name: Python tools, hash-pinned
-        run: pip install --require-hashes --no-deps -r tools/python/requirements.txt
-      - name: Validate KG (incl. WIT references) and check generated files are current
-        run: python3 tools/build_kg.py --check
-      - name: Parse generated RDF
-        run: |
-          python3 -c "
-          import rdflib
-          from rdflib.compare import isomorphic
-          a = rdflib.Graph().parse('requirements/generated/kg.ttl', format='turtle')
-          b = rdflib.Graph().parse('requirements/generated/kg.jsonld', format='json-ld')
-          assert isomorphic(a, b), 'Turtle and JSON-LD differ'
-          print(len(a), 'triples')
-          "
+        run: pip install --require-hashes --no-deps -r toolchain/python/requirements.txt
+      - name: Every edge of the requirement graph names a node
+        # The Tool edges need the harness mounted (tools/index.ts imports it);
+        # the site build's pre step, check:req-nodes, covers them.
+        run: python3 tools/build-site/kg_nodes.py
       - name: Validate WIT and check generated TypeScript is current
         run: |
-          tools/gen_api_types.sh
+          tools/gen-api-types/gen_api_types.sh
           git diff --exit-code -- api/generated/ts
       - name: Check derived payload models are current
-        run: python3 tools/lm_derive.py --check
+        run: python3 tools/lm-derive/lm_derive.py --check
       - name: Validate vectors against CDDL and SHACL
-        run: python3 tools/check_models.py
+        run: python3 tools/check-models/check_models.py
 
   kotlin:
     runs-on: ubuntu-latest
@@ -65,12 +57,12 @@ jobs:
         with:
           gradle-version: "8.14.3"
       - name: Kotlin skeleton is current with the WIT
-        run: python3 tools/wit2kotlin.py --check
-      # kotlin/gradle/verification-metadata.xml pins the sha256 of every
+        run: python3 tools/wit2kotlin/wit2kotlin.py --check
+      # tools/hcert-kotlin/gradle/verification-metadata.xml pins the sha256 of every
       # plugin and library Gradle resolves; an unlisted or changed artifact
       # fails the build.
       - name: Compile (JVM + JS) and run the hcert-core tests on the JVM
-        run: gradle -p kotlin --no-daemon compileKotlinJvm compileKotlinJs :hcert-core:jvmTest :hcert-core:compileProductionLibraryKotlinJs
+        run: gradle -p tools/hcert-kotlin --no-daemon compileKotlinJvm compileKotlinJs :hcert-core:jvmTest :hcert-core:compileProductionLibraryKotlinJs
       - name: Run hcert-core on Node against the PR 129 vector
-        run: node kotlin/hcert-core/node-smoke.mjs
+        run: node tools/hcert-kotlin/hcert-core/node-smoke.mjs
 

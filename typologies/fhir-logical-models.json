@@ -1,0 +1,15 @@
+{
+  "$schema": "folio-graph-typology/v1",
+  "kind": "fhir-logical-models",
+  "title": "FHIR logical models",
+  "perInstance": true,
+  "renderable": false,
+  "holds": "context",
+  "summary": "The WHO SMART Trust PHW logical models (DVCMin and its PreQual and vaccine-details variants) as FHIR R5 StructureDefinitions, fetched at a pinned commit by fetch-lms, and the R5 primitive patterns. lm-derive reads them.",
+  "validatorNotApplicable": "FHIR StructureDefinitions copied verbatim from the smart-trust-phw build (SOURCE.yaml pins the commit); their schema is FHIR R5 itself (external-schemas/hl7-fhir-r5), and lm-derive fails on any element it cannot map.",
+  "avatar": {
+    "glyph": "M4 5h16v14H4zM4 10h16M10 10v9",
+    "tone": 12,
+    "reads": "a structure definition's table: elements, types, cardinality"
+  }
+}

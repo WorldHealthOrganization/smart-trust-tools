@@ -1,11 +1,13 @@
 {
   "id": "req:stt-tru-001",
   "title": "Trust store",
-  "description": "Engineering consequence of HCERT Specification, Appendix A - Trust Management; QR Code Generation, 11. Verifying: the same steps upwards.",
+  "description": "Engineering consequence of HCERT Specification, Appendix A - Trust Management; QR Code Generation, 11. Verifying: the same steps upwards. HCERT Specification, Appendix A - Trust Management: “Ultimately, every Verifier needs to have a list of all public keys it is willing to trust”.",
   "status": "proposed",
-  "derivedFrom": [
+  "reference": [
     "http://smart.who.int/trust/Requirements/UtilizeVDHC#UtilizeVDHC-retreive-keys",
-    "http://smart.who.int/trust/Requirements/RetrievePKIMaterial"
+    "http://smart.who.int/trust/Requirements/RetrievePKIMaterial",
+    "library/who-smart-trust-hcert-spec/sections/s026-appendix-a-trust-management",
+    "library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards"
   ],
   "actors": [
     "receiver",
@@ -25,24 +27,5 @@
     "hcert-library",
     "api",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-TRU-001",
-    "derivation": "derived",
-    "steps": [
-      "step-trust"
-    ],
-    "api": [
-      "api-trust-provider"
-    ],
-    "sources": [
-      {
-        "src": "hcert-A",
-        "quote": "Ultimately, every Verifier needs to have a list of all public keys it is willing to trust"
-      },
-      {
-        "src": "qr-11"
-      }
-    ]
-  }
+  ]
 }

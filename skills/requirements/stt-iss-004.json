@@ -1,10 +1,15 @@
 {
   "id": "req:stt-iss-004",
   "title": "Two-phase signing",
-  "description": "Engineering consequence of HCERT Specification, 6.2 Key Management; W3C Web Cryptography API; QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1.",
+  "description": "Engineering consequence of HCERT Specification, 6.2 Key Management; W3C Web Cryptography API; QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1. QR Code Generation, 6. Step 5 — Sign as a COSE_Sign1: “Converting between the two is the single most common interoperability bug in HCERT implementations.”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-cos-006"
+  ],
+  "reference": [
+    "library/who-smart-trust-hcert-spec/sections/s024-6-2-key-management",
+    "external-schemas/w3c-webcrypto",
+    "library/who-smart-trust-qr-code-generation/sections/s011-6-step-5-sign-as-a-cose-sign1"
   ],
   "actors": [
     "issuer"
@@ -22,31 +27,5 @@
     "hcert-library",
     "api",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-ISS-004",
-    "derivation": "derived",
-    "steps": [
-      "step-5"
-    ],
-    "api": [
-      "api-pending-signature",
-      "api-issuer"
-    ],
-    "issues": [
-      "OI-15"
-    ],
-    "sources": [
-      {
-        "src": "hcert-6.2"
-      },
-      {
-        "src": "std-webcrypto"
-      },
-      {
-        "src": "qr-6",
-        "quote": "Converting between the two is the single most common interoperability bug in HCERT implementations."
-      }
-    ]
-  }
+  ]
 }

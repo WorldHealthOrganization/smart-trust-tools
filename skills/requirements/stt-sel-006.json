@@ -1,7 +1,7 @@
 {
   "id": "req:stt-sel-006",
   "title": "Trust domain codes come from the value set",
-  "description": "Engineering consequence of QR Code Generation, 2.1 Subclaims defined in this guide; Trust Domains; GDHCN Trust Domain value set.",
+  "description": "Engineering consequence of QR Code Generation, 2.1 Subclaims defined in this guide; Trust Domains; GDHCN Trust Domain value set. QR Code Generation, 2.1 Subclaims defined in this guide: “The registered production trust domains are DDCC, IPS-PILGRIMAGE, PH4H and ICVP.”.",
   "status": "proposed",
   "actors": [
     "issuer"
@@ -20,24 +20,9 @@
     "functional",
     "derived"
   ],
-  "stt": {
-    "id": "STT-SEL-006",
-    "derivation": "derived",
-    "steps": [
-      "step-1",
-      "step-trust"
-    ],
-    "sources": [
-      {
-        "src": "qr-2.1",
-        "quote": "The registered production trust domains are DDCC, IPS-PILGRIMAGE, PH4H and ICVP."
-      },
-      {
-        "src": "doc-trust-domains"
-      },
-      {
-        "src": "doc-vs-domains"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s004-2-1-subclaims-defined-in-this-guide",
+    "library/who-smart-trust-trust-domains",
+    "references/who-trust-gdhcn-trust-domain-vs"
+  ]
 }

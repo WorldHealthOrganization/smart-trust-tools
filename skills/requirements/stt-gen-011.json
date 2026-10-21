@@ -7,6 +7,10 @@
     "req:stt-gen-006",
     "req:stt-gen-010"
   ],
+  "reference": [
+    "memory/dir-targets",
+    "external-schemas/bytecodealliance-jco"
+  ],
   "actors": [
     "implementer"
   ],
@@ -30,17 +34,5 @@
     "hcert-library",
     "architecture",
     "derived"
-  ],
-  "stt": {
-    "id": "STT-GEN-011",
-    "derivation": "derived",
-    "sources": [
-      {
-        "src": "dir-targets"
-      },
-      {
-        "src": "std-jco"
-      }
-    ]
-  }
+  ]
 }

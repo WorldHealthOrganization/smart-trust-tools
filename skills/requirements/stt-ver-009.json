@@ -1,7 +1,7 @@
 {
   "id": "req:stt-ver-009",
   "title": "Fully offline verification",
-  "description": "Engineering consequence of QR Code Generation, 2.2 Choosing between a DVC and a VHL; QR Code Generation, 12.1 Scenario.",
+  "description": "Engineering consequence of QR Code Generation, 2.2 Choosing between a DVC and a VHL; QR Code Generation, 12.1 Scenario. QR Code Generation, 2.2 Choosing between a DVC and a VHL: “Works fully offline — Yes — verifier needs only the trust list”.",
   "status": "proposed",
   "actors": [
     "receiver",
@@ -21,25 +21,8 @@
     "functional",
     "derived"
   ],
-  "stt": {
-    "id": "STT-VER-009",
-    "derivation": "derived",
-    "steps": [
-      "step-verify",
-      "step-trust"
-    ],
-    "api": [
-      "api-static-trust",
-      "api-trust-provider"
-    ],
-    "sources": [
-      {
-        "src": "qr-2.2",
-        "quote": "Works fully offline — Yes — verifier needs only the trust list"
-      },
-      {
-        "src": "qr-12.1"
-      }
-    ]
-  }
+  "reference": [
+    "library/who-smart-trust-qr-code-generation/sections/s005-2-2-choosing-between-a-dvc-and-a-vhl",
+    "library/who-smart-trust-qr-code-generation/sections/s018-12-1-scenario"
+  ]
 }

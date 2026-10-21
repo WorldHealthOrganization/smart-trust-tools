@@ -1,10 +1,13 @@
 {
   "id": "req:stt-vhl-009",
   "title": "VHL expiry",
-  "description": "Restates IHE VHL ITI-YY4 Provide VHL.",
+  "description": "Restates IHE VHL ITI-YY4 Provide VHL. IHE VHL ITI-YY4 Provide VHL: “Check the payload's exp (if present) - reject if current time > expiration”.",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-vhl-001"
+  ],
+  "reference": [
+    "library/ihe-iti-vhl-iti-yy4"
   ],
   "actors": [
     "receiver"
@@ -22,18 +25,5 @@
     "hcert-library",
     "functional",
     "direct"
-  ],
-  "stt": {
-    "id": "STT-VHL-009",
-    "derivation": "direct",
-    "api": [
-      "api-vhl-payload"
-    ],
-    "sources": [
-      {
-        "src": "doc-ihe-vhl-yy4",
-        "quote": "Check the payload's exp (if present) - reject if current time > expiration"
-      }
-    ]
-  }
+  ]
 }
