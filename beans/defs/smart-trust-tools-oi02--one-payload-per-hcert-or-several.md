@@ -1,7 +1,7 @@
 ---
 # smart-trust-tools-oi02
 title: 'OI-02: One payload per hcert, or several?'
-status: todo
+status: completed
 type: bug
 priority: normal
 tags:
@@ -17,7 +17,13 @@ Upstream has answered half of it (WHO af75be2, PR 129 merged): QR Code Generatio
 
 ## Resolution
 
-An owner's decision: keep STT-SEL-004 as a deliberate profile (exactly one payload, several refused), or let the verifier accept several, which changes the verification result in api/wit from one payload to a list. Upstream still does not say how a verifier treats several.
+The owner's decision, 2026-10-22: **keep the one-payload profile.** STT-SEL-004 stands as a deliberate profile of the HCERT container, not a reading of it:
+
+- the issuer emits an hcert (-260) map with exactly one entry, the choice QR Code Generation 2 makes throughout;
+- the verifier refuses a map with more than one entry (MultipleSubclaims, at the HCERT step) and one with none (HcertMissing);
+- the verification result in api/wit carries one payload, and does not become a list.
+
+So a certificate that uses the container's freedom to carry several payloads, which HCERT Specification 3.2.7 and the CWT payload model (-260 1..*) allow, does not verify in these libraries. That is a known interoperability limit, not a defect. Revisit it if a trust domain registers a use of several payloads in one certificate, or if upstream specifies how a verifier treats them; the API change would then be a new major version (STT-NFR-001).
 
 ## Requirements affected
 
@@ -32,4 +38,4 @@ An owner's decision: keep STT-SEL-004 as a deliberate profile (exactly one paylo
 
 ## Done when
 
-- [ ] the upstream source is corrected, or the requirement no longer depends on it
+- [x] the upstream source is corrected, or the requirement no longer depends on it (upstream now leaves the number to the implementation; the profile is recorded here)
