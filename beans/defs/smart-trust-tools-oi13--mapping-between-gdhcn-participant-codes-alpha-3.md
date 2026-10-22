@@ -19,7 +19,7 @@ Participant codes are ISO 3166-1 alpha-3, while iss and the X.509 C attribute us
 
 ## Sources
 
-- library/who-smart-trust-qr-code-generation/sections/s020-12-3-test-issuer
+- library/who-smart-trust-qr-code-generation/sections/s016-12-3-issuer
 - library/who-smart-trust-hcert-spec/sections/s010-3-2-4-issuer
 - references/who-trust-gdhcn-participants-vs
 

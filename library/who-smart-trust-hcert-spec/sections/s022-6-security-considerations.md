@@ -5,7 +5,7 @@ section_id: s022-6-security-considerations
 section_title: "6. Security Considerations"
 file: "input/pagecontent/hcert_spec.md"
 lines: 174-179
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 #### 6. Security Considerations

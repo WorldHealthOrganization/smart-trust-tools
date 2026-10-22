@@ -5,7 +5,7 @@ section_id: s009-3-2-3-key-identifier
 section_title: "3.2.3 Key Identifier"
 file: "input/pagecontent/hcert_spec.md"
 lines: 66-71
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ###### 3.2.3 Key Identifier

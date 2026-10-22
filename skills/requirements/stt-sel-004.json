@@ -1,7 +1,7 @@
 {
   "id": "req:stt-sel-004",
   "title": "Exactly one payload when issuing",
-  "description": "Engineering consequence of QR Code Generation, 2. Step 1 — Select the logical model for your use case; QR Code Generation, 4. Step 3 — Build the CWT claim set; HCERT Specification, 3.2.7 Health Certificate Claim. QR Code Generation, 2. Step 1 — Select the logical model for your use case: “An HCERT carries exactly one payload, identified by a subclaim inside the hcert claim”. QR Code Generation, 4. Step 3 — Build the CWT claim set: “Map whose single key is the subclaim chosen in Step 1”. HCERT Specification, 3.2.7 Health Certificate Claim: “Several different types of health certificate MAY exist under the same claim”.",
+  "description": "Engineering consequence of QR Code Generation, 2. Step 1 — Select the payload type; QR Code Generation, 4. Step 3 — Build the CWT claim set; HCERT Specification, 3.2.7 Health Certificate Claim. QR Code Generation, 2. Step 1 — Select the payload type: “Carrying exactly one is an implementation choice, not a constraint of the container, and it is the choice made throughout this page.”. HCERT Specification, 3.2.7 Health Certificate Claim: “Several different types of health certificate MAY exist under the same claim”. The statement is a deliberate profile, stricter than the container: the owner chose on 2026-10-22 to keep exactly one payload per certificate, and to refuse several (bean OI-02).",
   "status": "proposed",
   "actors": [
     "vhl-sharer",
@@ -29,8 +29,8 @@
     "derived"
   ],
   "reference": [
-    "library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-logical-model-for-your-use-c",
-    "library/who-smart-trust-qr-code-generation/sections/s009-4-step-3-build-the-cwt-claim-set",
+    "library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-payload-type",
+    "library/who-smart-trust-qr-code-generation/sections/s005-4-step-3-build-the-cwt-claim-set",
     "library/who-smart-trust-hcert-spec/sections/s013-3-2-7-health-certificate-claim"
   ]
 }

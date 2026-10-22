@@ -28,7 +28,7 @@
     "direct"
   ],
   "reference": [
-    "library/who-smart-trust-qr-code-generation/sections/s013-8-step-7-encode-as-base45",
+    "library/who-smart-trust-qr-code-generation/sections/s009-8-step-7-encode-as-base45",
     "library/who-smart-trust-hcert-spec/sections/s018-4-2-2-qr-2d-barcode",
     "external-schemas/ietf-rfc9285"
   ]

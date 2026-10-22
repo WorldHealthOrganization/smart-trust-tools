@@ -19,7 +19,7 @@ The number "is not guaranteed to be stable". The library must not bake -6 into i
 
 ## Sources
 
-- library/who-smart-trust-qr-code-generation/sections/s004-2-1-subclaims-defined-in-this-guide
+- library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-payload-type
 
 ## Done when
 

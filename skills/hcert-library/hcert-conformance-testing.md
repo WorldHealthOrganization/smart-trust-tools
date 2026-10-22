@@ -13,6 +13,7 @@ satisfies:
   - "req:stt-tst-008#statement"
   - "req:stt-tst-009#statement"
   - "req:stt-tst-010#statement"
+  - "req:stt-tst-011#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt

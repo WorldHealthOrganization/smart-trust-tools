@@ -5,7 +5,7 @@ section_id: s007-3-2-1-cwt-structure-overview
 section_title: "3.2.1 CWT Structure Overview"
 file: "input/pagecontent/hcert_spec.md"
 lines: 32-47
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ###### 3.2.1 CWT Structure Overview
@@ -22,4 +22,4 @@ granularity: heading
 
 The Signature is required to be sent in the CWT and MUST accompany the payload for validation.
 
-The logical model can be found specified [here](StructureDefinition-hcert.html)
+The logical model can be found specified [here](StructureDefinition-HCert.html)

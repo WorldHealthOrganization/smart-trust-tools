@@ -5,7 +5,7 @@ section_id: s001-changes
 section_title: "Changes"
 file: "input/pagecontent/changes.md"
 lines: 2-5
-source_sha256: a3e4e713249a2d29
+source_sha256: 3984ebc0eac3c1ff
 granularity: heading
 ---
 ### Changes

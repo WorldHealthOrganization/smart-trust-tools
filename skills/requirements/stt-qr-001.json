@@ -28,7 +28,7 @@
     "derived"
   ],
   "reference": [
-    "library/who-smart-trust-qr-code-generation/sections/s015-10-step-9-render-the-qr-code",
+    "library/who-smart-trust-qr-code-generation/sections/s011-10-step-9-render-the-qr-code",
     "library/who-smart-trust-hcert-spec/sections/s018-4-2-2-qr-2d-barcode"
   ]
 }

@@ -5,7 +5,7 @@ section_id: s020-5-1-simplified-sca-dsc
 section_title: "5.1 Simplified SCA/DSC"
 file: "input/pagecontent/hcert_spec.md"
 lines: 164-169
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ##### 5.1 Simplified SCA/DSC

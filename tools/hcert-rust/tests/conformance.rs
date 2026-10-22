@@ -49,6 +49,43 @@ fn stt_tst_002_stt_cbr_001_deterministic_re_encoding_reproduces_the_issued_cwt_b
 }
 
 #[test]
+fn stt_tst_011_stt_tst_002_the_merged_guides_xxr_certificates_decode_as_published() {
+    let vector = json(XXR);
+    let num = |c: &hcert::json::Json, k: &str| c.get(k).unwrap().as_f64().unwrap() as usize;
+    for name in ["hepb1", "bcg"] {
+        let c = vector.get("certificates").unwrap().get(name).unwrap();
+        let hc1 = c.get("hc1").unwrap().as_str().unwrap();
+        let u = verifier::read_unverified(hc1, &reg(), &DEFAULT_LIMITS).unwrap_or_else(|f| panic!("{name}: {f:?}"));
+        assert_eq!(to_hex(u.kid.as_ref().unwrap()), "916ffa567c0f44a2");
+        assert_eq!(u.iss.as_deref(), Some("XR"));
+        assert_eq!((u.iat, u.exp), (Some(1_792_657_800), Some(1_824_193_800)));
+        assert_eq!(u.subclaim, Some(-6));
+        let Some(Payload::DvcMin(p)) = &u.payload else { panic!("{name}: not a DVCMin") };
+        let expected = c.get("payload").unwrap();
+        let vx = expected.get("vx").unwrap();
+        assert_eq!(Some(p.n.as_str()), expected.get("n").and_then(|j| j.as_str()));
+        assert_eq!(Some(p.dob.as_str()), expected.get("dob").and_then(|j| j.as_str()));
+        assert_eq!(Some(p.vx.vp.as_str()), vx.get("vp").and_then(|j| j.as_str()));
+        assert_eq!(p.vx.is.as_deref(), vx.get("is").and_then(|j| j.as_str()));
+        assert_eq!(Some(p.vx.bo.as_str()), vx.get("bo").and_then(|j| j.as_str()));
+        // 12.5 Size at each stage, exactly: these are the published strings.
+        let cose_bytes = codec::from_hc1(hc1, &DEFAULT_LIMITS).unwrap();
+        let s = cose::parse_sign1(&cose_bytes, &DEFAULT_LIMITS).unwrap();
+        assert_eq!(codec::cbor_deterministic(&s.payload, &DEFAULT_LIMITS).unwrap(), s.payload);
+        assert_eq!(s.payload.len(), num(c, "cwt_cbor_bytes"));
+        assert_eq!(cose_bytes.len(), num(c, "cose_sign1_bytes"));
+        assert_eq!(codec::base45_decode(&hc1[4..]).unwrap().len(), num(c, "deflated_bytes"));
+        assert_eq!(hc1.len(), num(c, "hc1_chars"));
+        // Without the DEV trust list's DSC, verification stops at the trust lookup.
+        let f = verifier::verify(hc1, &pr129_store(), &reg(), NOW, &options()).unwrap_err();
+        assert_eq!((f.step, f.reason), (Step::TrustLookup, FailureReason::KidNotFound), "{name}");
+    }
+    // The hepatitis B figures 12.5 prints.
+    let h = vector.get("certificates").unwrap().get("hepb1").unwrap();
+    assert_eq!([num(h, "cwt_cbor_bytes"), num(h, "cose_sign1_bytes"), num(h, "deflated_bytes"), num(h, "hc1_chars")], [222, 307, 293, 444]);
+}
+
+#[test]
 fn stt_tst_004_stt_tst_005_the_shared_negative_vectors_fail_at_the_named_step_with_the_named_reason() {
     let doc = json("vectors/negative/negative-vectors.json");
     let defaults = doc.get("defaults").unwrap();

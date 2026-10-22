@@ -5,7 +5,7 @@ section_id: s026-appendix-a-trust-management
 section_title: "Appendix A - Trust Management"
 file: "input/pagecontent/hcert_spec.md"
 lines: 207-228
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ### Appendix A - Trust Management

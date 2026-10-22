@@ -5,7 +5,7 @@ section_id: s021-5-2-icao-emrtd-pki-and-trust-centers
 section_title: "5.2 ICAO eMRTD PKI and Trust Centers"
 file: "input/pagecontent/hcert_spec.md"
 lines: 170-173
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ##### 5.2 ICAO eMRTD PKI and Trust Centers

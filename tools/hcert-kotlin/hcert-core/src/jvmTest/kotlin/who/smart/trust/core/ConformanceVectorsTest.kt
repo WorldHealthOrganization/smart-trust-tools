@@ -45,6 +45,41 @@ class ConformanceVectorsTest {
         assertEquals(295, cose.size)
     }
 
+    @Test fun `STT-TST-011 STT-TST-002 the merged guide's XXR certificates decode as published`() {
+        val xxr = (parseJson(readRepo("vectors/smart-trust-af75be2/dvc-qr-example-XXR.json")) as Map<*, *>)["certificates"] as Map<*, *>
+        for (name in listOf("hepb1", "bcg")) {
+            val c = xxr[name] as Map<*, *>
+            val hc1 = c["hc1"] as String
+            val num = { k: String -> (c[k] as Number).toInt() }
+            val u = HcertVerifier.readUnverified(hc1, reg, DEFAULT_LIMITS).ok()
+            assertEquals("916ffa567c0f44a2", u.kid!!.toHex())
+            assertEquals("XR", u.iss)
+            assertEquals(1792657800L to 1824193800L, u.iat to u.exp)
+            assertEquals(-6L, u.subclaim?.toLong())
+            val p = assertIs<Payload.DvcMin>(u.payload).value
+            val expected = c["payload"] as Map<*, *>
+            val vx = expected["vx"] as Map<*, *>
+            assertEquals(expected["n"], p.n)
+            assertEquals(expected["dob"], p.dob)
+            assertEquals(vx["vp"], p.vx.vp)
+            assertEquals(vx["is"], p.vx.`is`)
+            assertEquals(vx["bo"], p.vx.bo)
+            // 12.5 Size at each stage, exactly: these are the published strings.
+            val cose = HcertCodec.fromHc1(hc1, DEFAULT_LIMITS).ok()
+            val s = HcertCose.parseSign1(cose, DEFAULT_LIMITS).ok()
+            assertContentEquals(s.payload, HcertCodec.cborDeterministic(s.payload, DEFAULT_LIMITS).ok())
+            assertEquals(num("cwt_cbor_bytes"), s.payload.size)
+            assertEquals(num("cose_sign1_bytes"), cose.size)
+            assertEquals(num("deflated_bytes"), HcertCodec.base45Decode(hc1.substring(4)).ok().size)
+            assertEquals(num("hc1_chars"), hc1.length)
+            // Without the DEV trust list's DSC, verification stops at the trust lookup.
+            val f = assertIs<VerificationResult.Failed>(HcertVerifier.verify(hc1, store, reg, NOW, OPTIONS), name).value
+            assertEquals(Step.TRUST_LOOKUP to FailureReason.KID_NOT_FOUND, f.step to f.reason, name)
+        }
+        val h = xxr["hepb1"] as Map<*, *>
+        assertEquals(listOf(222, 307, 293, 444), listOf("cwt_cbor_bytes", "cose_sign1_bytes", "deflated_bytes", "hc1_chars").map { (h[it] as Number).toInt() })
+    }
+
     @Test fun `STT-TST-004 STT-TST-005 the shared negative vectors fail at the named step with the named reason`() {
         val doc = parseJson(readRepo("vectors/negative/negative-vectors.json")) as Map<*, *>
         val defaults = doc["defaults"] as Map<*, *>

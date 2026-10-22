@@ -1,4 +1,4 @@
-From a9377598679066d5da78f1eb6c6feedf2ca45c13 Mon Sep 17 00:00:00 2001
+From 619af7280982895d74703281cfc07529864f27fc Mon Sep 17 00:00:00 2001
 From: litlfred <leitnerc@who.int>
 Date: Wed, 21 Oct 2026 14:30:55 +0000
 Subject: [PATCH] QR Code Generation: live examples of each step and of
@@ -13,9 +13,13 @@ with the commit and hashes recorded in SOURCE.md):
   non-extractable) and a self-signed TEST ONLY DSC for it;
 - Steps 1 to 8, which share one certificate, so an edit to the payload
   re-runs every later step;
-- verification, with each step of section 11 marked, and buttons that
-  change one character or one signature byte;
-- the two published example certificates, verified live.
+- verification, with each step of section 11 marked, buttons that
+  change one character or one signature byte, and a choice of trusting
+  the page's DSC, a DSC the reader pastes, or nothing;
+- the two certificates of section 12.6 (DEV participant XXR), decoded
+  live; pasting their DSC from the GDHCN DEV trust list verifies them
+  in the browser, and without it verification stops at the trust
+  lookup, as section 12.6 says it should.
 
 Nothing made on the page verifies anywhere else: its DSC is self-signed
 by test participant XX and is on no trust list.
@@ -27,7 +31,7 @@ Claude-Session: https://claude.ai/code/session_018yS1p2XbAXk8awZpAgSNQ2
  1 file changed, 52 insertions(+)
 
 diff --git a/input/pagecontent/qr_code_generation.md b/input/pagecontent/qr_code_generation.md
-index d9099f1..6381236 100644
+index 6528cb8..8c97b25 100644
 --- a/input/pagecontent/qr_code_generation.md
 +++ b/input/pagecontent/qr_code_generation.md
 @@ -29,6 +29,20 @@ the HCERT Specification is authoritative.
@@ -153,19 +157,16 @@ index d9099f1..6381236 100644
 +
  #### 12. Worked example — a newborn birth dose DVC
  
- > **Provisional.** The committed artefacts in this section were produced before
-@@ -324,6 +371,11 @@ published alongside the images as `dvc-qr-example-XXA-dsc.pem` and
- `dvc-qr-example-XXA.json`, so a verifier implementation can be exercised against
- them end to end.
- 
+ ##### 12.1 Scenario
+@@ -338,3 +385,8 @@ DEV trust list. Fetching the signing certificate from the trust list is the
+ verification path the specification defines, and the only one that tells a
+ verifier the key is still trusted — a certificate distributed alongside the
+ certificate it signed proves nothing about that.
 +
-+The same two certificates, verified live in your browser:
++The same two certificates, decoded live in your browser. Paste their Document
++Signing Certificate from the DEV trust list to verify them too:
 +
 +<div class="hcert-demo" data-demo="published"></div>
-+
- #### 13. Reference script
- 
- `input/scripts/generate_dvc_qr.py` in this guide's source repository implements
 -- 
 2.43.0
 

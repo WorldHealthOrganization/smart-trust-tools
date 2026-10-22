@@ -40,6 +40,10 @@ pub fn pr129_store() -> TrustStore {
     s
 }
 
+/// The merged guide's example (WHO af75be2): GDHCN DEV participant XXR. Its DSC
+/// is on the DEV trust list, not in this repository, so it decodes but is not verified here.
+pub const XXR: &str = "vectors/smart-trust-af75be2/dvc-qr-example-XXR.json";
+
 pub fn pr129_hc1(name: &str) -> String {
     json(PR129).get("certificates").unwrap().get(name).unwrap().get("hc1").unwrap().as_str().unwrap().to_owned()
 }

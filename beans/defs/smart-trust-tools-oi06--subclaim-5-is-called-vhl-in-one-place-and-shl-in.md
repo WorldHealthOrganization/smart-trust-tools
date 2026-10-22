@@ -25,7 +25,7 @@ Raised as WorldHealthOrganization/smart-trust#130: 3.2.7.1.5 becomes Verifiable 
 
 ## Sources
 
-- library/who-smart-trust-qr-code-generation/sections/s004-2-1-subclaims-defined-in-this-guide
+- library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-payload-type
 - library/who-smart-trust-hcert-spec/sections/s013-3-2-7-health-certificate-claim
 - library/who-smart-trust-hcert-model
 

@@ -6,7 +6,7 @@
   "reference": [
     "http://smart.who.int/trust/Requirements/UtilizeVDHC#UtilizeVDHC-display-verified-content",
     "http://smart.who.int/trust/Requirements/UtilizeVDHC#UtilizeVDHC-execute-business-rule",
-    "library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards"
+    "library/who-smart-trust-qr-code-generation/sections/s012-11-verifying-the-same-steps-upwards"
   ],
   "actors": [
     "vhl-receiver"

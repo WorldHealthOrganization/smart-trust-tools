@@ -5,7 +5,7 @@ section_id: s008-3-2-2-signature-algorithm
 section_title: "3.2.2 Signature Algorithm"
 file: "input/pagecontent/hcert_spec.md"
 lines: 48-65
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ###### 3.2.2 Signature Algorithm

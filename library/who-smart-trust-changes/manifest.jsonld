@@ -31,7 +31,7 @@
     "library/who-smart-trust-changes/sections/s018-v1-7-5"
   ],
   "provenance": "ingested",
-  "inSubgraph": "https://litlfred.github.io/folio-assistant/cat-harness.jsonld#directory/library",
+  "inSubgraph": "https://litlfred.github.io/folio-assistant/smart-trust-tools/smart-trust-tools.jsonld#directory/library",
   "license": "CC-BY-NC-SA-3.0-IGO",
   "licenceRecord": {
     "status": "stated",
@@ -43,7 +43,7 @@
     "title_source": "text-heading",
     "title_from": "structure.json metadata.title",
     "source_file": "changes.md",
-    "source_sha256": "a3e4e713249a2d29ef39eb8bc9df69236b27734aee5d2a52a1fad428ca1e0e28",
+    "source_sha256": "3984ebc0eac3c1ff13aa213f14b31dd1b7335e6fef908331876d0a324f4b7f2b",
     "arxiv": null,
     "doi": null,
     "document_class": null,

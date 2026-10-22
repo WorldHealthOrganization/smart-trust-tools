@@ -5,7 +5,7 @@ section_id: s010-3-2-4-issuer
 section_title: "3.2.4 Issuer"
 file: "input/pagecontent/hcert_spec.md"
 lines: 72-75
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ###### 3.2.4 Issuer

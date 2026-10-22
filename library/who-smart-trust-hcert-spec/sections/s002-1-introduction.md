@@ -5,7 +5,7 @@ section_id: s002-1-introduction
 section_title: "1. Introduction"
 file: "input/pagecontent/hcert_spec.md"
 lines: 8-11
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 #### 1. Introduction

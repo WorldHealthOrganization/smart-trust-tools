@@ -74,6 +74,7 @@
     "req:stt-tst-007",
     "req:stt-tst-008",
     "req:stt-tst-010",
+    "req:stt-tst-011",
     "req:stt-ver-001",
     "req:stt-ver-002",
     "req:stt-ver-003",
@@ -667,7 +668,7 @@
         {
           "id": "req:stt-tst-002#statement/test",
           "type": "required",
-          "expectation": "A test named after STT-TST-002 passes in each implementation's suite (Kotlin: `STT-TST-002 STT-CBR-001 deterministic re-encoding reproduces the issued CWT byte for byte` (ConformanceVectorsTest.kt))."
+          "expectation": "Tests named after STT-TST-002 pass in each implementation's suite (Kotlin: `STT-TST-002 STT-CBR-001 deterministic re-encoding reproduces the issued CWT byte for byte` and `STT-TST-011 STT-TST-002 the merged guide's XXR certificates decode as published` (ConformanceVectorsTest.kt))."
         },
         {
           "id": "req:stt-tst-003#statement/cross-verify",
@@ -708,6 +709,16 @@
           "id": "req:stt-tst-010#statement/rust-floor",
           "type": "required",
           "expectation": "CI runs tools/hcert-rust/coverage.sh (rustc -C instrument-coverage with the toolchain's llvm-tools; stable rustc does not measure branches) and it fails below 85% line and 80% region coverage of the library's sources."
+        },
+        {
+          "id": "req:stt-tst-011#statement/decode",
+          "type": "required",
+          "expectation": "A test named after STT-TST-011 passes in each implementation's suite (Kotlin: `STT-TST-011 STT-TST-002 the merged guide's XXR certificates decode as published` (ConformanceVectorsTest.kt)), and the TypeScript suite's check of the same name passes on both packages."
+        },
+        {
+          "id": "req:stt-tst-011#statement/verify",
+          "type": "required",
+          "expectation": "Both certificates verify against the XXR DSC from the GDHCN DEV trust list (did:web:tng-cdn.who.int:v2:trustlist:-:XXR:DSC), once that DSC is in the repository or the host is reachable from CI (bean OI-33)."
         }
       ],
       "testData": [

@@ -29,6 +29,6 @@
   ],
   "reference": [
     "external-schemas/bytecodealliance-wit",
-    "library/who-smart-trust-qr-code-generation/sections/s005-2-2-choosing-between-a-dvc-and-a-vhl"
+    "library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-payload-type"
   ]
 }

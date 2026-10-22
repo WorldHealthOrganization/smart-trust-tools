@@ -4,16 +4,14 @@ doc_title: "QR Code Generation"
 section_id: s002-1-the-pipeline-at-a-glance
 section_title: "1. The pipeline at a glance"
 file: "input/pagecontent/qr_code_generation.md"
-lines: 17-34
-source_sha256: 25cc22304a1d036e
+lines: 16-31
+source_sha256: 03253100cd38b5c6
 granularity: heading
 ---
 #### 1. The pipeline at a glance
 
 ```
-                   use case  ──▶  logical model  ──▶  hcert subclaim
-                                                           │
-   Step 1  Select payload type ──────────────────────────────┘
+   Step 1  Select payload type              DVC, for this walkthrough
    Step 2  Assemble payload                 { "n": ..., "dob": ..., "vx": {...} }
    Step 3  Wrap in CWT claim set            { 1: iss, 6: iat, 4: exp, -260: { -6: payload } }
    Step 4  Serialise as CBOR                binary
@@ -24,4 +22,4 @@ granularity: heading
    Step 9  Render QR (Alphanumeric, EC Q)   image
 ```
 
-Steps 3 to 9 never vary. A verifier runs the same list upwards.
+Steps 3 to 9 never vary with the payload. A verifier runs the same list upwards.

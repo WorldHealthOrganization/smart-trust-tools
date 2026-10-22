@@ -5,7 +5,7 @@ section_id: s028-a-2-extended-key-usage-identifiers
 section_title: "A.2 Extended Key Usage Identifiers"
 file: "input/pagecontent/hcert_spec.md"
 lines: 235-246
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 #### A.2 Extended Key Usage Identifiers

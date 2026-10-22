@@ -14,7 +14,7 @@
     "library/who-smart-trust-data-exchange/sections/s001-data-models-and-exchange"
   ],
   "provenance": "ingested",
-  "inSubgraph": "https://litlfred.github.io/folio-assistant/cat-harness.jsonld#directory/library",
+  "inSubgraph": "https://litlfred.github.io/folio-assistant/smart-trust-tools/smart-trust-tools.jsonld#directory/library",
   "license": "CC-BY-NC-SA-3.0-IGO",
   "licenceRecord": {
     "status": "stated",

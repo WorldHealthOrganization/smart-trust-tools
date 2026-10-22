@@ -37,7 +37,7 @@ suite's test names are listed in the criterion text.
 **Where things stand (Kotlin, JVM):**
 
 - 80 named tests pass.
-- 86 of the 93 requirements are verified by a test named after them, the
+- 87 of the 94 requirements are verified by a test named after them, the
   Rust library's tests included.
 - Kotlin line coverage is 91.3% and branch coverage 71.1% (JaCoCo, hcert-core
   commonMain and jvmMain).
@@ -52,7 +52,7 @@ inspection or review (bean OI-32).
 | Level | What it shows | Kotlin | Rust (to build) | Data | Requirements |
 |---|---|---|---|---|---|
 | Skill tests | each pipeline step meets its requirements, including the error paths | `jvmTest`, one class per skill, each test named after the requirements it verifies | `cargo test`, the same names | the testkit PKI (`vectors/testkit`) | the step requirements (PRE, B45, CMP, CBR, COS, CWT, PAY, SEL, TRU, VER, VHL, …) |
-| Conformance vectors | the published WHO certificates decode and verify as published, byte for byte | `ConformanceVectorsTest`; `node-smoke.mjs` on Node | the same files | `vectors/smart-trust-pr129` | STT-TST-001, 002 |
+| Conformance vectors | the published WHO certificates decode and verify as published, byte for byte | `ConformanceVectorsTest`; `node-smoke.mjs` on Node | the same files | `vectors/smart-trust-af75be2` (the merged guide's XXR pair: decoded and sized, not verified, since its DSC is on the DEV trust list only); `vectors/smart-trust-pr129` (the PR branch's XXA pair with its DSC: verified end to end) | STT-TST-001, 002, 011 |
 | Negative vectors | a bad input stops at the named step with the named reason | the same file, on the JVM and on Node | the same file | `vectors/negative` (the `negative-vectors` Tool) | STT-TST-004, 005, VER-008 |
 | Fuzzing | no input crashes, hangs or exceeds `DecodeLimits` | `FuzzTest`, a seeded mutation fuzzer over 6 entry points | `cargo-fuzz`, coverage-guided, same 6 targets | generated: seeds from PR 129, a fixed seed per target | STT-TST-006 |
 | Coverage floor | new code does not arrive untested | `:hcert-core:jvmTestCoverageCheck`: fails below 90% line, 70% branch | `tools/hcert-rust/coverage.sh`: fails below 85% line, 80% region (stable rustc measures no branches) | — | STT-TST-010 |
