@@ -672,7 +672,7 @@
         {
           "id": "req:stt-tst-003#statement/cross-verify",
           "type": "required",
-          "expectation": "Certificates issued by each library with ES256 and PS256 verify in the other library and in the smart-trust reference script, and the reference script's certificates verify in both."
+          "expectation": "Certificates issued by each library with ES256 and PS256 verify in the other library, built from byte-identical Sig_structure and COSE_Sign1 bytes (tools/conformance-ts/cross.ts)."
         },
         {
           "id": "req:stt-tst-004#statement/test",
