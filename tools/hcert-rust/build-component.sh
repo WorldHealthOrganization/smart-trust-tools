@@ -15,7 +15,9 @@ repo="$(cd "$here/../.." && pwd)"
 . "$repo/toolchain/node_tools.sh"
 cargo_home="${CARGO_HOME:-$HOME/.cargo}"
 export RUSTFLAGS="--remap-path-prefix=$here=/hcert --remap-path-prefix=$cargo_home=/cargo --remap-path-prefix=$HOME=/home"
-cargo build --locked --release --features component --target wasm32-unknown-unknown --manifest-path "$here/Cargo.toml"
+# rustup takes the toolchain (and its wasm target) from rust-toolchain.toml in
+# the working directory, not from --manifest-path, so build from here.
+(cd "$here" && cargo build --locked --release --features component --target wasm32-unknown-unknown)
 mkdir -p "$out/js"
 jco new "$here/target/wasm32-unknown-unknown/release/hcert.wasm" -o "$out/hcert.component.wasm"
 # The one import, wasi:random, maps to the local shim instead of preview2-shim.

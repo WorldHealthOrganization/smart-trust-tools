@@ -11,7 +11,9 @@ here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(cd "$here/../.." && pwd)"
 cargo_home="${CARGO_HOME:-$HOME/.cargo}"
 export RUSTFLAGS="--remap-path-prefix=$here=/hcert --remap-path-prefix=$cargo_home=/cargo --remap-path-prefix=$HOME=/home"
-cargo build --locked --release --features qr --target wasm32-unknown-unknown --manifest-path "$here/Cargo.toml"
+# rustup takes the toolchain (and its wasm target) from rust-toolchain.toml in
+# the working directory, not from --manifest-path, so build from here.
+(cd "$here" && cargo build --locked --release --features qr --target wasm32-unknown-unknown)
 mkdir -p "$out"
 cp "$here/target/wasm32-unknown-unknown/release/hcert.wasm" "$out/hcert.wasm"
 cp "$here/js/hcert.mjs" "$out/hcert.js"
