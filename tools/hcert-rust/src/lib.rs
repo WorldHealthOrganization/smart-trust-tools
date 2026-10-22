@@ -11,6 +11,7 @@ pub mod base45;
 pub mod cbor;
 pub mod codec;
 pub mod cose;
+mod entropy;
 pub mod issuer;
 pub mod json;
 pub mod payload;
@@ -18,16 +19,22 @@ pub mod testdsc;
 pub mod trust;
 pub mod types;
 pub mod verifier;
+pub mod vhl;
 mod x509;
 
-#[cfg(target_arch = "wasm32")]
+#[cfg(all(target_arch = "wasm32", not(feature = "component")))]
 mod wasm;
+
+#[cfg(feature = "component")]
+mod component;
 
 pub use types::*;
 
-#[cfg(target_arch = "wasm32")]
+// The import-free module has no entropy: verification needs none, and
+// signing is the host's. The component asks its host (wasi:random/random).
+#[cfg(all(target_arch = "wasm32", not(feature = "component")))]
 fn no_entropy(_: &mut [u8]) -> Result<(), getrandom::Error> {
     Err(getrandom::Error::UNSUPPORTED)
 }
-#[cfg(target_arch = "wasm32")]
+#[cfg(all(target_arch = "wasm32", not(feature = "component")))]
 getrandom::register_custom_getrandom!(no_entropy);

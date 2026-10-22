@@ -1,4 +1,5 @@
 // world who:smart-trust/hcert@0.1.0
+export type * as WasiRandomRandom026 from './interfaces/wasi-random-random.js'; // import wasi:random/random@0.2.6
 export * as types from './interfaces/who-smart-trust-types.js'; // export who:smart-trust/types@0.1.0
 export * as codec from './interfaces/who-smart-trust-codec.js'; // export who:smart-trust/codec@0.1.0
 export * as cose from './interfaces/who-smart-trust-cose.js'; // export who:smart-trust/cose@0.1.0

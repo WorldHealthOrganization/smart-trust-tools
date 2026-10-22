@@ -100,6 +100,8 @@ pub struct DvcMin {
 #[derive(Clone, Debug, PartialEq)]
 pub enum Payload {
     DvcMin(DvcMin),
+    /// A Verifiable Health Link (STT-VHL-002).
+    Vhl(crate::vhl::VhlPayload),
     /// Any other subclaim, kept as its encoded CBOR.
     Raw { subclaim: i64, cbor: Vec<u8> },
 }

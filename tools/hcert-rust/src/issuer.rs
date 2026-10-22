@@ -70,6 +70,14 @@ pub fn prepare(req: &IssueRequest, reg: &Registry) -> Result<PendingSignature, I
             }
             (reg.subclaim_for(PayloadKind::DvcMin), payload::to_item(p).map_err(|m| invalid("extensions", "invalid-extension", &m))?)
         }
+        Payload::Vhl(p) => {
+            let issues: Vec<_> = crate::vhl::validate(p, None).into_iter().filter(|i| i.severity == Severity::Blocking).collect();
+            if !issues.is_empty() {
+                return Err(IssueError::PayloadInvalid(issues));
+            }
+            // A CBOR map, not a vhlink:/ string (STT-VHL-002).
+            (reg.subclaim_for(PayloadKind::Vhl), crate::vhl::to_item(p))
+        }
         Payload::Raw { subclaim, cbor: bytes } => (*subclaim, cbor::decode(bytes, &DEFAULT_LIMITS).map_err(|e| invalid("", "cbor", &e.message))?),
     };
     if reg.lookup(subclaim).is_none() {

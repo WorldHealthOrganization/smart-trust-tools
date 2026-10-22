@@ -123,7 +123,14 @@ fn decode_claims(payload_bytes: &[u8], limits: &DecodeLimits) -> Result<Item, Ve
 }
 
 fn payload_of(subclaim: i64, body: &Item, reg: &Registry) -> Result<Payload, VerificationFailure> {
-    if subclaim == reg.subclaim_for(PayloadKind::DvcMin) {
+    if subclaim == reg.subclaim_for(PayloadKind::Vhl) {
+        // A CBOR map, or the vhlink:/ string IHE ITI-YY3 describes (STT-VHL-002).
+        let p = crate::vhl::from_item(body).or_else(|e| fail(Step::Payload, FailureReason::PayloadInvalid, format!("VHL payload: {e}")))?;
+        if let Some(i) = crate::vhl::validate(&p, None).into_iter().find(|i| i.severity == Severity::Blocking) {
+            return fail(Step::Payload, FailureReason::PayloadInvalid, format!("{}: {}", i.path, i.message));
+        }
+        Ok(Payload::Vhl(p))
+    } else if subclaim == reg.subclaim_for(PayloadKind::DvcMin) {
         let dvc = payload::from_item(body).or_else(|issues| {
             fail(Step::Payload, FailureReason::PayloadInvalid, issues.iter().map(|i| format!("{}: {}", i.path, i.message)).collect::<Vec<_>>().join("; "))
         })?;
@@ -229,6 +236,12 @@ fn run(cose_bytes: &[u8], store: &TrustStore, reg: &Registry, now: NumericDate, 
         warn(&mut diagnostics, Step::Hcert, &format!("subclaim {subclaim} is not in the registry"));
     }
     let payload = payload_of(subclaim, body, reg)?;
+    // The link's own exp, besides the HCERT's (STT-VHL-009).
+    if let Payload::Vhl(v) = &payload {
+        if v.exp.is_some_and(|e| now - skew > e) {
+            return fail(Step::Time, FailureReason::Expired, "the VHL payload's exp has passed");
+        }
+    }
 
     // Claims this version does not know are kept (STT-CWT-006).
     let known = [CLAIM_ISS, CLAIM_EXP, CLAIM_IAT, CLAIM_HCERT];

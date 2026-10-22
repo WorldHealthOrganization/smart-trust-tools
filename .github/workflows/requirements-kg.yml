@@ -92,3 +92,9 @@ jobs:
         run: cargo build --locked --release --features qr --target wasm32-unknown-unknown
       - name: Run the WebAssembly module on Node, with WebCrypto keys
         run: node js/smoke.mjs
+      # The WIT component (STT-GEN-005): wit-bindgen bindings for api/wit,
+      # componentised and transpiled by the pinned jco in toolchain/node.
+      - name: Build the WebAssembly component and transpile it with jco
+        run: ./build-component.sh "$RUNNER_TEMP/component"
+      - name: Drive every interface of the component on Node
+        run: node js/component/component-test.mjs "$RUNNER_TEMP/component"

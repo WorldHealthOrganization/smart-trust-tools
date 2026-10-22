@@ -136,9 +136,10 @@ The Rust suite runs the same plan, with these additions:
   Still to do: the seeded fuzzer runs in CI, but coverage-guided
   `cargo-fuzz` needs nightly and doesn't. Also to do: the coverage floor
   (`cargo-llvm-cov` isn't pinned yet), cross-verification with Kotlin
-  (STT-TST-003), the TypeScript suite (STT-TST-007), and the WIT component
-  transpiled with jco (STT-GEN-005). The demo uses a plain WebAssembly
-  module with a JSON call surface.
+  (STT-TST-003), and the TypeScript suite (STT-TST-007). The WIT component
+  of the `hcert` world is built, transpiled with jco, and driven through
+  every interface in CI (STT-GEN-005). The live demos use a plain module
+  with a JSON call surface instead.
 - **Release review:** the inspection and review criteria (STT-GEN-007, 008,
   013, NFR-001, 002, QR-005, and TST-010's `never-lowered`) need a
   release-review record. There is none until a first release.

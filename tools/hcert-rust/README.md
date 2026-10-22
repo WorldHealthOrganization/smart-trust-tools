@@ -7,6 +7,8 @@ set, after `tools/hcert-kotlin`, and it loads the same shared vectors.
 cargo test --locked --manifest-path tools/hcert-rust/Cargo.toml
 cargo build --locked --release --manifest-path tools/hcert-rust/Cargo.toml --target wasm32-unknown-unknown
 node tools/hcert-rust/js/smoke.mjs
+tools/hcert-rust/build-component.sh /tmp/hcert-component
+node tools/hcert-rust/js/component/component-test.mjs /tmp/hcert-component
 ```
 
 | Module | What it is |
@@ -18,7 +20,16 @@ node tools/hcert-rust/js/smoke.mjs
 | `verifier` | QR Code Generation section 11. Every failure names its step and reason. |
 | `trust` | The trust store: PEM, DER, GDHCN DID trustlist v2 and trust domains. |
 | `testdsc` | TEST ONLY: a self-signed DSC around a key the host generated. |
-| `api`, `wasm` | The JSON call surface and the C ABI that `js/hcert.mjs` loads. |
+| `vhl` | Verifiable Health Links: the payload, `vhlink:/`, the ITI-YY5 manifest, JWE dir/A256GCM and the RFC 9421 signature base. |
+| `component` | The WebAssembly component of the `hcert` world in `api/wit` (feature `component`). |
+| `api`, `wasm` | The JSON call surface and the C ABI that `js/hcert.mjs` loads, for the live demos. |
+
+`build-component.sh <dir>` builds the WIT component and transpiles it with the
+pinned jco into `<dir>/js/hcert.js`, an ES module for browsers and Node whose
+API is the WIT contract (resources become classes, `s64` becomes `bigint`).
+Its one import, `wasi:random`, maps to `js/component/wasi-random.js`.
+`node js/component/component-test.mjs <dir>` drives every interface against
+the shared vectors.
 
 `js/hcert.mjs` loads the WebAssembly module in a browser or in Node and signs
 with WebCrypto. Private keys stay non-extractable CryptoKeys and never enter
