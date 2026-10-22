@@ -29,6 +29,6 @@
   ],
   "reference": [
     "library/who-smart-trust-hcert-spec/sections/s010-3-2-4-issuer",
-    "library/who-smart-trust-qr-code-generation/sections/s020-12-3-test-issuer"
+    "library/who-smart-trust-qr-code-generation/sections/s016-12-3-issuer"
   ]
 }

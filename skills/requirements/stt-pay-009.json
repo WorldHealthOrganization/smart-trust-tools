@@ -28,7 +28,7 @@
     "derived"
   ],
   "reference": [
-    "library/who-smart-trust-qr-code-generation/sections/s004-2-1-subclaims-defined-in-this-guide",
+    "library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-payload-type",
     "library/who-smart-trust-hcert-model",
     "references/who-ph4h-medication-treatment-line-min",
     "references/who-ddcc-ig"

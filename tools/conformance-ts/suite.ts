@@ -42,6 +42,8 @@ export interface NegativeCase {
 export interface Fixtures {
   pr129: { certificates: Record<string, { hc1: string; payload: { n: string } }> };
   pr129Pem: string;
+  /** The merged guide's example (WHO af75be2), GDHCN DEV participant XXR: decodes, but its DSC is on the DEV trust list only. */
+  xxr: { kid_hex: string; certificates: Record<string, { hc1: string; iss: string; cwt_cbor_bytes: number; cose_sign1_bytes: number; deflated_bytes: number; hc1_chars: number; payload: { n: string; vx: { vp: string; bo: string } } }> };
   negative: { defaults: { trust: string[]; now: number; clockSkewSeconds: number }; cases: NegativeCase[] };
   pem: Record<string, string>;
   trustDomains: string;
@@ -126,6 +128,22 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
     return det("fb3ff0000000000000") === "f93c00" && det("bf6346756ef563416d7421ff") === "a263416d74216346756ef5" && hex(h.codec.cborDeterministic(s.payload, L)) === hex(s.payload);
   });
   run("STT-CBR-003 nesting beyond the limit is refused", () => thrownTag(() => h.codec.cborDeterministic(new Uint8Array([...new Array(40).fill(0x81), 0]), L)) === "limit-exceeded");
+
+  run("STT-TST-011 STT-TST-002 the merged guide's XXR certificates decode as published, at the published sizes", () => {
+    const store = new h.trust.TrustStore();
+    store.addPem(f.pr129Pem);
+    return Object.entries(f.xxr.certificates).every(([, c]) => {
+      const u = h.verifier.readUnverified(c.hc1, new h.subclaims.Registry(), L);
+      const cose = h.codec.fromHc1(c.hc1, L);
+      const s = h.cose.parseSign1(cose, L);
+      const r = h.verifier.verify(c.hc1, store, new h.subclaims.Registry(), NOW, OPTIONS);
+      return hex(u.kid ?? new Uint8Array()) === f.xxr.kid_hex && u.iss === c.iss && u.subclaim === -6 &&
+        u.payload?.tag === "dvc-min" && u.payload.val.n === c.payload.n && u.payload.val.vx.vp === c.payload.vx.vp && u.payload.val.vx.bo === c.payload.vx.bo &&
+        hex(h.codec.cborDeterministic(s.payload, L)) === hex(s.payload) && s.payload.length === c.cwt_cbor_bytes && cose.length === c.cose_sign1_bytes &&
+        h.codec.base45Decode(c.hc1.slice(4)).length === c.deflated_bytes && c.hc1.length === c.hc1_chars &&
+        r.tag === "failed" && r.val.step === "trust-lookup" && r.val.reason === "kid-not-found";
+    });
+  });
 
   // cose (step 5)
   run("STT-COS-001 STT-COS-002 STT-COS-003 STT-KID-001 the COSE_Sign1 is tagged ES256 with the vector's kid in the protected header", () => {

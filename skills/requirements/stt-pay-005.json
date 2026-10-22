@@ -7,8 +7,8 @@
     "req:stt-pay-001"
   ],
   "reference": [
-    "library/who-smart-trust-qr-code-generation/sections/s008-3-step-2-assemble-the-payload",
-    "library/who-smart-trust-qr-code-generation/sections/s018-12-1-scenario"
+    "library/who-smart-trust-qr-code-generation/sections/s004-3-step-2-assemble-the-payload",
+    "library/who-smart-trust-qr-code-generation/sections/s014-12-1-scenario"
   ],
   "actors": [
     "vhl-sharer"

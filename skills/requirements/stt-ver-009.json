@@ -29,7 +29,7 @@
     "derived"
   ],
   "reference": [
-    "library/who-smart-trust-qr-code-generation/sections/s005-2-2-choosing-between-a-dvc-and-a-vhl",
-    "library/who-smart-trust-qr-code-generation/sections/s018-12-1-scenario"
+    "library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-payload-type",
+    "library/who-smart-trust-qr-code-generation/sections/s014-12-1-scenario"
   ]
 }

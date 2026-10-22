@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Builds the WebAssembly module reproducibly and writes the live-demo bundle
-# (hcert.wasm, hcert.js, hcert-demo.js, hcert-demo.css, SOURCE.md) to DIR,
+# (hcert.wasm, hcert.js, hcert-demo.js, hcert-demo.css, dvc-qr-example-XXR.json,
+# SOURCE.md) to DIR,
 # for a page such as the smart-trust QR Code Generation page to load.
 #   tools/hcert-rust/bundle-demo.sh <dir>
 # Paths are remapped so the module's bytes do not depend on where the
@@ -18,6 +19,8 @@ mkdir -p "$out"
 cp "$here/target/wasm32-unknown-unknown/release/hcert.wasm" "$out/hcert.wasm"
 cp "$here/js/hcert.mjs" "$out/hcert.js"
 cp "$here/js/demo/hcert-demo.js" "$here/js/demo/hcert-demo.css" "$out/"
+# The page's two certificates (QR Code Generation 12.6), for the published demo.
+cp "$repo/vectors/smart-trust-af75be2/dvc-qr-example-XXR.json" "$out/"
 commit="$(git -C "$repo" rev-parse HEAD)"
 sha() { sha256sum "$1" | cut -d' ' -f1; }
 cat > "$out/SOURCE.md" <<MD
@@ -33,6 +36,7 @@ these files here; change them there and rebuild.
 | hcert.js | \`$(sha "$out/hcert.js")\` |
 | hcert-demo.js | \`$(sha "$out/hcert-demo.js")\` |
 | hcert-demo.css | \`$(sha "$out/hcert-demo.css")\` |
+| dvc-qr-example-XXR.json | \`$(sha "$out/dvc-qr-example-XXR.json")\` |
 
 The WebAssembly module imports nothing. Keys are generated and used by
 WebCrypto in the reader's browser, and everything issued is TEST ONLY.

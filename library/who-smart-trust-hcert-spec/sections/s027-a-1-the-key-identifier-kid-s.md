@@ -5,7 +5,7 @@ section_id: s027-a-1-the-key-identifier-kid-s
 section_title: "A.1 The Key Identifier (`kid`s)"
 file: "input/pagecontent/hcert_spec.md"
 lines: 229-234
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 #### A.1 The Key Identifier (`kid`s)

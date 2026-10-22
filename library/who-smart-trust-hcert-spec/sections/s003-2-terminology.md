@@ -5,7 +5,7 @@ section_id: s003-2-terminology
 section_title: "2. Terminology"
 file: "input/pagecontent/hcert_spec.md"
 lines: 12-19
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 #### 2. Terminology

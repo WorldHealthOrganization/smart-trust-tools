@@ -5,7 +5,7 @@ section_id: s018-4-2-2-qr-2d-barcode
 section_title: "4.2.2 QR 2D Barcode"
 file: "input/pagecontent/hcert_spec.md"
 lines: 135-146
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ###### 4.2.2 QR 2D Barcode

@@ -5,7 +5,7 @@ section_id: s023-6-1-hcert-signature-validity-time
 section_title: "6.1 HCERT Signature Validity Time"
 file: "input/pagecontent/hcert_spec.md"
 lines: 180-185
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ##### 6.1 HCERT Signature Validity Time

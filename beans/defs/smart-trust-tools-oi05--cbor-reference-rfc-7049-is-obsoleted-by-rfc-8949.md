@@ -20,7 +20,7 @@ Neither page says whether issuers should use deterministic encoding, or which ru
 
 ## Sources
 
-- library/who-smart-trust-qr-code-generation/sections/s010-5-step-4-serialise-as-cbor
+- library/who-smart-trust-qr-code-generation/sections/s006-5-step-4-serialise-as-cbor
 - library/who-smart-trust-hcert-spec/sections/s013-3-2-7-health-certificate-claim
 - external-schemas/ietf-rfc7049
 - external-schemas/ietf-rfc8949

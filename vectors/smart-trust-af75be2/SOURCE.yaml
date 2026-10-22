@@ -1,0 +1,20 @@
+# Conformance vector from the WHO SMART Trust IG as merged: QR Code Generation
+# 12, at the merge of PR 129. [STT-TST-011, STT-TST-002]
+repo: WorldHealthOrganization/smart-trust
+pr: 129
+sha: af75be20b75ab87efcfd1201ccd43020f487f660
+files:
+  dvc-qr-example-XXR.json: >-
+    input/pagecontent/qr_code_generation.md, 12.6 The certificates (the two
+    HC1 strings, transcribed) and 12.4 (iss, payload). The sizes and the
+    decoded fields were then read from those strings; 12.5 states the
+    hepatitis B sizes (222, 307, 293, 444), which the tests check.
+licence: >-
+  CC BY-NC-SA 3.0 IGO, as library/who-smart-trust-qr-code-generation records.
+notes: >-
+  TEST DATA ONLY. Issued by GDHCN DEV participant XXR (iss XR) with a key
+  onboarded to the GDHCN DEV trust network. The DSC is published on the DEV
+  trust list (did:web:tng-cdn.who.int:v2:trustlist:-:XXR:DSC), not in the
+  guide, and that host is not reachable from CI, so the certificates are
+  decoded and sized here but not signature-verified. kid kW/6VnwPRKI=.
+  Issued 2026-10-22T08:30Z (iat), expiring 2027-10-22T08:30Z (exp).

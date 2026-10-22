@@ -1,7 +1,7 @@
 {
   "id": "req:stt-kid-003",
   "title": "kid text forms",
-  "description": "Engineering consequence of QR Code Generation, 12.6 The certificate; GDHCN Trustlists (DID), Example DID documents. QR Code Generation, 12.6 The certificate: “The kid for both is WHM+BYqqZiE= (hex 58733e058aaa6621).”.",
+  "description": "Engineering consequence of QR Code Generation, 12.6 The certificates; GDHCN Trustlists (DID), Example DID documents. QR Code Generation, 12.6 The certificates: “Both certificates carry the key identifier kW/6VnwPRKI= (hex 916ffa567c0f44a2).”.",
   "status": "proposed",
   "actors": [
     "vhl-sharer"
@@ -28,7 +28,7 @@
     "derived"
   ],
   "reference": [
-    "library/who-smart-trust-qr-code-generation/sections/s023-12-6-the-certificate",
+    "library/who-smart-trust-qr-code-generation/sections/s019-12-6-the-certificates",
     "library/who-smart-trust-did-gdhcn/sections/s004-example-did-documents"
   ]
 }

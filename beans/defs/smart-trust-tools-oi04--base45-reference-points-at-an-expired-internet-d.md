@@ -19,7 +19,7 @@ Both pages cite draft-faltstrom-base45. That draft was published as RFC 9285, wh
 
 ## Sources
 
-- library/who-smart-trust-qr-code-generation/sections/s013-8-step-7-encode-as-base45
+- library/who-smart-trust-qr-code-generation/sections/s009-8-step-7-encode-as-base45
 - library/who-smart-trust-hcert-spec/sections/s018-4-2-2-qr-2d-barcode
 - external-schemas/ietf-draft-faltstrom-base45
 - external-schemas/ietf-rfc9285

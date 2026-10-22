@@ -23,7 +23,7 @@ Add a subclaim-to-certificate-type table, or use the GDHCN Key Usage value set.
 
 ## Sources
 
-- library/who-smart-trust-qr-code-generation/sections/s016-11-verifying-the-same-steps-upwards
+- library/who-smart-trust-qr-code-generation/sections/s012-11-verifying-the-same-steps-upwards
 - library/who-smart-trust-hcert-spec/sections/s028-a-2-extended-key-usage-identifiers
 
 ## Done when

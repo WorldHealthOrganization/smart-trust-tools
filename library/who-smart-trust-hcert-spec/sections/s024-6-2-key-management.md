@@ -5,7 +5,7 @@ section_id: s024-6-2-key-management
 section_title: "6.2 Key Management"
 file: "input/pagecontent/hcert_spec.md"
 lines: 186-202
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ##### 6.2 Key Management

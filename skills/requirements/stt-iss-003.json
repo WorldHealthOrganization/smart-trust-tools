@@ -1,7 +1,7 @@
 {
   "id": "req:stt-iss-003",
   "title": "Test keys never in production artifacts",
-  "description": "Engineering consequence of QR Code Generation, 12.3 Test issuer; QR Code Generation, 13. Reference script. QR Code Generation, 12.3 Test issuer: “The signing keys are throw-away test keys ... They appear on no trust list”. QR Code Generation, 13. Reference script: “It is a documentation aid, not a production issuer: it uses fixed test keys in source”.",
+  "description": "Engineering consequence of QR Code Generation, 12.3 Issuer. QR Code Generation, 12.3 Issuer: “The private key is held in the build environment and never enters this repository”.",
   "status": "proposed",
   "actors": [
     "implementer"
@@ -28,7 +28,6 @@
     "derived"
   ],
   "reference": [
-    "library/who-smart-trust-qr-code-generation/sections/s020-12-3-test-issuer",
-    "library/who-smart-trust-qr-code-generation/sections/s024-13-reference-script"
+    "library/who-smart-trust-qr-code-generation/sections/s016-12-3-issuer"
   ]
 }

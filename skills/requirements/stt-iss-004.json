@@ -9,7 +9,7 @@
   "reference": [
     "library/who-smart-trust-hcert-spec/sections/s024-6-2-key-management",
     "external-schemas/w3c-webcrypto",
-    "library/who-smart-trust-qr-code-generation/sections/s011-6-step-5-sign-as-a-cose-sign1"
+    "library/who-smart-trust-qr-code-generation/sections/s007-6-step-5-sign-as-a-cose-sign1"
   ],
   "actors": [
     "vhl-sharer"

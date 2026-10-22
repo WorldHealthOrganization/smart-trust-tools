@@ -28,11 +28,13 @@ const state = {
   keys: null,
   dsc: null,
   dvc: {
-    n: "Chanthala SOUVANNALATH", dob: "2026-09-28", s: "female", nt: "LAO", gn: "Mali SOUVANNALATH",
-    vx: { vp: "XM9V38", dv: "2026-09-28", cn: "Dr Pimchanok WATTANA", is: "org-xxr-provincial-hospital", bo: "HEPB-2026-0914" },
+    n: "Chanthala SOUVANNALATH", dob: "2026-10-21", s: "female", nt: "LAO", gn: "Mali SOUVANNALATH",
+    vx: { vp: "a3K3X000006MiiXUAS", dv: "2026-10-21", cn: "Dr Pimchanok WATTANA", is: "org-xxr-provincial-hospital", bo: "HEPB-2026-0914" },
     v: "1.0.0",
   },
   iss: "XX",
+  // A DSC the reader pastes, such as XXR's from the GDHCN DEV trust list; shared by verify and published.
+  pastedPem: "",
   iat: now(),
   exp: now() + 365 * 86400,
   out: {},
@@ -243,13 +245,15 @@ const DEMOS = {
     const hc1 = el("textarea", { class: "hd-edit", rows: 5, spellcheck: "false", "aria-label": "HC1 string to verify" }, s.hc1 ?? state.out.hc1 ?? "");
     const trust = el("select", { "aria-label": "Trust list" },
       el("option", { value: "page", selected: s.trust === "page" }, "Trust this page's DSC"),
-      el("option", { value: "published", selected: s.trust === "published" }, "Trust the published example DSC (XXA)"),
+      el("option", { value: "pasted", selected: s.trust === "pasted" }, "Trust a DSC I paste (PEM)"),
       el("option", { value: "none", selected: s.trust === "none" }, "Trust nothing"));
+    const pem = pemBox();
     const result = el("div");
     const go = async () => {
       s.hc1 = hc1.value.trim();
       s.trust = trust.value;
-      const trustPem = s.trust === "page" ? state.dsc.pem : s.trust === "published" ? await published().then((x) => x.pem) : "";
+      pem.hidden = s.trust !== "pasted";
+      const trustPem = s.trust === "page" ? state.dsc.pem : s.trust === "pasted" ? state.pastedPem : "";
       const r = hcert.call("verify", { hc1: s.hc1, trustPem, now: now() });
       result.replaceChildren(...verdict(r).filter(Boolean));
     };
@@ -274,33 +278,64 @@ const DEMOS = {
     const reset = el("button", { type: "button", class: "hd-link", onclick: () => { hc1.value = state.out.hc1; go(); } }, "Use the string made above");
     hc1.addEventListener("input", () => { clearTimeout(hc1._t); hc1._t = setTimeout(go, 300); });
     trust.addEventListener("change", go);
+    pem.addEventListener("pem", go);
     queueMicrotask(go);
-    return [field("HC1 string", hc1), el("div", { class: "hd-row" }, trust, tamper, forge, reset), result];
+    return [field("HC1 string", hc1), el("div", { class: "hd-row" }, trust, tamper, forge, reset), pem, result];
   },
 
   published(root) {
     const out = el("div");
-    published().then(async (p) => {
+    const pem = pemBox();
+    const show = (vector) => {
       const rows = [];
-      for (const [name, c] of Object.entries(p.vector.certificates)) {
-        const r = hcert.call("verify", { hc1: c.hc1, trustPem: p.pem, now: now() });
-        rows.push(el("tr", {}, el("td", {}, name), el("td", {}, r.status === "verified" ? "✓ verified" : `✗ ${r.step} ${r.reason}`),
-          el("td", {}, r.kid ?? ""), el("td", {}, r.payload ? `${r.payload.n}, ${r.payload.vx.vp}` : r.detail ?? "")));
+      for (const [name, c] of Object.entries(vector.certificates)) {
+        const layers = hcert.call("decodeLayers", { hc1: c.hc1 });
+        const r = hcert.call("verify", { hc1: c.hc1, trustPem: state.pastedPem, now: now() });
+        const result = !r.ok ? `✗ ${r.error}` : r.status === "verified" ? "✓ verified" : `✗ ${r.step} ${r.reason}`;
+        rows.push(el("tr", {}, el("td", {}, name), el("td", {}, result), el("td", {}, layers.kidBase64 ?? ""),
+          el("td", {}, `${c.iss} · ${c.payload.n}, ${c.payload.vx.vp}, ${c.payload.vx.bo}`)));
       }
       out.replaceChildren(el("table", { class: "hd-table" },
-        el("thead", {}, el("tr", {}, el("th", {}, "Certificate"), el("th", {}, "Result"), el("th", {}, "kid"), el("th", {}, "Payload"))), el("tbody", {}, rows)),
-        note("Verified in your browser against dvc-qr-example-XXA-dsc.pem, with the same code as the verification demo above."));
-    }).catch((e) => out.replaceChildren(note(`The published example could not be loaded: ${e.message}`)));
-    return [out];
+        el("thead", {}, el("tr", {}, el("th", {}, "Certificate"), el("th", {}, "Result"), el("th", {}, "kid"), el("th", {}, "Issuer and payload, as published"))), el("tbody", {}, rows)),
+        note(state.pastedPem.trim()
+          ? "Verified in your browser against the DSC you pasted, with the same code as the verification demo above."
+          : `Without the signing certificate, verification stops at the trust lookup, as it should. The DSC for kid ${vector.kid_base64} is on the GDHCN DEV trust list (did:web:tng-cdn.who.int:v2:trustlist:-:XXR:DSC); paste it as PEM below to verify both certificates in your browser.`));
+    };
+    const load = () => xxr().then(show).catch((e) => out.replaceChildren(note(`The published example could not be loaded: ${e.message}`)));
+    pem.hidden = false;
+    pem.addEventListener("pem", load);
+    load();
+    return [out, pem];
   },
 };
 
-let publishedPromise;
-function published() {
-  return (publishedPromise ??= Promise.all([
-    fetch(new URL("../dvc-qr-example-XXA.json", here)).then((r) => r.json()),
-    fetch(new URL("../dvc-qr-example-XXA-dsc.pem", here)).then((r) => r.text()),
-  ]).then(([vector, pem]) => ({ vector, pem })));
+// The page's two certificates (section 12.6), from the vector bundle-demo.sh copies beside this script.
+let xxrPromise;
+function xxr() {
+  return (xxrPromise ??= fetch(new URL("dvc-qr-example-XXR.json", here)).then((r) => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }));
+}
+
+// One pasted DSC, shared by every demo that offers it; each box fires "pem" when it changes.
+const pemBoxes = new Set();
+function pemBox() {
+  const ta = el("textarea", { class: "hd-edit", rows: 4, spellcheck: "false", placeholder: "-----BEGIN CERTIFICATE-----", "aria-label": "Document Signing Certificate to trust, PEM" }, state.pastedPem);
+  const box = field("DSC to trust (PEM)", ta);
+  pemBoxes.add(box);
+  ta.addEventListener("input", () => {
+    clearTimeout(ta._t);
+    ta._t = setTimeout(() => {
+      state.pastedPem = ta.value;
+      for (const b of pemBoxes) {
+        const t = b.querySelector("textarea");
+        if (t !== ta) t.value = ta.value;
+        b.dispatchEvent(new Event("pem"));
+      }
+    }, 300);
+  });
+  return box;
 }
 
 function verdict(r) {

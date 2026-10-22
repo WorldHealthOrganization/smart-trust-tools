@@ -5,7 +5,7 @@ section_id: s004-3-electronic-health-certificate-container-format
 section_title: "3. Electronic Health Certificate Container Format"
 file: "input/pagecontent/hcert_spec.md"
 lines: 20-23
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 #### 3. Electronic Health Certificate Container Format

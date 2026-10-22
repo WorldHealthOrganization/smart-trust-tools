@@ -8,7 +8,7 @@
   ],
   "reference": [
     "library/who-smart-trust-changes/sections/s018-v1-7-5",
-    "library/who-smart-trust-qr-code-generation/sections/s014-9-step-8-prefix-the-context-identifier"
+    "library/who-smart-trust-qr-code-generation/sections/s010-9-step-8-prefix-the-context-identifier"
   ],
   "actors": [
     "implementer"

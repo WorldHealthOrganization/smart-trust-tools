@@ -1,7 +1,7 @@
 {
   "id": "req:stt-cos-006",
   "title": "No private keys required in-process",
-  "description": "Engineering consequence of HCERT Specification, 6.2 Key Management; QR Code Generation, 13. Reference script. HCERT Specification, 6.2 Key Management: “Use of HSMs for signing health certificates is highly encouraged.”. QR Code Generation, 13. Reference script: “a real issuer holds its private keys in an HSM”.",
+  "description": "Engineering consequence of HCERT Specification, 6.2 Key Management. HCERT Specification, 6.2 Key Management: “Use of HSMs for signing health certificates is highly encouraged.”.",
   "status": "proposed",
   "actors": [
     "vhl-sharer"
@@ -28,7 +28,6 @@
     "derived"
   ],
   "reference": [
-    "library/who-smart-trust-hcert-spec/sections/s024-6-2-key-management",
-    "library/who-smart-trust-qr-code-generation/sections/s024-13-reference-script"
+    "library/who-smart-trust-hcert-spec/sections/s024-6-2-key-management"
   ]
 }

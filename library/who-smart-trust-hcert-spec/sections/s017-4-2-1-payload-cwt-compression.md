@@ -5,7 +5,7 @@ section_id: s017-4-2-1-payload-cwt-compression
 section_title: "4.2.1 Payload (CWT) Compression"
 file: "input/pagecontent/hcert_spec.md"
 lines: 131-134
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 ###### 4.2.1 Payload (CWT) Compression

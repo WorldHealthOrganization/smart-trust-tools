@@ -3,16 +3,16 @@
   "doc_id": "who-smart-trust-hcert-spec",
   "source": {
     "file": "hcert_spec.md",
-    "sha256": "aa86d88868a5e05c868088f476e11780919abbe44b9b9d286eb582f826c10636",
+    "sha256": "54cc85d1e13d3c268736fa3ec4ed86ac9d635455ad056f1948b4a31d4e2f4eee",
     "digest": "file",
     "bytes": 23747,
-    "mtime": "2026-10-09T13:16:57Z",
+    "mtime": "2026-10-22T10:51:06Z",
     "mimetype_sniffed": "text/plain",
     "mimetype_source": "content",
     "files": [
       {
         "path": "input/pagecontent/hcert_spec.md",
-        "sha256": "aa86d88868a5e05c868088f476e11780919abbe44b9b9d286eb582f826c10636",
+        "sha256": "54cc85d1e13d3c268736fa3ec4ed86ac9d635455ad056f1948b4a31d4e2f4eee",
         "bytes": 23747,
         "lines": 246,
         "format": "markdown"
@@ -20,12 +20,12 @@
     ],
     "upstream": {
       "repository": "https://github.com/WorldHealthOrganization/smart-trust",
-      "commit": "e277cce5dcb8d2134ef1625c3a38e27cdf19e835",
+      "commit": "af75be20b75ab87efcfd1201ccd43020f487f660",
       "ref": "main",
-      "committed": "2026-10-09T13:16:57Z",
+      "committed": "2026-10-22T10:51:06Z",
       "path": "input/pagecontent/hcert_spec.md",
       "published": "https://smart.who.int/trust/hcert_spec.html",
-      "retrieved": "2026-10-20T19:45:00Z"
+      "retrieved": "2026-10-22T16:40:00Z"
     }
   },
   "metadata": {

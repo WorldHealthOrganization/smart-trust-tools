@@ -3,29 +3,29 @@
   "doc_id": "who-smart-trust-changes",
   "source": {
     "file": "changes.md",
-    "sha256": "a3e4e713249a2d29ef39eb8bc9df69236b27734aee5d2a52a1fad428ca1e0e28",
+    "sha256": "3984ebc0eac3c1ff13aa213f14b31dd1b7335e6fef908331876d0a324f4b7f2b",
     "digest": "file",
-    "bytes": 3576,
-    "mtime": "2026-10-19T11:23:24Z",
+    "bytes": 3819,
+    "mtime": "2026-10-22T10:51:06Z",
     "mimetype_sniffed": "text/plain",
     "mimetype_source": "content",
     "files": [
       {
         "path": "input/pagecontent/changes.md",
-        "sha256": "a3e4e713249a2d29ef39eb8bc9df69236b27734aee5d2a52a1fad428ca1e0e28",
-        "bytes": 3576,
-        "lines": 90,
+        "sha256": "3984ebc0eac3c1ff13aa213f14b31dd1b7335e6fef908331876d0a324f4b7f2b",
+        "bytes": 3819,
+        "lines": 94,
         "format": "markdown"
       }
     ],
     "upstream": {
       "repository": "https://github.com/WorldHealthOrganization/smart-trust",
-      "commit": "50bcb25b387d7e7113ffc9e9046452580f9d67aa",
-      "ref": "claude/intelligent-bell-usgxfu",
-      "committed": "2026-10-19T11:23:24Z",
+      "commit": "af75be20b75ab87efcfd1201ccd43020f487f660",
+      "ref": "main",
+      "committed": "2026-10-22T10:51:06Z",
       "path": "input/pagecontent/changes.md",
-      "published": "https://worldhealthorganization.github.io/smart-trust/branches/intelligent-bell-usgxfu/changes.html",
-      "retrieved": "2026-10-20T19:45:00Z"
+      "published": "https://smart.who.int/trust/changes.html",
+      "retrieved": "2026-10-22T16:40:00Z"
     }
   },
   "metadata": {
@@ -244,10 +244,10 @@
       "level": 3,
       "file": "input/pagecontent/changes.md",
       "line_start": 85,
-      "line_end": 90,
+      "line_end": 94,
       "unit": "heading",
-      "n_chars": 338,
-      "n_words": 49
+      "n_chars": 581,
+      "n_words": 89
     }
   ],
   "structure_note": "Text is kept verbatim and NOT rendered: shortcodes, JSX components, HTML and link targets stay as the author wrote them. A Markdown file is divided by its own ATX headings outside fenced code; any other text file is one section, fenced verbatim. No division was inferred."

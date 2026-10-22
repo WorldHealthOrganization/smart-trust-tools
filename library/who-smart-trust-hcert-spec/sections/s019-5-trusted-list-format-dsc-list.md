@@ -5,7 +5,7 @@ section_id: s019-5-trusted-list-format-dsc-list
 section_title: "5 Trusted List Format (DSC list)"
 file: "input/pagecontent/hcert_spec.md"
 lines: 147-163
-source_sha256: aa86d88868a5e05c
+source_sha256: 54cc85d1e13d3c26
 granularity: heading
 ---
 #### 5 Trusted List Format (DSC list)
