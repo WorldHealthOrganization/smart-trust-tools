@@ -1,13 +1,12 @@
 {
   "id": "req:stt-tst-003",
   "title": "Cross-implementation interoperability",
-  "description": "Engineering consequence of QR Code Generation, 13. Reference script; Stakeholder directive: Kotlin library first, Rust library second.",
+  "description": "Engineering consequence of the stakeholder directive: Kotlin library first, Rust library second. The reference-script clause was dropped on 2026-10-22 (owner's decision): WHO PR 129 removed generate_dvc_qr.py from the guide, and its certificates are already covered by the PR 129 vector (STT-TST-001).",
   "status": "proposed",
   "derivedFrom": [
     "req:stt-gen-006"
   ],
   "reference": [
-    "library/who-smart-trust-qr-code-generation/sections/s024-13-reference-script",
     "memory/dir-languages"
   ],
   "actors": [
@@ -18,12 +17,12 @@
       "key": "statement",
       "label": "Cross-implementation interoperability",
       "conformance": "SHALL",
-      "requirement": "Certificates issued by each library (ES256 and PS256) SHALL verify in the other library and in the smart-trust reference script's verify routine. Certificates issued by the reference script SHALL verify in both libraries.",
+      "requirement": "Certificates issued by each library (ES256 and PS256) SHALL verify in the other library, and the two libraries SHALL build the same Sig_structure and COSE_Sign1 bytes from the same request and signature.",
       "category": "test",
       "successCriteria": [
         {
           "key": "cross-verify",
-          "criterion": "Certificates issued by each library with ES256 and PS256 verify in the other library and in the smart-trust reference script, and the reference script's certificates verify in both.",
+          "criterion": "Certificates issued by each library with ES256 and PS256 verify in the other library, built from byte-identical Sig_structure and COSE_Sign1 bytes (tools/conformance-ts/cross.ts).",
           "verification": "test"
         }
       ]

@@ -119,9 +119,7 @@ The Rust suite runs the same plan, with these additions:
 4. `cargo-llvm-cov` measures coverage, with a floor recorded beside the
    Kotlin one (STT-TST-010).
 5. Certificates issued by each library are verified by the other
-   (`cross.mjs`, STT-TST-003). The reference script's verify routine is not
-   run: it needs `cryptography`, which is not pinned, and PR 129 has dropped
-   the script (bean OI-32).
+   (`cross.mjs`, STT-TST-003).
 6. One TypeScript suite runs against both npm packages (STT-TST-007).
 
 ## Gaps and next steps
