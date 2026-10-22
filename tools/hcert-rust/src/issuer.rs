@@ -96,14 +96,21 @@ pub fn prepare(req: &IssueRequest, reg: &Registry) -> Result<PendingSignature, I
     if req.payloads.is_empty() {
         return Err(IssueError::NoPayload);
     }
-    let mut entries: Vec<(i64, Item)> = Vec::with_capacity(req.payloads.len());
+    // Duplicates first, then each payload's own checks in request order, as
+    // the Kotlin library does (STT-GEN-006).
+    let mut seen = Vec::with_capacity(req.payloads.len());
     for p in &req.payloads {
-        let (subclaim, body) = entry(p, req, reg)?;
-        if entries.iter().any(|(sc, _)| *sc == subclaim) {
-            return Err(IssueError::DuplicateSubclaim(subclaim));
+        let sc = match p {
+            Payload::DvcMin(_) => reg.subclaim_for(PayloadKind::DvcMin),
+            Payload::Vhl(_) => reg.subclaim_for(PayloadKind::Vhl),
+            Payload::Raw { subclaim, .. } => *subclaim,
+        };
+        if seen.contains(&sc) {
+            return Err(IssueError::DuplicateSubclaim(sc));
         }
-        entries.push((subclaim, body));
+        seen.push(sc);
     }
+    let entries = req.payloads.iter().map(|p| entry(p, req, reg)).collect::<Result<Vec<_>, _>>()?;
     if let Some(iss) = &req.iss {
         if !(iss.len() == 2 && iss.bytes().all(|c| c.is_ascii_uppercase())) {
             return Err(invalid("iss", "not-alpha2", "iss must be two upper-case letters"));
