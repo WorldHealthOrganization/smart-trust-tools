@@ -63,6 +63,7 @@ TOKEN = re.compile(r"""
   | (?P<comment>//[^\n]*)
   | (?P<ws>\s+)
   | (?P<arrow>->)
+  | (?P<foreign>[a-z][a-z0-9-]*:[a-z][a-z0-9-]*/[a-z][a-z0-9-]*(?:@[0-9][0-9A-Za-z.+-]*)?)
   | (?P<id>%?[a-z][a-z0-9]*(?:-[a-z0-9]+)*)
   | (?P<ver>@[0-9][0-9A-Za-z.+-]*)
   | (?P<punct>[{}()<>,:;=.*_])
@@ -264,6 +265,13 @@ class Parser:
         w = {"kind": "world", "name": name, "doc": doc, "imports": [], "exports": [], "includes": []}
         while self.peek()[1] != "}":
             kw, _ = self.ident()
+            if self.peek()[0] == "foreign":
+                # Another package's interface (wasi:random/random@0.2.6): the
+                # component's host supplies it, and the JVM and Node have their
+                # own, so Kotlin generates nothing for it.
+                self.next()
+                self.expect(";")
+                continue
             target, _ = self.ident()
             self.expect(";")
             {"import": w["imports"], "export": w["exports"], "include": w["includes"]}[kw].append(target)

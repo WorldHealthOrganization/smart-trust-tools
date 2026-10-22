@@ -240,6 +240,7 @@ pub fn call(request: &str) -> String {
                         o.opt_str("dscCountry", v.dsc.country.as_deref()).num("dscNotBefore", v.dsc.not_before).num("dscNotAfter", v.dsc.not_after);
                         match &v.payload {
                             Payload::DvcMin(p) => o.str("payloadKind", "DVCMin").raw("payload", dvc_json(p)),
+                            Payload::Vhl(v) => o.str("payloadKind", "VHL").str("payloadVhlink", &crate::vhl::to_vhlink(v)),
                             Payload::Raw { cbor: c, .. } => o.str("payloadKind", "raw").str("payloadDiagnostic", &diag_of(c)),
                         };
                         let d: Vec<String> = v.diagnostics.iter().map(|d| quote(&format!("{}: {}", d.step.wire_name(), d.message))).collect();

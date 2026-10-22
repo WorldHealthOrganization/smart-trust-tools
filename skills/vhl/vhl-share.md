@@ -11,6 +11,7 @@ satisfies:
   - "req:stt-vhl-010#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt
+  - tools/hcert-rust/tests/vhl_share.rs
 ---
 
 # Issue a VHL

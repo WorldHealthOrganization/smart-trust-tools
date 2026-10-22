@@ -21,6 +21,7 @@ satisfies:
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt
   - tools/hcert-kotlin/hcert-core/node-smoke.mjs
+  - tools/hcert-rust/js/component/component-test.mjs
 ---
 
 # hcert-library-architecture

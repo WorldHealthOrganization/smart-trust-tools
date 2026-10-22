@@ -145,3 +145,24 @@ pub fn store_with(der: &[u8]) -> TrustStore {
     s.add_der(der).unwrap();
     s
 }
+
+/// The IHE ITI-YY3 example payload.
+pub fn ihe_vhl() -> hcert::vhl::VhlPayload {
+    hcert::vhl::VhlPayload {
+        url: "https://vhl-sharer.example.org/List/_search?_id=abc123def456&code=folder&status=current&patient.identifier=urn:oid:2.16.840.1.113883.2.4.6.3|PASSPORT123&_include=List:item".into(),
+        key: "86F8LY5LlWAa1-OS_FgrTnYNqFHJP2ey5RSKLJBN9jk".into(),
+        exp: Some(1_735_689_600),
+        flag: Some("LP".into()),
+        label: Some("Patient Health Summary".into()),
+        v: Some(1),
+        fhir_base_url: Some("https://vhl-sharer.example.org".into()),
+    }
+}
+
+/// Issues `payload` with the ES256 testkit key, valid at TESTKIT_NOW.
+pub fn issue_payload(payload: hcert::payload::Payload) -> hcert::issuer::IssuedHcert {
+    let mut r = request(CoseAlgorithm::Es256);
+    r.payload = payload;
+    let p = hcert::issuer::prepare(&r, &reg()).unwrap();
+    hcert::issuer::finish(&p, &sign(CoseAlgorithm::Es256, &p.to_be_signed)).unwrap()
+}

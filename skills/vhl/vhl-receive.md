@@ -12,6 +12,7 @@ satisfies:
   - "req:stt-vhl-010#statement"
 tested-by:
   - tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt
+  - tools/hcert-rust/tests/vhl_receive.rs
 ---
 
 # Use a VHL
