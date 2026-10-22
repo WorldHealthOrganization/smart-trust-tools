@@ -3,9 +3,8 @@
 //
 // A page places <div class="hcert-demo" data-demo="NAME"></div> where a
 // demo belongs and loads this file as a module. NAME is one of: keys,
-// subclaim, payload, cwt, cbor, sign, compress, base45, prefix, qr, verify,
-// published. The demos share one state, so editing the payload re-runs
-// every later step.
+// subclaim, payload, cwt, cbor, sign, compress, base45, prefix, qr, verify.
+// The demos share one state, so editing the payload re-runs every later step.
 //
 // TEST ONLY. The key pair is generated in this browser by WebCrypto, cannot
 // be exported, and is gone when the page closes. Its DSC is self-signed by
@@ -243,13 +242,12 @@ const DEMOS = {
     const hc1 = el("textarea", { class: "hd-edit", rows: 5, spellcheck: "false", "aria-label": "HC1 string to verify" }, s.hc1 ?? state.out.hc1 ?? "");
     const trust = el("select", { "aria-label": "Trust list" },
       el("option", { value: "page", selected: s.trust === "page" }, "Trust this page's DSC"),
-      el("option", { value: "published", selected: s.trust === "published" }, "Trust the published example DSC (XXA)"),
       el("option", { value: "none", selected: s.trust === "none" }, "Trust nothing"));
     const result = el("div");
     const go = async () => {
       s.hc1 = hc1.value.trim();
       s.trust = trust.value;
-      const trustPem = s.trust === "page" ? state.dsc.pem : s.trust === "published" ? await published().then((x) => x.pem) : "";
+      const trustPem = s.trust === "page" ? state.dsc.pem : "";
       const r = hcert.call("verify", { hc1: s.hc1, trustPem, now: now() });
       result.replaceChildren(...verdict(r).filter(Boolean));
     };
@@ -277,31 +275,7 @@ const DEMOS = {
     queueMicrotask(go);
     return [field("HC1 string", hc1), el("div", { class: "hd-row" }, trust, tamper, forge, reset), result];
   },
-
-  published(root) {
-    const out = el("div");
-    published().then(async (p) => {
-      const rows = [];
-      for (const [name, c] of Object.entries(p.vector.certificates)) {
-        const r = hcert.call("verify", { hc1: c.hc1, trustPem: p.pem, now: now() });
-        rows.push(el("tr", {}, el("td", {}, name), el("td", {}, r.status === "verified" ? "✓ verified" : `✗ ${r.step} ${r.reason}`),
-          el("td", {}, r.kid ?? ""), el("td", {}, r.payload ? `${r.payload.n}, ${r.payload.vx.vp}` : r.detail ?? "")));
-      }
-      out.replaceChildren(el("table", { class: "hd-table" },
-        el("thead", {}, el("tr", {}, el("th", {}, "Certificate"), el("th", {}, "Result"), el("th", {}, "kid"), el("th", {}, "Payload"))), el("tbody", {}, rows)),
-        note("Verified in your browser against dvc-qr-example-XXA-dsc.pem, with the same code as the verification demo above."));
-    }).catch((e) => out.replaceChildren(note(`The published example could not be loaded: ${e.message}`)));
-    return [out];
-  },
 };
-
-let publishedPromise;
-function published() {
-  return (publishedPromise ??= Promise.all([
-    fetch(new URL("../dvc-qr-example-XXA.json", here)).then((r) => r.json()),
-    fetch(new URL("../dvc-qr-example-XXA-dsc.pem", here)).then((r) => r.text()),
-  ]).then(([vector, pem]) => ({ vector, pem })));
-}
 
 function verdict(r) {
   if (!r.ok) return [note(r.error)];
@@ -319,8 +293,8 @@ function verdict(r) {
 function render(name, root) {
   const demo = DEMOS[name];
   const body = root.querySelector(".hd-body");
-  if (name === "verify" || name === "published") {
-    // Their own inputs drive them; they render once.
+  if (name === "verify") {
+    // Its own inputs drive it; it renders once.
     if (!root._done) body.replaceChildren(...demo(root).filter(Boolean));
     root._done = true;
     return;
