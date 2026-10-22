@@ -67,6 +67,9 @@ jobs:
         run: gradle -p tools/hcert-kotlin --no-daemon compileKotlinJvm compileKotlinJs :hcert-core:jvmTest :hcert-core:jvmTestCoverageCheck :hcert-core:compileProductionLibraryKotlinJs
       - name: Run hcert-core on Node against the PR 129 vector
         run: node tools/hcert-kotlin/hcert-core/node-smoke.mjs
+      # The same TypeScript suite the rust job runs on the component (STT-TST-007).
+      - name: Run the TypeScript conformance suite on the Kotlin/JS package
+        run: node tools/conformance-ts/run.mjs kotlin tools/hcert-kotlin/hcert-core/build/compileSync/js/main/productionLibrary/kotlin
 
 
   rust:
@@ -98,3 +101,9 @@ jobs:
         run: ./build-component.sh "$RUNNER_TEMP/component"
       - name: Drive every interface of the component on Node
         run: node js/component/component-test.mjs "$RUNNER_TEMP/component"
+      # One suite for both libraries, type-checked against api/generated/ts
+      # (STT-TST-007); the kotlin job runs it on the Kotlin/JS package.
+      - name: Type-check the TypeScript conformance suite
+        run: ../../toolchain/node/node_modules/.bin/tsc -p ../conformance-ts/tsconfig.json
+      - name: Run the TypeScript conformance suite on the component
+        run: node ../conformance-ts/run.mjs rust "$RUNNER_TEMP/component"
