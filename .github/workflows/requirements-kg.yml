@@ -70,6 +70,17 @@ jobs:
       # The same TypeScript suite the rust job runs on the component (STT-TST-007).
       - name: Run the TypeScript conformance suite on the Kotlin/JS package
         run: node tools/conformance-ts/run.mjs kotlin tools/hcert-kotlin/hcert-core/build/compileSync/js/main/productionLibrary/kotlin
+      # Each library verifies the other's certificates, ES256 and PS256, and both
+      # build the same bytes from the same request (STT-TST-003, STT-GEN-006).
+      # The component is built here too, from the same pinned toolchain and
+      # Cargo.lock as the rust job, so no artifact passes between jobs.
+      - name: Install the pinned Rust toolchain
+        working-directory: tools/hcert-rust
+        run: rustup show active-toolchain || rustup toolchain install
+      - name: Build the Rust WIT component for the cross check
+        run: tools/hcert-rust/build-component.sh "$RUNNER_TEMP/component"
+      - name: Each library verifies the other's certificates
+        run: node tools/conformance-ts/cross.mjs "$RUNNER_TEMP/component" tools/hcert-kotlin/hcert-core/build/compileSync/js/main/productionLibrary/kotlin
 
 
   rust:

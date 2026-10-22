@@ -60,12 +60,12 @@ export interface Outcome {
   detail?: string;
 }
 
-const L: DecodeLimits = { maxInputChars: 8192, maxInflatedBytes: 65536, maxDepth: 16, maxItems: 4096, maxStringBytes: 16384 };
-const OPTIONS: VerifierOptions = { limits: L, clockSkewSeconds: 300 };
+export const L: DecodeLimits = { maxInputChars: 8192, maxInflatedBytes: 65536, maxDepth: 16, maxItems: 4096, maxStringBytes: 16384 };
+export const OPTIONS: VerifierOptions = { limits: L, clockSkewSeconds: 300 };
 const NOW = 1792454400n; // 2026-10-20T00:00:00Z
-const TESTKIT_NOW = 1792520192n + 3600n;
+export const TESTKIT_NOW = 1792520192n + 3600n;
 
-const hex = (b: Uint8Array) => Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("");
+export const hex = (b: Uint8Array) => Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("");
 const fromHex = (h: string) => new Uint8Array(h.match(/../g)?.map((x) => parseInt(x, 16)) ?? []);
 const text = (b: Uint8Array) => new TextDecoder().decode(b);
 
@@ -79,12 +79,12 @@ function thrownTag(f: () => unknown): string | undefined {
   }
 }
 
-const newborn: DvcMin = {
+export const newborn: DvcMin = {
   n: "Test CHILD", dob: "2026-09-28", s: "female", nt: "LAO", gn: "Test MOTHER",
   vx: { vp: "XM9V38", dv: "2026-09-28", is: "org-test", bo: "HEPB-TEST" }, v: "1.0.0", extensions: [],
 };
 
-const ihe: VhlPayload = {
+export const ihe: VhlPayload = {
   url: "https://vhl-sharer.example.org/List/_search?_id=abc123def456&code=folder&status=current&patient.identifier=urn:oid:2.16.840.1.113883.2.4.6.3|PASSPORT123&_include=List:item",
   key: "86F8LY5LlWAa1-OS_FgrTnYNqFHJP2ey5RSKLJBN9jk", exp: 1735689600n, flag: "LP", label: "Patient Health Summary", v: 1,
   fhirBaseUrl: "https://vhl-sharer.example.org",
