@@ -80,6 +80,22 @@ class ConformanceVectorsTest {
         assertEquals(listOf(222, 307, 293, 444), listOf("cwt_cbor_bytes", "cose_sign1_bytes", "deflated_bytes", "hc1_chars").map { (h[it] as Number).toInt() })
     }
 
+    @Test fun `STT-TST-011 the merged guide's XXR certificates verify against the DEV trust list's DSC`() {
+        val dev = HcertTrustStore().apply { assertEquals(1, addDidDocument(readRepo("vectors/smart-trust-af75be2/XXR-DSC-did.json")).ok()) }
+        val xxr = (parseJson(readRepo("vectors/smart-trust-af75be2/dvc-qr-example-XXR.json")) as Map<*, *>)["certificates"] as Map<*, *>
+        for (name in listOf("hepb1", "bcg")) {
+            val c = xxr[name] as Map<*, *>
+            val v = assertIs<VerificationResult.Verified>(HcertVerifier.verify(c["hc1"] as String, dev, reg, (c["iat"] as Number).toLong() + 3600, OPTIONS), name).value
+            assertEquals("XR", v.iss)
+            assertEquals("XR", v.dsc.country)
+            assertEquals("916ffa567c0f44a2", v.dsc.kid.toHex())
+            val e = v.entries.single()
+            assertTrue(e.keyUsageAuthorised)
+            assertEquals(((c["payload"] as Map<*, *>)["vx"] as Map<*, *>)["vp"], assertIs<Payload.DvcMin>(e.payload).value.vx.vp)
+            assertTrue(v.diagnostics.isEmpty(), "$name: ${v.diagnostics}")
+        }
+    }
+
     @Test fun `STT-TST-004 STT-TST-005 the shared negative vectors fail at the named step with the named reason`() {
         val doc = parseJson(readRepo("vectors/negative/negative-vectors.json")) as Map<*, *>
         val defaults = doc["defaults"] as Map<*, *>

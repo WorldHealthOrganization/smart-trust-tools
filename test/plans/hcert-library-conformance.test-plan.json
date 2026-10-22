@@ -718,7 +718,7 @@
         {
           "id": "req:stt-tst-011#statement/verify",
           "type": "required",
-          "expectation": "Both certificates verify against the XXR DSC from the GDHCN DEV trust list (did:web:tng-cdn.who.int:v2:trustlist:-:XXR:DSC), once that DSC is in the repository or the host is reachable from CI (bean OI-33)."
+          "expectation": "A test named after STT-TST-011 that loads vectors/smart-trust-af75be2/XXR-DSC-did.json passes in each implementation's suite (Kotlin: `STT-TST-011 the merged guide's XXR certificates verify against the DEV trust list's DSC` (ConformanceVectorsTest.kt)), and the TypeScript suite's check of the same name passes on both packages."
         }
       ],
       "testData": [

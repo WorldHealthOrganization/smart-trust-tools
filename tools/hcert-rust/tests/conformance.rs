@@ -87,6 +87,26 @@ fn stt_tst_011_stt_tst_002_the_merged_guides_xxr_certificates_decode_as_publishe
 }
 
 #[test]
+fn stt_tst_011_the_merged_guides_xxr_certificates_verify_against_the_dev_trust_lists_dsc() {
+    let mut store = TrustStore::new();
+    assert_eq!(store.add_did_document(&read(XXR_DSC_DID)).unwrap(), 1);
+    let vector = json(XXR);
+    for name in ["hepb1", "bcg"] {
+        let c = vector.get("certificates").unwrap().get(name).unwrap();
+        let iat = c.get("iat").unwrap().as_f64().unwrap() as i64;
+        let v = verifier::verify(c.get("hc1").unwrap().as_str().unwrap(), &store, &reg(), iat + 3600, &options()).unwrap_or_else(|f| panic!("{name}: {f:?}"));
+        assert_eq!(v.iss.as_deref(), Some("XR"));
+        assert_eq!(v.dsc.country.as_deref(), Some("XR"));
+        assert_eq!(to_hex(&v.dsc.kid), "916ffa567c0f44a2");
+        let e = only(&v);
+        assert!(e.key_usage_authorised);
+        let Payload::DvcMin(p) = &e.payload else { panic!("{name}: not a DVCMin") };
+        assert_eq!(Some(p.vx.vp.as_str()), c.get("payload").unwrap().get("vx").unwrap().get("vp").and_then(|j| j.as_str()));
+        assert!(v.diagnostics.is_empty(), "{name}: {:?}", v.diagnostics);
+    }
+}
+
+#[test]
 fn stt_tst_004_stt_tst_005_the_shared_negative_vectors_fail_at_the_named_step_with_the_named_reason() {
     let doc = json("vectors/negative/negative-vectors.json");
     let defaults = doc.get("defaults").unwrap();

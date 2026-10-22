@@ -43,7 +43,9 @@ export interface Fixtures {
   pr129: { certificates: Record<string, { hc1: string; payload: { n: string } }> };
   pr129Pem: string;
   /** The merged guide's example (WHO af75be2), GDHCN DEV participant XXR: decodes, but its DSC is on the DEV trust list only. */
-  xxr: { kid_hex: string; certificates: Record<string, { hc1: string; iss: string; cwt_cbor_bytes: number; cose_sign1_bytes: number; deflated_bytes: number; hc1_chars: number; payload: { n: string; vx: { vp: string; bo: string } } }> };
+  /** XXR's DSC DID document from the GDHCN DEV trust list. */
+  xxrDscDid: string;
+  xxr: { kid_hex: string; certificates: Record<string, { hc1: string; iss: string; iat: number; cwt_cbor_bytes: number; cose_sign1_bytes: number; deflated_bytes: number; hc1_chars: number; payload: { n: string; vx: { vp: string; bo: string } } }> };
   negative: { defaults: { trust: string[]; now: number; clockSkewSeconds: number }; cases: NegativeCase[] };
   pem: Record<string, string>;
   trustDomains: string;
@@ -142,6 +144,17 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
         hex(h.codec.cborDeterministic(s.payload, L)) === hex(s.payload) && s.payload.length === c.cwt_cbor_bytes && cose.length === c.cose_sign1_bytes &&
         h.codec.base45Decode(c.hc1.slice(4)).length === c.deflated_bytes && c.hc1.length === c.hc1_chars &&
         r.tag === "failed" && r.val.step === "trust-lookup" && r.val.reason === "kid-not-found";
+    });
+  });
+
+  run("STT-TST-011 the merged guide's XXR certificates verify against the DEV trust list's DSC", () => {
+    const dev = new h.trust.TrustStore();
+    if (dev.addDidDocument(f.xxrDscDid) !== 1) return [false, "the DID document gave no DSC"];
+    return Object.entries(f.xxr.certificates).every(([, c]) => {
+      const r = h.verifier.verify(c.hc1, dev, new h.subclaims.Registry(), BigInt(c.iat) + 3600n, OPTIONS);
+      return r.tag === "verified" && r.val.iss === "XR" && r.val.dsc.country === "XR" && hex(r.val.dsc.kid) === f.xxr.kid_hex &&
+        r.val.entries.length === 1 && r.val.entries[0]!.keyUsageAuthorised && r.val.entries[0]!.payload.tag === "dvc-min" &&
+        r.val.entries[0]!.payload.val.vx.vp === c.payload.vx.vp && r.val.diagnostics.length === 0;
     });
   });
 

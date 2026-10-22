@@ -6,7 +6,8 @@
   "reference": [
     "library/who-smart-trust-qr-code-generation/sections/s019-12-6-the-certificates",
     "library/who-smart-trust-qr-code-generation/sections/s017-12-4-the-payload",
-    "vectors/smart-trust-af75be2/dvc-qr-example-XXR.json"
+    "vectors/smart-trust-af75be2/dvc-qr-example-XXR.json",
+    "vectors/smart-trust-af75be2/XXR-DSC-did.json"
   ],
   "actors": [
     "implementer"
@@ -16,7 +17,7 @@
       "key": "statement",
       "label": "The merged guide's example decodes as published",
       "conformance": "SHALL",
-      "requirement": "Both libraries SHALL decode the two HC1 strings of QR Code Generation 12.6 without verifying them, and SHALL read kid kW/6VnwPRKI=, iss XR, subclaim -6 and the payloads of 12.4, with the PreQual product identifiers in vp. Without the XXR DSC, verification SHALL stop at TRUST_LOOKUP with KID_NOT_FOUND. When the DEV trust list's DSC for that kid is available to the test, both certificates SHALL verify against it.",
+      "requirement": "Both libraries SHALL decode the two HC1 strings of QR Code Generation 12.6 without verifying them, and SHALL read kid kW/6VnwPRKI=, iss XR, subclaim -6 and the payloads of 12.4, with the PreQual product identifiers in vp. Without the XXR DSC, verification SHALL stop at TRUST_LOOKUP with KID_NOT_FOUND. With XXR's DSC DID document from the GDHCN DEV trust list in the trust store, both certificates SHALL verify, with the payload's key usage authorised and no diagnostics.",
       "category": "test",
       "successCriteria": [
         {
@@ -26,7 +27,7 @@
         },
         {
           "key": "verify",
-          "criterion": "Both certificates verify against the XXR DSC from the GDHCN DEV trust list (did:web:tng-cdn.who.int:v2:trustlist:-:XXR:DSC), once that DSC is in the repository or the host is reachable from CI (bean OI-33).",
+          "criterion": "A test named after STT-TST-011 that loads vectors/smart-trust-af75be2/XXR-DSC-did.json passes in each implementation's suite (Kotlin: `STT-TST-011 the merged guide's XXR certificates verify against the DEV trust list's DSC` (ConformanceVectorsTest.kt)), and the TypeScript suite's check of the same name passes on both packages.",
           "verification": "test"
         }
       ]
