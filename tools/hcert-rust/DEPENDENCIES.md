@@ -61,6 +61,12 @@ resolved at build time.
   (`jco transpile`). The component's one import, `wasi:random/random`, maps to
   `js/component/wasi-random.js`, a few lines over `crypto.getRandomValues`, so
   the transpiled module needs no npm package at run time.
+- **CI only: the `llvm-tools` toolchain component.** `coverage.sh` measures
+  coverage with rustc's own `-C instrument-coverage` and the `llvm-profdata` and
+  `llvm-cov` that ship as a component of the pinned 1.97.0 toolchain
+  (`rust-toolchain.toml`), which rustup installs and checks against the
+  release's channel manifest. It replaces `cargo-llvm-cov`, a crates.io binary
+  that would otherwise be one more dependency to vet.
 - **Tests only: `rand_core`.** It is already in the tree; the tests use it for
   a deterministic RNG to sign PS256 with.
 

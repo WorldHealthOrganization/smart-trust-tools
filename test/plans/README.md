@@ -37,12 +37,14 @@ suite's test names are listed in the criterion text.
 **Where things stand (Kotlin, JVM):**
 
 - 80 named tests pass.
-- 85 of the 93 requirements are verified by a test named after them, the
+- 86 of the 93 requirements are verified by a test named after them, the
   Rust library's tests included.
-- Line coverage is 91.3% and branch coverage 71.1% (JaCoCo, hcert-core
+- Kotlin line coverage is 91.3% and branch coverage 71.1% (JaCoCo, hcert-core
   commonMain and jvmMain).
+- Rust line coverage is 85.7% and region coverage 81.8% (`coverage.sh`, the
+  library's sources under `cargo test`).
 
-The unverified requirements are STT-TST-009 and TST-010, and the six verified by
+The unverified requirements are STT-TST-009, and the six verified by
 inspection or review (bean OI-32).
 
 ## Test levels
@@ -53,7 +55,7 @@ inspection or review (bean OI-32).
 | Conformance vectors | the published WHO certificates decode and verify as published, byte for byte | `ConformanceVectorsTest`; `node-smoke.mjs` on Node | the same files | `vectors/smart-trust-pr129` | STT-TST-001, 002 |
 | Negative vectors | a bad input stops at the named step with the named reason | the same file, on the JVM and on Node | the same file | `vectors/negative` (the `negative-vectors` Tool) | STT-TST-004, 005, VER-008 |
 | Fuzzing | no input crashes, hangs or exceeds `DecodeLimits` | `FuzzTest`, a seeded mutation fuzzer over 6 entry points | `cargo-fuzz`, coverage-guided, same 6 targets | generated: seeds from PR 129, a fixed seed per target | STT-TST-006 |
-| Coverage floor | new code does not arrive untested | `:hcert-core:jvmTestCoverageCheck`: fails below 90% line, 70% branch | `cargo-llvm-cov` with a recorded floor | — | STT-TST-010 |
+| Coverage floor | new code does not arrive untested | `:hcert-core:jvmTestCoverageCheck`: fails below 90% line, 70% branch | `tools/hcert-rust/coverage.sh`: fails below 85% line, 80% region (stable rustc measures no branches) | — | STT-TST-010 |
 | Targets | the same behaviour on every platform | JVM and Node (Kotlin/JS) run in CI; **Android is not yet run** | native and wasm32 (jco) | the shared vectors | STT-GEN-004, 005, 011 |
 | Cross-implementation | each library verifies the other's certificates, from byte-identical bytes to sign | `tools/conformance-ts/cross.mjs` loads both packages | the same | issued at test time, ES256 and PS256, DVC and VHL | STT-TST-003, GEN-006 |
 | One TypeScript suite | both npm packages behave the same through `api/generated/ts` | `tools/conformance-ts` on the Kotlin/JS package (`WitJs.kt`) | the same suite on the jco component | the shared vectors | STT-TST-007 |
@@ -116,8 +118,10 @@ The Rust suite runs the same plan, with these additions:
    with jco and runs `node-smoke.mjs`'s checks in Node (STT-GEN-005).
 3. `cargo-fuzz` gets one target per entry point the Kotlin fuzzer covers.
    CI runs it for a fixed time, and the corpus is kept between runs.
-4. `cargo-llvm-cov` measures coverage, with a floor recorded beside the
-   Kotlin one (STT-TST-010).
+4. `coverage.sh` measures coverage with rustc's own `-C instrument-coverage`
+   and the toolchain's `llvm-tools`, and fails below a floor recorded beside
+   the Kotlin one (STT-TST-010): 85% of lines and 80% of regions, just under
+   the first measurement (85.7%, 81.8%).
 5. Certificates issued by each library are verified by the other
    (`cross.mjs`, STT-TST-003).
 6. One TypeScript suite runs against both npm packages (STT-TST-007).
@@ -134,8 +138,7 @@ The Rust suite runs the same plan, with these additions:
   - the WebAssembly module runs on Node with WebCrypto keys.
 
   Still to do: the seeded fuzzer runs in CI, but coverage-guided
-  `cargo-fuzz` needs nightly and doesn't. Also to do: the coverage floor
-  (`cargo-llvm-cov` isn't pinned yet). Each library verifies the other's
+  `cargo-fuzz` needs nightly and doesn't. The coverage floor runs in CI. Each library verifies the other's
   certificates (STT-TST-003). The TypeScript suite (STT-TST-007) runs the same 45
   checks on both packages. The WIT component
   of the `hcert` world is built, transpiled with jco, and driven through
@@ -146,8 +149,11 @@ The Rust suite runs the same plan, with these additions:
   release-review record. There is none until a first release.
 - **Coverage:** branch coverage is the weaker number. The lowest files are
   `Asn1.kt` (55%), `Payloads.kt` (60%), `Json.kt` (64%), `Vhl.kt` (65%),
-  `Pipeline.kt` (67%) and `CodecCose.kt` (68%). Raise the floor as tests
-  reach them.
+  `Pipeline.kt` (67%) and `CodecCose.kt` (68%). In Rust the lowest line
+  coverage is in `types.rs` (60%, mostly `Display`), `api.rs` (76%, the
+  demos' JSON surface, exercised in wasm by `smoke.mjs` but not measured),
+  `json.rs` (80%), `issuer.rs` (80%) and `verifier.rs` (82%). Raise each
+  floor as tests reach them.
 
 ## Running it
 
@@ -156,6 +162,8 @@ The Rust suite runs the same plan, with these additions:
 gradle -p tools/hcert-kotlin --no-daemon --init-script gradle/central-mirror.init.gradle \
   :hcert-core:jvmTest :hcert-core:jvmTestCoverageCheck :hcert-core:compileProductionLibraryKotlinJs
 node tools/hcert-kotlin/hcert-core/node-smoke.mjs
+# Rust: coverage against its floor, with the per-file table
+tools/hcert-rust/coverage.sh --report
 # One TypeScript suite on both packages (type check, then each implementation)
 toolchain/node/node_modules/.bin/tsc -p tools/conformance-ts/tsconfig.json
 node tools/conformance-ts/run.mjs kotlin tools/hcert-kotlin/hcert-core/build/compileSync/js/main/productionLibrary/kotlin

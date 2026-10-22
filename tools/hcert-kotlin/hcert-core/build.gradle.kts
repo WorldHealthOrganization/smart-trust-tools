@@ -56,7 +56,7 @@ val jvmTestCoverage by tasks.registering(JacocoReport::class) {
     }
 }
 
-// The coverage floor (test plan hcert-library-conformance): the build fails
+// The coverage floor (STT-TST-010, test plan hcert-library-conformance): the build fails
 // if a change lowers line or branch coverage below it. Raise it as tests are
 // added; never lower it to pass.
 val jvmTestCoverageCheck by tasks.registering(JacocoCoverageVerification::class) {

@@ -24,6 +24,8 @@ tested-by:
   - tools/hcert-rust/js/smoke.mjs
   - tools/conformance-ts/suite.ts
   - tools/conformance-ts/cross.ts
+  - tools/hcert-kotlin/hcert-core/build.gradle.kts
+  - tools/hcert-rust/coverage.sh
 ---
 
 # hcert-conformance-testing

@@ -707,7 +707,7 @@
         {
           "id": "req:stt-tst-010#statement/rust-floor",
           "type": "required",
-          "expectation": "CI measures the Rust core's line and branch coverage (cargo-llvm-cov) and fails below a floor recorded in the repository."
+          "expectation": "CI runs tools/hcert-rust/coverage.sh (rustc -C instrument-coverage with the toolchain's llvm-tools; stable rustc does not measure branches) and it fails below 85% line and 80% region coverage of the library's sources."
         }
       ],
       "testData": [
