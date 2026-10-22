@@ -15,9 +15,11 @@ QR Code Generation 12.6 and the DEV endpoints (input/fsh/instances/endpoints-DEV
 
 A verifier that resolves the DID the guide prints therefore asks the production host for a DEV participant, and a verifier that checks a resolved document's id against the DID it asked for refuses the document it gets from tng-cdn-dev. The libraries are unaffected: the host supplies DID documents (STT-TRU-001), and the trust store checks a document's id only against the GDHCN trust domains (STT-SEL-006).
 
+The cause is input/scripts/generate_organizations.py, which picks each environment's base URL but hard-codes did:web:tng-cdn.who.int in every endpoint, so all 183 DEV and 171 UAT endpoints name the production host.
+
 ## Resolution
 
-Upstream: make the DEV (and UAT) endpoint addresses and the guide's text name the host the documents are served from (did:web:tng-cdn-dev.who.int:...), or serve the DEV documents under the DID the guide names.
+Reported upstream as WorldHealthOrganization/smart-trust#133 (https://github.com/WorldHealthOrganization/smart-trust/issues/133), with a fix in WorldHealthOrganization/smart-trust#134 (https://github.com/WorldHealthOrganization/smart-trust/pull/134): the generator derives the DID host from the base URL, and endpoints-DEV.fsh and endpoints-UAT.fsh name did:web:tng-cdn-dev.who.int and did:web:tng-cdn-uat.who.int. The PR is WHO's to review and merge; UAT documents could not be checked from here.
 
 ## Requirements affected
 
