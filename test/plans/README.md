@@ -37,11 +37,12 @@ suite's test names are listed in the criterion text.
 **Where things stand (Kotlin, JVM):**
 
 - 80 named tests pass.
-- 81 of the 93 requirements are verified by a test named after them.
+- 82 of the 93 requirements are verified by a test named after them, the
+  Rust library's tests included.
 - Line coverage is 91.3% and branch coverage 71.1% (JaCoCo, hcert-core
   commonMain and jvmMain).
 
-The unverified requirements are the Rust group (STT-GEN-005, GEN-006,
+The unverified requirements are the cross-implementation group (STT-GEN-006,
 TST-003, TST-007), the new STT-TST-009 and TST-010, and the six verified by
 inspection or review (bean OI-32).
 
