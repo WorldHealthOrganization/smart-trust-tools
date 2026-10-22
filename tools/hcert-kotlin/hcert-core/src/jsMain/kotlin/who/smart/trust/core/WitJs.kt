@@ -104,6 +104,8 @@ private fun trustErr(e: TrustError): dynamic = when (e) {
 }
 private fun issueErr(e: IssueError): dynamic = when (e) {
     is IssueError.PayloadInvalid -> variant("payload-invalid", issuesOut(e.value))
+    IssueError.NoPayload -> variant("no-payload")
+    is IssueError.DuplicateSubclaim -> variant("duplicate-subclaim", e.value)
     is IssueError.DevelopmentSubclaimNotAllowed -> variant("development-subclaim-not-allowed", e.value)
     is IssueError.UnknownSubclaim -> variant("unknown-subclaim", e.value)
     IssueError.ValidityOutsideDsc -> variant("validity-outside-dsc")
@@ -163,14 +165,18 @@ private fun dscOut(d: TrustedDsc): dynamic = obj(
 )
 private fun failureOut(f: VerificationFailure): dynamic =
     obj("step" to kebab(f.step.name), "reason" to kebab(f.reason.name), "detail" to f.detail, "diagnostics" to array(f.diagnostics) { diagOut(it) })
-private fun optionsIn(o: dynamic) = VerifierOptions(limitsIn(o.limits), o.clockSkewSeconds as Int)
+private fun optionsIn(o: dynamic) = VerifierOptions(
+    limitsIn(o.limits), o.clockSkewSeconds as Int,
+    if (o.maxPayloads == null || o.maxPayloads == undefined) null else o.maxPayloads as Int,
+)
 private fun resultOut(r: VerificationResult): dynamic = when (r) {
     is VerificationResult.Verified -> r.value.let { v ->
         variant(
             "verified",
             obj(
-                "iss" to v.iss, "iat" to s64Out(v.iat), "exp" to s64Out(v.exp), "subclaim" to v.subclaim,
-                "payload" to payloadOut(v.payload), "dsc" to dscOut(v.dsc),
+                "iss" to v.iss, "iat" to s64Out(v.iat), "exp" to s64Out(v.exp),
+                "entries" to array(v.entries) { obj("subclaim" to it.subclaim, "payload" to payloadOut(it.payload), "keyUsageAuthorised" to it.keyUsageAuthorised) },
+                "dsc" to dscOut(v.dsc),
                 "otherClaims" to array(v.otherClaims) { (k, x) -> arrayOf<Any?>(bytesOut(k), bytesOut(x)) },
                 "diagnostics" to array(v.diagnostics) { diagOut(it) },
             ),
@@ -292,7 +298,8 @@ object WitVerifier {
         val u = HcertVerifier.readUnverified(hc1, reg.reg, limitsIn(limits)).orThrow(::failureOut)
         return obj(
             "kid" to u.kid?.let { bytesOut(it) }, "iss" to u.iss, "iat" to u.iat?.let { s64Out(it) }, "exp" to u.exp?.let { s64Out(it) },
-            "subclaim" to u.subclaim, "payload" to u.payload?.let { payloadOut(it) }, "diagnostics" to array(u.diagnostics) { diagOut(it) },
+            "entries" to array(u.entries) { e -> obj("subclaim" to e.subclaim, "payload" to e.payload?.let { payloadOut(it) }) },
+            "diagnostics" to array(u.diagnostics) { diagOut(it) },
         )
     }
 }
@@ -309,7 +316,7 @@ class WitPendingSignature internal constructor(internal val pending: PendingSign
 object WitIssuer {
     fun prepare(req: dynamic, reg: WitRegistry): WitPendingSignature {
         val r = IssueRequest(
-            payload = payloadIn(req.payload),
+            payloads = listIn(req.payloads) { payloadIn(it) },
             iss = optStr(req.iss),
             validity = Validity(s64In(req.validity.iat), s64In(req.validity.exp)),
             dscDer = bytesIn(req.dscDer),

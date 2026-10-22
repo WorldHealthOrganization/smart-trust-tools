@@ -26,8 +26,8 @@ class ConformanceVectorsTest {
         for (name in listOf("hepb1", "bcg")) {
             val v = assertIs<VerificationResult.Verified>(HcertVerifier.verify(hc1(name), store, reg, NOW, OPTIONS), name).value
             assertEquals("XX", v.iss)
-            assertEquals(-6, v.subclaim)
-            val p = assertIs<Payload.DvcMin>(v.payload).value
+            assertEquals(-6, v.entries.single().subclaim)
+            val p = assertIs<Payload.DvcMin>(v.entries.single().payload).value
             val expected = (certs[name] as Map<*, *>)["payload"] as Map<*, *>
             assertEquals(expected["n"], p.n)
             assertEquals(expected["nt"], p.nt)
@@ -55,8 +55,8 @@ class ConformanceVectorsTest {
             assertEquals("916ffa567c0f44a2", u.kid!!.toHex())
             assertEquals("XR", u.iss)
             assertEquals(1792657800L to 1824193800L, u.iat to u.exp)
-            assertEquals(-6L, u.subclaim?.toLong())
-            val p = assertIs<Payload.DvcMin>(u.payload).value
+            assertEquals(-6L, u.entries.single().subclaim.toLong())
+            val p = assertIs<Payload.DvcMin>(u.entries.single().payload).value
             val expected = c["payload"] as Map<*, *>
             val vx = expected["vx"] as Map<*, *>
             assertEquals(expected["n"], p.n)

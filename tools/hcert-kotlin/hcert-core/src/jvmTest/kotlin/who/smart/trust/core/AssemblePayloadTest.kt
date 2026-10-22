@@ -17,7 +17,7 @@ class AssemblePayloadTest {
     private fun roundTrip(p: Payload): Payload {
         val issued = Testkit.issue(p)
         val store = Testkit.store(Testkit.esPem)
-        return assertIs<VerificationResult.Verified>(HcertVerifier.verify(issued.hc1, store, reg, Testkit.now, OPTIONS)).value.payload
+        return assertIs<VerificationResult.Verified>(HcertVerifier.verify(issued.hc1, store, reg, Testkit.now, OPTIONS)).value.entries.single().payload
     }
 
     @Test fun `STT-PAY-001 STT-PAY-002 STT-PAY-005 a newborn's DVCMin, with no identity document, round-trips as typed fields`() {
@@ -49,7 +49,7 @@ class AssemblePayloadTest {
         val issued = Testkit.issue(Payload.Raw(RawPayload(4, body)), CoseAlgorithm.PS256)
         val store = Testkit.store(Testkit.psPem)
         val v = assertIs<VerificationResult.Verified>(HcertVerifier.verify(issued.hc1, store, reg, Testkit.now, OPTIONS)).value
-        assertContentEquals(body, assertIs<Payload.Raw>(v.payload).value.cbor)
+        assertContentEquals(body, assertIs<Payload.Raw>(v.entries.single().payload).value.cbor)
         assertTrue(v.diagnostics.isEmpty())
     }
 }

@@ -16,14 +16,14 @@ const NOW = 1792454400; // 2026-10-20T00:00:00Z
 
 let failures = 0;
 function expect(name, got, want) {
-  const ok = Object.entries(want).every(([k, v]) => got[k] === v);
+  const ok = Object.entries(want).every(([k, v]) => JSON.stringify(got[k]) === JSON.stringify(v));
   console.log(`${ok ? "ok  " : "FAIL"} ${name}: ${JSON.stringify(got)}`);
   if (!ok) failures++;
 }
 for (const name of ["hepb1", "bcg"]) {
   const hc1 = vector.certificates[name].hc1;
   expect(`${name} verifies`, JSON.parse(HcertNode.verifySummary(hc1, pem, NOW)),
-    { status: "verified", subclaim: -6, iss: "XX", payload: "dvc-min", kid: "58733e058aaa6621" });
+    { status: "verified", entries: [{ subclaim: -6, payload: "dvc-min", keyUsageAuthorised: true }], iss: "XX", kid: "58733e058aaa6621" });
   expect(`${name} expired`, JSON.parse(HcertNode.verifySummary(hc1, pem, 1822206600 + 301)), { status: "failed", reason: "EXPIRED" });
   expect(`${name} unknown kid`, JSON.parse(HcertNode.verifySummary(hc1, "", NOW)), { status: "failed", reason: "KID_NOT_FOUND" });
 }
