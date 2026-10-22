@@ -129,7 +129,7 @@ pub fn deterministic(hex: &str) -> String {
 
 pub fn request(alg: CoseAlgorithm) -> hcert::issuer::IssueRequest {
     hcert::issuer::IssueRequest {
-        payload: hcert::payload::Payload::DvcMin(newborn()),
+        payloads: vec![hcert::payload::Payload::DvcMin(newborn())],
         iss: Some("XX".into()),
         iat: TESTKIT_NOW,
         exp: TESTKIT_NOW + 86_400 * 365,
@@ -142,6 +142,26 @@ pub fn request(alg: CoseAlgorithm) -> hcert::issuer::IssueRequest {
 pub fn issue(alg: CoseAlgorithm) -> hcert::issuer::IssuedHcert {
     let p = hcert::issuer::prepare(&request(alg), &reg()).unwrap();
     hcert::issuer::finish(&p, &sign(alg, &p.to_be_signed)).unwrap()
+}
+
+/// A COSE_Sign1 over `claims`, signed by the ES256 testkit key: for claim
+/// sets the issuer would refuse to build.
+pub fn signed_claims(claims: &hcert::cbor::Item) -> Vec<u8> {
+    let payload_bytes = hcert::cbor::encode(claims).unwrap();
+    let ph = hcert::issuer::protected_header(CoseAlgorithm::Es256, &kid_of(&es_der()));
+    let sig = sign(CoseAlgorithm::Es256, &cose::sig_structure(&ph, &payload_bytes));
+    cose::assemble_sign1(&ph, &payload_bytes, &sig)
+}
+
+/// The IHE example link, live at TESTKIT_NOW (its own exp is in 2025).
+pub fn live_vhl() -> hcert::vhl::VhlPayload {
+    hcert::vhl::VhlPayload { exp: Some(TESTKIT_NOW + 86_400), ..ihe_vhl() }
+}
+
+/// The one entry of a single-payload certificate.
+pub fn only(v: &hcert::verifier::VerifiedHcert) -> &hcert::verifier::HcertEntry {
+    assert_eq!(v.entries.len(), 1, "{:?}", v.entries);
+    &v.entries[0]
 }
 
 pub fn store_with(der: &[u8]) -> TrustStore {
@@ -165,8 +185,13 @@ pub fn ihe_vhl() -> hcert::vhl::VhlPayload {
 
 /// Issues `payload` with the ES256 testkit key, valid at TESTKIT_NOW.
 pub fn issue_payload(payload: hcert::payload::Payload) -> hcert::issuer::IssuedHcert {
+    issue_payloads(vec![payload])
+}
+
+/// Issues several payloads in one certificate, with the ES256 testkit key.
+pub fn issue_payloads(payloads: Vec<hcert::payload::Payload>) -> hcert::issuer::IssuedHcert {
     let mut r = request(CoseAlgorithm::Es256);
-    r.payload = payload;
+    r.payloads = payloads;
     let p = hcert::issuer::prepare(&r, &reg()).unwrap();
     hcert::issuer::finish(&p, &sign(CoseAlgorithm::Es256, &p.to_be_signed)).unwrap()
 }

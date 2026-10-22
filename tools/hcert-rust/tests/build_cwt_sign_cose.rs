@@ -43,7 +43,7 @@ fn stt_iss_004_stt_cos_005_two_phase_issuance_with_es256_and_ps256_verifies() {
         assert!(issued.hc1.starts_with("HC1:"));
         let r = verifier::verify(&issued.hc1, &store_with(&der), &reg(), TESTKIT_NOW, &options());
         match (alg, r) {
-            (CoseAlgorithm::Es256, Ok(v)) => assert_eq!(v.payload, Payload::DvcMin(newborn())),
+            (CoseAlgorithm::Es256, Ok(v)) => assert_eq!(only(&v).payload, Payload::DvcMin(newborn())),
             // the PS256 testkit DSC's EKU is test certificates only (STT-VER-004)
             (CoseAlgorithm::Ps256, Err(f)) => assert_eq!((f.step, f.reason), (Step::KeyUsage, FailureReason::KeyUsageMismatch)),
             (a, r) => panic!("{a:?}: {r:?}"),

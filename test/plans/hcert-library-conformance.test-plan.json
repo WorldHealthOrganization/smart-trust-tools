@@ -203,7 +203,7 @@
         {
           "id": "req:stt-sel-004#statement/test",
           "type": "required",
-          "expectation": "A test named after STT-SEL-004 passes in each implementation's suite (Kotlin: `STT-SEL-004 an issued HCERT carries exactly one payload` (SelectPayloadTest.kt))."
+          "expectation": "Tests named after STT-SEL-004 pass in each implementation's suite (Kotlin: `STT-SEL-004 STT-ISS-004 a certificate with a DVC and a VHL verifies with both entries`, `STT-SEL-004 maxPayloads refuses more entries than the profile allows`, `STT-SEL-004 an invalid entry is left out and reported`, `STT-SEL-004 issuance refuses no payload and a duplicate subclaim` (SelectPayloadTest.kt)), and the cross-implementation DVC+VHL checks pass (tools/conformance-ts/cross.ts)."
         }
       ],
       "testData": []
@@ -369,7 +369,7 @@
         {
           "id": "req:stt-sel-004#statement/test",
           "type": "required",
-          "expectation": "A test named after STT-SEL-004 passes in each implementation's suite (Kotlin: `STT-SEL-004 an issued HCERT carries exactly one payload` (SelectPayloadTest.kt))."
+          "expectation": "Tests named after STT-SEL-004 pass in each implementation's suite (Kotlin: `STT-SEL-004 STT-ISS-004 a certificate with a DVC and a VHL verifies with both entries`, `STT-SEL-004 maxPayloads refuses more entries than the profile allows`, `STT-SEL-004 an invalid entry is left out and reported`, `STT-SEL-004 issuance refuses no payload and a duplicate subclaim` (SelectPayloadTest.kt)), and the cross-implementation DVC+VHL checks pass (tools/conformance-ts/cross.ts)."
         },
         {
           "id": "req:stt-sel-006#statement/test",
@@ -583,7 +583,7 @@
         {
           "id": "req:stt-sel-004#statement/test",
           "type": "required",
-          "expectation": "A test named after STT-SEL-004 passes in each implementation's suite (Kotlin: `STT-SEL-004 an issued HCERT carries exactly one payload` (SelectPayloadTest.kt))."
+          "expectation": "Tests named after STT-SEL-004 pass in each implementation's suite (Kotlin: `STT-SEL-004 STT-ISS-004 a certificate with a DVC and a VHL verifies with both entries`, `STT-SEL-004 maxPayloads refuses more entries than the profile allows`, `STT-SEL-004 an invalid entry is left out and reported`, `STT-SEL-004 issuance refuses no payload and a duplicate subclaim` (SelectPayloadTest.kt)), and the cross-implementation DVC+VHL checks pass (tools/conformance-ts/cross.ts)."
         },
         {
           "id": "req:stt-ver-001#statement/test",
@@ -603,7 +603,7 @@
         {
           "id": "req:stt-ver-004#statement/test",
           "type": "required",
-          "expectation": "A test named after STT-VER-004 passes in each implementation's suite (Kotlin: `STT-VER-004 a DSC whose key usage allows test certificates only cannot sign a vaccination` (VerifyTest.kt); `STT-VER-004 a DCC is a test, vaccination or recovery certificate by its own entry` (VerifyTest.kt))."
+          "expectation": "A test named after STT-VER-004 passes in each implementation's suite (Kotlin: `STT-VER-004 a DSC whose key usage allows test certificates only cannot sign a vaccination` (VerifyTest.kt); `STT-VER-004 a DCC is a test, vaccination or recovery certificate by its own entry`  (VerifyTest.kt); `STT-VER-004 STT-SEL-004 key usage is checked per entry`)."
         },
         {
           "id": "req:stt-ver-005#statement/test",

@@ -26,8 +26,8 @@ fn stt_tst_001_stt_pay_001_both_pr129_certificates_verify_and_decode_as_publishe
     for name in ["hepb1", "bcg"] {
         let v = verifier::verify(&pr129_hc1(name), &store, &reg(), NOW, &options()).unwrap_or_else(|f| panic!("{name}: {f:?}"));
         assert_eq!(v.iss.as_deref(), Some("XX"));
-        assert_eq!(v.subclaim, -6);
-        let Payload::DvcMin(p) = &v.payload else { panic!("{name}: not a DVCMin") };
+        assert_eq!(only(&v).subclaim, -6);
+        let Payload::DvcMin(p) = &only(&v).payload else { panic!("{name}: not a DVCMin") };
         let expected = vector.get("certificates").unwrap().get(name).unwrap().get("payload").unwrap();
         assert_eq!(Some(p.n.as_str()), expected.get("n").and_then(|j| j.as_str()));
         assert_eq!(Some(p.nt.as_str()), expected.get("nt").and_then(|j| j.as_str()));
@@ -59,8 +59,9 @@ fn stt_tst_011_stt_tst_002_the_merged_guides_xxr_certificates_decode_as_publishe
         assert_eq!(to_hex(u.kid.as_ref().unwrap()), "916ffa567c0f44a2");
         assert_eq!(u.iss.as_deref(), Some("XR"));
         assert_eq!((u.iat, u.exp), (Some(1_792_657_800), Some(1_824_193_800)));
-        assert_eq!(u.subclaim, Some(-6));
-        let Some(Payload::DvcMin(p)) = &u.payload else { panic!("{name}: not a DVCMin") };
+        assert_eq!(u.entries.len(), 1);
+        assert_eq!(u.entries[0].subclaim, -6);
+        let Some(Payload::DvcMin(p)) = &u.entries[0].payload else { panic!("{name}: not a DVCMin") };
         let expected = c.get("payload").unwrap();
         let vx = expected.get("vx").unwrap();
         assert_eq!(Some(p.n.as_str()), expected.get("n").and_then(|j| j.as_str()));

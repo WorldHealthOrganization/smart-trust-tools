@@ -143,7 +143,7 @@ pub fn call(request: &str) -> String {
             "buildCwt" => {
                 let body = cbor::decode(&hex(&a, "payload")?, &DEFAULT_LIMITS).map_err(|e| e.message)?;
                 let iss = a.get("iss").and_then(Json::as_str);
-                let bytes = issuer::build_cwt(iss, i(&a, "iat")?, i(&a, "exp")?, i(&a, "subclaim")?, body).map_err(|e| e.to_string())?;
+                let bytes = issuer::build_cwt(iss, i(&a, "iat")?, i(&a, "exp")?, vec![(i(&a, "subclaim")?, body)]).map_err(|e| e.to_string())?;
                 Ok(Obj::ok().hex("cwt", &bytes).str("diagnostic", &diag_of(&bytes)).done())
             }
             // Step 4: deterministic CBOR
@@ -156,7 +156,7 @@ pub fn call(request: &str) -> String {
             "prepare" => {
                 let dvc = dvc_from(a.get("dvc").ok_or("dvc is required")?)?;
                 let req = IssueRequest {
-                    payload: Payload::DvcMin(dvc),
+                    payloads: vec![Payload::DvcMin(dvc)],
                     iss: a.get("iss").and_then(Json::as_str).map(str::to_owned),
                     iat: i(&a, "iat")?,
                     exp: i(&a, "exp")?,
@@ -227,7 +227,11 @@ pub fn call(request: &str) -> String {
                 if let Some(pem) = a.get("trustPem").and_then(Json::as_str).filter(|p| !p.trim().is_empty()) {
                     store.add_pem(pem).map_err(|e| e.to_string())?;
                 }
-                let options = VerifierOptions { clock_skew_seconds: a.get("clockSkewSeconds").and_then(Json::as_f64).unwrap_or(300.0) as i64, ..Default::default() };
+                let options = VerifierOptions {
+                    clock_skew_seconds: a.get("clockSkewSeconds").and_then(Json::as_f64).unwrap_or(300.0) as i64,
+                    max_payloads: a.get("maxPayloads").and_then(Json::as_f64).map(|m| m as u32),
+                    ..Default::default()
+                };
                 let now = i(&a, "now")?;
                 let r = match a.get("coseHex").and_then(Json::as_str) {
                     Some(h) => verifier::verify_cose(&from_hex(h).ok_or("coseHex is not hex")?, &store, &reg, now, &options),
@@ -236,13 +240,24 @@ pub fn call(request: &str) -> String {
                 let mut o = Obj::ok();
                 match r {
                     Ok(v) => {
-                        o.str("status", "verified").opt_str("iss", v.iss.as_deref()).num("iat", v.iat).num("exp", v.exp).num("subclaim", v.subclaim).hex("kid", &v.dsc.kid);
+                        o.str("status", "verified").opt_str("iss", v.iss.as_deref()).num("iat", v.iat).num("exp", v.exp).hex("kid", &v.dsc.kid);
                         o.opt_str("dscCountry", v.dsc.country.as_deref()).num("dscNotBefore", v.dsc.not_before).num("dscNotAfter", v.dsc.not_after);
-                        match &v.payload {
-                            Payload::DvcMin(p) => o.str("payloadKind", "DVCMin").raw("payload", dvc_json(p)),
-                            Payload::Vhl(v) => o.str("payloadKind", "VHL").str("payloadVhlink", &crate::vhl::to_vhlink(v)),
-                            Payload::Raw { cbor: c, .. } => o.str("payloadKind", "raw").str("payloadDiagnostic", &diag_of(c)),
-                        };
+                        // Every valid hcert entry, in wire order (STT-SEL-004).
+                        let entries: Vec<String> = v
+                            .entries
+                            .iter()
+                            .map(|e| {
+                                let mut x = Obj::default();
+                                x.num("subclaim", e.subclaim).raw("keyUsageAuthorised", e.key_usage_authorised.to_string());
+                                match &e.payload {
+                                    Payload::DvcMin(p) => x.str("payloadKind", "DVCMin").raw("payload", dvc_json(p)),
+                                    Payload::Vhl(p) => x.str("payloadKind", "VHL").str("payloadVhlink", &crate::vhl::to_vhlink(p)),
+                                    Payload::Raw { cbor: c, .. } => x.str("payloadKind", "raw").str("payloadDiagnostic", &diag_of(c)),
+                                };
+                                x.done()
+                            })
+                            .collect();
+                        o.raw("entries", format!("[{}]", entries.join(",")));
                         let d: Vec<String> = v.diagnostics.iter().map(|d| quote(&format!("{}: {}", d.step.wire_name(), d.message))).collect();
                         o.raw("diagnostics", format!("[{}]", d.join(",")));
                     }

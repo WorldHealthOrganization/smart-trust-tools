@@ -137,8 +137,8 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
       const cose = h.codec.fromHc1(c.hc1, L);
       const s = h.cose.parseSign1(cose, L);
       const r = h.verifier.verify(c.hc1, store, new h.subclaims.Registry(), NOW, OPTIONS);
-      return hex(u.kid ?? new Uint8Array()) === f.xxr.kid_hex && u.iss === c.iss && u.subclaim === -6 &&
-        u.payload?.tag === "dvc-min" && u.payload.val.n === c.payload.n && u.payload.val.vx.vp === c.payload.vx.vp && u.payload.val.vx.bo === c.payload.vx.bo &&
+      return hex(u.kid ?? new Uint8Array()) === f.xxr.kid_hex && u.iss === c.iss && u.entries.length === 1 && u.entries[0]!.subclaim === -6 &&
+        u.entries[0]!.payload?.tag === "dvc-min" && u.entries[0]!.payload.val.n === c.payload.n && u.entries[0]!.payload.val.vx.vp === c.payload.vx.vp && u.entries[0]!.payload.val.vx.bo === c.payload.vx.bo &&
         hex(h.codec.cborDeterministic(s.payload, L)) === hex(s.payload) && s.payload.length === c.cwt_cbor_bytes && cose.length === c.cose_sign1_bytes &&
         h.codec.base45Decode(c.hc1.slice(4)).length === c.deflated_bytes && c.hc1.length === c.hc1_chars &&
         r.tag === "failed" && r.val.step === "trust-lookup" && r.val.reason === "kid-not-found";
@@ -206,12 +206,12 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   for (const [name, c] of Object.entries(f.pr129.certificates)) {
     run(`STT-TST-001 STT-VER-001 the PR 129 ${name} certificate verifies as published`, () => {
       const r = h.verifier.verify(c.hc1, store, reg, NOW, OPTIONS);
-      return r.tag === "verified" && r.val.iss === "XX" && r.val.subclaim === -6 && r.val.payload.tag === "dvc-min" && r.val.payload.val.n === c.payload.n && r.val.dsc.notBefore < NOW;
+      return r.tag === "verified" && r.val.iss === "XX" && r.val.entries.length === 1 && r.val.entries[0]!.subclaim === -6 && r.val.entries[0]!.payload.tag === "dvc-min" && r.val.entries[0]!.payload.val.n === c.payload.n && r.val.dsc.notBefore < NOW;
     });
   }
   run("STT-VER-011 read-unverified decodes and says it is not verified", () => {
     const u = h.verifier.readUnverified(hepb1, reg, L);
-    return u.diagnostics[0]!.message.startsWith("NOT VERIFIED") && u.subclaim === -6 && u.iss === "XX" && typeof u.iat === "bigint";
+    return u.diagnostics[0]!.message.startsWith("NOT VERIFIED") && u.entries[0]?.subclaim === -6 && u.iss === "XX" && typeof u.iat === "bigint";
   });
   const negative = f.negative;
   for (const c of negative.cases) {
@@ -228,7 +228,7 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
 
   // issuer (two-phase, the host signs)
   run("STT-ISS-004 STT-COS-005 two-phase issuance with a host DER signature verifies", () => {
-    const p = h.issuer.prepare({ payload: { tag: "dvc-min", val: newborn }, iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
+    const p = h.issuer.prepare({ payloads: [{ tag: "dvc-min", val: newborn }], iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
     // finish takes the pending signature by ownership (WIT `own`): read it first.
     const alg = p.algorithm();
     const kid = hex(p.kid());
@@ -236,15 +236,15 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
     const st = new h.trust.TrustStore();
     st.addDer(f.testkitDsc);
     const r = h.verifier.verify(issued.hc1, st, reg, TESTKIT_NOW, OPTIONS);
-    return alg === "es256" && kid === hex(h.cose.kidFromDsc(f.testkitDsc)) && r.tag === "verified" && r.val.payload.tag === "dvc-min" && r.val.payload.val.n === "Test CHILD";
+    return alg === "es256" && kid === hex(h.cose.kidFromDsc(f.testkitDsc)) && r.tag === "verified" && r.val.entries[0]?.payload.tag === "dvc-min" && r.val.entries[0].payload.val.n === "Test CHILD";
   });
   run("STT-SEL-003 STT-CWT-004 development subclaims need opting in; validity must sit inside the DSC", () => {
-    const req = { payload: { tag: "dvc-min" as const, val: newborn }, validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256" as const, allowDevelopmentSubclaims: false };
+    const req = { payloads: [{ tag: "dvc-min" as const, val: newborn }], validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256" as const, allowDevelopmentSubclaims: false };
     return thrownTag(() => h.issuer.prepare(req, reg)) === "development-subclaim-not-allowed" &&
       thrownTag(() => h.issuer.prepare({ ...req, allowDevelopmentSubclaims: true, validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n * 365n * 20n } }, reg)) === "validity-outside-dsc";
   });
   run("STT-COS-006 finish refuses a signature from another key", () => {
-    const p = h.issuer.prepare({ payload: { tag: "dvc-min", val: newborn }, validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
+    const p = h.issuer.prepare({ payloads: [{ tag: "dvc-min", val: newborn }], validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
     return thrownTag(() => h.issuer.finish(p, f.signEs256Der(new Uint8Array([9])))) === "bad-signature-format";
   });
 
@@ -253,12 +253,12 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
     h.vhl.validate(ihe, undefined).length === 0 && h.vhl.fromVhlink(h.vhl.toVhlink(ihe)).key === ihe.key && h.vhl.validate({ ...ihe, flag: "PL" }, undefined).map((i) => i.code).join() === "bad-flag" && thrownTag(() => h.vhl.fromVhlink("shlink:/x")) === "not-a-vhlink");
   run("STT-VHL-002 a VHL is issued as a CBOR map at key 5 and verifies", () => {
     const payload = { ...ihe, exp: TESTKIT_NOW + 86400n };
-    const p = h.issuer.prepare({ payload: { tag: "vhl", val: payload }, iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
+    const p = h.issuer.prepare({ payloads: [{ tag: "vhl", val: payload }], iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
     const issued = h.issuer.finish(p, f.signEs256Der(p.toBeSigned()));
     const st = new h.trust.TrustStore();
     st.addDer(f.testkitDsc);
     const r = h.verifier.verify(issued.hc1, st, reg, TESTKIT_NOW, OPTIONS);
-    return r.tag === "verified" && r.val.subclaim === 5 && r.val.payload.tag === "vhl" && r.val.payload.val.exp === payload.exp;
+    return r.tag === "verified" && r.val.entries[0]?.subclaim === 5 && r.val.entries[0].payload.tag === "vhl" && r.val.entries[0].payload.val.exp === payload.exp;
   });
   run("STT-VHL-004 new keys are 32 random bytes, base64url", () => {
     const a = h.vhl.newKey();
@@ -286,7 +286,7 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   });
   run("STT-VHL-009 an expired link fails verification by its own exp", () => {
     const payload = { ...ihe, exp: TESTKIT_NOW - 1000n };
-    const p = h.issuer.prepare({ payload: { tag: "vhl", val: payload }, validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
+    const p = h.issuer.prepare({ payloads: [{ tag: "vhl", val: payload }], validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
     const issued = h.issuer.finish(p, f.signEs256Der(p.toBeSigned()));
     const st = new h.trust.TrustStore();
     st.addDer(f.testkitDsc);
