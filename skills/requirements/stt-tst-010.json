@@ -17,7 +17,7 @@
       "key": "statement",
       "label": "Coverage floor",
       "conformance": "SHALL",
-      "requirement": "Each library's CI SHALL measure the line and branch coverage of its core by its own tests and SHALL fail when either falls below a recorded floor. A floor SHALL be raised as tests are added and SHALL NOT be lowered to let a change pass.",
+      "requirement": "Each library's CI SHALL measure the coverage of its core by its own tests, line and branch coverage where its stable toolchain measures branches and line and region coverage where it does not, and SHALL fail when any measure falls below a recorded floor. A floor SHALL be raised as tests are added and SHALL NOT be lowered to let a change pass.",
       "category": "test",
       "successCriteria": [
         {
@@ -27,7 +27,7 @@
         },
         {
           "key": "rust-floor",
-          "criterion": "CI measures the Rust core's line and branch coverage (cargo-llvm-cov) and fails below a floor recorded in the repository.",
+          "criterion": "CI runs tools/hcert-rust/coverage.sh (rustc -C instrument-coverage with the toolchain's llvm-tools; stable rustc does not measure branches) and it fails below 85% line and 80% region coverage of the library's sources.",
           "verification": "test"
         },
         {

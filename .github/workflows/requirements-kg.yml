@@ -102,6 +102,10 @@ jobs:
         run: cargo test --locked
       - name: Test with the demos' QR encoder (feature qr)
         run: cargo test --locked --features qr --test api
+      # The coverage floor (STT-TST-010): rustc's own instrumentation and the
+      # llvm-tools component rust-toolchain.toml pins; nothing to install.
+      - name: Coverage, against the recorded floor
+        run: ./coverage.sh --report
       - name: Build the WebAssembly module, as the demos load it
         run: cargo build --locked --release --features qr --target wasm32-unknown-unknown
       - name: Run the WebAssembly module on Node, with WebCrypto keys
