@@ -25,13 +25,40 @@ export type Registry = import('./who-smart-trust-subclaims.js').Registry;
 export interface VerifierOptions {
   limits: DecodeLimits,
   clockSkewSeconds: number,
+  /**
+   * Refuse an hcert claim with more entries than this
+   * (multiple-subclaims): a deployment's strict profile. None: any
+   * number. [STT-SEL-004]
+   */
+  maxPayloads?: number,
+}
+/**
+ * One entry of the hcert claim. [STT-SEL-004]
+ */
+export interface HcertEntry {
+  subclaim: number,
+  /**
+   * Raw CBOR for a subclaim the registry does not know. [STT-SEL-002]
+   */
+  payload: Payload,
+  /**
+   * False when the DSC's EKU does not permit this entry's
+   * certificate type; the entry is returned, marked, and a
+   * diagnostic says so. [STT-VER-004]
+   */
+  keyUsageAuthorised: boolean,
 }
 export interface VerifiedHcert {
   iss?: string,
   iat: NumericDate,
   exp: NumericDate,
-  subclaim: number,
-  payload: Payload,
+  /**
+   * The valid entries, in subclaim-key order. An entry whose payload
+   * fails its model check is left out and reported as a diagnostic;
+   * verification fails at payload only when none is left, and at
+   * key-usage only when no entry is authorised. [STT-SEL-004]
+   */
+  entries: Array<HcertEntry>,
   /**
    * The DSC that verified the signature.
    */
@@ -66,16 +93,23 @@ export interface VerificationResultFailed {
  * Decoded, NOT verified: no trust lookup, no signature check. For
  * display and triage where verification is impossible (an offline
  * household visit, journey J2); never a basis for trust. [STT-VER-011]
+ * One entry of an unverified hcert claim.
  */
+export interface UnverifiedEntry {
+  subclaim: number,
+  /**
+   * The payload, when it decoded and met its model.
+   */
+  payload?: Payload,
+}
 export interface UnverifiedHcert {
   kid?: Kid,
   iss?: string,
   iat?: NumericDate,
   exp?: NumericDate,
-  subclaim?: number,
   /**
-   * The payload, when it decoded.
+   * Every entry of the hcert claim, in subclaim-key order.
    */
-  payload?: Payload,
+  entries: Array<UnverifiedEntry>,
   diagnostics: Array<Diagnostic>,
 }

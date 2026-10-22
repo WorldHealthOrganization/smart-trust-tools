@@ -22,7 +22,11 @@ export interface Validity {
   exp: NumericDate,
 }
 export interface IssueRequest {
-  payload: Payload,
+  /**
+   * One or more payloads, each under its own subclaim in the hcert
+   * claim, in subclaim-key order on the wire. [STT-SEL-004]
+   */
+  payloads: Array<Payload>,
   /**
    * CWT iss, alpha-2. [STT-CWT-005]
    */
@@ -38,10 +42,23 @@ export interface IssueRequest {
    */
   allowDevelopmentSubclaims: boolean,
 }
-export type IssueError = IssueErrorPayloadInvalid | IssueErrorDevelopmentSubclaimNotAllowed | IssueErrorUnknownSubclaim | IssueErrorValidityOutsideDsc | IssueErrorBadCertificate | IssueErrorBadSignatureFormat;
+export type IssueError = IssueErrorPayloadInvalid | IssueErrorNoPayload | IssueErrorDuplicateSubclaim | IssueErrorDevelopmentSubclaimNotAllowed | IssueErrorUnknownSubclaim | IssueErrorValidityOutsideDsc | IssueErrorBadCertificate | IssueErrorBadSignatureFormat;
 export interface IssueErrorPayloadInvalid {
   tag: 'payload-invalid',
   val: Array<ValidationIssue>,
+}
+/**
+ * The request carries no payload.
+ */
+export interface IssueErrorNoPayload {
+  tag: 'no-payload',
+}
+/**
+ * Two payloads map to the same subclaim. [STT-SEL-004]
+ */
+export interface IssueErrorDuplicateSubclaim {
+  tag: 'duplicate-subclaim',
+  val: number,
 }
 export interface IssueErrorDevelopmentSubclaimNotAllowed {
   tag: 'development-subclaim-not-allowed',

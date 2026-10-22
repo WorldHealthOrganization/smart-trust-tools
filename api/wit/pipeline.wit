@@ -18,7 +18,9 @@ interface issuer {
     }
 
     record issue-request {
-        payload: payload,
+        /// One or more payloads, each under its own subclaim in the hcert
+        /// claim, in subclaim-key order on the wire. [STT-SEL-004]
+        payloads: list<payload>,
         /// CWT iss, alpha-2. [STT-CWT-005]
         iss: option<string>,
         validity: validity,
@@ -31,6 +33,10 @@ interface issuer {
 
     variant issue-error {
         payload-invalid(list<validation-issue>),
+        /// The request carries no payload.
+        no-payload,
+        /// Two payloads map to the same subclaim. [STT-SEL-004]
+        duplicate-subclaim(s32),
         development-subclaim-not-allowed(s32),
         unknown-subclaim(s32),
         /// iat before or exp after the DSC validity. [STT-CWT-004]
@@ -62,9 +68,10 @@ interface issuer {
 }
 
 /// Verification (QR Code Generation section 11): the steps in STT-VER-001
-/// order, each fixed by the IG rather than a policy switch. Exactly one hcert
-/// entry [STT-SEL-004]; trust-list presence is the DSC validity check
-/// [STT-VER-006]; EKU is checked against the certificate type [STT-VER-004].
+/// order, each fixed by the IG rather than a policy switch. The hcert claim
+/// may carry several entries (HCERT 3.2.7) [STT-SEL-004]; trust-list presence
+/// is the DSC validity check [STT-VER-006]; EKU is checked against each
+/// entry's certificate type [STT-VER-004].
 interface verifier {
     use types.{kid, numeric-date, decode-limits, cbor-bytes, step, failure-reason, diagnostic};
     use payloads.{payload};
@@ -74,14 +81,32 @@ interface verifier {
     record verifier-options {
         limits: decode-limits,
         clock-skew-seconds: u32,
+        /// Refuse an hcert claim with more entries than this
+        /// (multiple-subclaims): a deployment's strict profile. None: any
+        /// number. [STT-SEL-004]
+        max-payloads: option<u32>,
+    }
+
+    /// One entry of the hcert claim. [STT-SEL-004]
+    record hcert-entry {
+        subclaim: s32,
+        /// Raw CBOR for a subclaim the registry does not know. [STT-SEL-002]
+        payload: payload,
+        /// False when the DSC's EKU does not permit this entry's
+        /// certificate type; the entry is returned, marked, and a
+        /// diagnostic says so. [STT-VER-004]
+        key-usage-authorised: bool,
     }
 
     record verified-hcert {
         iss: option<string>,
         iat: numeric-date,
         exp: numeric-date,
-        subclaim: s32,
-        payload: payload,
+        /// The valid entries, in subclaim-key order. An entry whose payload
+        /// fails its model check is left out and reported as a diagnostic;
+        /// verification fails at payload only when none is left, and at
+        /// key-usage only when no entry is authorised. [STT-SEL-004]
+        entries: list<hcert-entry>,
         /// The DSC that verified the signature.
         dsc: trusted-dsc,
         /// Unknown CWT claims, as (encoded key, encoded value).
@@ -107,14 +132,20 @@ interface verifier {
     /// Decoded, NOT verified: no trust lookup, no signature check. For
     /// display and triage where verification is impossible (an offline
     /// household visit, journey J2); never a basis for trust. [STT-VER-011]
+    /// One entry of an unverified hcert claim.
+    record unverified-entry {
+        subclaim: s32,
+        /// The payload, when it decoded and met its model.
+        payload: option<payload>,
+    }
+
     record unverified-hcert {
         kid: option<kid>,
         iss: option<string>,
         iat: option<numeric-date>,
         exp: option<numeric-date>,
-        subclaim: option<s32>,
-        /// The payload, when it decoded.
-        payload: option<payload>,
+        /// Every entry of the hcert claim, in subclaim-key order.
+        entries: list<unverified-entry>,
         diagnostics: list<diagnostic>,
     }
 

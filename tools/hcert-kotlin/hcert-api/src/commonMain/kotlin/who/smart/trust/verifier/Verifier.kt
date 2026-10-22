@@ -17,14 +17,38 @@ import who.smart.trust.types.Step
 data class VerifierOptions(
     val limits: DecodeLimits,
     val clockSkewSeconds: Int,
+    /**
+     * Refuse an hcert claim with more entries than this
+     * (multiple-subclaims): a deployment's strict profile. None: any
+     * number. [STT-SEL-004]
+     */
+    val maxPayloads: Int? = null,
+)
+
+/** One entry of the hcert claim. [STT-SEL-004] */
+data class HcertEntry(
+    val subclaim: Int,
+    /** Raw CBOR for a subclaim the registry does not know. [STT-SEL-002] */
+    val payload: Payload,
+    /**
+     * False when the DSC's EKU does not permit this entry's
+     * certificate type; the entry is returned, marked, and a
+     * diagnostic says so. [STT-VER-004]
+     */
+    val keyUsageAuthorised: Boolean,
 )
 
 data class VerifiedHcert(
     val iss: String? = null,
     val iat: NumericDate,
     val exp: NumericDate,
-    val subclaim: Int,
-    val payload: Payload,
+    /**
+     * The valid entries, in subclaim-key order. An entry whose payload
+     * fails its model check is left out and reported as a diagnostic;
+     * verification fails at payload only when none is left, and at
+     * key-usage only when no entry is authorised. [STT-SEL-004]
+     */
+    val entries: List<HcertEntry>,
     /** The DSC that verified the signature. */
     val dsc: TrustedDsc,
     /**
@@ -56,23 +80,30 @@ sealed interface VerificationResult {
  * Decoded, NOT verified: no trust lookup, no signature check. For
  * display and triage where verification is impossible (an offline
  * household visit, journey J2); never a basis for trust. [STT-VER-011]
+ * One entry of an unverified hcert claim.
  */
+data class UnverifiedEntry(
+    val subclaim: Int,
+    /** The payload, when it decoded and met its model. */
+    val payload: Payload? = null,
+)
+
 data class UnverifiedHcert(
     val kid: Kid? = null,
     val iss: String? = null,
     val iat: NumericDate? = null,
     val exp: NumericDate? = null,
-    val subclaim: Int? = null,
-    /** The payload, when it decoded. */
-    val payload: Payload? = null,
+    /** Every entry of the hcert claim, in subclaim-key order. */
+    val entries: List<UnverifiedEntry>,
     val diagnostics: List<Diagnostic>,
 )
 
 /**
  * Verification (QR Code Generation section 11): the steps in STT-VER-001
- * order, each fixed by the IG rather than a policy switch. Exactly one hcert
- * entry [STT-SEL-004]; trust-list presence is the DSC validity check
- * [STT-VER-006]; EKU is checked against the certificate type [STT-VER-004].
+ * order, each fixed by the IG rather than a policy switch. The hcert claim
+ * may carry several entries (HCERT 3.2.7) [STT-SEL-004]; trust-list presence
+ * is the DSC validity check [STT-VER-006]; EKU is checked against each
+ * entry's certificate type [STT-VER-004].
  *
  * Implemented by the library.
  */
