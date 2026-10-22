@@ -23,6 +23,7 @@ tested-by:
   - tools/hcert-rust/tests/api.rs
   - tools/hcert-rust/js/smoke.mjs
   - tools/conformance-ts/suite.ts
+  - tools/conformance-ts/cross.ts
 ---
 
 # hcert-conformance-testing

@@ -11,5 +11,5 @@
     "types": [],
     "skipLibCheck": false
   },
-  "files": ["suite.ts"]
+  "files": ["suite.ts", "cross.ts"]
 }

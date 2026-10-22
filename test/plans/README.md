@@ -37,13 +37,12 @@ suite's test names are listed in the criterion text.
 **Where things stand (Kotlin, JVM):**
 
 - 80 named tests pass.
-- 83 of the 93 requirements are verified by a test named after them, the
+- 85 of the 93 requirements are verified by a test named after them, the
   Rust library's tests included.
 - Line coverage is 91.3% and branch coverage 71.1% (JaCoCo, hcert-core
   commonMain and jvmMain).
 
-The unverified requirements are the cross-implementation group (STT-GEN-006,
-TST-003), the new STT-TST-009 and TST-010, and the six verified by
+The unverified requirements are STT-TST-009 and TST-010, and the six verified by
 inspection or review (bean OI-32).
 
 ## Test levels
@@ -56,7 +55,7 @@ inspection or review (bean OI-32).
 | Fuzzing | no input crashes, hangs or exceeds `DecodeLimits` | `FuzzTest`, a seeded mutation fuzzer over 6 entry points | `cargo-fuzz`, coverage-guided, same 6 targets | generated: seeds from PR 129, a fixed seed per target | STT-TST-006 |
 | Coverage floor | new code does not arrive untested | `:hcert-core:jvmTestCoverageCheck`: fails below 90% line, 70% branch | `cargo-llvm-cov` with a recorded floor | — | STT-TST-010 |
 | Targets | the same behaviour on every platform | JVM and Node (Kotlin/JS) run in CI; **Android is not yet run** | native and wasm32 (jco) | the shared vectors | STT-GEN-004, 005, 011 |
-| Cross-implementation | each library verifies the other's certificates, and the reference script's | — | the Rust suite issues and verifies against Kotlin | issued at test time, ES256 and PS256 | STT-TST-003, GEN-006 |
+| Cross-implementation | each library verifies the other's certificates, from byte-identical bytes to sign | `tools/conformance-ts/cross.mjs` loads both packages | the same | issued at test time, ES256 and PS256, DVC and VHL | STT-TST-003, GEN-006 |
 | One TypeScript suite | both npm packages behave the same through `api/generated/ts` | `tools/conformance-ts` on the Kotlin/JS package (`WitJs.kt`) | the same suite on the jco component | the shared vectors | STT-TST-007 |
 | Schema checks | the payloads match the CDDL and SHACL models | `check-models` | — | PR 129 | STT-TST-008 |
 | WHO-ITB agreement | the library agrees with the test bed WHO uses for GDHCN participants | plan `who-itb-agreement` | the same plan | WHO-ITB track data (bean OI-33) | STT-TST-009 |
@@ -119,8 +118,10 @@ The Rust suite runs the same plan, with these additions:
    CI runs it for a fixed time, and the corpus is kept between runs.
 4. `cargo-llvm-cov` measures coverage, with a floor recorded beside the
    Kotlin one (STT-TST-010).
-5. Certificates issued by each library are verified by the other, and by the
-   smart-trust reference script (STT-TST-003).
+5. Certificates issued by each library are verified by the other
+   (`cross.mjs`, STT-TST-003). The reference script's verify routine is not
+   run: it needs `cryptography`, which is not pinned, and PR 129 has dropped
+   the script (bean OI-32).
 6. One TypeScript suite runs against both npm packages (STT-TST-007).
 
 ## Gaps and next steps
@@ -136,8 +137,8 @@ The Rust suite runs the same plan, with these additions:
 
   Still to do: the seeded fuzzer runs in CI, but coverage-guided
   `cargo-fuzz` needs nightly and doesn't. Also to do: the coverage floor
-  (`cargo-llvm-cov` isn't pinned yet), and cross-verification with Kotlin
-  (STT-TST-003). The TypeScript suite (STT-TST-007) runs the same 45
+  (`cargo-llvm-cov` isn't pinned yet). Each library verifies the other's
+  certificates (STT-TST-003). The TypeScript suite (STT-TST-007) runs the same 45
   checks on both packages. The WIT component
   of the `hcert` world is built, transpiled with jco, and driven through
   every interface in CI (STT-GEN-005). The live demos use a plain module
@@ -161,6 +162,7 @@ node tools/hcert-kotlin/hcert-core/node-smoke.mjs
 toolchain/node/node_modules/.bin/tsc -p tools/conformance-ts/tsconfig.json
 node tools/conformance-ts/run.mjs kotlin tools/hcert-kotlin/hcert-core/build/compileSync/js/main/productionLibrary/kotlin
 node tools/conformance-ts/run.mjs rust <dir written by tools/hcert-rust/build-component.sh>
+node tools/conformance-ts/cross.mjs <that dir> tools/hcert-kotlin/hcert-core/build/compileSync/js/main/productionLibrary/kotlin
 # A longer fuzz run
 STT_FUZZ_ITERATIONS=60000 gradle -p tools/hcert-kotlin --no-daemon --init-script gradle/central-mirror.init.gradle \
   :hcert-core:jvmTest --tests '*FuzzTest*' --rerun
