@@ -25,6 +25,8 @@ import who.smart.trust.types.NumericDate
 import who.smart.trust.types.Severity
 import who.smart.trust.types.Step
 import who.smart.trust.types.ValidationIssue
+import who.smart.trust.verifier.HcertEntry
+import who.smart.trust.verifier.UnverifiedEntry
 import who.smart.trust.verifier.UnverifiedHcert
 import who.smart.trust.verifier.VerificationFailure
 import who.smart.trust.verifier.VerificationResult
@@ -61,36 +63,58 @@ object HcertIssuer : Issuer {
     private fun invalid(path: String, code: String, message: String) =
         HcertResult.Err(IssueError.PayloadInvalid(listOf(ValidationIssue(path, code, message, Severity.BLOCKING))))
 
-    override fun prepare(req: IssueRequest, reg: Registry): HcertResult<PendingSignature, IssueError> {
-        val (subclaim, body) = when (val p = req.payload) {
+    /** The subclaim a payload goes under, or the error when the registry maps none. */
+    private fun subclaimOf(p: Payload, reg: Registry): HcertResult<Int, IssueError> = when (p) {
+        is Payload.DvcMin -> reg.subclaimFor(PayloadKind.DVC_MIN)?.let { HcertResult.Ok(it) } ?: HcertResult.Err(IssueError.UnknownSubclaim(-6))
+        is Payload.Vhl -> reg.subclaimFor(PayloadKind.VHL)?.let { HcertResult.Ok(it) } ?: HcertResult.Err(IssueError.UnknownSubclaim(5))
+        is Payload.Raw -> HcertResult.Ok(p.value.subclaim)
+    }
+
+    /** One payload's model check and CBOR body, then the registry and development-range checks, in that order. */
+    private fun body(p: Payload, subclaim: Int, req: IssueRequest, reg: Registry): HcertResult<CborItem, IssueError> {
+        val item = when (p) {
             is Payload.DvcMin -> {
-                val key = reg.subclaimFor(PayloadKind.DVC_MIN) ?: return HcertResult.Err(IssueError.UnknownSubclaim(-6))
                 val issues = HcertDvc.validate(p.value).filter { it.severity == Severity.BLOCKING }
                 if (issues.isNotEmpty()) return HcertResult.Err(IssueError.PayloadInvalid(issues))
-                val item = try {
+                try {
                     HcertDvc.item(p.value)
                 } catch (e: Exception) {
                     return invalid("extensions", "invalid-extension", e.message ?: "invalid extension")
                 }
-                key to item
             }
             is Payload.Vhl -> {
-                val key = reg.subclaimFor(PayloadKind.VHL) ?: return HcertResult.Err(IssueError.UnknownSubclaim(5))
                 val issues = HcertVhl.validate(p.value, null).filter { it.severity == Severity.BLOCKING }
                 if (issues.isNotEmpty()) return HcertResult.Err(IssueError.PayloadInvalid(issues))
-                key to HcertVhl.toItem(p.value) // a CBOR map, not a vhlink:/ string [STT-VHL-002]
+                HcertVhl.toItem(p.value) // a CBOR map, not a vhlink:/ string [STT-VHL-002]
             }
-            is Payload.Raw -> {
-                val item = try {
-                    cborDecode(p.value.cbor, DEFAULT_LIMITS)
-                } catch (e: CborException) {
-                    return invalid("", "cbor", e.message!!)
-                }
-                p.value.subclaim to item
+            is Payload.Raw -> try {
+                cborDecode(p.value.cbor, DEFAULT_LIMITS)
+            } catch (e: CborException) {
+                return invalid("", "cbor", e.message!!)
             }
         }
         if (reg.lookup(subclaim) == null) return HcertResult.Err(IssueError.UnknownSubclaim(subclaim))
         if (subclaim < 0 && !req.allowDevelopmentSubclaims) return HcertResult.Err(IssueError.DevelopmentSubclaimNotAllowed(subclaim))
+        return HcertResult.Ok(item)
+    }
+
+    override fun prepare(req: IssueRequest, reg: Registry): HcertResult<PendingSignature, IssueError> {
+        // One or more payloads, each under its own subclaim. [STT-SEL-004]
+        if (req.payloads.isEmpty()) return HcertResult.Err(IssueError.NoPayload)
+        val subclaims = req.payloads.map { p ->
+            when (val r = subclaimOf(p, reg)) {
+                is HcertResult.Ok -> r.value
+                is HcertResult.Err -> return HcertResult.Err(r.error)
+            }
+        }
+        val seen = mutableSetOf<Int>()
+        subclaims.firstOrNull { !seen.add(it) }?.let { return HcertResult.Err(IssueError.DuplicateSubclaim(it)) }
+        val entries = req.payloads.zip(subclaims).map { (p, subclaim) ->
+            when (val r = body(p, subclaim, req, reg)) {
+                is HcertResult.Ok -> CborItem.Int(subclaim.toLong()) to r.value
+                is HcertResult.Err -> return HcertResult.Err(r.error)
+            }
+        }
         req.iss?.let { if (!alpha2.matches(it)) return invalid("iss", "not-alpha2", "iss must be two upper-case letters") }
         if (req.validity.exp <= req.validity.iat) return invalid("exp", "exp-not-after-iat", "exp must be after iat")
 
@@ -107,7 +131,7 @@ object HcertIssuer : Issuer {
             req.iss?.let { add(CborItem.Int(Claim.ISS) to CborItem.Text(it)) }
             add(CborItem.Int(Claim.EXP) to CborItem.Int(req.validity.exp))
             add(CborItem.Int(Claim.IAT) to CborItem.Int(req.validity.iat))
-            add(CborItem.Int(Claim.HCERT) to CborItem.Map(listOf(CborItem.Int(subclaim.toLong()) to body)))
+            add(CborItem.Int(Claim.HCERT) to CborItem.Map(entries)) // the encoder orders the keys
         }
         val payload = CborEncoder.encode(CborItem.Map(claims))
         val protected = CborEncoder.encode(
@@ -214,20 +238,19 @@ object HcertVerifier : Verifier {
         val iss = (claims[Claim.ISS] as? CborItem.Text)?.value
         val iat = (claims[Claim.IAT] as? CborItem.Int)?.value
         val exp = (claims[Claim.EXP] as? CborItem.Int)?.value
-        val entries = (claims[Claim.HCERT] as? CborItem.Map)?.entries.orEmpty()
-        if (entries.size > 1) diagnostics += Diagnostic(Step.HCERT, Severity.WARNING, "hcert has ${entries.size} entries; the first is shown")
-        val first = entries.firstOrNull()
-        val subclaim = (first?.first as? CborItem.Int)?.value?.toInt()
-        val payload = if (first == null || subclaim == null) {
-            diagnostics += Diagnostic(Step.HCERT, Severity.WARNING, "no hcert entry")
-            null
-        } else try {
-            payloadOf(subclaim, first.second, reg)
-        } catch (f: Fail) {
-            diagnostics += Diagnostic(Step.PAYLOAD, Severity.WARNING, f.detail)
-            null
+        val hcert = (claims[Claim.HCERT] as? CborItem.Map)?.entries.orEmpty()
+        val entries = hcert.mapNotNull { (keyItem, body) ->
+            val subclaim = (keyItem as? CborItem.Int)?.value?.toInt() ?: return@mapNotNull null
+            val payload = try {
+                payloadOf(subclaim, body, reg)
+            } catch (f: Fail) {
+                diagnostics += Diagnostic(f.step, Severity.WARNING, "subclaim $subclaim: ${f.detail}")
+                null
+            }
+            UnverifiedEntry(subclaim, payload)
         }
-        return UnverifiedHcert(s.kid, iss, iat, exp, subclaim, payload, diagnostics)
+        if (entries.isEmpty()) diagnostics += Diagnostic(Step.HCERT, Severity.WARNING, "no hcert entry")
+        return UnverifiedHcert(s.kid, iss, iat, exp, entries, diagnostics)
     }
 
     override fun verifyCose(cose: ByteArray, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult = try {
@@ -302,13 +325,27 @@ object HcertVerifier : Verifier {
         val hcert = claims[Claim.HCERT] as? CborItem.Map
         val entries = hcert?.entries.orEmpty()
 
-        // EKU against the certificate type [STT-VER-004]
+        // EKU against each entry's certificate type [STT-VER-004, STT-SEL-004]
         val dscHcertEkus = dsc.extendedKeyUsages.filter { it in hcertEkus }
-        val subclaimForEku = (entries.singleOrNull()?.first as? CborItem.Int)?.value?.toInt()
-        if (dscHcertEkus.isNotEmpty() && subclaimForEku != null) {
-            val needed = ekuFor(subclaimForEku, entries.single().second)
-            if (needed == null) diagnostics += Diagnostic(Step.KEY_USAGE, Severity.WARNING, "no certificate type is known for subclaim $subclaimForEku")
-            else if (needed !in dscHcertEkus) throw Fail(Step.KEY_USAGE, FailureReason.KEY_USAGE_MISMATCH, "the DSC's extended key usage does not allow this certificate type")
+        // By entry index: false when the DSC's EKU does not allow the entry's certificate type.
+        val authorised = entries.map { (keyItem, body) ->
+            val subclaim = (keyItem as? CborItem.Int)?.value?.toInt()
+            if (dscHcertEkus.isEmpty() || subclaim == null) return@map true
+            val needed = ekuFor(subclaim, body)
+            if (needed == null) {
+                diagnostics += Diagnostic(Step.KEY_USAGE, Severity.WARNING, "no certificate type is known for subclaim $subclaim")
+                true
+            } else {
+                needed in dscHcertEkus
+            }
+        }
+        if (authorised.isNotEmpty() && authorised.none { it }) {
+            throw Fail(Step.KEY_USAGE, FailureReason.KEY_USAGE_MISMATCH, "the DSC's extended key usage does not allow this certificate type")
+        }
+        entries.forEachIndexed { i, (keyItem, _) ->
+            if (!authorised[i]) {
+                diagnostics += Diagnostic(Step.KEY_USAGE, Severity.WARNING, "the DSC's extended key usage does not allow subclaim ${(keyItem as CborItem.Int).value}'s certificate type")
+            }
         }
 
         // CWT claims and time [STT-CWT-002, STT-CWT-003, STT-VER-005]
@@ -330,20 +367,34 @@ object HcertVerifier : Verifier {
 
         // Subclaim dispatch [STT-SEL-004, STT-VER-007]
         if (entries.isEmpty()) throw Fail(Step.HCERT, FailureReason.HCERT_MISSING, "no hcert (-260) entry")
-        if (entries.size > 1) throw Fail(Step.HCERT, FailureReason.MULTIPLE_SUBCLAIMS, "hcert has ${entries.size} entries")
-        val (keyItem, body) = entries.single()
-        val subclaim = (keyItem as? CborItem.Int)?.value?.toInt() ?: throw Fail(Step.HCERT, FailureReason.HCERT_MISSING, "hcert key is not an integer")
-        if (reg.lookup(subclaim) == null) diagnostics += Diagnostic(Step.HCERT, Severity.WARNING, "subclaim $subclaim is not in the registry")
-        val payload = payloadOf(subclaim, body, reg)
-        // The link's own exp, besides the HCERT's. [STT-VHL-009]
-        if (payload is Payload.Vhl) payload.value.exp?.let { if (now - skew > it) throw Fail(Step.TIME, FailureReason.EXPIRED, "the VHL payload's exp has passed") }
+        options.maxPayloads?.let { if (entries.size > it) throw Fail(Step.HCERT, FailureReason.MULTIPLE_SUBCLAIMS, "hcert has ${entries.size} entries") }
+        val subclaims = entries.map { (keyItem, _) ->
+            (keyItem as? CborItem.Int)?.value?.toInt() ?: throw Fail(Step.HCERT, FailureReason.HCERT_MISSING, "hcert key is not an integer")
+        }
+        // Each entry on its own: an invalid one is left out and reported; the first failure stands when none is left.
+        var firstFailure: Fail? = null
+        val valid = entries.indices.mapNotNull { i ->
+            val subclaim = subclaims[i]
+            if (reg.lookup(subclaim) == null) diagnostics += Diagnostic(Step.HCERT, Severity.WARNING, "subclaim $subclaim is not in the registry")
+            try {
+                val payload = payloadOf(subclaim, entries[i].second, reg)
+                // The link's own exp, besides the HCERT's. [STT-VHL-009]
+                if (payload is Payload.Vhl) payload.value.exp?.let { if (now - skew > it) throw Fail(Step.TIME, FailureReason.EXPIRED, "the VHL payload's exp has passed") }
+                HcertEntry(subclaim, payload, authorised[i])
+            } catch (f: Fail) {
+                if (firstFailure == null) firstFailure = f
+                diagnostics += Diagnostic(f.step, Severity.WARNING, "subclaim $subclaim: ${f.detail}")
+                null
+            }
+        }
+        if (valid.isEmpty()) throw firstFailure!!
 
         // Claims this version does not know are kept. [STT-CWT-006]
         val known = setOf(Claim.ISS, Claim.EXP, Claim.IAT, Claim.HCERT)
         val other = claims.entries.filter { (k, _) -> (k as? CborItem.Int)?.value !in known }
             .map { (k, v) -> CborEncoder.encode(k) to CborEncoder.encode(v) }
 
-        return VerifiedHcert(iss, iat, exp, subclaim, payload, dsc, other, diagnostics)
+        return VerifiedHcert(iss, iat, exp, valid, dsc, other, diagnostics)
     }
 }
 

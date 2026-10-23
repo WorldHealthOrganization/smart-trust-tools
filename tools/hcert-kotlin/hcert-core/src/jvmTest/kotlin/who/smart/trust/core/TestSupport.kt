@@ -65,7 +65,10 @@ internal object Testkit {
     val now = Platform.certificate(esDer).notBefore + 3600
 
     fun request(payload: Payload, alg: CoseAlgorithm = CoseAlgorithm.ES256, dev: Boolean = true, iss: String? = "XX") =
-        IssueRequest(payload, iss, Validity(now, now + 86400), if (alg == CoseAlgorithm.ES256) esDer else psDer, alg, allowDevelopmentSubclaims = dev)
+        request(listOf(payload), alg, dev, iss)
+
+    fun request(payloads: List<Payload>, alg: CoseAlgorithm = CoseAlgorithm.ES256, dev: Boolean = true, iss: String? = "XX") =
+        IssueRequest(payloads, iss, Validity(now, now + 86400), if (alg == CoseAlgorithm.ES256) esDer else psDer, alg, allowDevelopmentSubclaims = dev)
 
     fun issue(req: IssueRequest, reg: SubclaimRegistry = SubclaimRegistry()): IssuedHcert {
         val pending = HcertIssuer.prepare(req, reg).ok()

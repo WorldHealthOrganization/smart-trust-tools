@@ -35,8 +35,8 @@ fn stt_vhl_002_the_payload_is_a_cbor_map_at_hcert_key_5_and_verifies() {
     let issued = issue_payload(Payload::Vhl(payload()));
     assert!(matches!(key5(&issued.cose), Item::Map(_)));
     let v = verifier::verify(&issued.hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap();
-    assert_eq!(v.subclaim, 5);
-    assert_eq!(v.payload, Payload::Vhl(payload()));
+    assert_eq!(only(&v).subclaim, 5);
+    assert_eq!(only(&v).payload, Payload::Vhl(payload()));
 }
 
 #[test]
@@ -45,7 +45,7 @@ fn stt_vhl_002_stt_vhl_003_a_vhlink_string_at_key_5_still_verifies_and_the_map_i
     let issued = issue_payload(Payload::Raw { subclaim: 5, cbor: text });
     assert!(matches!(key5(&issued.cose), Item::Text(_)));
     let v = verifier::verify(&issued.hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap();
-    assert_eq!(v.payload, Payload::Vhl(payload()));
+    assert_eq!(only(&v).payload, Payload::Vhl(payload()));
     let as_map = issue_payload(Payload::Vhl(payload())).hc1.len();
     let as_text = codec::to_hc1(&issued.cose).len();
     // The claim is about the encoding: the map is under 80% of the string's

@@ -40,6 +40,7 @@ export const fixtures = {
   pr129: JSON.parse(read("vectors/smart-trust-pr129/dvc-qr-example-XXA.json")),
   pr129Pem: read("vectors/smart-trust-pr129/dvc-qr-example-XXA-dsc.pem"),
   xxr: JSON.parse(read("vectors/smart-trust-af75be2/dvc-qr-example-XXR.json")),
+  xxrDscDid: read("vectors/smart-trust-af75be2/XXR-DSC-did.json"),
   negative,
   pem: Object.fromEntries([...pemPaths].map((p) => [p, read(p)])),
   trustDomains: read("vectors/gdhcn-trust-domains/CodeSystem-Domains.json"),

@@ -29,24 +29,45 @@ fn stt_ver_003_headers_are_checked_before_any_signature() {
 }
 
 #[test]
-fn stt_ver_007_an_hcert_with_two_entries_is_refused() {
+fn stt_ver_007_stt_sel_004_an_unknown_second_entry_is_kept_raw_unless_the_profile_allows_one() {
     let claims = Item::Map(vec![
         (Item::Int(4), Item::Int(TESTKIT_NOW + 1000)),
         (Item::Int(6), Item::Int(TESTKIT_NOW)),
         (Item::Int(-260), Item::Map(vec![(Item::Int(-6), payload::to_item(&newborn()).unwrap()), (Item::Int(-7), Item::Map(vec![]))])),
     ]);
-    let payload_bytes = cbor::encode(&claims).unwrap();
-    let ph = issuer::protected_header(CoseAlgorithm::Es256, &kid_of(&es_der()));
-    let sig = sign(CoseAlgorithm::Es256, &cose::sig_structure(&ph, &payload_bytes));
-    let cose_bytes = cose::assemble_sign1(&ph, &payload_bytes, &sig);
-    let f = verifier::verify_cose(&cose_bytes, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    let cose_bytes = signed_claims(&claims);
+    let v = verifier::verify_cose(&cose_bytes, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap();
+    assert_eq!(v.entries.iter().map(|e| e.subclaim).collect::<Vec<_>>(), [-6, -7]);
+    assert_eq!(v.entries[0].payload, Payload::DvcMin(newborn()));
+    assert!(matches!(&v.entries[1].payload, Payload::Raw { subclaim: -7, .. }));
+    assert!(v.diagnostics.iter().any(|d| d.step == Step::KeyUsage && d.message.contains("subclaim -7")), "{:?}", v.diagnostics);
+    // A deployment's strict profile still refuses it.
+    let strict = verifier::VerifierOptions { max_payloads: Some(1), ..options() };
+    let f = verifier::verify_cose(&cose_bytes, &store_with(&es_der()), &reg(), TESTKIT_NOW, &strict).unwrap_err();
     assert_eq!((f.step, f.reason), (Step::Hcert, FailureReason::MultipleSubclaims));
+}
+
+#[test]
+fn stt_ver_004_stt_sel_004_key_usage_is_checked_per_entry() {
+    // The PS256 testkit DSC's EKU is test certificates only.
+    let mut r = request(CoseAlgorithm::Ps256);
+    r.payloads = vec![Payload::DvcMin(newborn()), Payload::Vhl(live_vhl())];
+    let p = issuer::prepare(&r, &reg()).unwrap();
+    let issued = issuer::finish(&p, &sign(CoseAlgorithm::Ps256, &p.to_be_signed)).unwrap();
+    let v = verifier::verify(&issued.hc1, &store_with(&ps_der()), &reg(), TESTKIT_NOW, &options()).unwrap();
+    let marks: Vec<_> = v.entries.iter().map(|e| (e.subclaim, e.key_usage_authorised)).collect();
+    assert_eq!(marks, [(5, true), (-6, false)]);
+    assert!(v.diagnostics.iter().any(|d| d.step == Step::KeyUsage && d.message.contains("subclaim -6")), "{:?}", v.diagnostics);
+    // A DVC alone still stops at key usage.
+    let alone = issue(CoseAlgorithm::Ps256);
+    let f = verifier::verify(&alone.hc1, &store_with(&ps_der()), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    assert_eq!((f.step, f.reason), (Step::KeyUsage, FailureReason::KeyUsageMismatch));
 }
 
 #[test]
 fn stt_ver_011_read_unverified_says_so() {
     let u = verifier::read_unverified(&pr129_hc1("bcg"), &reg(), &DEFAULT_LIMITS).unwrap();
     assert!(u.diagnostics[0].message.starts_with("NOT VERIFIED"));
-    assert_eq!(u.subclaim, Some(-6));
+    assert_eq!(u.entries.iter().map(|e| e.subclaim).collect::<Vec<_>>(), [-6]);
     assert_eq!(u.iss.as_deref(), Some("XX"));
 }

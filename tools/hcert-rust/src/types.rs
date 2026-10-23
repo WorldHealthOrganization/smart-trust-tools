@@ -190,6 +190,10 @@ pub enum TrustError {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum IssueError {
     PayloadInvalid(Vec<ValidationIssue>),
+    /// The request carries no payload (STT-SEL-004).
+    NoPayload,
+    /// Two payloads map to the same subclaim (STT-SEL-004).
+    DuplicateSubclaim(i64),
     DevelopmentSubclaimNotAllowed(i64),
     UnknownSubclaim(i64),
     ValidityOutsideDsc,
@@ -230,6 +234,8 @@ impl fmt::Display for IssueError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             IssueError::PayloadInvalid(v) => write!(f, "payload invalid: {}", v.iter().map(|i| format!("{}: {}", i.path, i.message)).collect::<Vec<_>>().join("; ")),
+            IssueError::NoPayload => f.write_str("the request carries no payload"),
+            IssueError::DuplicateSubclaim(s) => write!(f, "two payloads have subclaim {s}"),
             IssueError::DevelopmentSubclaimNotAllowed(s) => write!(f, "subclaim {s} is in the development range and the issuer did not opt in"),
             IssueError::UnknownSubclaim(s) => write!(f, "subclaim {s} is not in the registry"),
             IssueError::ValidityOutsideDsc => f.write_str("iat and exp must fall inside the DSC's validity"),

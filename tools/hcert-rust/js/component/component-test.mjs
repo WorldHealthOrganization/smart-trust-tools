@@ -46,10 +46,10 @@ const reg = new subclaims.Registry();
 check("subclaims: the guide's defaults, DVC at -6 and VHL at 5", reg.all().map((s) => s.key).join() === "1,3,4,5,-6,-7" && reg.subclaimFor("dvc-min") === -6 && reg.subclaimFor("vhl") === 5);
 for (const name of ["hepb1", "bcg"]) {
   const r = verifier.verify(vector.certificates[name].hc1, store, reg, NOW, OPTIONS);
-  check(`verifier: ${name} verifies as published`, r.tag === "verified" && r.val.iss === "XX" && r.val.subclaim === -6 && r.val.payload.tag === "dvc-min" && r.val.payload.val.n === vector.certificates[name].payload.n);
+  check(`verifier: ${name} verifies as published`, r.tag === "verified" && r.val.iss === "XX" && r.val.entries.length === 1 && r.val.entries[0].subclaim === -6 && r.val.entries[0].payload.tag === "dvc-min" && r.val.entries[0].payload.val.n === vector.certificates[name].payload.n);
 }
 const u = verifier.readUnverified(hepb1, reg, L);
-check("verifier: read-unverified says so", u.diagnostics[0].message.startsWith("NOT VERIFIED") && u.subclaim === -6);
+check("verifier: read-unverified says so", u.diagnostics[0].message.startsWith("NOT VERIFIED") && u.entries[0]?.subclaim === -6);
 
 // the shared negative vectors
 const negative = JSON.parse(read("vectors/negative/negative-vectors.json"));
@@ -74,15 +74,15 @@ check("dvc: the rules are enforced", dvc.validate({ ...newborn, nt: "LA" }).some
 const pemDer = (pem, kind) => Buffer.from(pem.split(`-----BEGIN ${kind}-----`)[1].split(`-----END ${kind}-----`)[0].replace(/\s/g, ""), "base64");
 const esDsc = pemDer(read("vectors/testkit/es256-dsc.pem"), "CERTIFICATE");
 const esKey = createPrivateKey(read("vectors/testkit/es256-key.pem"));
-const pending = issuer.prepare({ payload: { tag: "dvc-min", val: newborn }, iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: esDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
+const pending = issuer.prepare({ payloads: [{ tag: "dvc-min", val: newborn }], iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: esDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
 check("issuer: prepare returns the Sig_structure and the kid", pending.algorithm() === "es256" && hex(pending.kid()) === hex(cose.kidFromDsc(esDsc)));
 const der = nodeSign("sha256", pending.toBeSigned(), esKey); // DER, as JCA and OpenSSL give it
 const issued = issuer.finish(pending, der);
 const es = new trust.TrustStore();
 es.addDer(esDsc);
 const v = verifier.verify(issued.hc1, es, reg, TESTKIT_NOW, OPTIONS);
-check("issuer: a DER signature is accepted, and the HC1 verifies", v.tag === "verified" && v.val.payload.val.n === "Test CHILD");
-check("issuer: a development subclaim needs opting in", throws(() => issuer.prepare({ payload: { tag: "dvc-min", val: newborn }, validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: esDsc, alg: "es256", allowDevelopmentSubclaims: false }, reg), "development-subclaim-not-allowed"));
+check("issuer: a DER signature is accepted, and the HC1 verifies", v.tag === "verified" && v.val.entries[0].payload.val.n === "Test CHILD");
+check("issuer: a development subclaim needs opting in", throws(() => issuer.prepare({ payloads: [{ tag: "dvc-min", val: newborn }], validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: esDsc, alg: "es256", allowDevelopmentSubclaims: false }, reg), "development-subclaim-not-allowed"));
 
 // vhl, randomness from the host (wasi:random)
 const ihe = { url: "https://vhl-sharer.example.org/List/_search?_id=abc123def456&code=folder&status=current&patient.identifier=urn:oid:2.16.840.1.113883.2.4.6.3|PASSPORT123&_include=List:item", key: "86F8LY5LlWAa1-OS_FgrTnYNqFHJP2ey5RSKLJBN9jk", exp: 1735689600n, flag: "LP", label: "Patient Health Summary", v: 1, fhirBaseUrl: "https://vhl-sharer.example.org" };

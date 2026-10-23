@@ -31,8 +31,8 @@ class VhlShareTest {
         val cose = Testkit.issue(Payload.Vhl(payload)).cose
         assertIs<CborItem.Map>(key5(cose))
         val v = assertIs<VerificationResult.Verified>(HcertVerifier.verify(HcertCodec.toHc1(cose), store, reg, Testkit.now, OPTIONS)).value
-        assertEquals(5, v.subclaim)
-        assertEquals(payload, (v.payload as Payload.Vhl).value)
+        assertEquals(5, v.entries.single().subclaim)
+        assertEquals(payload, (v.entries.single().payload as Payload.Vhl).value)
     }
 
     @Test fun `STT-VHL-002 STT-VHL-003 a vhlink string at key 5 still verifies, and the map is smaller`() {
@@ -41,7 +41,7 @@ class VhlShareTest {
             .cose
         assertIs<CborItem.Text>(key5(cose))
         val v = assertIs<VerificationResult.Verified>(HcertVerifier.verify(HcertCodec.toHc1(cose), store, reg, Testkit.now, OPTIONS)).value
-        assertEquals(payload, (v.payload as Payload.Vhl).value)
+        assertEquals(payload, (v.entries.single().payload as Payload.Vhl).value)
         val asMap = Testkit.issue(Payload.Vhl(payload)).hc1.length
         val asText = HcertCodec.toHc1(cose).length
         assertTrue(asMap < asText * 0.8, "map $asMap vs text $asText characters")

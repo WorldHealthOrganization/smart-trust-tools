@@ -26,8 +26,8 @@ fn stt_tst_001_stt_pay_001_both_pr129_certificates_verify_and_decode_as_publishe
     for name in ["hepb1", "bcg"] {
         let v = verifier::verify(&pr129_hc1(name), &store, &reg(), NOW, &options()).unwrap_or_else(|f| panic!("{name}: {f:?}"));
         assert_eq!(v.iss.as_deref(), Some("XX"));
-        assert_eq!(v.subclaim, -6);
-        let Payload::DvcMin(p) = &v.payload else { panic!("{name}: not a DVCMin") };
+        assert_eq!(only(&v).subclaim, -6);
+        let Payload::DvcMin(p) = &only(&v).payload else { panic!("{name}: not a DVCMin") };
         let expected = vector.get("certificates").unwrap().get(name).unwrap().get("payload").unwrap();
         assert_eq!(Some(p.n.as_str()), expected.get("n").and_then(|j| j.as_str()));
         assert_eq!(Some(p.nt.as_str()), expected.get("nt").and_then(|j| j.as_str()));
@@ -59,8 +59,9 @@ fn stt_tst_011_stt_tst_002_the_merged_guides_xxr_certificates_decode_as_publishe
         assert_eq!(to_hex(u.kid.as_ref().unwrap()), "916ffa567c0f44a2");
         assert_eq!(u.iss.as_deref(), Some("XR"));
         assert_eq!((u.iat, u.exp), (Some(1_792_657_800), Some(1_824_193_800)));
-        assert_eq!(u.subclaim, Some(-6));
-        let Some(Payload::DvcMin(p)) = &u.payload else { panic!("{name}: not a DVCMin") };
+        assert_eq!(u.entries.len(), 1);
+        assert_eq!(u.entries[0].subclaim, -6);
+        let Some(Payload::DvcMin(p)) = &u.entries[0].payload else { panic!("{name}: not a DVCMin") };
         let expected = c.get("payload").unwrap();
         let vx = expected.get("vx").unwrap();
         assert_eq!(Some(p.n.as_str()), expected.get("n").and_then(|j| j.as_str()));
@@ -83,6 +84,26 @@ fn stt_tst_011_stt_tst_002_the_merged_guides_xxr_certificates_decode_as_publishe
     // The hepatitis B figures 12.5 prints.
     let h = vector.get("certificates").unwrap().get("hepb1").unwrap();
     assert_eq!([num(h, "cwt_cbor_bytes"), num(h, "cose_sign1_bytes"), num(h, "deflated_bytes"), num(h, "hc1_chars")], [222, 307, 293, 444]);
+}
+
+#[test]
+fn stt_tst_011_the_merged_guides_xxr_certificates_verify_against_the_dev_trust_lists_dsc() {
+    let mut store = TrustStore::new();
+    assert_eq!(store.add_did_document(&read(XXR_DSC_DID)).unwrap(), 1);
+    let vector = json(XXR);
+    for name in ["hepb1", "bcg"] {
+        let c = vector.get("certificates").unwrap().get(name).unwrap();
+        let iat = c.get("iat").unwrap().as_f64().unwrap() as i64;
+        let v = verifier::verify(c.get("hc1").unwrap().as_str().unwrap(), &store, &reg(), iat + 3600, &options()).unwrap_or_else(|f| panic!("{name}: {f:?}"));
+        assert_eq!(v.iss.as_deref(), Some("XR"));
+        assert_eq!(v.dsc.country.as_deref(), Some("XR"));
+        assert_eq!(to_hex(&v.dsc.kid), "916ffa567c0f44a2");
+        let e = only(&v);
+        assert!(e.key_usage_authorised);
+        let Payload::DvcMin(p) = &e.payload else { panic!("{name}: not a DVCMin") };
+        assert_eq!(Some(p.vx.vp.as_str()), c.get("payload").unwrap().get("vx").unwrap().get("vp").and_then(|j| j.as_str()));
+        assert!(v.diagnostics.is_empty(), "{name}: {:?}", v.diagnostics);
+    }
 }
 
 #[test]

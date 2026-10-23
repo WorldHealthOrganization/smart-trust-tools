@@ -346,9 +346,11 @@ function verdict(r) {
   }, el("span", { class: "hd-mark", "aria-hidden": "true" }, i < failedAt ? "✓" : i === failedAt ? "✗" : "–"), ` ${STEP_LABEL[s]}`,
     i === failedAt ? el("span", { class: "hd-detail" }, ` ${r.reason}: ${r.detail}`) : null)));
   const summary = r.status === "verified"
-    ? el("div", { class: "hd-verdict hd-ok" }, `Verified. Issued by ${r.iss ?? "(no iss)"} under subclaim ${r.subclaim}, signed by the DSC with kid ${r.kid}.`)
+    ? el("div", { class: "hd-verdict hd-ok" }, `Verified. Issued by ${r.iss ?? "(no iss)"}, signed by the DSC with kid ${r.kid}, carrying ${r.entries.map((e) => `subclaim ${e.subclaim}${e.keyUsageAuthorised ? "" : " (not authorised by the DSC's key usage)"}`).join(" and ")}.`)
     : el("div", { class: "hd-verdict hd-bad" }, `Not verified: stopped at ${STEP_LABEL[r.step]} (${r.reason}).`);
-  return [summary, list, r.payload ? field("Payload, read only after the signature verified", code(JSON.stringify(r.payload, null, 2))) : null];
+  const shown = (e) => e.payload ?? e.payloadVhlink ?? e.payloadDiagnostic;
+  return [summary, list, ...(r.entries ?? []).map((e) => field(`Payload under subclaim ${e.subclaim}, read only after the signature verified`, code(typeof shown(e) === "string" ? shown(e) : JSON.stringify(shown(e), null, 2)))),
+    ...(r.diagnostics ?? []).map((d) => note(d))];
 }
 
 function render(name, root) {

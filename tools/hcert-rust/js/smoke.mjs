@@ -17,7 +17,8 @@ const expect = (name, got, want) => {
 const vector = JSON.parse(read("vectors/smart-trust-pr129/dvc-qr-example-XXA.json"));
 const pem = read("vectors/smart-trust-pr129/dvc-qr-example-XXA-dsc.pem");
 for (const name of ["hepb1", "bcg"]) {
-  expect(`${name} verifies`, hcert.call("verify", { hc1: vector.certificates[name].hc1, trustPem: pem, now: 1792454400 }), { status: "verified", subclaim: -6, iss: "XX", kid: "58733e058aaa6621" });
+  const r = hcert.call("verify", { hc1: vector.certificates[name].hc1, trustPem: pem, now: 1792454400 });
+  expect(`${name} verifies`, { ...r, entrySubclaims: r.entries?.map((e) => e.subclaim).join() }, { status: "verified", entrySubclaims: "-6", iss: "XX", kid: "58733e058aaa6621" });
 }
 const negative = JSON.parse(read("vectors/negative/negative-vectors.json"));
 for (const c of negative.cases) {

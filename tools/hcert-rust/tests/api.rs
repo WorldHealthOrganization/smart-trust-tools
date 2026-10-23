@@ -48,7 +48,11 @@ fn stt_gen_002_every_step_is_its_own_call_and_they_compose_to_a_verifiable_hc1()
     let pem = read("vectors/testkit/es256-dsc.pem").replace('\n', "\\n");
     let v = ok(&format!(r#"{{"op":"verify","hc1":"{}","trustPem":"{pem}","now":{TESTKIT_NOW}}}"#, st(&fin, "hc1")));
     assert_eq!(st(&v, "status"), "verified");
-    assert_eq!(st(v.get("payload").unwrap(), "n"), "Test CHILD");
+    let entries = v.get("entries").unwrap().as_arr().unwrap();
+    assert_eq!(entries.len(), 1);
+    assert_eq!(entries[0].get("subclaim").unwrap().as_f64(), Some(-6.0));
+    assert_eq!(entries[0].get("keyUsageAuthorised"), Some(&hcert::json::Json::Bool(true)));
+    assert_eq!(st(entries[0].get("payload").unwrap(), "n"), "Test CHILD");
     let late = ok(&format!(r#"{{"op":"verify","hc1":"{}","trustPem":"{pem}","now":{}}}"#, st(&fin, "hc1"), TESTKIT_NOW + 86400 * 2));
     assert_eq!((st(&late, "step"), st(&late, "reason")), ("TIME", "EXPIRED"));
 }

@@ -16,7 +16,11 @@ data class Validity(
 )
 
 data class IssueRequest(
-    val payload: Payload,
+    /**
+     * One or more payloads, each under its own subclaim in the hcert
+     * claim, in subclaim-key order on the wire. [STT-SEL-004]
+     */
+    val payloads: List<Payload>,
     /** CWT iss, alpha-2. [STT-CWT-005] */
     val iss: String? = null,
     val validity: Validity,
@@ -29,6 +33,12 @@ data class IssueRequest(
 
 sealed interface IssueError {
     data class PayloadInvalid(val value: List<ValidationIssue>) : IssueError
+
+    /** The request carries no payload. */
+    data object NoPayload : IssueError
+
+    /** Two payloads map to the same subclaim. [STT-SEL-004] */
+    data class DuplicateSubclaim(val value: Int) : IssueError
 
     data class DevelopmentSubclaimNotAllowed(val value: Int) : IssueError
 

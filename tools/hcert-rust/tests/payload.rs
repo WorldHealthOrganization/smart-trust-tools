@@ -17,6 +17,59 @@ use hcert::trust::TrustStore;
 use hcert::types::*;
 
 #[test]
+fn stt_sel_004_stt_iss_004_a_certificate_with_a_dvc_and_a_vhl_verifies_with_both_entries() {
+    let issued = issue_payloads(vec![Payload::DvcMin(newborn()), Payload::Vhl(live_vhl())]);
+    let v = verifier::verify(&issued.hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap();
+    // Wire order: the deterministic encoder sorts 5 (0x05) before -6 (0x25).
+    assert_eq!(v.entries.iter().map(|e| (e.subclaim, e.key_usage_authorised)).collect::<Vec<_>>(), [(5, true), (-6, true)]);
+    assert_eq!(v.entries[0].payload, Payload::Vhl(live_vhl()));
+    assert_eq!(v.entries[1].payload, Payload::DvcMin(newborn()));
+    let u = verifier::read_unverified(&issued.hc1, &reg(), &DEFAULT_LIMITS).unwrap();
+    assert_eq!(u.entries.iter().map(|e| (e.subclaim, e.payload.is_some())).collect::<Vec<_>>(), [(5, true), (-6, true)]);
+}
+
+#[test]
+fn stt_sel_004_max_payloads_refuses_more_entries_than_the_profile_allows() {
+    let issued = issue_payloads(vec![Payload::DvcMin(newborn()), Payload::Vhl(live_vhl())]);
+    let opts = |m| verifier::VerifierOptions { max_payloads: Some(m), ..options() };
+    let f = verifier::verify(&issued.hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW, &opts(1)).unwrap_err();
+    assert_eq!((f.step, f.reason), (Step::Hcert, FailureReason::MultipleSubclaims));
+    assert_eq!(verifier::verify(&issued.hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW, &opts(2)).unwrap().entries.len(), 2);
+}
+
+#[test]
+fn stt_sel_004_an_invalid_entry_is_left_out_and_reported() {
+    let mut bad = newborn();
+    bad.nt = "LA".into();
+    let claims = Item::Map(vec![
+        (Item::Int(4), Item::Int(TESTKIT_NOW + 1000)),
+        (Item::Int(6), Item::Int(TESTKIT_NOW)),
+        (Item::Int(-260), Item::Map(vec![(Item::Int(5), hcert::vhl::to_item(&live_vhl())), (Item::Int(-6), payload::to_item(&bad).unwrap())])),
+    ]);
+    let cose_bytes = signed_claims(&claims);
+    let v = verifier::verify_cose(&cose_bytes, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap();
+    assert_eq!(only(&v).subclaim, 5);
+    assert!(v.diagnostics.iter().any(|d| d.step == Step::Payload && d.message.starts_with("subclaim -6:")), "{:?}", v.diagnostics);
+    // With no valid entry left, the entry's own failure stands, as for one payload.
+    let alone = Item::Map(vec![
+        (Item::Int(4), Item::Int(TESTKIT_NOW + 1000)),
+        (Item::Int(6), Item::Int(TESTKIT_NOW)),
+        (Item::Int(-260), Item::Map(vec![(Item::Int(-6), payload::to_item(&bad).unwrap())])),
+    ]);
+    let f = verifier::verify_cose(&signed_claims(&alone), &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    assert_eq!((f.step, f.reason), (Step::Payload, FailureReason::PayloadInvalid));
+}
+
+#[test]
+fn stt_sel_004_issuance_refuses_no_payload_and_a_duplicate_subclaim() {
+    let mut r = request(CoseAlgorithm::Es256);
+    r.payloads = vec![];
+    assert_eq!(issuer::prepare(&r, &reg()), Err(IssueError::NoPayload));
+    r.payloads = vec![Payload::DvcMin(newborn()), Payload::DvcMin(newborn())];
+    assert_eq!(issuer::prepare(&r, &reg()), Err(IssueError::DuplicateSubclaim(-6)));
+}
+
+#[test]
 fn stt_pay_001_stt_pay_008_a_dvcmin_round_trips_and_keeps_unknown_elements() {
     let p = newborn();
     let bytes = payload::to_cbor(&p).unwrap();

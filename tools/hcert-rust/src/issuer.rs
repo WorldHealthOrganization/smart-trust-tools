@@ -12,7 +12,8 @@ use crate::verifier::{CLAIM_EXP, CLAIM_HCERT, CLAIM_IAT, CLAIM_ISS};
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct IssueRequest {
-    pub payload: Payload,
+    /// One or more payloads, each under its own subclaim (STT-SEL-004).
+    pub payloads: Vec<Payload>,
     pub iss: Option<String>,
     pub iat: NumericDate,
     pub exp: NumericDate,
@@ -44,15 +45,16 @@ fn invalid(path: &str, code: &str, message: &str) -> IssueError {
     IssueError::PayloadInvalid(vec![ValidationIssue { path: path.into(), code: code.into(), message: message.into(), severity: Severity::Blocking }])
 }
 
-/// The CWT claim set: iss, exp, iat and hcert {subclaim: body} (STT-CWT-001).
-pub fn build_cwt(iss: Option<&str>, iat: NumericDate, exp: NumericDate, subclaim: i64, body: Item) -> Result<Vec<u8>, IssueError> {
+/// The CWT claim set: iss, exp, iat and hcert {subclaim: body, ...}
+/// (STT-CWT-001, STT-SEL-004). The encoder orders the hcert keys.
+pub fn build_cwt(iss: Option<&str>, iat: NumericDate, exp: NumericDate, entries: Vec<(i64, Item)>) -> Result<Vec<u8>, IssueError> {
     let mut claims = Vec::new();
     if let Some(iss) = iss {
         claims.push((Item::Int(CLAIM_ISS), Item::Text(iss.into())));
     }
     claims.push((Item::Int(CLAIM_EXP), Item::Int(exp)));
     claims.push((Item::Int(CLAIM_IAT), Item::Int(iat)));
-    claims.push((Item::Int(CLAIM_HCERT), Item::Map(vec![(Item::Int(subclaim), body)])));
+    claims.push((Item::Int(CLAIM_HCERT), Item::Map(entries.into_iter().map(|(sc, body)| (Item::Int(sc), body)).collect())));
     cbor::encode(&Item::Map(claims)).map_err(|e| invalid("", "cbor", &e.message))
 }
 
@@ -61,8 +63,9 @@ pub fn protected_header(alg: CoseAlgorithm, kid: &Kid) -> Vec<u8> {
     cbor::encode(&Item::Map(vec![(Item::Int(1), Item::Int(alg.label())), (Item::Int(4), Item::Bytes(kid.to_vec()))])).expect("distinct keys")
 }
 
-pub fn prepare(req: &IssueRequest, reg: &Registry) -> Result<PendingSignature, IssueError> {
-    let (subclaim, body) = match &req.payload {
+/// One payload's subclaim and CBOR body, after its own checks.
+fn entry(p: &Payload, req: &IssueRequest, reg: &Registry) -> Result<(i64, Item), IssueError> {
+    let (subclaim, body) = match p {
         Payload::DvcMin(p) => {
             let issues: Vec<_> = payload::validate(p).into_iter().filter(|i| i.severity == Severity::Blocking).collect();
             if !issues.is_empty() {
@@ -86,6 +89,28 @@ pub fn prepare(req: &IssueRequest, reg: &Registry) -> Result<PendingSignature, I
     if subclaim < 0 && !req.allow_development_subclaims {
         return Err(IssueError::DevelopmentSubclaimNotAllowed(subclaim));
     }
+    Ok((subclaim, body))
+}
+
+pub fn prepare(req: &IssueRequest, reg: &Registry) -> Result<PendingSignature, IssueError> {
+    if req.payloads.is_empty() {
+        return Err(IssueError::NoPayload);
+    }
+    // Duplicates first, then each payload's own checks in request order, as
+    // the Kotlin library does (STT-GEN-006).
+    let mut seen = Vec::with_capacity(req.payloads.len());
+    for p in &req.payloads {
+        let sc = match p {
+            Payload::DvcMin(_) => reg.subclaim_for(PayloadKind::DvcMin),
+            Payload::Vhl(_) => reg.subclaim_for(PayloadKind::Vhl),
+            Payload::Raw { subclaim, .. } => *subclaim,
+        };
+        if seen.contains(&sc) {
+            return Err(IssueError::DuplicateSubclaim(sc));
+        }
+        seen.push(sc);
+    }
+    let entries = req.payloads.iter().map(|p| entry(p, req, reg)).collect::<Result<Vec<_>, _>>()?;
     if let Some(iss) = &req.iss {
         if !(iss.len() == 2 && iss.bytes().all(|c| c.is_ascii_uppercase())) {
             return Err(invalid("iss", "not-alpha2", "iss must be two upper-case letters"));
@@ -100,7 +125,7 @@ pub fn prepare(req: &IssueRequest, reg: &Registry) -> Result<PendingSignature, I
         return Err(IssueError::ValidityOutsideDsc);
     }
     let kid = cose::kid_from_dsc(&req.dsc_der);
-    let payload = build_cwt(req.iss.as_deref(), req.iat, req.exp, subclaim, body)?;
+    let payload = build_cwt(req.iss.as_deref(), req.iat, req.exp, entries)?;
     let protected = protected_header(req.alg, &kid);
     let to_be_signed = cose::sig_structure(&protected, &payload);
     Ok(PendingSignature { protected, payload, alg: req.alg, kid, dsc_der: req.dsc_der.clone(), to_be_signed })

@@ -58,8 +58,8 @@ class VerifyTest {
 
     @Test fun `STT-VER-007 the payload is dispatched to its logical model by subclaim`() {
         val v = assertIs<VerificationResult.Verified>(HcertVerifier.verify(Testkit.issue(Payload.DvcMin(NEWBORN)).hc1, store, reg, Testkit.now, OPTIONS)).value
-        assertEquals(-6, v.subclaim)
-        assertIs<Payload.DvcMin>(v.payload)
+        assertEquals(-6, v.entries.single().subclaim)
+        assertIs<Payload.DvcMin>(v.entries.single().payload)
     }
 
     @Test fun `STT-VER-008 STT-VER-009 every failure is a value naming its step and reason, offline`() {
@@ -73,8 +73,8 @@ class VerifyTest {
     @Test fun `STT-VER-011 an unverified read for triage is marked so`() {
         val hc1 = Testkit.issue(Payload.DvcMin(NEWBORN)).hc1
         val u = HcertVerifier.readUnverified(hc1, reg, DEFAULT_LIMITS).ok()
-        assertEquals(-6, u.subclaim)
-        assertEquals("XM9V38", (u.payload as Payload.DvcMin).value.vx.vp)
+        assertEquals(-6, u.entries.single().subclaim)
+        assertEquals("XM9V38", (u.entries.single().payload as Payload.DvcMin).value.vx.vp)
         assertTrue(u.diagnostics.first().message.startsWith("NOT VERIFIED"))
         assertEquals(FailureReason.BASE45_INVALID, (HcertVerifier.readUnverified("HC1:abc", reg, DEFAULT_LIMITS) as HcertResult.Err).error.reason)
     }

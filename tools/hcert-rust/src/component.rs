@@ -25,7 +25,10 @@ use w::types::{
     CoseAlgorithm as WAlg, DecodeLimits as WLimits, Diagnostic as WDiag, FailureReason as WReason, Severity as WSeverity, Step as WStep, Subclaim as WSubclaim,
     ValidationIssue as WIssue,
 };
-use w::verifier::{UnverifiedHcert as WUnverified, VerificationFailure as WFailure, VerificationResult as WResult, VerifiedHcert as WVerified, VerifierOptions as WOptions};
+use w::verifier::{
+    HcertEntry as WEntry, UnverifiedEntry as WUnverifiedEntry, UnverifiedHcert as WUnverified, VerificationFailure as WFailure, VerificationResult as WResult, VerifiedHcert as WVerified,
+    VerifierOptions as WOptions,
+};
 use w::vhl::{
     Decrypted as WDecrypted, ManifestDocument as WDoc, ManifestRequest as WManifestRequest, SignatureBase as WSigBase, SignatureRequest as WSigRequest, VhlError as WVhlError,
     VhlPayload as WVhl,
@@ -155,6 +158,8 @@ fn trust_error(e: TrustError) -> WTrustError {
 fn issue_error(e: IssueError) -> WIssueError {
     match e {
         IssueError::PayloadInvalid(v) => WIssueError::PayloadInvalid(issues(v)),
+        IssueError::NoPayload => WIssueError::NoPayload,
+        IssueError::DuplicateSubclaim(s) => WIssueError::DuplicateSubclaim(s32(s)),
         IssueError::DevelopmentSubclaimNotAllowed(s) => WIssueError::DevelopmentSubclaimNotAllowed(s32(s)),
         IssueError::UnknownSubclaim(s) => WIssueError::UnknownSubclaim(s32(s)),
         IssueError::ValidityOutsideDsc => WIssueError::ValidityOutsideDsc,
@@ -247,7 +252,7 @@ fn failure_out(f: crate::verifier::VerificationFailure) -> WFailure {
     WFailure { step: step(f.step), reason: reason(f.reason), detail: f.detail, diagnostics: Vec::new() }
 }
 fn options_in(o: WOptions) -> crate::verifier::VerifierOptions {
-    crate::verifier::VerifierOptions { limits: limits(o.limits), clock_skew_seconds: o.clock_skew_seconds as i64 }
+    crate::verifier::VerifierOptions { limits: limits(o.limits), clock_skew_seconds: o.clock_skew_seconds as i64, max_payloads: o.max_payloads }
 }
 fn result_out(r: Result<crate::verifier::VerifiedHcert, crate::verifier::VerificationFailure>) -> WResult {
     match r {
@@ -255,8 +260,7 @@ fn result_out(r: Result<crate::verifier::VerifiedHcert, crate::verifier::Verific
             iss: v.iss,
             iat: v.iat,
             exp: v.exp,
-            subclaim: s32(v.subclaim),
-            payload: payload_out(v.payload),
+            entries: v.entries.into_iter().map(|e| WEntry { subclaim: s32(e.subclaim), payload: payload_out(e.payload), key_usage_authorised: e.key_usage_authorised }).collect(),
             dsc: dsc_out(v.dsc),
             other_claims: v.other_claims,
             diagnostics: v.diagnostics.into_iter().map(diag).collect(),
@@ -502,8 +506,7 @@ impl w::verifier::Guest for Component {
                 iss: u.iss,
                 iat: u.iat,
                 exp: u.exp,
-                subclaim: u.subclaim.map(s32),
-                payload: u.payload.map(payload_out),
+                entries: u.entries.into_iter().map(|e| WUnverifiedEntry { subclaim: s32(e.subclaim), payload: e.payload.map(payload_out) }).collect(),
                 diagnostics: u.diagnostics.into_iter().map(diag).collect(),
             })
             .map_err(failure_out)
@@ -516,7 +519,7 @@ impl w::issuer::Guest for Component {
     fn prepare(req: WIssueRequest, reg: RegistryBorrow<'_>) -> Result<WPending, WIssueError> {
         let reg = reg.get::<Registry>().0.borrow();
         let r = crate::issuer::IssueRequest {
-            payload: payload_in(req.payload),
+            payloads: req.payloads.into_iter().map(payload_in).collect(),
             iss: req.iss,
             iat: req.validity.iat,
             exp: req.validity.exp,

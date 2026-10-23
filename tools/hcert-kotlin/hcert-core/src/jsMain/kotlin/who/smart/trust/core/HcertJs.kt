@@ -26,8 +26,15 @@ object HcertNode {
         when (r) {
             is VerificationResult.Verified -> {
                 val v = r.value
-                val kind = if (v.payload is Payload.DvcMin) "dvc-min" else "raw"
-                """{"status":"verified","subclaim":${v.subclaim},"iss":${v.iss?.let { "\"$it\"" } ?: "null"},"payload":"$kind","kid":"${v.dsc.kid.toHex()}"}"""
+                val entries = v.entries.joinToString(",") { e ->
+                    val kind = when (e.payload) {
+                        is Payload.DvcMin -> "dvc-min"
+                        is Payload.Vhl -> "vhl"
+                        is Payload.Raw -> "raw"
+                    }
+                    """{"subclaim":${e.subclaim},"payload":"$kind","keyUsageAuthorised":${e.keyUsageAuthorised}}"""
+                }
+                """{"status":"verified","entries":[$entries],"iss":${v.iss?.let { "\"$it\"" } ?: "null"},"kid":"${v.dsc.kid.toHex()}"}"""
             }
             is VerificationResult.Failed -> """{"status":"failed","step":"${r.value.step}","reason":"${r.value.reason}"}"""
         }

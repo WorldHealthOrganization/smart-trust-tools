@@ -16,7 +16,7 @@
       "key": "statement",
       "label": "Dispatch to logical model, then business rules",
       "conformance": "SHALL",
-      "requirement": "After verification the verifier SHALL decode the hcert entry with the codec registered for its subclaim, falling back to RawPayload. It SHALL then run any registered BusinessRuleHooks and attach their outcomes to the result.",
+      "requirement": "After verification the verifier SHALL decode each hcert entry with the codec registered for its subclaim, falling back to RawPayload. It SHALL then run any registered BusinessRuleHooks and attach their outcomes to the result.",
       "category": "functional",
       "successCriteria": [
         {

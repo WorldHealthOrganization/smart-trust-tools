@@ -8,6 +8,7 @@ import type { Hcert, Outcome } from "./suite.ts";
 import { L, OPTIONS, TESTKIT_NOW, hex, ihe, newborn } from "./suite.ts";
 import type { CoseAlgorithm } from "../../api/generated/ts/interfaces/who-smart-trust-types.js";
 import type { IssueRequest } from "../../api/generated/ts/interfaces/who-smart-trust-issuer.js";
+import type { Payload } from "../../api/generated/ts/interfaces/who-smart-trust-payloads.js";
 
 export interface CrossFixtures {
   testkitDsc: Uint8Array;
@@ -37,15 +38,15 @@ export function runCross(impls: Record<string, Hcert>, f: CrossFixtures): Outcom
     ["es256", f.testkitDsc, f.signEs256Der],
     ["ps256", f.testkitPsDsc, f.signPs256],
   ];
-  const payloads: [string, IssueRequest["payload"]][] = [
-    ["DVC", { tag: "dvc-min", val: newborn }],
-    // The IHE example link expired in 2025; a live link, or VHL-009 stops it first.
-    ["VHL", { tag: "vhl", val: { ...ihe, exp: TESTKIT_NOW + 86400n } }],
-  ];
+  const dvc: Payload = { tag: "dvc-min", val: newborn };
+  // The IHE example link expired in 2025; a live link, or VHL-009 stops it first.
+  const vhl: Payload = { tag: "vhl", val: { ...ihe, exp: TESTKIT_NOW + 86400n } };
+  // Several payloads in one certificate, too (STT-SEL-004); the wire puts 5 before -6.
+  const payloads: [string, Payload[]][] = [["DVC", [dvc]], ["VHL", [vhl]], ["DVC+VHL", [dvc, vhl]]];
 
   for (const [alg, dsc, signer] of algs) {
-    for (const [label, payload] of payloads) {
-      const req: IssueRequest = { payload, iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: dsc, alg, allowDevelopmentSubclaims: true };
+    for (const [label, list] of payloads) {
+      const req: IssueRequest = { payloads: list, iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: dsc, alg, allowDevelopmentSubclaims: true };
       for (const [iName, issuer, vName, verifier] of [[aName, a, bName, b], [bName, b, aName, a]] as const) {
         run(`STT-TST-003 STT-GEN-006 ${alg.toUpperCase()} ${label} issued by ${iName} verifies in ${vName}, from the same bytes`, () => {
           const regI = new issuer.subclaims.Registry();
@@ -65,13 +66,18 @@ export function runCross(impls: Record<string, Hcert>, f: CrossFixtures): Outcom
           const store = new verifier.trust.TrustStore();
           store.addDer(dsc);
           const r = verifier.verifier.verify(issued.hc1, store, regV, TESTKIT_NOW, OPTIONS);
-          if (alg === "ps256" && payload.tag === "dvc-min") {
-            // The PS256 testkit DSC's EKU is test certificates only: the signature
-            // verified (above, and the pipeline passed SIGNATURE), then key usage
-            // stops a vaccination certificate (STT-VER-004). A VHL has no EKU rule.
+          // The PS256 testkit DSC's EKU is test certificates only: the signature
+          // verified (above, and the pipeline passed SIGNATURE), then key usage
+          // stops a vaccination certificate on its own, and marks it beside a
+          // payload it does permit (STT-VER-004). A VHL has no EKU rule.
+          const vaccinationOnly = list.every((p) => p.tag === "dvc-min");
+          if (alg === "ps256" && vaccinationOnly) {
             return r.tag === "failed" ? [r.val.step === "key-usage" && r.val.reason === "key-usage-mismatch", `${r.val.step} ${r.val.reason}`] : [false, "verified despite the test-only EKU"];
           }
-          return r.tag === "verified" ? [canon(r.val.payload) === canon(payload), canon(r.val.payload)] : [false, `${r.val.step} ${r.val.reason}`];
+          if (r.tag !== "verified") return [false, `${r.val.step} ${r.val.reason}`];
+          const want = [...list].sort((x, y) => (x.tag === "vhl" ? -1 : 1) - (y.tag === "vhl" ? -1 : 1))
+            .map((p) => ({ subclaim: p.tag === "vhl" ? 5 : -6, payload: p, keyUsageAuthorised: !(alg === "ps256" && p.tag === "dvc-min") }));
+          return [canon(r.val.entries) === canon(want), canon(r.val.entries)];
         });
       }
     }
@@ -79,10 +85,10 @@ export function runCross(impls: Record<string, Hcert>, f: CrossFixtures): Outcom
 
   run(`STT-TST-003 a signature over ${aName}'s bytes, attached by ${bName} to a different payload, is refused`, () => {
     const reg = new a.subclaims.Registry();
-    const pA = a.issuer.prepare({ payload: { tag: "dvc-min", val: newborn }, iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
+    const pA = a.issuer.prepare({ payloads: [{ tag: "dvc-min", val: newborn }], iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
     const sig = f.signEs256Der(pA.toBeSigned());
     const regB = new b.subclaims.Registry();
-    const pB = b.issuer.prepare({ payload: { tag: "dvc-min", val: { ...newborn, n: "Other CHILD" } }, iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, regB);
+    const pB = b.issuer.prepare({ payloads: [{ tag: "dvc-min", val: { ...newborn, n: "Other CHILD" } }], iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, regB);
     // finish checks the signature against the DSC (STT-COS-006), so the forgery never leaves the issuer.
     try {
       b.issuer.finish(pB, sig);
