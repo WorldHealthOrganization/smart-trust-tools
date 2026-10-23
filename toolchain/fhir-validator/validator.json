@@ -35,16 +35,32 @@
       "version": "6.2.0",
       "why": "Loaded for an R5 run; the version is fixed in ValidationService (withThoVersion(\"6.2.0\")) in 7.0.1.",
       "url": "https://packages.fhir.org/hl7.terminology.r5/6.2.0",
-      "sha256": null,
-      "provenance": "NOT PINNED: packages.fhir.org, packages2.fhir.org and packages.simplifier.net were refused by the session's network policy on 2026-10-23, and npm carries only 7.0.1. The validator refuses to run until this is pinned."
+      "sha256": "4b492a0721d96f8c848142b581b1c87b58d427c358ec4b04be059d1b13d0d894",
+      "provenance": "packages.fhir.org, fetched 2026-10-23; the package.json date is 2025-01-22, and the tarball's sha1 matches the registry's dist.shasum 9072ae190a8bf174de11f6beeba9b373e86a16a8."
     },
     {
       "name": "hl7.fhir.uv.extensions.r5",
       "version": "5.2.0",
       "why": "Loaded for an R5 run; the version is fixed in ValidationService (withExtensionsVersion(\"5.2.0\")) in 7.0.1.",
       "url": "https://packages.fhir.org/hl7.fhir.uv.extensions.r5/5.2.0",
-      "sha256": null,
-      "provenance": "NOT PINNED: as hl7.terminology.r5; npm carries only 5.3.0-ballot-tc1. The validator refuses to run until this is pinned."
+      "sha256": "e02fc6eff0f37c1611a35aa93ef9aaa3b55ab7371a5c96f4d2a5834106a13170",
+      "provenance": "packages.fhir.org, fetched 2026-10-23; the package.json date is 2025-02-10, and the tarball's sha1 matches the registry's dist.shasum 90d77a988dd6a75452961a187783714d02265a90."
+    },
+    {
+      "name": "hl7.terminology",
+      "version": "6.2.0",
+      "why": "ValidationService.loadIgsAndExtensions in 7.0.1 always loads the unversioned id hl7.terminology; with no network it takes the copy in the package cache. 6.2.0 is the release hl7.terminology.r5 6.2.0 was built with (R5).",
+      "url": "https://packages.fhir.org/hl7.terminology/6.2.0",
+      "sha256": "33812712a778100539b4f848a1d62c2a8e05357b550332ae8001eee56b34fde0",
+      "provenance": "packages.fhir.org, fetched 2026-10-23; the package.json date is 2025-01-22, and the tarball's sha1 matches the registry's dist.shasum ed12dcc3f9456de0538c6eb1a3ed6ac7db647795."
+    },
+    {
+      "name": "hl7.fhir.uv.extensions.r5",
+      "version": "5.1.0",
+      "why": "A dependency of hl7.terminology 6.2.0.",
+      "url": "https://packages.fhir.org/hl7.fhir.uv.extensions.r5/5.1.0",
+      "sha256": "493de27b4081903a69e182e29e6d30a19390c27d168c9fca95fbb04c1898292c",
+      "provenance": "packages.fhir.org, fetched 2026-10-23; the package.json date is 2024-04-27, and the tarball's sha1 matches the registry's dist.shasum 85c34e6967397967b954d4d2cd964390104af7b7."
     }
   ]
 }

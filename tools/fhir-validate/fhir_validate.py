@@ -12,6 +12,11 @@ refuses the run. The packages are laid into a fresh package cache for each
 run, and the validator runs with -no-http-access (so it cannot fetch a
 package itself) and -tx n/a (no terminology server).
 
+Any Error or Fatal fails the run unless known-errors.json beside this script
+lists it: an error in the upstream models, by file and message, with the
+upstream issue that tracks its fix. An entry the validator no longer reports
+also fails the run, so the list cannot go stale.
+
 Usage:
     python3 tools/fhir-validate/fhir_validate.py --site     the site's pre step:
         run only when the site build is main's (published at the root), and
@@ -43,6 +48,7 @@ import tempfile
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 PINS = ROOT / "toolchain" / "fhir-validator" / "validator.json"
 MODELS = ROOT / "models" / "fhir"
+KNOWN = pathlib.Path(__file__).resolve().parent / "known-errors.json"
 
 
 def say(msg):
@@ -151,12 +157,43 @@ def main():
                *[str(f.relative_to(ROOT)) for f in files]]
         say("validator %s, FHIR %s, %d StructureDefinition(s), packages %s"
             % (v["version"], pins["fhirVersion"], len(files), ", ".join("%s#%s" % (p["name"], p["version"]) for p, _ in tarballs)))
-        r = subprocess.run(cmd, cwd=ROOT)
-    if r.returncode != 0:
-        say("the FHIR Validator reported errors (exit %d)" % r.returncode)
+        r = subprocess.run(cmd, cwd=ROOT, stdout=subprocess.PIPE, text=True)
+    sys.stdout.write(r.stdout)
+    errors = validator_errors(r.stdout, files)
+    if errors is None:
+        say("the FHIR Validator did not report on every model (exit %d)" % r.returncode)
         return 1
-    say("no errors")
+    known = json.loads(KNOWN.read_text())["errors"]
+    unknown = [(f, m) for f, m in errors if not any(k["file"] == f and k["contains"] in m for k in known)]
+    stale = [k for k in known if not any(k["file"] == f and k["contains"] in m for f, m in errors)]
+    for k in known:
+        if k not in stale:
+            say("known upstream error, allowed until %s is fixed: %s: %s" % (k["issue"], k["file"], k["contains"]))
+    for f, m in unknown:
+        say("error: %s: %s" % (f, m))
+    for k in stale:
+        say("%s lists an error the validator no longer reports, so remove it: %s: %s"
+            % (KNOWN.relative_to(ROOT), k["file"], k["contains"]))
+    if unknown or stale:
+        return 1
+    say("no errors" if not errors else "no errors beyond the %d known upstream one(s)" % len(errors))
     return 0
+
+
+def validator_errors(out, files):
+    """The (model file, message) of every Error or Fatal line, or None unless every model has its section."""
+    errors, seen, current = [], set(), None
+    for line in out.splitlines():
+        m = re.match(r"^-- (\S+) -+$", line)
+        if m:
+            current = m.group(1)
+            seen.add(current)
+            continue
+        m = re.match(r"^\s+(Error|Fatal) @ (.*)$", line)
+        if m and current:
+            errors.append((current, m.group(2)))
+    wanted = {str(f.relative_to(ROOT)) for f in files}
+    return errors if wanted <= seen else None
 
 
 if __name__ == "__main__":
