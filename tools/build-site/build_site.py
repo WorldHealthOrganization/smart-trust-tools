@@ -199,8 +199,8 @@ def requirements_page(ref, M, graph):
         blocks.append('<h2 id="area-%s">%s · %s</h2>' % (area.lower(), area, esc(title)))
         for r in rs:
             o = out[r["id"]]
-            rows = [("Derived from", o["derivedFrom"], True), ("Satisfies (smart-trust)", o["satisfies"], True),
-                    ("Refines", o["refines"], False),
+            rows = [("References", o["references"], True), ("Satisfies (smart-trust)", o["satisfies"], True),
+                    ("Derived from (broader requirement)", o["derivedFrom"], False),
                     ("Realized by skills", o["realizedBy"], False), ("Constrains (WIT, CDDL)", o["constrainsApi"], False),
                     ("Verified by tests", [by_id[e["s"]] for e in graph["edges"] if e["rel"] == "verifies" and e["t"] == r["id"]], False),
                     ("Test plans", [by_id[e["s"]] for e in graph["edges"] if e["rel"] == "assesses" and e["t"] == r["id"]], False),
@@ -218,8 +218,8 @@ def requirements_page(ref, M, graph):
 <span class="eyebrow">Requirements · read from skills/requirements/</span>
 <h1>HCERT library requirements</h1>
 <p>%d requirements, one cat-harness <code>req:</code> node each. Every link below is an edge in the graph:
-library sections, external schemas, references and owner directives a requirement is derived from; the smart-trust
-FHIR Requirements it satisfies; the skills that realize it; the WIT items and CDDL rules whose comments cite it; and the open issues
+library sections, external schemas, references and owner directives a requirement references; the broader
+requirement it is derived from; the smart-trust FHIR Requirements it satisfies; the skills that realize it; the WIT items and CDDL rules whose comments cite it; and the open issues
 (beans) that affect it.</p>
 <ul>%s</ul>%s</article></main>""" % (len(reqs), "".join(toc), "".join(blocks)))
 
@@ -486,9 +486,9 @@ KIND_SOURCES = [
 ]
 
 REL_NOTES = [
-    ("derivedFrom", "requirement → source", "reference of the req: node (FHIR Requirements.reference)"),
+    ("references", "requirement → source", "reference of the req: node (FHIR Requirements.reference): what it is drawn from"),
     ("satisfies", "requirement → smart-trust", "a smart-trust FHIR Requirements canonical in reference"),
-    ("refines", "requirement → requirement", "derivedFrom of the req: node"),
+    ("derivedFrom", "requirement → requirement", "derivedFrom of the req: node (FHIR Requirements.derivedFrom): the broader requirement it narrows"),
     ("realizedBy", "requirement → skill", "the skill's satisfies"),
     ("implementedBy", "skill → Tool", "the Tool's satisfies"),
     ("usedIn", "skill → process", "a BPMN task's skill ref"),

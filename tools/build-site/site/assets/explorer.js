@@ -29,8 +29,8 @@
     "Tools · tests · test plans · processes · roles"];
   var CARD_W = 230, COL_GAP = 300;
   var REL_LABEL = {
-    derivedFrom: ["Derived from", "Source for"], satisfies: ["Satisfies (smart-trust)", "Satisfied by"],
-    refines: ["Refines", "Refined by"],
+    references: ["References", "Referenced by"], satisfies: ["Satisfies (smart-trust)", "Satisfied by"],
+    derivedFrom: ["Derived from", "Basis for"],
     assesses: ["Assesses", "Test plans"], planCase: ["Cases (skills)", "In test plans"], precededBy: ["Preceded by", "Precedes"],
     realizedBy: ["Skills", "Realizes"], constrainsApi: ["Contract items (WIT, CDDL)", "Constrained by"],
     implementedBy: ["Tools", "Skills"], usedIn: ["Processes", "Skills"], performedBy: ["Roles", "Skills"],
@@ -476,7 +476,7 @@
       if (n.kind === "api" && n.qname) extra = ' <span class="muted mono">' + esc(n.qname) + "</span>";
       else if (n.title && n.title !== n.label) extra = ' <span class="muted">' + esc(n.title) + "</span>";
       var q = x.edge.quote ? '<span class="d-quote">“' + esc(x.edge.quote) + "”</span>" : "";
-      var urls = (rel === "derivedFrom" || rel === "concerns") && dir !== "in" ? '<span class="d-urls">' + S.urlList(n.urls) + "</span>" : "";
+      var urls = (rel === "references" || rel === "concerns") && dir !== "in" ? '<span class="d-urls">' + S.urlList(n.urls) + "</span>" : "";
       return "<li><span>" + nodeLink(n) + extra + "</span>" + q + urls + "</li>";
     }).join("");
     return '<div class="d-sec"><h4>' + esc(title) + " (" + items.length + ')</h4><ul class="d-list">' + lis + "</ul></div>";
@@ -526,10 +526,10 @@
       if (n.criteria && n.criteria.length) h.push('<div class="d-sec"><h4>Success criteria</h4><ul class="small">' + n.criteria.map(function (c) {
         return '<li><span class="chip">' + esc(c.verification) + '</span> <span class="mono">' + esc(c.key) + "</span> " + esc(c.criterion) + "</li>";
       }).join("") + "</ul></div>");
-      ["derivedFrom", "satisfies", "realizedBy", "constrainsApi", "refines", "affectedBy"].forEach(function (r) { h.push(relSection(id, r, "out")); });
+      ["references", "satisfies", "realizedBy", "constrainsApi", "derivedFrom", "affectedBy"].forEach(function (r) { h.push(relSection(id, r, "out")); });
       h.push(relSection(id, "verifies", "in"));
       h.push(relSection(id, "assesses", "in"));
-      h.push(relSection(id, "refines", "in"));
+      h.push(relSection(id, "derivedFrom", "in"));
     } else if (n.kind === "issue") {
       h.push('<div class="chips"><span class="issue-mark">open</span>' + (n.upstream ? '<span class="chip">fix upstream</span>' : '<span class="chip">this project</span>') + "</div>");
       h.push('<p class="small">' + esc(n.text) + "</p>");
@@ -573,7 +573,7 @@
       if (n.note) h.push('<p class="small muted">' + esc(n.note) + "</p>");
       if (n.urls) h.push('<p class="d-urls">' + S.urlList(n.urls) + "</p>");
       ["partOf"].forEach(function (r) { h.push(relSection(id, r, "out")); h.push(relSection(id, r, "in")); });
-      h.push(relSection(id, "derivedFrom", "in"));
+      h.push(relSection(id, "references", "in"));
       h.push(relSection(id, "satisfies", "in"));
       h.push(relSection(id, "concerns", "in"));
     }

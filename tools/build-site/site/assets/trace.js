@@ -18,7 +18,7 @@
     var verified = S.related(G, n.id, "verifies", "in");
     return {
       n: n, satisfies: out("satisfies"), steps: out("realizedBy"), api: out("constrainsApi"),
-      verified: verified, issues: out("affectedBy"), sources: out("derivedFrom"),
+      verified: verified, issues: out("affectedBy"), sources: out("references"),
       tested: verified.length > 0
     };
   }

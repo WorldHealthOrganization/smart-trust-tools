@@ -24,8 +24,10 @@ Every node and edge here is read from a committed node, never restated:
   test-plan     test/plans/*.test-plan.json (test-plan/v1), whose assertion
                 ids are requirement statements' success criteria
 
-Edges: derivedFrom (a requirement's `reference`), satisfies (a smart-trust
-canonical in `reference`), refines (its `derivedFrom`),
+Edges, named as the harness names the fields they come from (FHIR R5
+Requirements): references (a requirement's `reference`, what it is drawn
+from), satisfies (a smart-trust canonical in `reference`), derivedFrom (its
+`derivedFrom`, the broader requirement it narrows),
 realizedBy (requirement to skill), constrainsApi, affectedBy, concerns,
 partOf, implementedBy (skill to Tool), usedIn (skill to process),
 performedBy (skill to role), testedBy (skill to test), verifies (test to
@@ -401,7 +403,7 @@ def build_graph(M):
         return nid
 
     def add_source(ref):
-        """The node a derivedFrom or Sources reference names; returns its id."""
+        """The node a requirement's `reference` or a bean's Sources names; returns its id."""
         if ref.startswith(UPSTREAM):
             inst, _, key = ref[len(UPSTREAM):].partition("#")
             return add_upstream(inst, key or None)
@@ -440,9 +442,9 @@ def build_graph(M):
             iri=r["iri"], file=r["file"], criteria=r["criteria"])
     for r in M["reqs"].values():
         for d in r["derivedFrom"]:
-            edge(r["id"], display_id(d), "refines")
+            edge(r["id"], display_id(d), "derivedFrom")
         for d in r["reference"]:
-            edge(r["id"], add_source(d), "satisfies" if d.startswith(UPSTREAM) else "derivedFrom")
+            edge(r["id"], add_source(d), "satisfies" if d.startswith(UPSTREAM) else "references")
 
     order = {s: i + 1 for i, s in enumerate(PIPELINE)}
     for s in M["skills"].values():
