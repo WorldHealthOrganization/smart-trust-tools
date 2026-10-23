@@ -20,6 +20,16 @@ for (const name of ["hepb1", "bcg"]) {
   const r = hcert.call("verify", { hc1: vector.certificates[name].hc1, trustPem: pem, now: 1792454400 });
   expect(`${name} verifies`, { ...r, entrySubclaims: r.entries?.map((e) => e.subclaim).join() }, { status: "verified", entrySubclaims: "-6", iss: "XX", kid: "58733e058aaa6621" });
 }
+// The live demo's published example: XXR's DSC DID document, trusted only once its proof verifies against WHO's signing DID (STT-TRU-006).
+const xxr = JSON.parse(read("vectors/smart-trust-af75be2/dvc-qr-example-XXR.json"));
+const xxrDid = read("vectors/smart-trust-af75be2/XXR-DSC-did.json");
+const whoSigner = read("vectors/gdhcn-dev-trustlist/WHO-signing-did.json");
+for (const [name, c] of Object.entries(xxr.certificates)) {
+  const r = hcert.call("verify", { hc1: c.hc1, trustDid: xxrDid, trustDidSigner: whoSigner, now: c.iat + 3600 });
+  expect(`XXR ${name} verifies once the DSC document's proof does`, r, { status: "verified", kid: "916ffa567c0f44a2", trustDidProofVerified: true });
+}
+const tampered = hcert.call("verify", { hc1: xxr.certificates.hepb1.hc1, trustDid: xxrDid.replace('"kty"', '"ext":"1","kty"'), trustDidSigner: whoSigner, now: xxr.certificates.hepb1.iat + 3600 });
+expect("a changed DSC document fails its proof and nothing is verified", { ...tampered, proof: tampered.error?.startsWith("DID document proof invalid") }, { ok: false, proof: true, status: undefined });
 const negative = JSON.parse(read("vectors/negative/negative-vectors.json"));
 for (const c of negative.cases) {
   const trustPem = (c.trust ?? negative.defaults.trust).map(read).join("\n");

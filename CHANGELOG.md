@@ -52,7 +52,10 @@ and the smart-trust implementation guide at 1.7.5 (STT-GEN-007).
   `verify-did-proof` and `trust-store.add-verified-did-document` check a
   document's JsonWebSignature2020 proof against the signer's DID document,
   under one fail-closed profile shared by both libraries; `proof-invalid`
-  names the rule a refused document breaks.
+  names the rule a refused document breaks. The WebAssembly build's JSON
+  `verify` takes the signer as `trustDidSigner` beside `trustDid`, and the
+  live demo trusts XXR's DSC only once its proof verifies against the WHO
+  signing DID.
 - One TypeScript conformance suite run on both JavaScript packages, and the
   two libraries verifying each other's certificates (STT-TST-003,
   STT-TST-007).
