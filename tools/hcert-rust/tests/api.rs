@@ -58,6 +58,18 @@ fn stt_gen_002_every_step_is_its_own_call_and_they_compose_to_a_verifiable_hc1()
 }
 
 #[test]
+fn stt_tst_011_stt_tru_001_the_xxr_certificates_verify_through_the_json_surface_against_a_did_document() {
+    let did = read(XXR_DSC_DID).replace('\\', "\\\\").replace('"', "\\\"").replace('\n', "\\n");
+    let vector = json(XXR);
+    let c = vector.get("certificates").unwrap().get("hepb1").unwrap();
+    let iat = c.get("iat").unwrap().as_f64().unwrap() as i64;
+    let v = ok(&format!(r#"{{"op":"verify","hc1":"{}","trustDid":"{did}","now":{}}}"#, c.get("hc1").unwrap().as_str().unwrap(), iat + 3600));
+    assert_eq!(st(&v, "status"), "verified");
+    assert_eq!(st(&v, "iss"), "XR");
+    assert_eq!(st(&v, "kid"), "916ffa567c0f44a2");
+}
+
+#[test]
 fn stt_tst_001_the_pr129_vector_verifies_through_the_json_surface() {
     let pem = read(PR129_DSC).replace('\n', "\\n");
     let v = ok(&format!(r#"{{"op":"verify","hc1":"{}","trustPem":"{pem}","now":{NOW}}}"#, pr129_hc1("bcg")));

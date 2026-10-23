@@ -17,9 +17,9 @@ with the commit and hashes recorded in SOURCE.md):
   change one character or one signature byte, and a choice of trusting
   the page's DSC, a DSC the reader pastes, or nothing;
 - the two certificates of section 12.6 (DEV participant XXR), decoded
-  live; pasting their DSC from the GDHCN DEV trust list verifies them
-  in the browser, and without it verification stops at the trust
-  lookup, as section 12.6 says it should.
+  and verified live against XXR's DSC as the GDHCN DEV trust list
+  published it (bundled, with its retrieval date); a reader can paste
+  another DSC to verify against instead.
 
 Nothing made on the page verifies anywhere else: its DSC is self-signed
 by test participant XX and is on no trust list.
@@ -163,8 +163,8 @@ index 6528cb8..8c97b25 100644
  verifier the key is still trusted — a certificate distributed alongside the
  certificate it signed proves nothing about that.
 +
-+The same two certificates, decoded live in your browser. Paste their Document
-+Signing Certificate from the DEV trust list to verify them too:
++The same two certificates, decoded and verified live in your browser against
++XXR's Document Signing Certificate from the DEV trust list:
 +
 +<div class="hcert-demo" data-demo="published"></div>
 -- 
