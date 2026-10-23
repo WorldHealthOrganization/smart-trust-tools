@@ -26,7 +26,7 @@ export const loaders = {
     return {
       codec: ns(m.WitCodec), cose: ns(m.WitCose), dvc: ns(m.WitDvc), vhl: ns(m.WitVhl), verifier: ns(m.WitVerifier),
       issuer: { ...ns(m.WitIssuer), PendingSignature: m.WitPendingSignature },
-      subclaims: { Registry: m.WitRegistry }, trust: { TrustStore: m.WitTrustStore },
+      subclaims: { Registry: m.WitRegistry }, trust: { ...ns(m.WitTrust), TrustStore: m.WitTrustStore },
     };
   },
 };
@@ -41,6 +41,10 @@ export const fixtures = {
   pr129Pem: read("vectors/smart-trust-pr129/dvc-qr-example-XXA-dsc.pem"),
   xxr: JSON.parse(read("vectors/smart-trust-af75be2/dvc-qr-example-XXR.json")),
   xxrDscDid: read("vectors/smart-trust-af75be2/XXR-DSC-did.json"),
+  devTrustList: {
+    signer: read("vectors/gdhcn-dev-trustlist/WHO-signing-did.json"),
+    documents: Object.fromEntries(["XXR-DSC-did-2026-10-23.json", "XXR-did.json", "XXA-did.json", "root-did.json"].map((f) => [f, read(`vectors/gdhcn-dev-trustlist/${f}`)])),
+  },
   negative,
   pem: Object.fromEntries([...pemPaths].map((p) => [p, read(p)])),
   trustDomains: read("vectors/gdhcn-trust-domains/CodeSystem-Domains.json"),

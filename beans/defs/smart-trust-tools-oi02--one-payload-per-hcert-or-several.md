@@ -8,7 +8,7 @@ tags:
     - open-issue
     - upstream
 created_at: 2026-10-20T00:00:00Z
-updated_at: 2026-10-22T00:00:00Z
+updated_at: 2026-10-23T00:00:00Z
 ---
 
 QR Code Generation 2 and 4 say an HCERT carries exactly one payload and that -260 is a "map whose single key is the subclaim". HCERT Specification 3.2.7 says "Several different types of health certificate MAY exist under the same claim", and the HCert logical model makes every subclaim 0..1, so it does not rule out more than one. The verifier behaviour for several entries is not specified.
@@ -36,6 +36,8 @@ The libraries now implement a reading the specification does not yet state. To m
 3. **An invalid entry beside valid ones**: whether it invalidates the certificate (implemented here: no, it is dropped and reported).
 4. **Limits**: whether a trust domain may cap the number of entries (implemented here as the verifier's optional `maxPayloads`), and whether one entry per subclaim is implied (CBOR map keys are unique, so it is).
 5. A worked example of a certificate with two entries, as a test vector.
+
+Drafted for WHO as WorldHealthOrganization/smart-trust#135 (https://github.com/WorldHealthOrganization/smart-trust/pull/135), which states the five points in HCERT Specification 3.2.7 and the QR Code Generation page. It is WHO's to review and merge.
 
 ## Requirements affected
 

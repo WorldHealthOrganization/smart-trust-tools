@@ -13,6 +13,12 @@ sealed interface TrustError {
      * code system does not hold. [STT-SEL-006]
      */
     data class UnknownTrustDomain(val value: String) : TrustError
+
+    /**
+     * A DID document's proof does not verify, or the document is not
+     * one the proof profile models. [STT-TRU-006]
+     */
+    data class ProofInvalid(val value: String) : TrustError
 }
 
 data class TrustedDsc(
@@ -47,6 +53,14 @@ interface TrustStore : AutoCloseable {
     fun addDidDocument(json: String): HcertResult<Int, TrustError>
 
     /**
+     * Same, but only after the document's proof verifies against
+     * `signer`, the did:web document of the proof's verificationMethod,
+     * which the host fetched; on any failure nothing is added.
+     * [STT-TRU-006]
+     */
+    fun addVerifiedDidDocument(json: String, signer: String): HcertResult<Int, TrustError>
+
+    /**
      * The trust domains a DID document may name, read from a GDHCN
      * Trust Domain CodeSystem (FHIR JSON) the host fetched. Data, not
      * an enum: once loaded, a DID document naming another domain is
@@ -75,6 +89,16 @@ interface TrustStore : AutoCloseable {
  * Implemented by the library.
  */
 interface Trust {
+    /**
+     * Verify a GDHCN trust list DID document's JsonWebSignature2020 proof,
+     * as the TNG key distribution service makes it: URDNA2015 over the
+     * document and the proof options with pinned contexts, a detached
+     * b64:false ES256 JWS whose signature may be DER or r||s. `signer` is
+     * the did:web document of the proof's verificationMethod. Fails closed
+     * on any term the profile does not model. [STT-TRU-006]
+     */
+    fun verifyDidProof(document: String, signer: String): HcertResult<Unit, TrustError>
+
     /** Creates a new [TrustStore]. */
     fun newTrustStore(): TrustStore
 }

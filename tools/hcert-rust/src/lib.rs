@@ -2,7 +2,7 @@
 //!
 //! Each step is its own public function (STT-GEN-002): [`codec`] holds the
 //! prefix, Base45, ZLIB and CBOR steps, [`cose`] the COSE_Sign1 step,
-//! [`payload`] the subclaims and the DVC payload, [`trust`] the trust store,
+//! [`payload`] the subclaims and the DVC payload, [`trust`] the trust store, [`didproof`] trust list DID document proofs,
 //! [`issuer`] two-phase issuance (the host signs) and [`verifier`] the
 //! QR Code Generation section 11 checks. No I/O anywhere (STT-GEN-012).
 
@@ -11,6 +11,7 @@ pub mod base45;
 pub mod cbor;
 pub mod codec;
 pub mod cose;
+pub mod didproof;
 mod entropy;
 pub mod issuer;
 pub mod json;

@@ -189,8 +189,11 @@ impl Parser<'_> {
                         b't' => out.push('\t'),
                         b'u' => {
                             let mut cp = self.hex4()?;
+                            if (0xdc00..0xe000).contains(&cp) {
+                                return Err("unpaired surrogate".into());
+                            }
                             if (0xd800..0xdc00).contains(&cp) {
-                                self.eat("\\u")?;
+                                self.eat("\\u").map_err(|_| "unpaired surrogate")?;
                                 let lo = self.hex4()?;
                                 if !(0xdc00..0xe000).contains(&lo) {
                                     return Err("unpaired surrogate".into());

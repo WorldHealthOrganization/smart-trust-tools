@@ -48,6 +48,11 @@ and the smart-trust implementation guide at 1.7.5 (STT-GEN-007).
 - `hcert` (Rust, native and wasm32): the same operations, with RustCrypto,
   and the WebAssembly component of the `hcert` world, transpiled with jco to
   an ES module for browsers and Node.
+- Verification of the GDHCN DID trust list proofs (STT-TRU-006):
+  `verify-did-proof` and `trust-store.add-verified-did-document` check a
+  document's JsonWebSignature2020 proof against the signer's DID document,
+  under one fail-closed profile shared by both libraries; `proof-invalid`
+  names the rule a refused document breaks.
 - One TypeScript conformance suite run on both JavaScript packages, and the
   two libraries verifying each other's certificates (STT-TST-003,
   STT-TST-007).
