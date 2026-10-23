@@ -8,7 +8,7 @@ tags:
     - open-issue
     - upstream
 created_at: 2026-10-23T09:00:00Z
-updated_at: 2026-10-23T09:00:00Z
+updated_at: 2026-10-23T10:00:00Z
 ---
 
 Verifying the GDHCN DID trust list proofs (STT-TRU-006) meant reproducing what WHO's signer, tng-key-distribution 021a9d2 with ld-signatures-java 1.11.0, actually does. In three places that differs from the open standards the proofs name:
@@ -27,6 +27,10 @@ Reported upstream, as the owner chose (2026-10-23), as issues on tng-key-distrib
 - WorldHealthOrganization/tng-key-distribution#86 (https://github.com/WorldHealthOrganization/tng-key-distribution/issues/86): the unpublished contexts
 - WorldHealthOrganization/tng-key-distribution#87 (https://github.com/WorldHealthOrganization/tng-key-distribution/issues/87): the JWK encoding
 
+The owner's decision, 2026-10-23: **keep refusing** what the published documents never contain. That covers a JWK member that is not a string or an array of strings (a number would need RFC 8785's number formatting, an implicit conversion), and any character above U+FFFF (the canonical N-Quads order by code point and Java's UTF-16 order disagree only there). If WHO publishes such a document, the profile is widened on purpose, with a vector.
+
+The verifier's profile is drafted for the guide's DID trust list page as WorldHealthOrganization/smart-trust#136 (https://github.com/WorldHealthOrganization/smart-trust/pull/136): the signer DID per environment, the pinned contexts with their hashes, the JWK member profile, the algorithm and the current DER encoding. It is WHO's to review and merge; the UAT and PROD signer DIDs are still to be stated.
+
 ## Requirements affected
 
 - req:stt-tru-006
@@ -38,4 +42,5 @@ Reported upstream, as the owner chose (2026-10-23), as issues on tng-key-distrib
 ## Done when
 
 - [x] the libraries verify the published proofs (STT-TRU-006)
+- [ ] the guide states the verifier profile (WorldHealthOrganization/smart-trust#136)
 - [ ] the signer emits r||s, publishes its contexts and encodes JWKs per RFC 7518, or the guide documents the profile

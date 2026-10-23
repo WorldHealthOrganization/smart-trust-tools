@@ -228,9 +228,18 @@ pub fn call(request: &str) -> String {
                     store.add_pem(pem).map_err(|e| e.to_string())?;
                 }
                 // A trust-list DID document, as the GDHCN trust list serves it (STT-TRU-001).
-                if let Some(did) = a.get("trustDid").and_then(Json::as_str).filter(|d| !d.trim().is_empty()) {
-                    store.add_did_document(did).map_err(|e| e.to_string())?;
+                // With `trustDidSigner`, the did:web document of the proof's
+                // verificationMethod, its keys are trusted only once its proof
+                // verifies; a failed proof is an error and nothing is verified (STT-TRU-006).
+                let did = a.get("trustDid").and_then(Json::as_str).filter(|d| !d.trim().is_empty());
+                let signer = a.get("trustDidSigner").and_then(Json::as_str).filter(|d| !d.trim().is_empty());
+                match (did, signer) {
+                    (Some(did), Some(signer)) => store.add_verified_did_document(did, signer).map(|_| ()),
+                    (Some(did), None) => store.add_did_document(did).map(|_| ()),
+                    (None, Some(_)) => return Err("trustDidSigner needs trustDid".into()),
+                    (None, None) => Ok(()),
                 }
+                .map_err(|e| e.to_string())?;
                 let options = VerifierOptions {
                     clock_skew_seconds: a.get("clockSkewSeconds").and_then(Json::as_f64).unwrap_or(300.0) as i64,
                     max_payloads: a.get("maxPayloads").and_then(Json::as_f64).map(|m| m as u32),
@@ -242,6 +251,7 @@ pub fn call(request: &str) -> String {
                     None => verifier::verify(s(&a, "hc1")?, &store, &reg, now, &options),
                 };
                 let mut o = Obj::ok();
+                o.raw("trustDidProofVerified", (did.is_some() && signer.is_some()).to_string());
                 match r {
                     Ok(v) => {
                         o.str("status", "verified").opt_str("iss", v.iss.as_deref()).num("iat", v.iat).num("exp", v.exp).hex("kid", &v.dsc.kid);
