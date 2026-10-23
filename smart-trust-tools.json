@@ -67,7 +67,7 @@
       "graphTypologies": [
         "memory"
       ],
-      "description": "Owner directives the requirements cite as derivedFrom: languages (Kotlin first, Rust second), targets, open standards only, the user journeys, and the VHL decisions of 2026-10-20."
+      "description": "Owner directives the requirements cite in reference: languages (Kotlin first, Rust second), targets, open standards only, the user journeys, and the VHL decisions of 2026-10-20."
     },
     {
       "id": "beans",
@@ -99,7 +99,7 @@
       "graphTypologies": [
         "tools"
       ],
-      "description": "One Tool per folder (tools/<id>/<id>.ts), with its code beside it: hcert-kotlin (the Kotlin library), wit2kotlin, gen-api-types, fetch-lms, lm-derive, check-models, vhl-jwe-fixture, check-req-nodes and build-site. tools/index.ts loads them."
+      "description": "One Tool per folder (tools/<id>/<id>.ts), with its code beside it: hcert-kotlin (the Kotlin library) and hcert-rust (the Rust library); wit2kotlin, gen-api-types, fetch-lms and lm-derive, which write the contract's and the models' views; check-models, check-req-nodes, conformance-ts, test-plan, negative-vectors and vhl-jwe-fixture, which check them or make what the checks read; release-packaging; and build-site. tools/index.ts loads them."
     },
     {
       "id": "toolchain",
@@ -163,7 +163,7 @@
       "graphTypologies": [
         "hcert-test-vectors"
       ],
-      "description": "The smart-trust PR 129 DVC example and DSC, the IHE ITI VHL Case B manifest, the independent JWE fixture and the TEST-ONLY testkit keys."
+      "description": "The smart-trust PR 129 DVC example and DSC, the merged guide's XXR certificates with the GDHCN DEV trust list's DID documents, the GDHCN Trust Domain code systems, the IHE ITI VHL Case B manifest, the independent JWE fixture, the shared negative vectors and the TEST-ONLY testkit keys."
     },
     {
       "id": "upstream-patches",
@@ -171,7 +171,7 @@
       "graphTypologies": [
         "upstream-patches"
       ],
-      "description": "Patches proposed to IHE ITI VHL, for its maintainers to apply."
+      "description": "Patches proposed to IHE ITI VHL, for its maintainers to apply, and the QR Code Generation live-demo patch for litlfred/smart-trust."
     },
     {
       "id": "test-plans",
