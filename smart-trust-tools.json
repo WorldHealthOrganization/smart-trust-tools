@@ -62,6 +62,14 @@
       "description": "Other WHO SMART guides and value sets the requirements cite (DDCC, ICVP, PH4H, the GDHCN value sets), as CSL-JSON references."
     },
     {
+      "id": "smart-trust-tools-docs",
+      "path": "docs/",
+      "graphTypologies": [
+        "docs"
+      ],
+      "description": "The site's authored pages: index.md, the home page the site build places (index.config.json site.build.home), journeys.md (what the library must do at each step of user journeys J1 to J4, and whether it does) and RELEASING.md (how an agent publishes the libraries); the site_docs step copies the other pages into the site source."
+    },
+    {
       "id": "memory",
       "path": "memory/",
       "graphTypologies": [
