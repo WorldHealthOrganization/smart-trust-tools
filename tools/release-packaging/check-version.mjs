@@ -1,4 +1,8 @@
-// One version for every artefact (STT-NFR-001): VERSION at the repository
+// One version and one set of coordinates for every artefact (STT-NFR-001,
+// STT-NFR-002). The coordinates follow the repository's GitHub org
+// (coordinates.mjs): the crate is <org>-hcert, the npm packages are under
+// @<org>, the Maven group is io.github.<org>, and each artefact carries
+// LICENSE. VERSION at the repository
 // root is the source. This fails if it is not a semantic version, if
 // tools/hcert-rust/Cargo.toml says otherwise, if the Gradle build stops
 // reading it (or a module sets its own version), or if CHANGELOG.md has no
@@ -9,9 +13,8 @@
 //   node tools/release-packaging/check-version.mjs [<dist-or-repo-dir> ...]
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { crateName, mavenGroup, npmScope, repoRoot as repo, repoUrl } from "./coordinates.mjs";
 
-const repo = fileURLToPath(new URL("../../", import.meta.url));
 const read = (p) => readFileSync(join(repo, p), "utf8");
 const problems = [];
 
@@ -25,9 +28,16 @@ const cargo = read("tools/hcert-rust/Cargo.toml");
 const pkg = cargo.split(/^\[/m).find((s) => s.startsWith("package]")) ?? "";
 const cargoVersion = /^version\s*=\s*"([^"]*)"/m.exec(pkg)?.[1];
 if (cargoVersion !== version) problems.push(`tools/hcert-rust/Cargo.toml: version ${cargoVersion} != VERSION ${version}`);
+const cargoName = /^name\s*=\s*"([^"]*)"/m.exec(pkg)?.[1];
+if (cargoName !== crateName) problems.push(`tools/hcert-rust/Cargo.toml: name ${cargoName} != ${crateName} (from the repository's org)`);
+const cargoRepo = /^repository\s*=\s*"([^"]*)"/m.exec(pkg)?.[1];
+if (cargoRepo !== repoUrl) problems.push(`tools/hcert-rust/Cargo.toml: repository ${cargoRepo} != ${repoUrl}`);
+if (!/^\[lib\]\s*\nname\s*=\s*"hcert"/m.test(cargo)) problems.push("tools/hcert-rust/Cargo.toml: [lib] name must stay hcert");
 const lock = read("tools/hcert-rust/Cargo.lock");
-const lockVersion = /\[\[package\]\]\nname = "hcert"\nversion = "([^"]*)"/.exec(lock)?.[1];
-if (lockVersion !== version) problems.push(`tools/hcert-rust/Cargo.lock: hcert ${lockVersion} != VERSION ${version}`);
+const lockVersion = new RegExp(`\\[\\[package\\]\\]\\nname = "${crateName}"\\nversion = "([^"]*)"`).exec(lock)?.[1];
+if (lockVersion !== version) problems.push(`tools/hcert-rust/Cargo.lock: ${crateName} ${lockVersion} != VERSION ${version}`);
+if (!existsSync(join(repo, "LICENSE"))) problems.push("LICENSE: missing");
+else if (read("LICENSE") !== read("tools/hcert-rust/LICENSE")) problems.push("tools/hcert-rust/LICENSE: differs from LICENSE (the crate ships its own copy)");
 
 const gradle = read("tools/hcert-kotlin/build.gradle.kts");
 if (!gradle.includes('rootProject.file("../../VERSION").readText().trim()')) {
@@ -60,13 +70,18 @@ for (const dir of process.argv.slice(2)) {
       artefacts++;
       const j = JSON.parse(readFileSync(f, "utf8"));
       if (j.version !== version) problems.push(`${f}: version ${j.version} != VERSION ${version}`);
+      if (!j.name?.startsWith(`${npmScope}/`)) problems.push(`${f}: name ${j.name} is not under ${npmScope}`);
+      if (!existsSync(join(f, "..", "LICENSE"))) problems.push(`${f}: no LICENSE beside it`);
       for (const k of ["dependencies", "peerDependencies", "optionalDependencies", "scripts"]) {
         if (j[k] && Object.keys(j[k]).length) problems.push(`${f}: has ${k}`);
       }
     } else if (f.endsWith(".pom")) {
       artefacts++;
-      const v = /<artifactId>[^<]*<\/artifactId>\s*<version>([^<]*)<\/version>/.exec(readFileSync(f, "utf8"))?.[1];
+      const pom = readFileSync(f, "utf8");
+      const v = /<artifactId>[^<]*<\/artifactId>\s*<version>([^<]*)<\/version>/.exec(pom)?.[1];
       if (v !== version) problems.push(`${f}: version ${v} != VERSION ${version}`);
+      const g = /<groupId>([^<]*)<\/groupId>/.exec(pom)?.[1];
+      if (g !== mavenGroup) problems.push(`${f}: groupId ${g} != ${mavenGroup}`);
     }
   }
 }
@@ -75,4 +90,4 @@ if (problems.length) {
   for (const p of problems) console.error(`FAIL ${p}`);
   process.exit(1);
 }
-console.log(`ok   version ${version}: VERSION, Cargo.toml, Cargo.lock, Gradle, CHANGELOG.md${artefacts ? `, ${artefacts} built artefact(s)` : ""}`);
+console.log(`ok   version ${version} (${crateName}, ${npmScope}/*, ${mavenGroup}): VERSION, Cargo.toml, Cargo.lock, Gradle, CHANGELOG.md, LICENSE${artefacts ? `, ${artefacts} built artefact(s)` : ""}`);

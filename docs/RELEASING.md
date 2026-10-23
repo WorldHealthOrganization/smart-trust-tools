@@ -21,22 +21,31 @@ an entry in [`CHANGELOG.md`](../CHANGELOG.md) that cites each smart-trust
 | Registry | Coordinates | Built by |
 |---|---|---|
 | Maven Central | `io.github.litlfred:hcert-api`, `io.github.litlfred:hcert-core` (Kotlin Multiplatform: the root module, plus `-jvm` and `-js`) | `gradle -p tools/hcert-kotlin publishDryRun` |
-| crates.io | `hcert` | `cargo package` in `tools/hcert-rust` |
+| crates.io | `litlfred-hcert` (library name `hcert`) | `cargo package` in `tools/hcert-rust` |
 | npm | `@litlfred/hcert-kotlin-js` (Kotlin/JS ES module) | `tools/release-packaging/assemble-npm.mjs` |
 | npm | `@litlfred/hcert-component` (the Rust WebAssembly component, transpiled with jco) | `tools/hcert-rust/build-component.sh`, then `assemble-npm.mjs` |
 
-The Maven group is `io.github.litlfred` because the owner can verify it on the
-Sonatype Central Portal with the GitHub account; `who.smart.trust`, the
-Kotlin package root, could be verified only by WHO (OI-14). Android uses the
-`-jvm` jar as it is; there is no AAR until an `androidTarget()` exists.
+**The coordinates follow the repository's GitHub org** (the owner's decision of
+2026-10-23). Their single source is `"repository": "<org>/<name>"` in
+`smart-trust-tools.json`: the Maven group is `io.github.<org>` (a namespace
+the org can verify on the Sonatype Central Portal through GitHub), the npm
+scope is `@<org>`, and the crate is `<org>-hcert`, because crates.io has no
+namespaces (the Rust library itself stays `hcert`). The Gradle build and
+`tools/release-packaging/coordinates.mjs` derive them; `check-version.mjs`
+fails if `Cargo.toml`, a POM or a `package.json` disagrees. Moving the
+repository to another org (say, WorldHealthOrganization) means changing that
+one field, renaming the crate in `Cargo.toml` and `Cargo.lock` as the check
+asks, and verifying the new namespaces below. The Kotlin package root stays
+`who.smart.trust`. Android uses the `-jvm` jar as it is; there is no AAR until
+an `androidTarget()` exists.
 
 ## Once, before the first release
 
-1. **Licence.** The POM, `Cargo.toml` and the `package.json` files declare
-   `Apache-2.0`, but the repository has no `LICENSE` file yet (OI-14). Add the
-   Apache License 2.0 text as `LICENSE` at the root, and copy it into the
-   crate (`tools/hcert-rust/LICENSE`, listed in `include`) and the npm
-   packages (`assemble-npm.mjs`). Do not release without it.
+1. **Licence.** Apache-2.0 (the owner's decision of 2026-10-23; OI-14).
+   `LICENSE` is the official text from apache.org (sha256 `cfc7749b…3d30`);
+   the crate ships its copy `tools/hcert-rust/LICENSE` (the check requires it
+   to be identical), `assemble-npm.mjs` copies it into each npm package, and
+   every jar carries it as `META-INF/LICENSE`.
 2. **Maven Central.** Sign in to <https://central.sonatype.com> with the
    `litlfred` GitHub account; the `io.github.litlfred` namespace is verified by
    that. Generate a user token (*View Account → Generate User Token*): it is a
@@ -53,7 +62,7 @@ Kotlin package root, could be verified only by WHO (OI-14). Android uses the
    or passphrase is ever committed or given to a workflow.
 4. **crates.io.** Sign in with GitHub at <https://crates.io>, verify an
    e-mail address, and create an API token scoped to `publish-new` and
-   `publish-update` for the crate `hcert` (`CARGO_REGISTRY_TOKEN`).
+   `publish-update` for the crate `litlfred-hcert` (`CARGO_REGISTRY_TOKEN`).
 5. **npm.** The packages are scoped to the npm user `litlfred`. Create a
    granular access token with read and write on `@litlfred/*` (`NPM_TOKEN`),
    with two-factor authentication on the account.
@@ -159,8 +168,8 @@ bun run cat mount:lock && bun install          # the mounted layers, for check:r
 
 ```sh
 cd tools/hcert-rust
-cargo package --locked --list        # exactly: Cargo.toml, Cargo.lock, README.md, DEPENDENCIES.md, src/*.rs (and LICENSE)
-cargo package --locked               # builds the .crate on its own, from target/package/hcert-0.1.0
+cargo package --locked --list        # exactly: Cargo.toml, Cargo.lock, README.md, DEPENDENCIES.md, LICENSE, src/*.rs
+cargo package --locked               # builds the .crate on its own, from target/package/litlfred-hcert-0.1.0
 cargo publish --locked --dry-run
 CARGO_REGISTRY_TOKEN=... cargo publish --locked
 ```
@@ -206,7 +215,7 @@ An npm version cannot be republished once used, even after `npm unpublish`.
    success criterion):
    ```sh
    curl -sI https://repo1.maven.org/maven2/io/github/litlfred/hcert-core-jvm/0.1.0/hcert-core-jvm-0.1.0.pom | head -1
-   curl -s https://crates.io/api/v1/crates/hcert/0.1.0 | head -c 200
+   curl -s https://crates.io/api/v1/crates/litlfred-hcert/0.1.0 | head -c 200
    npm view @litlfred/hcert-component@0.1.0 version
    npm view @litlfred/hcert-kotlin-js@0.1.0 version
    ```

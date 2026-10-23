@@ -3,7 +3,7 @@
 The HCERT libraries of this repository and every artefact built from them —
 the Kotlin library on Maven Central (`io.github.litlfred:hcert-api`,
 `io.github.litlfred:hcert-core`) and npm (`@litlfred/hcert-kotlin-js`), the
-Rust library on crates.io (`hcert`) and its WebAssembly component on npm
+Rust library on crates.io (`litlfred-hcert`, library `hcert`) and its WebAssembly component on npm
 (`@litlfred/hcert-component`) — share one version, the one in
 [`VERSION`](VERSION). It follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 (STT-NFR-001): a change to the wire format or to a subclaim default is a major

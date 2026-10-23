@@ -4,7 +4,9 @@
 # unicode-normalization for NFC; versions are pinned in Cargo.lock, each a
 # release at least 14 days old (DEPENDENCIES.md). Build with --locked.
 [package]
-name = "hcert"
+# crates.io has no namespaces: the name carries the repository's GitHub org
+# (tools/release-packaging/coordinates.mjs); the library is `hcert` ([lib]).
+name = "litlfred-hcert"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.82"
@@ -26,9 +28,10 @@ publish = ["crates-io"]
 # The `component` feature reads the WIT contract at ../../api/wit, so it builds
 # only from the repository; the component is distributed on npm instead
 # (@litlfred/hcert-component).
-include = ["/src/**/*.rs", "/README.md", "/DEPENDENCIES.md", "/Cargo.toml", "/Cargo.lock"]
+include = ["/src/**/*.rs", "/README.md", "/DEPENDENCIES.md", "/LICENSE", "/Cargo.toml", "/Cargo.lock"]
 
 [lib]
+name = "hcert"
 crate-type = ["rlib", "cdylib"]
 
 [dependencies]

@@ -13,10 +13,9 @@
 // `... kotlin <dist>/hcert-kotlin-js` test the very files that would ship.
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
+import { homepage, mavenGroup, npmScope, repoRoot as repo, repoUrl } from "./coordinates.mjs";
 
-const repo = fileURLToPath(new URL("../../", import.meta.url));
 const version = readFileSync(join(repo, "VERSION"), "utf8").trim();
 
 const { values } = parseArgs({ options: { out: { type: "string" }, component: { type: "string" }, "kotlin-js": { type: "string" } } });
@@ -28,9 +27,9 @@ if (!values.out || (!values.component && !values["kotlin-js"])) {
 const common = {
   license: "Apache-2.0",
   author: "Carl Leitner (https://github.com/litlfred)",
-  homepage: "https://litlfred.github.io/smart-trust-tools/",
-  repository: { type: "git", url: "git+https://github.com/litlfred/smart-trust-tools.git" },
-  bugs: { url: "https://github.com/litlfred/smart-trust-tools/issues" },
+  homepage,
+  repository: { type: "git", url: `git+${repoUrl}.git` },
+  bugs: { url: `${repoUrl}/issues` },
   type: "module",
   sideEffects: false,
 };
@@ -54,12 +53,13 @@ function assemble(name, from, keep, pkg, readme) {
   const { description, keywords, ...entry } = pkg;
   writeFileSync(join(to, "package.json"), JSON.stringify({ name, version, description, keywords, ...common, ...entry }, null, 2) + "\n");
   writeFileSync(join(to, "README.md"), readme);
+  cpSync(join(repo, "LICENSE"), join(to, "LICENSE"));
   console.log(`${name}@${version}: ${to} (${files.length} files)`);
 }
 
 if (values.component) {
   assemble(
-    "@litlfred/hcert-component",
+    `${npmScope}/hcert-component`,
     resolve(values.component),
     (f) => f === "hcert.component.wasm" || (f.startsWith("js/") && /\.(js|wasm|d\.ts)$/.test(f)),
     {
@@ -74,7 +74,7 @@ if (values.component) {
       },
       files: ["hcert.component.wasm", "js/"],
     },
-    `# @litlfred/hcert-component
+    `# ${npmScope}/hcert-component
 
 SMART Trust HCERT: issue and verify WHO GDHCN health certificates (HC1) and
 Verifiable Health Links, in browsers and Node. This is the Rust library
@@ -84,21 +84,21 @@ interface (\`codec\`, \`cose\`, \`dvc\`, \`issuer\`, \`verifier\`, \`trust\`, \`
 resources as classes, \`s64\` as \`bigint\`.
 
 \`\`\`js
-import { verifier, trust } from "@litlfred/hcert-component";
+import { verifier, trust } from "${npmScope}/hcert-component";
 \`\`\`
 
 \`hcert.component.wasm\` is the component itself, for any component host. The
 only import, \`wasi:random\`, maps to \`crypto.getRandomValues\`
 (\`js/wasi-random.js\`). No dependencies.
 
-Source, requirements and changelog: https://github.com/litlfred/smart-trust-tools
+Source, requirements and changelog: ${repoUrl}
 `,
   );
 }
 
 if (values["kotlin-js"]) {
   assemble(
-    "@litlfred/hcert-kotlin-js",
+    `${npmScope}/hcert-kotlin-js`,
     resolve(values["kotlin-js"]),
     (f) => !f.includes("/") && /\.(mjs|mjs\.map|d\.ts)$/.test(f),
     {
@@ -112,21 +112,21 @@ if (values["kotlin-js"]) {
       },
       files: ["*.mjs", "*.mjs.map", "*.d.ts"],
     },
-    `# @litlfred/hcert-kotlin-js
+    `# ${npmScope}/hcert-kotlin-js
 
 SMART Trust HCERT: issue and verify WHO GDHCN health certificates (HC1) and
 Verifiable Health Links on Node. This is the Kotlin Multiplatform library
-(Maven \`io.github.litlfred:hcert-core\`) compiled with Kotlin/JS IR to an ES
+(Maven \`${mavenGroup}:hcert-core\`) compiled with Kotlin/JS IR to an ES
 module, with TypeScript declarations. Each interface of the contract is an
 object behind \`getInstance()\` (\`WitCodec\`, \`WitVerifier\`, \`WitIssuer\`, ...).
 It uses \`node:crypto\`, \`node:zlib\` and \`node:buffer\`; the Kotlin standard
 library is bundled, so there are no dependencies.
 
 \`\`\`js
-import { WitVerifier } from "@litlfred/hcert-kotlin-js";
+import { WitVerifier } from "${npmScope}/hcert-kotlin-js";
 \`\`\`
 
-Source, requirements and changelog: https://github.com/litlfred/smart-trust-tools
+Source, requirements and changelog: ${repoUrl}
 `,
   );
 }

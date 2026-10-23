@@ -28,19 +28,29 @@ plugins.withType<org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin> {
 // npm package.json files. Only Gradle's built-in maven-publish is used, so
 // verification-metadata.xml gains nothing.
 val releaseVersion = rootProject.file("../../VERSION").readText().trim()
+// The coordinates follow the repository's GitHub org, read from the instance
+// declaration (smart-trust-tools.json "repository": "<org>/<name>"): Maven
+// group io.github.<org>, a namespace the org can verify on the Central Portal.
+// Moving the repository to another org moves them all (check-version.mjs).
+val repository = Regex("\"repository\"\\s*:\\s*\"([^\"/]+)/([^\"]+)\"")
+    .find(rootProject.file("../../smart-trust-tools.json").readText())
+    ?.groupValues ?: error("smart-trust-tools.json has no \"repository\": \"<org>/<name>\"")
+val repoOrg = repository[1]
+val repoUrl = "https://github.com/${repository[1]}/${repository[2]}"
 val dryRunRepo = layout.buildDirectory.dir("maven-dry-run")
 
 subprojects {
-    // io.github.litlfred is a namespace the owner can verify on the Sonatype
-    // Central Portal with the GitHub account; who.smart.trust, the Kotlin
-    // package root, cannot be verified by anyone but WHO (OI-14).
-    group = "io.github.litlfred"
+    // The Kotlin package root stays who.smart.trust; the Maven group is the org's.
+    group = "io.github.${repoOrg.lowercase()}"
     version = releaseVersion
 
-    // Byte-identical archives from the same commit.
+    // Byte-identical archives from the same commit, each carrying the licence.
     tasks.withType<AbstractArchiveTask>().configureEach {
         isPreserveFileTimestamps = false
         isReproducibleFileOrder = true
+    }
+    tasks.withType<Jar>().configureEach {
+        from(rootProject.file("../../LICENSE")) { into("META-INF") }
     }
 
     plugins.withId("org.jetbrains.kotlin.multiplatform") {
@@ -71,7 +81,7 @@ subprojects {
                         else
                             "SMART Trust HCERT: issue and verify WHO GDHCN health certificates and Verifiable Health Links, for the JVM, Android and Node."
                     )
-                    url.set("https://github.com/litlfred/smart-trust-tools")
+                    url.set(repoUrl)
                     licenses {
                         license {
                             name.set("Apache-2.0")
@@ -87,13 +97,13 @@ subprojects {
                         }
                     }
                     scm {
-                        url.set("https://github.com/litlfred/smart-trust-tools")
-                        connection.set("scm:git:https://github.com/litlfred/smart-trust-tools.git")
-                        developerConnection.set("scm:git:ssh://git@github.com/litlfred/smart-trust-tools.git")
+                        url.set(repoUrl)
+                        connection.set("scm:git:$repoUrl.git")
+                        developerConnection.set("scm:git:ssh://git@github.com/${repository[1]}/${repository[2]}.git")
                     }
                     issueManagement {
                         system.set("GitHub")
-                        url.set("https://github.com/litlfred/smart-trust-tools/issues")
+                        url.set("$repoUrl/issues")
                     }
                 }
             }
