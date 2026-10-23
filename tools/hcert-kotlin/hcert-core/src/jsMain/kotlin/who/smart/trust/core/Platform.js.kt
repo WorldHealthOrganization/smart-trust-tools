@@ -8,6 +8,7 @@ private external object NodeCrypto {
     val X509Certificate: dynamic
     val constants: dynamic
     fun createHash(algorithm: String): dynamic
+    fun createPublicKey(key: dynamic): dynamic
     fun verify(algorithm: String, data: dynamic, key: dynamic, signature: dynamic): Boolean
     fun randomBytes(n: Int): dynamic
     fun createCipheriv(algorithm: String, key: dynamic, iv: dynamic, options: dynamic): dynamic
@@ -127,6 +128,22 @@ internal actual object Platform {
             }
         }
         return try {
+            crypto.verify("sha256", data.toBuffer(), opts, signature.toBuffer()) as Boolean
+        } catch (e: Throwable) {
+            false
+        }
+    }
+
+    actual fun verifyEs256Point(x: ByteArray, y: ByteArray, data: ByteArray, signature: ByteArray): Boolean {
+        if (x.size != 32 || y.size != 32 || signature.size != 64) return false
+        return try {
+            val spec: dynamic = js("({})")
+            spec.key = (P256_SPKI_PREFIX + x + y).toBuffer()
+            spec.format = "der"
+            spec.type = "spki"
+            val opts: dynamic = js("({})")
+            opts.key = crypto.createPublicKey(spec) // OpenSSL refuses a point off the curve
+            opts.dsaEncoding = "ieee-p1363"
             crypto.verify("sha256", data.toBuffer(), opts, signature.toBuffer()) as Boolean
         } catch (e: Throwable) {
             false

@@ -35,8 +35,10 @@ implement its interfaces.
 the entry point: `Hcert.codec`, `Hcert.verifier`, `Hcert.issuer`, …) with the Kotlin standard library and the platform
 only: the JDK (`java.security`, `java.util.zip`) on JVM and Android, and
 `node:crypto`, `node:zlib` and `node:buffer` on Node. No third-party
-runtime dependency. Base45, deterministic CBOR, ASN.1 signature conversion and
-the small JSON reader for DID documents are written here.
+runtime dependency. Base45, deterministic CBOR, ASN.1 signature conversion,
+the small JSON reader for DID documents and the canonical N-Quads and RFC 8785
+JCS that verifying a trust list DID document's proof needs (`DidProof.kt`,
+STT-TRU-006) are written here.
 
 ```sh
 gradle -p tools/hcert-kotlin :hcert-core:jvmTest                           # JVM tests, incl. the PR 129 vector

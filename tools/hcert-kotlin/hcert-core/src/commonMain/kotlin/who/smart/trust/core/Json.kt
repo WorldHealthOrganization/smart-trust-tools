@@ -3,8 +3,10 @@ package who.smart.trust.core
 /**
  * A small RFC 8259 JSON reader, enough for DID documents: objects, arrays,
  * strings, numbers (as Double), booleans and null. Depth and size are bounded.
+ * With [rejectDuplicates], an object naming a member twice is an error rather
+ * than the last value winning, as signed data needs. [STT-TRU-006]
  */
-internal class JsonReader(private val s: String, private val maxDepth: Int = 64) {
+internal class JsonReader(private val s: String, private val maxDepth: Int = 64, private val rejectDuplicates: Boolean = false) {
     private var p = 0
 
     fun parse(): Any? {
@@ -50,6 +52,7 @@ internal class JsonReader(private val s: String, private val maxDepth: Int = 64)
             ws()
             if (p >= s.length || s[p] != ':') fail("expected ':'")
             p++
+            if (rejectDuplicates && k in m) fail("member \"$k\" given twice")
             m[k] = value(depth + 1)
             ws()
             if (p >= s.length) fail("unterminated object")
@@ -96,8 +99,9 @@ internal class JsonReader(private val s: String, private val maxDepth: Int = 64)
                         'r' -> sb.append('\r')
                         't' -> sb.append('\t')
                         'u' -> {
-                            if (p + 4 > s.length) fail("bad \\u escape")
-                            sb.append(s.substring(p, p + 4).toIntOrNull(16)?.toChar() ?: fail("bad \\u escape"))
+                            val hex = if (p + 4 <= s.length) s.substring(p, p + 4) else ""
+                            if (hex.length != 4 || !hex.all { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }) fail("bad \\u escape")
+                            sb.append(hex.toInt(16).toChar())
                             p += 4
                         }
                         else -> fail("bad escape")
@@ -116,4 +120,4 @@ internal class JsonReader(private val s: String, private val maxDepth: Int = 64)
     }
 }
 
-internal fun parseJson(s: String): Any? = JsonReader(s).parse()
+internal fun parseJson(s: String, rejectDuplicates: Boolean = false): Any? = JsonReader(s, rejectDuplicates = rejectDuplicates).parse()

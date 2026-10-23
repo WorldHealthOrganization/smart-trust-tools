@@ -29,6 +29,12 @@ internal expect object Platform {
      * MGF1-SHA-256 and a 32-byte salt.
      */
     fun verify(alg: CoseAlgorithm, dscDer: ByteArray, data: ByteArray, signature: ByteArray): Boolean
+    /**
+     * Verifies an ES256 [signature] (64-byte r||s) over [data] with the P-256
+     * public key whose uncompressed point is [x] || [y] (32 bytes each); false
+     * when the point is not on the curve. [STT-TRU-006]
+     */
+    fun verifyEs256Point(x: ByteArray, y: ByteArray, data: ByteArray, signature: ByteArray): Boolean
     /** Bytes from the platform's cryptographically secure random generator. */
     fun randomBytes(n: Int): ByteArray
     /** AES-256-GCM with a 128-bit tag; returns ciphertext followed by the tag. */
@@ -40,3 +46,11 @@ internal expect object Platform {
     /** [text] in Unicode Normalization Form C. [STT-CBR-002] */
     fun nfc(text: String): String
 }
+
+/**
+ * SubjectPublicKeyInfo DER of a P-256 key without its 65-byte uncompressed
+ * point: SEQUENCE { SEQUENCE { id-ecPublicKey, prime256v1 }, BIT STRING 04 ... }
+ * (RFC 5480). Append x || y (32 bytes each).
+ */
+internal val P256_SPKI_PREFIX: ByteArray =
+    "3059301306072a8648ce3d020106082a8648ce3d030107034200 04".replace(" ", "").chunked(2).map { it.toInt(16).toByte() }.toByteArray()

@@ -10,7 +10,9 @@ import who.smart.trust.types.Kid
 /**
  * DSCs the host has loaded. No I/O. Lookup returns every DSC with the kid;
  * kids are computed from the DER, never taken from a list's labels.
- * [STT-TRU-001, STT-TRU-002, STT-TRU-005, STT-KID-002, STT-GEN-012]
+ * A DID document is added whole or not at all, and only after its proof
+ * verifies when added with [addVerifiedDidDocument].
+ * [STT-TRU-001, STT-TRU-002, STT-TRU-005, STT-TRU-006, STT-KID-002, STT-GEN-012]
  */
 class HcertTrustStore : TrustStore {
     private val dscs = mutableListOf<TrustedDsc>()
@@ -88,6 +90,25 @@ class HcertTrustStore : TrustStore {
         } catch (e: IllegalArgumentException) {
             return HcertResult.Err(TrustError.Parse(e.message ?: "invalid JSON"))
         } ?: return HcertResult.Err(TrustError.Parse("DID document is not a JSON object"))
+        return addDid(doc)
+    }
+
+    /** [addDidDocument] once [DidProof] has verified the document against [signer]. [STT-TRU-006] */
+    override fun addVerifiedDidDocument(json: String, signer: String): HcertResult<Int, TrustError> =
+        when (val v = DidProof.verify(json, signer)) {
+            is HcertResult.Ok -> addDid(v.value)
+            is HcertResult.Err -> v
+        }
+
+    /** All of the document's DSCs or, on any error, none of them. */
+    private fun addDid(doc: Map<*, *>): HcertResult<Int, TrustError> {
+        val before = dscs.size
+        val r = addDidMethods(doc)
+        if (r is HcertResult.Err) while (dscs.size > before) dscs.removeAt(dscs.size - 1)
+        return r
+    }
+
+    private fun addDidMethods(doc: Map<*, *>): HcertResult<Int, TrustError> {
         val methods = doc["verificationMethod"] as? List<*> ?: return HcertResult.Err(TrustError.Parse("no verificationMethod array"))
         // A domain the loaded code system does not hold refuses the whole
         // document before anything is added. [STT-SEL-006]
@@ -128,5 +149,11 @@ class HcertTrustStore : TrustStore {
 }
 
 object HcertTrust : Trust {
+    override fun verifyDidProof(document: String, signer: String): HcertResult<Unit, TrustError> =
+        when (val v = DidProof.verify(document, signer)) {
+            is HcertResult.Ok -> HcertResult.Ok(Unit)
+            is HcertResult.Err -> v
+        }
+
     override fun newTrustStore(): TrustStore = HcertTrustStore()
 }

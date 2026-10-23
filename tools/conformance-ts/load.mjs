@@ -26,7 +26,7 @@ export const loaders = {
     return {
       codec: ns(m.WitCodec), cose: ns(m.WitCose), dvc: ns(m.WitDvc), vhl: ns(m.WitVhl), verifier: ns(m.WitVerifier),
       issuer: { ...ns(m.WitIssuer), PendingSignature: m.WitPendingSignature },
-      subclaims: { Registry: m.WitRegistry }, trust: { TrustStore: m.WitTrustStore },
+      subclaims: { Registry: m.WitRegistry }, trust: { ...ns(m.WitTrust), TrustStore: m.WitTrustStore },
     };
   },
 };
