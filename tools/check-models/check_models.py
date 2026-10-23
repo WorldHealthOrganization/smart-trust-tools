@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Check the wire and payload schemas against the conformance vectors.
 
-For every certificate in vectors/*/ :
+The generated shapes themselves conform to the SHACL shapes for SHACL
+(W3C SHACL Appendix C, the copy pyshacl carries), so a malformed shape fails
+here rather than silently constraining nothing. Then, for every certificate
+in vectors/*/ :
   * CDDL: the COSE_Sign1, its protected header and its CWT claim set validate
     against api/cddl/hcert.cddl + models/generated/*.cddl
   * SHACL: the payload, read as JSON-LD through the generated context,
@@ -98,6 +101,12 @@ def main():
         nonlocal failures
         print(("ok   " if ok else "FAIL ") + label)
         failures += 0 if ok else 1
+
+    try:
+        meta_ok, _, meta_report = validate(rdflib.Graph(), shacl_graph=shapes, meta_shacl=True)
+    except Exception as e:  # pyshacl raises when the shapes graph fails SHACL-SHACL
+        meta_ok, meta_report = False, str(e)
+    expect(meta_ok, "models/generated/*.shacl.ttl: shapes conform to SHACL-SHACL" + ("" if meta_ok else "\n" + meta_report))
 
     for vf in sorted(ROOT.glob("vectors/*/*.json")):
         vector = json.loads(vf.read_text())
