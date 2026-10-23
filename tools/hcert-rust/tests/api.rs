@@ -69,6 +69,40 @@ fn stt_tst_011_stt_tru_001_the_xxr_certificates_verify_through_the_json_surface_
     assert_eq!(st(&v, "kid"), "916ffa567c0f44a2");
 }
 
+/// A file as a JSON string literal's contents.
+fn esc(path: &str) -> String {
+    read(path).replace('\\', "\\\\").replace('"', "\\\"").replace('\n', "\\n")
+}
+
+#[test]
+fn stt_tru_006_verify_trusts_a_did_document_only_once_its_proof_verifies_against_the_signer() {
+    let signer = esc("vectors/gdhcn-dev-trustlist/WHO-signing-did.json");
+    let vector = json(XXR);
+    let c = vector.get("certificates").unwrap().get("hepb1").unwrap();
+    let hc1 = c.get("hc1").unwrap().as_str().unwrap();
+    let now = c.get("iat").unwrap().as_f64().unwrap() as i64 + 3600;
+    for f in [XXR_DSC_DID, "vectors/gdhcn-dev-trustlist/XXR-DSC-did-2026-10-23.json"] {
+        let v = ok(&format!(r#"{{"op":"verify","hc1":"{hc1}","trustDid":"{}","trustDidSigner":"{signer}","now":{now}}}"#, esc(f)));
+        assert_eq!((st(&v, "status"), st(&v, "kid")), ("verified", "916ffa567c0f44a2"), "{f}");
+        assert_eq!(v.get("trustDidProofVerified"), Some(&Json::Bool(true)));
+    }
+    let unchecked = ok(&format!(r#"{{"op":"verify","hc1":"{hc1}","trustDid":"{}","now":{now}}}"#, esc(XXR_DSC_DID)));
+    assert_eq!(unchecked.get("trustDidProofVerified"), Some(&Json::Bool(false)));
+
+    // One added member changes the canonical document: the proof fails, the call fails, nothing is verified.
+    let tampered = esc(XXR_DSC_DID).replacen("\\\"kty\\\"", "\\\"ext\\\":\\\"1\\\",\\\"kty\\\"", 1);
+    assert_ne!(tampered, esc(XXR_DSC_DID));
+    let bad = parse(&call(&format!(r#"{{"op":"verify","hc1":"{hc1}","trustDid":"{tampered}","trustDidSigner":"{signer}","now":{now}}}"#))).unwrap();
+    assert_eq!(bad.get("ok"), Some(&Json::Bool(false)));
+    assert!(st(&bad, "error").starts_with("DID document proof invalid"), "{bad:?}");
+    assert!(bad.get("status").is_none());
+    // The wrong signer: XXR's own trust-list document is not WHO's signing DID.
+    let wrong = parse(&call(&format!(r#"{{"op":"verify","hc1":"{hc1}","trustDid":"{}","trustDidSigner":"{}","now":{now}}}"#, esc(XXR_DSC_DID), esc("vectors/gdhcn-dev-trustlist/XXR-did.json")))).unwrap();
+    assert_eq!(wrong.get("ok"), Some(&Json::Bool(false)), "{wrong:?}");
+    let alone = parse(&call(&format!(r#"{{"op":"verify","hc1":"{hc1}","trustDidSigner":"{signer}","now":{now}}}"#))).unwrap();
+    assert_eq!(st(&alone, "error"), "trustDidSigner needs trustDid");
+}
+
 #[test]
 fn stt_tst_001_the_pr129_vector_verifies_through_the_json_surface() {
     let pem = read(PR129_DSC).replace('\n', "\\n");

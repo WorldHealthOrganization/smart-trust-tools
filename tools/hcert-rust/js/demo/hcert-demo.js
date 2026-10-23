@@ -286,13 +286,18 @@ const DEMOS = {
   published(root) {
     const out = el("div");
     const pem = pemBox();
-    const show = ([vector, did]) => {
-      // XXR's DSC as the DEV trust list published it, unless the reader pastes another.
+    const show = ([vector, did, signer]) => {
+      // XXR's DSC as the DEV trust list published it, trusted only once the
+      // document's proof verifies against WHO's signing DID (STT-TRU-006),
+      // unless the reader pastes another DSC.
       const pasted = state.pastedPem.trim();
+      const signerDid = JSON.parse(signer).id;
       const rows = [];
+      let proofFailed = null;
       for (const [name, c] of Object.entries(vector.certificates)) {
         const layers = hcert.call("decodeLayers", { hc1: c.hc1 });
-        const r = hcert.call("verify", pasted ? { hc1: c.hc1, trustPem: pasted, now: now() } : { hc1: c.hc1, trustDid: did, now: now() });
+        const r = hcert.call("verify", pasted ? { hc1: c.hc1, trustPem: pasted, now: now() } : { hc1: c.hc1, trustDid: did, trustDidSigner: signer, now: now() });
+        if (!pasted && !r.ok && r.error.startsWith("DID document proof invalid")) proofFailed = r.error;
         const result = !r.ok ? `✗ ${r.error}` : r.status === "verified" ? "✓ verified" : `✗ ${r.step} ${r.reason}`;
         rows.push(el("tr", {}, el("td", {}, name), el("td", {}, result), el("td", {}, layers.kidBase64 ?? ""),
           el("td", {}, `${c.iss} · ${c.payload.n}, ${c.payload.vx.vp}, ${c.payload.vx.bo}`)));
@@ -301,9 +306,11 @@ const DEMOS = {
         el("thead", {}, el("tr", {}, el("th", {}, "Certificate"), el("th", {}, "Result"), el("th", {}, "kid"), el("th", {}, "Issuer and payload, as published"))), el("tbody", {}, rows)),
         note(pasted
           ? "Verified in your browser against the DSC you pasted, with the same code as the verification demo above. Clear the box to go back to the trust list's DSC."
-          : `Verified in your browser against XXR's DSC (kid ${vector.kid_base64}) as the GDHCN DEV trust list published it at https://tng-cdn-dev.who.int/v2/trustlist/-/XXR/DSC/did.json, retrieved on 2026-10-22 and bundled with this demo. A real verifier fetches it from the trust list each time, which is the only way to know the key is still trusted. Paste a different DSC below to verify against that instead.`));
+          : proofFailed
+            ? `Not verified. XXR's DSC DID document from https://tng-cdn-dev.who.int/v2/trustlist/-/XXR/DSC/did.json carries a proof that did not verify against the WHO signing DID ${signerDid} (${proofFailed}), so its key was not trusted and the certificates were not checked.`
+            : `Verified in your browser against XXR's DSC (kid ${vector.kid_base64}) as the GDHCN DEV trust list published it at https://tng-cdn-dev.who.int/v2/trustlist/-/XXR/DSC/did.json, retrieved on 2026-10-22 and bundled with this demo. Before its key was trusted, the document's JsonWebSignature2020 proof was verified against the WHO signing DID ${signerDid}, also bundled. A real verifier fetches both each time, which is the only way to know the key is still trusted. Paste a different DSC below to verify against that instead.`));
     };
-    const load = () => Promise.all([xxr(), xxrDsc()]).then(show).catch((e) => out.replaceChildren(note(`The published example could not be loaded: ${e.message}`)));
+    const load = () => Promise.all([xxr(), xxrDsc(), whoSigner()]).then(show).catch((e) => out.replaceChildren(note(`The published example could not be loaded: ${e.message}`)));
     pem.hidden = false;
     pem.addEventListener("pem", load);
     load();
@@ -311,15 +318,17 @@ const DEMOS = {
   },
 };
 
-// The page's two certificates (section 12.6), and XXR's DSC DID document as
-// the GDHCN DEV trust list served it, both copied beside this script by bundle-demo.sh.
+// The page's two certificates (section 12.6), XXR's DSC DID document as the
+// GDHCN DEV trust list served it, and the WHO signing DID document that signs
+// it, all copied beside this script by bundle-demo.sh.
 const bundled = (file, read) => fetch(new URL(file, here)).then((r) => {
   if (!r.ok) throw new Error(`${file}: HTTP ${r.status}`);
   return read(r);
 });
-let xxrPromise, xxrDscPromise;
+let xxrPromise, xxrDscPromise, whoSignerPromise;
 const xxr = () => (xxrPromise ??= bundled("dvc-qr-example-XXR.json", (r) => r.json()));
 const xxrDsc = () => (xxrDscPromise ??= bundled("XXR-DSC-did.json", (r) => r.text()));
+const whoSigner = () => (whoSignerPromise ??= bundled("WHO-signing-did.json", (r) => r.text()));
 
 // One pasted DSC, shared by every demo that offers it; each box fires "pem" when it changes.
 const pemBoxes = new Set();
