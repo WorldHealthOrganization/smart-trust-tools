@@ -9,11 +9,13 @@ Kotlin suite, the Node smoke test and the Rust suite all load (STT-TST-005,
 STT-TST-004).
 
 Usage:
-    python3 tools/negative-vectors/make_negative_vectors.py
+    python3 tools/negative-vectors/make_negative_vectors.py           write the file
+    python3 tools/negative-vectors/make_negative_vectors.py --check   CI: fail if it is stale
 """
 
 import json
 import pathlib
+import sys
 import zlib
 
 import base45
@@ -76,9 +78,17 @@ def main():
         "defaults": {"trust": [DSC], "now": NOW, "clockSkewSeconds": 300},
         "cases": [dict(id=i, description=d, **inp, expect={"step": st, "reason": rs}) for i, d, inp, st, rs in cases],
     }
-    OUT.write_text(json.dumps(doc, indent=2) + "\n")
+    text = json.dumps(doc, indent=2) + "\n"
+    if "--check" in sys.argv:
+        if not OUT.exists() or OUT.read_text() != text:
+            print("stale: %s (run tools/negative-vectors/make_negative_vectors.py)" % OUT.relative_to(ROOT), file=sys.stderr)
+            return 1
+        print("negative vectors are up to date")
+        return 0
+    OUT.write_text(text)
     print("wrote %d cases to %s" % (len(cases), OUT.relative_to(ROOT)))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

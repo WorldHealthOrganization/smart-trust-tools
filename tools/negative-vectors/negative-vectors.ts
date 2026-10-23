@@ -11,7 +11,7 @@ export default toolFactory((t) =>
     invoke: { shell: "python3 tools/negative-vectors/make_negative_vectors.py" },
     io: {
       inputs: [
-
+        { name: "check", schema: t("Flag"), required: false, arg: { flag: "--check" }, description: "Write nothing; fail if the file is stale." },
       ],
       outputs: [
         { name: "vectors", schema: t("RepoPath"), description: "vectors/negative/negative-vectors.json." },
