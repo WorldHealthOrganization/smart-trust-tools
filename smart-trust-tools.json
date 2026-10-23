@@ -99,7 +99,7 @@
       "graphTypologies": [
         "tools"
       ],
-      "description": "One Tool per folder (tools/<id>/<id>.ts), with its code beside it: hcert-kotlin (the Kotlin library) and hcert-rust (the Rust library); wit2kotlin, gen-api-types, fetch-lms and lm-derive, which write the contract's and the models' views; check-models, check-req-nodes, conformance-ts, test-plan, negative-vectors and vhl-jwe-fixture, which check them or make what the checks read; release-packaging; and build-site. tools/index.ts loads them."
+      "description": "One Tool per folder (tools/<id>/<id>.ts), with its code beside it: hcert-kotlin (the Kotlin library) and hcert-rust (the Rust library); wit2kotlin, gen-api-types, fetch-lms and lm-derive, which write the contract's and the models' views; check-models, check-req-nodes, fhir-validate, conformance-ts, test-plan, negative-vectors and vhl-jwe-fixture, which check them or make what the checks read; release-packaging; and build-site. tools/index.ts loads them."
     },
     {
       "id": "toolchain",
