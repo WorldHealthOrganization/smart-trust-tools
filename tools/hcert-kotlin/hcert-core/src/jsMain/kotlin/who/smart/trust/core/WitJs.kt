@@ -101,6 +101,7 @@ private fun coseErr(e: CoseError): dynamic = when (e) {
 private fun trustErr(e: TrustError): dynamic = when (e) {
     is TrustError.Parse -> variant("parse", e.value)
     is TrustError.UnknownTrustDomain -> variant("unknown-trust-domain", e.value)
+    is TrustError.ProofInvalid -> variant("proof-invalid", e.value)
 }
 private fun issueErr(e: IssueError): dynamic = when (e) {
     is IssueError.PayloadInvalid -> variant("payload-invalid", issuesOut(e.value))
@@ -274,6 +275,12 @@ object WitVhl {
     fun signatureHeader(signature: dynamic, alg: String): String = HcertVhl.signatureHeader(bytesIn(signature), alg).orThrow(::vhlErr)
 }
 
+/** trust: the interface's free functions. */
+@JsExport
+object WitTrust {
+    fun verifyDidProof(document: String, signer: String) = HcertTrust.verifyDidProof(document, signer).orThrow(::trustErr)
+}
+
 /** trust.trust-store */
 @JsExport
 class WitTrustStore {
@@ -281,6 +288,7 @@ class WitTrustStore {
     fun addPem(pem: String): Int = store.addPem(pem).orThrow(::trustErr)
     fun addDer(der: dynamic): Int = store.addDer(bytesIn(der)).orThrow(::trustErr)
     fun addDidDocument(json: String): Int = store.addDidDocument(json).orThrow(::trustErr)
+    fun addVerifiedDidDocument(json: String, signer: String): Int = store.addVerifiedDidDocument(json, signer).orThrow(::trustErr)
     fun loadTrustDomains(codesystemJson: String): Int = store.loadTrustDomains(codesystemJson).orThrow(::trustErr)
     fun trustDomains(): dynamic = array(store.trustDomains()) { it }
     fun candidates(k: dynamic): dynamic = array(store.candidates(bytesIn(k))) { dscOut(it) }

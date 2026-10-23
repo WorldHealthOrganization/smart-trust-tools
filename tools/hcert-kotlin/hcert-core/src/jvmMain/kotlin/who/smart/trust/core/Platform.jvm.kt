@@ -103,6 +103,18 @@ internal actual object Platform {
         }
     }
 
+    actual fun verifyEs256Point(x: ByteArray, y: ByteArray, data: ByteArray, signature: ByteArray): Boolean {
+        if (x.size != 32 || y.size != 32 || signature.size != 64 || !P256.onCurve(x, y)) return false
+        return try {
+            val key = java.security.KeyFactory.getInstance("EC").generatePublic(java.security.spec.X509EncodedKeySpec(P256.spki(x, y)))
+            Signature.getInstance("SHA256withECDSA").run {
+                initVerify(key); update(data); verify(EcdsaSignature.rawToDer(signature))
+            }
+        } catch (e: java.security.GeneralSecurityException) {
+            false
+        }
+    }
+
     /** RSASSA-PSS, SHA-256, MGF1-SHA-256, salt 32 (RFC 8230). Android names it SHA256withRSA/PSS. */
     private fun pss(): Signature = try {
         Signature.getInstance("RSASSA-PSS").apply {
@@ -110,6 +122,19 @@ internal actual object Platform {
         }
     } catch (e: java.security.NoSuchAlgorithmException) {
         Signature.getInstance("SHA256withRSA/PSS")
+    }
+
+    /** y^2 = x^3 - 3x + b over the P-256 field (FIPS 186-5, SEC 2). */
+    private object P256 {
+        private val p = java.math.BigInteger("ffffffff00000001000000000000000000000000ffffffffffffffffffffffff", 16)
+        private val b = java.math.BigInteger("5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b", 16)
+        fun onCurve(xb: ByteArray, yb: ByteArray): Boolean {
+            val x = java.math.BigInteger(1, xb)
+            val y = java.math.BigInteger(1, yb)
+            if (x >= p || y >= p) return false
+            return y.multiply(y).subtract(x.pow(3).subtract(x.multiply(java.math.BigInteger.valueOf(3))).add(b)).mod(p).signum() == 0
+        }
+        fun spki(x: ByteArray, y: ByteArray): ByteArray = P256_SPKI_PREFIX + x + y
     }
 
     actual fun nfc(text: String): String = java.text.Normalizer.normalize(text, java.text.Normalizer.Form.NFC)
