@@ -13,8 +13,8 @@
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { ToolDefinition } from "../cat-harness/schemas/tool.js";
-import { toolsFromFolders } from "../cat-harness/schemas/tool-folders.js";
+import type { ToolDefinition } from "@litlfred/cat-harness/schemas/tool.js";
+import { toolsFromFolders } from "@litlfred/cat-harness/schemas/tool-folders.js";
 
 export function tools(baseUrl?: string): ToolDefinition[] {
   return toolsFromFolders(dirname(fileURLToPath(import.meta.url)), baseUrl ?? "https://litlfred.github.io/smart-trust-tools/");
