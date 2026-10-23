@@ -88,7 +88,26 @@ fn parse_object(text: &str, what: &str) -> Result<Json, TrustError> {
     if !matches!(j, Json::Obj(_)) {
         return Err(bad(format!("{what} is not a JSON object")));
     }
+    no_duplicates(&j, what)?;
     Ok(j)
+}
+
+/// Refuses a duplicate member name in any object, at any depth: JSON-LD
+/// processors and JSON readers disagree on which one wins.
+fn no_duplicates(j: &Json, what: &str) -> Result<(), TrustError> {
+    match j {
+        Json::Obj(m) => {
+            for (i, (k, v)) in m.iter().enumerate() {
+                if m[..i].iter().any(|(e, _)| e == k) {
+                    return Err(bad(format!("{what} has a duplicate key: {k}")));
+                }
+                no_duplicates(v, what)?;
+            }
+            Ok(())
+        }
+        Json::Arr(a) => a.iter().try_for_each(|v| no_duplicates(v, what)),
+        _ => Ok(()),
+    }
 }
 
 /// The members of an object, after checking it has no duplicate, every key
@@ -113,13 +132,16 @@ fn str_of<'a>(j: Option<&'a Json>, what: &str) -> Result<&'a str, TrustError> {
     j.and_then(Json::as_str).ok_or_else(|| bad(format!("{what} is not a string")))
 }
 
-/// An absolute IRI the profile accepts, as an N-Quads term. Restricted to the
-/// schemes trust lists use and to printable ASCII without the characters
-/// N-Quads would need to escape, so that its expansion is the string itself.
+/// Printable ASCII without whitespace or the characters an N-Quads IRI
+/// would need escaped.
+fn iri_chars_ok(s: &str) -> bool {
+    s.bytes().all(|b| (0x21..0x7f).contains(&b) && !b"<>\"{}|^`\\".contains(&b))
+}
+
+/// A DID URL (the only IRIs a trust list's own terms hold) as an N-Quads
+/// term, so that its JSON-LD expansion is the string itself.
 fn iri(s: &str, what: &str) -> Result<String, TrustError> {
-    let scheme_ok = ["did:", "https:", "http:", "urn:"].iter().any(|p| s.starts_with(p));
-    let chars_ok = s.bytes().all(|b| (0x21..0x7f).contains(&b) && !b"<>\"{}|^`\\".contains(&b));
-    if !scheme_ok || !chars_ok || s.len() < 5 {
+    if !s.starts_with("did:") || s.len() < 5 || !iri_chars_ok(s) {
         return Err(bad(format!("{what} is not an absolute IRI the profile accepts: {s}")));
     }
     Ok(format!("<{s}>"))
@@ -127,10 +149,16 @@ fn iri(s: &str, what: &str) -> Result<String, TrustError> {
 
 /// An N-Quads string literal. Control characters are refused, not escaped.
 fn literal(s: &str, what: &str) -> Result<String, TrustError> {
+    Ok(nq_literal(plain(s, what)?))
+}
+
+/// Refuses U+0000-U+001F and U+007F (Rust strings hold no lone surrogate,
+/// and the JSON reader refuses an unpaired one).
+fn plain<'a>(s: &'a str, what: &str) -> Result<&'a str, TrustError> {
     if s.chars().any(|c| c < ' ' || c == '\u{7f}') {
         return Err(bad(format!("{what} holds a control character")));
     }
-    Ok(nq_literal(s))
+    Ok(s)
 }
 
 fn nq_literal(s: &str) -> String {
@@ -149,11 +177,17 @@ fn nq_literal(s: &str) -> String {
     out
 }
 
-/// URDNA2015's output for a graph with no blank node to relabel.
-fn canonical(mut lines: Vec<String>) -> String {
+/// URDNA2015's output for a graph with no blank node to relabel: lines
+/// sorted by code point. A code point above U+FFFF is refused, so that the
+/// order is the same whether an implementation compares code points or
+/// UTF-16 code units (no WHO document has one).
+fn canonical(mut lines: Vec<String>) -> Result<String, TrustError> {
+    if lines.iter().any(|l| l.chars().any(|c| c > '\u{ffff}')) {
+        return Err(bad("the canonical form holds a character above U+FFFF"));
+    }
     lines.sort();
     lines.dedup();
-    lines.concat()
+    Ok(lines.concat())
 }
 
 fn quad(s: &str, p: &str, o: &str) -> String {
@@ -198,13 +232,13 @@ fn document_nquads(doc: &Json, with_proof: bool) -> Result<String, TrustError> {
             let Some(v) = m.get(term) else { continue };
             members(v, term, &["code"], &["code"])?;
             let code = str_of(v.get("code"), term)?;
-            let frag = code.strip_prefix('#').filter(|f| !f.is_empty() && !f.contains('#'));
+            let frag = code.strip_prefix('#').filter(|f| !f.is_empty() && !f.contains('#') && iri_chars_ok(f));
             let frag = frag.ok_or_else(|| bad(format!("{term}.code is not a fragment reference: {code}")))?;
             let vs = format!("https://smart.who.int/trust/ValueSet-{set}{env}.jsonld");
-            q.push(quad(&id, &iri(&vs, term)?, &iri(&format!("{vs}#{frag}"), term)?));
+            q.push(quad(&id, &format!("<{vs}>"), &format!("<{vs}#{frag}>")));
         }
     }
-    Ok(canonical(q))
+    canonical(q)
 }
 
 /// RFC 8785 of a JWK whose members are strings or arrays of strings (all a
@@ -224,10 +258,10 @@ fn jwk_jcs(jwk: Option<&Json>) -> Result<String, TrustError> {
         out.push_str(&jcs_string(k));
         out.push(':');
         match v {
-            Json::Str(s) => out.push_str(&jcs_string(s)),
+            Json::Str(s) => out.push_str(&jcs_string(plain(s, "publicKeyJwk")?)),
             Json::Arr(a) => {
-                let items: Option<Vec<String>> = a.iter().map(|x| x.as_str().map(jcs_string)).collect();
-                let items = items.ok_or_else(|| bad(format!("publicKeyJwk.{k} holds a value that is not a string")))?;
+                let not_str = || bad(format!("publicKeyJwk.{k} holds a value that is not a string"));
+                let items = a.iter().map(|x| Ok(jcs_string(plain(x.as_str().ok_or_else(not_str)?, "publicKeyJwk")?))).collect::<Result<Vec<_>, TrustError>>()?;
                 out.push('[');
                 out.push_str(&items.join(","));
                 out.push(']');
@@ -285,7 +319,7 @@ fn proof_options_nquads(proof: &Json) -> Result<String, TrustError> {
             q.push(quad(b, &sec(term), &literal(str_of(Some(v), term)?, term)?));
         }
     }
-    Ok(canonical(q))
+    canonical(q)
 }
 
 /// Unpadded base64url (RFC 4648 section 5) with zero trailing bits: one
@@ -323,6 +357,7 @@ fn jws_parts(jws: &str) -> Result<(&str, Vec<u8>), TrustError> {
     let [header, "", signature] = parts[..] else { return Err(bad("proof.jws is not a detached JWS")) };
     let h = String::from_utf8(base64url(header, "the JWS header")?).map_err(|_| bad("the JWS header is not UTF-8"))?;
     let h = json::parse(&h).map_err(|e| bad(format!("the JWS header: {e}")))?;
+    no_duplicates(&h, "the JWS header")?;
     // The only protected header ld-signatures' JsonWebSignature2020 signer writes.
     members(&h, "the JWS header", &["b64", "crit", "alg"], &["b64", "crit", "alg"])?;
     let crit_ok = h.get("crit").and_then(Json::as_arr).is_some_and(|a| a.len() == 1 && a[0].as_str() == Some("b64"));
@@ -334,7 +369,10 @@ fn jws_parts(jws: &str) -> Result<(&str, Vec<u8>), TrustError> {
 
 /// The ways to read the signature: strict DER, and 64-byte r||s.
 fn signature_candidates(sig: &[u8]) -> Vec<p256::ecdsa::Signature> {
-    let mut out: Vec<_> = p256::ecdsa::Signature::from_der(sig).into_iter().collect();
+    let mut out = Vec::new();
+    if sig.first() == Some(&0x30) {
+        out.extend(p256::ecdsa::Signature::from_der(sig));
+    }
     if sig.len() == 64 {
         out.extend(p256::ecdsa::Signature::from_slice(sig));
     }
@@ -361,6 +399,9 @@ fn signer_key(signer: &Json, vm: &str) -> Result<p256::ecdsa::VerifyingKey, Trus
     let jwk = m.get("publicKeyJwk").ok_or_else(|| bad("the signer's verificationMethod has no publicKeyJwk"))?;
     if jwk.get("kty").and_then(Json::as_str) != Some("EC") || jwk.get("crv").and_then(Json::as_str) != Some("P-256") {
         return Err(bad("the signer's key is not an EC P-256 JWK"));
+    }
+    if jwk.get("alg").is_some_and(|a| a.as_str() != Some("ES256")) {
+        return Err(bad("the signer's key is not for ES256"));
     }
     let mut sec1 = vec![4u8];
     for c in ["x", "y"] {
@@ -391,9 +432,11 @@ mod tests {
 
     #[test]
     fn jcs_sorts_by_utf16_and_escapes() {
-        let j = json::parse(r#"{"😀":"a","｡":"b","x":["\n\u0001\"\\"]}"#).unwrap();
+        let j = json::parse(r#"{"\ud83d\ude00":"a","\uff61":"b","x":["\"\\"]}"#).unwrap();
         // U+FF61 sorts before U+1F600 by code point, after it by UTF-16 code unit (D83D).
-        assert_eq!(jwk_jcs(Some(&j)).unwrap(), "{\"x\":[\"\\n\\u0001\\\"\\\\\"],\"\u{1f600}\":\"a\",\"\u{ff61}\":\"b\"}");
+        assert_eq!(jwk_jcs(Some(&j)).unwrap(), "{\"x\":[\"\\\"\\\\\"],\"\u{1f600}\":\"a\",\"\u{ff61}\":\"b\"}");
+        assert!(jwk_jcs(Some(&json::parse(r#"{"x":"\u007f"}"#).unwrap())).is_err());
+        assert!(jwk_jcs(Some(&json::parse(r#"{"x":["\n"]}"#).unwrap())).is_err());
         assert!(jwk_jcs(Some(&json::parse(r#"{"n":1}"#).unwrap())).is_err());
         assert!(jwk_jcs(Some(&json::parse(r#"{"a":[{}]}"#).unwrap())).is_err());
         assert!(jwk_jcs(Some(&json::parse(r#"{"a":"1","a":"2"}"#).unwrap())).is_err());

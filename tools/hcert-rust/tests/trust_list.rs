@@ -191,3 +191,102 @@ fn stt_tru_006_signer_coordinates_and_profile_variants() {
     proof_err(hcert::didproof::canonical_proof_options(reference).map(|_| ()));
     proof_err(hcert::didproof::verify_did_proof(&doc.replacen("\"verificationMethod\":[", "\"verificationMethod\":{\"a\":[", 1), &signer));
 }
+
+/// The unified profile both libraries implement (STT-GEN-006), row by row.
+#[test]
+fn stt_tru_006_unified_profile_rows_give_the_same_verdict() {
+    use hcert::didproof::{canonical_document as cdoc, canonical_proof_options as copts, verify_did_proof as verify};
+    let doc = read(XXR_DSC_DID);
+    let signer = who_signer();
+    let refused = |r: Result<String, TrustError>, why: &str| {
+        let m = proof_err(r.map(|_| ()));
+        assert!(m.contains(why), "expected {why:?}, got {m:?}");
+    };
+    let swap = |from: &str, to: &str| {
+        assert!(doc.contains(from), "{from}");
+        doc.replacen(from, to, 1)
+    };
+
+    // 1. Document keys, controller a single string, verificationMethod an array of objects or strings.
+    refused(cdoc(&swap(",\"controller\":\"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR\",\"verificationMethod\"", ",\"verificationMethod\"")), "has no controller");
+    refused(cdoc(&swap("\"controller\":\"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR\",\"verificationMethod\"", "\"controller\":[\"did:web:x\"],\"verificationMethod\"")), "controller is not a string");
+    refused(cdoc(&swap("\"verificationMethod\":[", "\"verificationMethod\":[7,")), "not an object");
+    let no_proof = &doc[..doc.find(",\"proof\"").unwrap()];
+    refused(verify(&format!("{no_proof}}}"), &signer).map(|_| String::new()), "no proof");
+
+    // 2. Verification method keys and coded values.
+    refused(cdoc(&swap("\"controller\":\"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR\",\"publicKeyJwk\"", "\"publicKeyJwk\"")), "has no controller");
+    refused(cdoc(&swap("{\"code\":\"#XXR\"}", "{\"code\":\"#XXR\",\"system\":\"x\"}")), "system");
+    refused(cdoc(&swap("\"#XXR\"", "\"XXR\"")), "not a fragment");
+    refused(cdoc(&swap("\"#XXR\"", "\"#XXR#1\"")), "not a fragment");
+    refused(cdoc(&swap("\"#XXR\"", "\"#X R\"")), "not a fragment");
+
+    // 3. Proof keys: nonce optional; proofValue, signatureValue, expires, creator refused.
+    assert!(copts(&swap(",\"nonce\":\"z9n9PBzMPjpF5duCo4BLb4q2i9AGVA1J\"", "")).unwrap().lines().count() == 4);
+    for key in ["proofValue", "signatureValue", "expires", "creator"] {
+        refused(copts(&swap("\"nonce\"", &format!("\"{key}\":\"x\",\"nonce\""))), key);
+    }
+    refused(copts(&swap("{\"type\":\"JsonWebSignature2020\"", "{\"typo\":\"JsonWebSignature2020\"")), "typo");
+
+    // 4. JWK values: strings or arrays of strings.
+    refused(cdoc(&swap("\"kid\":\"kW/6VnwPRKI=\"", "\"kid\":{\"a\":\"b\"}")), "neither a string");
+    refused(cdoc(&swap("\"kid\":\"kW/6VnwPRKI=\"", "\"kid\":[1]")), "not a string");
+    refused(cdoc(&swap("\"kid\":\"kW/6VnwPRKI=\"", "\"kid\":null")), "neither a string");
+
+    // 5. IRIs are DID URLs of printable ASCII.
+    refused(cdoc(&swap("\"id\":\"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC\"", "\"id\":\"https://tng-cdn-dev.who.int/v2/trustlist/-/XXR/DSC\"")), "not an absolute IRI");
+    refused(cdoc(&swap("\"controller\":\"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR\",\"verificationMethod\"", "\"controller\":\"urn:x:y\",\"verificationMethod\"")), "not an absolute IRI");
+    refused(cdoc(&swap("#kW/6VnwPRKI=\",\"type\"", "#kW 6VnwPRKI=\",\"type\"")), "not an absolute IRI");
+    refused(cdoc(&swap("#kW/6VnwPRKI=\",\"type\"", "#kW<6VnwPRKI=\",\"type\"")), "not an absolute IRI");
+    refused(cdoc(&swap("#kW/6VnwPRKI=\",\"type\"", "#kW\u{e9}6VnwPRKI=\",\"type\"")), "not an absolute IRI");
+    refused(copts(&swap("\"verificationMethod\":\"did:web:raw", "\"verificationMethod\":\"http://raw")), "not an absolute IRI");
+    refused(cdoc(r#"{"@context":["https://www.w3.org/ns/did/v1","https://w3id.org/security/suites/jws-2020/v1","https://smart.who.int/trust/tng-context/v1.jsonld"],"id":"did:web:a","controller":"did:web:a","verificationMethod":["https://a/b"]}"#), "reference");
+
+    // 6. No control character, DEL or lone surrogate in any literal, the JWK's strings included.
+    refused(copts(&swap("\"2026-10-22T12:00:16Z\"", "\"2026-10-22T12:00:16Z\\u007f\"")), "control character");
+    refused(copts(&swap("\"z9n9", "\"\\u001fz9n9")), "control character");
+    refused(copts(&swap("\"nonce\"", "\"domain\":\"a\\tb\",\"nonce\"")), "control character");
+    refused(copts(&swap("\"nonce\"", "\"challenge\":\"\\u007f\",\"nonce\"")), "control character");
+    refused(cdoc(&swap("\"kid\":\"kW/6VnwPRKI=\"", "\"kid\":\"kW/6\\u007fVnwPRKI=\"")), "control character");
+    refused(cdoc(&swap("\"x5c\":[\"MIIC", "\"x5c\":[\"\\nMIIC")), "control character");
+    refused(copts(&swap("\"z9n9", "\"\\ud800z9n9")), "surrogate");
+    refused(copts(&swap("\"z9n9", "\"\\udc00z9n9")), "surrogate");
+
+    // 7. Code point order, and nothing above U+FFFF.
+    refused(copts(&swap("\"z9n9", "\"\\ud83d\\ude00z9n9")), "above U+FFFF");
+    refused(cdoc(&swap("\"kid\":\"kW/6VnwPRKI=\"", "\"kid\":\"\u{1f600}\"")), "above U+FFFF");
+    assert!(copts(&swap("\"z9n9", "\"\u{e9}\u{ffff}z9n9")).unwrap().contains("\"\u{e9}\u{ffff}z9n9"));
+
+    // 8. The signer: alg ES256 if present, controller, exactly one method.
+    let with_alg = |alg: &str| signer.replacen("\"kty\": \"EC\"", &format!("\"kty\": \"EC\", \"alg\": \"{alg}\""), 1);
+    verify(&doc, &with_alg("ES256")).unwrap();
+    refused(verify(&doc, &with_alg("ES384")).map(|_| String::new()), "ES256");
+    let ctl = "\"controller\": \"did:web:raw.githubusercontent.com:WorldHealthOrganization:tng-participants-dev:main:WHO:signing:DID\",\n            \"publicKeyJwk\"";
+    assert!(signer.contains(ctl));
+    refused(verify(&doc, &signer.replacen(ctl, "\"controller\": \"did:web:other\", \"publicKeyJwk\"", 1)).map(|_| String::new()), "another controller");
+    verify(&doc, &signer.replacen(ctl, "\"publicKeyJwk\"", 1)).unwrap();
+    let vm = &signer[signer.find("        {\n            \"id\"").unwrap()..signer.rfind("    ]").unwrap()];
+    let twice = signer.replacen(vm, &format!("{},\n{vm}", vm.trim_end()), 1);
+    refused(verify(&doc, &twice).map(|_| String::new()), "not exactly one");
+
+    // 9. Signatures: strict DER (a padded INTEGER is refused), or 64-byte r||s.
+    let padded = resign(&doc, |der| {
+        let raw = cose::ecdsa_der_to_raw(der).unwrap();
+        let mut out = vec![0x30, 2 * (2 + 34), 0x02, 34, 0, 0];
+        out.extend(&raw[..32]);
+        out.extend([0x02, 34, 0, 0]);
+        out.extend(&raw[32..]);
+        out
+    });
+    refused(verify(&padded, &signer).map(|_| String::new()), "does not verify");
+
+    // 11. Duplicate member names, anywhere.
+    refused(cdoc(&swap("\"id\":\"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC\"", "\"id\":\"did:web:a\",\"id\":\"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC\"")), "duplicate key: id");
+    refused(cdoc(&swap("{\"code\":\"#XXR\"}", "{\"code\":\"#XXA\",\"code\":\"#XXR\"}")), "duplicate key: code");
+    refused(copts(&swap("\"nonce\"", "\"nonce\":\"a\",\"nonce\"")), "duplicate key: nonce");
+    refused(cdoc(&swap("\"kty\":\"EC\"", "\"kty\":\"EC\",\"kty\":\"EC\"")), "duplicate key: kty");
+    let h = "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJFUzI1NiJ9";
+    let dup = cose::base64_encode(br#"{"b64":false,"crit":["b64"],"alg":"ES256","alg":"ES256"}"#, true).trim_end_matches('=').to_owned();
+    refused(verify(&swap(h, &dup), &signer).map(|_| String::new()), "duplicate key: alg");
+    refused(verify(&doc, &signer.replacen("\"kty\": \"EC\"", "\"kty\": \"EC\", \"kty\": \"EC\"", 1)).map(|_| String::new()), "duplicate key: kty");
+}
