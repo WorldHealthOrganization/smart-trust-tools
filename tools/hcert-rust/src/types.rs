@@ -185,6 +185,9 @@ pub enum CoseError {
 pub enum TrustError {
     Parse(String),
     UnknownTrustDomain(String),
+    /// A DID document's proof does not verify, or the document is not one
+    /// the proof profile models (STT-TRU-006).
+    ProofInvalid(String),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -225,6 +228,7 @@ impl fmt::Display for TrustError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             TrustError::Parse(m) => f.write_str(m),
+            TrustError::ProofInvalid(m) => write!(f, "DID document proof invalid: {m}"),
             TrustError::UnknownTrustDomain(d) => write!(f, "trust domain {d} is not in the loaded code system"),
         }
     }
