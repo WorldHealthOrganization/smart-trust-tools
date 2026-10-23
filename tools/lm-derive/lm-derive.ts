@@ -20,7 +20,7 @@ export default toolFactory((t) =>
     satisfies: ["hcert-contract-maintenance"],
     selection: {
       when: "A logical model changed, or CI checks the derived models are current.",
-      limits: "Maps the FHIR types these models use; an element it cannot map is an error.",
+      limits: "Maps kind=logical FHIR 5.0.0 models: direct elements of a FHIR primitive or model type, cardinality, bindings, codes, and \"a.exists() or b.exists()\" invariants. Anything else (a nested element, another type, a choice, a profile, an element invariant, another expression) is an error naming the model and element, in both modes, unless tools/lm-derive/allow-unmapped.json excuses it with a reason.",
       cost: "Milliseconds.",
     },
     requires: { runtime: ["python3"], network: false },
