@@ -3,13 +3,18 @@
   "name": "@litlfred/smart-trust-tools",
   "private": true,
   "type": "module",
-  "_workspaces_comment": "The mounted code layers, as workspaces, as litlfred/smart-trust lists them: they import each other by package name and nothing publishes those packages.",
+  "_workspaces_comment": "The mounted code layers, as workspaces, as litlfred/smart-trust lists them: they import each other by package name and nothing publishes those packages. Each is a glob for the layer here or beside this instance (name[x] and ../name[x]), as the harness's own layers write them, so the install also works when this instance is itself mounted one level down in a downstream.",
   "workspaces": [
-    "bootstrap-tools",
-    "cat-harness",
-    "cat-harness-tools",
-    "folio-assistant-core",
-    "fhir-harness"
+    "bootstrap-tool[s]",
+    "../bootstrap-tool[s]",
+    "cat-harnes[s]",
+    "../cat-harnes[s]",
+    "cat-harness-tool[s]",
+    "../cat-harness-tool[s]",
+    "folio-assistant-cor[e]",
+    "../folio-assistant-cor[e]",
+    "fhir-harnes[s]",
+    "../fhir-harnes[s]"
   ],
   "overrides": {
     "expo": "57.0.26"
