@@ -13,8 +13,10 @@ Every node and edge here is read from a committed node, never restated:
   tool          tools/<id>/<id>.ts (`satisfies`), read through `bun`
   process       processes/**/*.bpmn (tasks naming skills)
   role          scenarios/roles.json (a role's skills)
-  api           an item of the WIT contract, with the [STT-...] tags its doc
-                comment carries
+  api           an item of the contract (hcert-contract typology): a WIT
+                interface, world or item (api/wit/*.wit), or a CDDL rule of the
+                wire format (api/cddl/*.cddl), with the [STT-...] tags its
+                comments carry
   issue         beans/defs/*.md (Requirements affected, Sources)
   test          a test a skill's `tested-by:` names: each Kotlin test function
                 (named `STT-XXX-nnn ...` after the requirements it verifies),
@@ -295,8 +297,43 @@ def load_wit():
             if s and not s.startswith("//"):
                 doc = []
     for v in items.values():
-        v["wit"] = "%s.%s" % (v["module"], v["name"]) if v["name"] != v["module"] else v["module"]
+        v["qname"] = "%s.%s" % (v["module"], v["name"]) if v["name"] != v["module"] else v["module"]
+        v["lang"] = "WIT"
         v["text"] = " ".join(re.sub(r"^///?\s?", "", d) for d in v.pop("doc"))
+    return items
+
+
+CDDL_RULE = re.compile(r"^([a-z][a-z0-9-]*)\s*=")
+
+
+def load_cddl():
+    """Rules of the wire format: {cddl:file.rule: {...}}, with the [STT-...] tags of the
+    comment block before each rule and of the comments inside it."""
+    items = collections.OrderedDict()
+    for f in sorted((ROOT / "api" / "cddl").glob("*.cddl")):
+        module = f.name
+        items["cddl:" + f.stem] = {"module": module, "name": module, "kind": "cddl file", "file": f.name,
+                                   "lang": "CDDL", "tags": [], "text": "", "parent": f.stem}
+        doc, cur = [], None
+        for line in f.read_text().split("\n"):
+            code, _, comment = line.partition(";")
+            if not line.strip():
+                doc, cur = [], None
+                continue
+            m = CDDL_RULE.match(code)
+            if m:
+                text = " ".join(doc) or comment.strip()
+                cur = items.setdefault("cddl:%s.%s" % (f.stem, m.group(1)), {
+                    "module": module, "name": m.group(1), "kind": "cddl rule", "file": f.name, "lang": "CDDL",
+                    "tags": STT_TAG.findall(text), "text": text, "parent": f.stem})
+                doc = []
+            if cur is not None:
+                cur["tags"] += STT_TAG.findall(comment)
+            elif not code.strip():
+                doc.append(comment.strip())
+    for v in items.values():
+        v["tags"] = sorted(set(v["tags"]))
+        v["qname"] = "%s %s" % (v["module"], v["name"]) if v["name"] != v["module"] else v["module"]
     return items
 
 
@@ -325,7 +362,7 @@ def load(with_tools=True):
     return {
         "entries": entries, "sections": sections, "upstream": load_upstream(), "reqs": load_requirements(),
         "skills": skills, "tests": load_tests(skills), "tools": load_tools() if with_tools else {}, "processes": load_processes(),
-        "roles": load_roles(), "beans": load_beans(), "wit": load_wit(), "plans": load_plans(),
+        "roles": load_roles(), "beans": load_beans(), "wit": load_wit(), "cddl": load_cddl(), "plans": load_plans(),
     }
 
 
@@ -433,14 +470,15 @@ def build_graph(M):
         add("role:" + ro["id"], "role", ro["title"], ro["description"], actorKinds=ro.get("actorKinds", []))
         for s in ro.get("skills", []):
             edge("skill:" + s, "role:" + ro["id"], "performedBy")
-    for key, w in M["wit"].items():
-        add(key, "api", w["name"], w["text"] or w["wit"], module=w["module"], wit=w["wit"], apiKind=w["kind"],
-            witFile=w["file"])
-        for tag in w["tags"]:
-            if tag in reqs_by_display:
-                edge(tag, key, "constrainsApi")
-        if w["name"] != w["module"]:
-            edge(key, "wit:" + w["module"], "partOf")
+    for prefix, items in (("wit:", M["wit"]), ("cddl:", M["cddl"])):
+        for key, w in items.items():
+            add(key, "api", w["name"], w["text"] or w["qname"], module=w["module"], qname=w["qname"], apiKind=w["kind"],
+                lang=w["lang"], srcFile=w["file"])
+            for tag in w["tags"]:
+                if tag in reqs_by_display:
+                    edge(tag, key, "constrainsApi")
+            if w["name"] != w["module"]:
+                edge(key, prefix + w.get("parent", w["module"]), "partOf")
     for p in M["plans"].values():
         pid = "plan:" + p["id"]
         cases = [dict(id=c["id"], description=c.get("description", ""), assertions=[a["id"] for a in c["assertions"]]) for c in p["testCases"]]
