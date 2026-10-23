@@ -24,7 +24,7 @@ export interface Hcert {
   subclaims: Pick<typeof subclaimsT, "Registry">;
   dvc: typeof dvcT;
   vhl: typeof vhlT;
-  trust: Pick<typeof trustT, "TrustStore">;
+  trust: Pick<typeof trustT, "TrustStore" | "verifyDidProof">;
   verifier: typeof verifierT;
   issuer: typeof issuerT;
 }
@@ -45,6 +45,8 @@ export interface Fixtures {
   /** The merged guide's example (WHO af75be2), GDHCN DEV participant XXR: decodes, but its DSC is on the DEV trust list only. */
   /** XXR's DSC DID document from the GDHCN DEV trust list. */
   xxrDscDid: string;
+  /** GDHCN DEV trust list DID documents and WHO's signing DID (vectors/gdhcn-dev-trustlist). */
+  devTrustList: { signer: string; documents: Record<string, string> };
   xxr: { kid_hex: string; certificates: Record<string, { hc1: string; iss: string; iat: number; cwt_cbor_bytes: number; cose_sign1_bytes: number; deflated_bytes: number; hc1_chars: number; payload: { n: string; vx: { vp: string; bo: string } } }> };
   negative: { defaults: { trust: string[]; now: number; clockSkewSeconds: number }; cases: NegativeCase[] };
   pem: Record<string, string>;
@@ -156,6 +158,65 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
         r.val.entries.length === 1 && r.val.entries[0]!.keyUsageAuthorised && r.val.entries[0]!.payload.tag === "dvc-min" &&
         r.val.entries[0]!.payload.val.vx.vp === c.payload.vx.vp && r.val.diagnostics.length === 0;
     });
+  });
+
+  // Trust list DID document proofs (STT-TRU-006): the DEV documents verify, and
+  // each rule of the shared fail-closed profile refuses the same edits in both libraries.
+  const proofOk = (doc: string, signer = f.devTrustList.signer) => {
+    try {
+      h.trust.verifyDidProof(doc, signer);
+      return "ok";
+    } catch (e) {
+      return (e as { payload?: { tag?: string } }).payload?.tag ?? `threw ${(e as Error).message}`;
+    }
+  };
+  run("STT-TRU-006 the DEV trust list documents, the 234-key root among them, verify against WHO's signing DID", () => {
+    const docs = [f.xxrDscDid, ...Object.values(f.devTrustList.documents)];
+    const got = docs.map((d) => proofOk(d));
+    return [got.every((g) => g === "ok"), got.join(",")];
+  });
+  run("STT-TRU-006 a DER signature re-encoded as 64-byte r||s verifies too", () => {
+    const d = JSON.parse(f.xxrDscDid);
+    const [hdr, , sig] = d.proof.jws.split(".");
+    const b64 = (b: Uint8Array) => btoa(String.fromCharCode(...b)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    const der = Uint8Array.from(atob(sig.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
+    d.proof.jws = `${hdr}..${b64(h.cose.ecdsaDerToRaw(der))}`;
+    return proofOk(JSON.stringify(d)) === "ok";
+  });
+  run("STT-TRU-006 the shared profile refuses each unmodelled or altered shape with proof-invalid", () => {
+    const base = () => JSON.parse(f.xxrDscDid);
+    const signer = () => JSON.parse(f.devTrustList.signer);
+    const cases: [string, string, string?][] = [];
+    const add = (name: string, edit: (d: any) => void) => { const d = base(); edit(d); cases.push([name, JSON.stringify(d)]); };
+    add("a changed byte in an x5c", (d) => { const x = d.verificationMethod[0].publicKeyJwk.x5c[0]; d.verificationMethod[0].publicKeyJwk.x5c[0] = (x[10] === "A" ? "B" : "A") + x.slice(1); });
+    add("an extra top-level key", (d) => { d.service = []; });
+    add("a controller array", (d) => { d.controller = [d.controller]; });
+    add("no controller", (d) => { delete d.controller; });
+    add("proofValue beside jws", (d) => { d.proof.proofValue = "z"; });
+    add("a boolean JWK member", (d) => { d.verificationMethod[0].publicKeyJwk.ext = true; });
+    add("an https: controller", (d) => { d.controller = "https://example.org/x"; });
+    add("DEL in the nonce", (d) => { d.proof.nonce = "a\u007fb"; });
+    add("a code point above U+FFFF in a JWK string", (d) => { d.verificationMethod[0].publicKeyJwk.kid = "kW/6VnwPRKI=\u{1F600}"; });
+    add("a changed created lexical form", (d) => { d.proof.created = d.proof.created.replace("Z", "+00:00"); });
+    add("an extra key in a value set", (d) => { d.verificationMethod[0].domain.display = "x"; });
+    add("a wrong JWS header", (d) => { const [, , s] = d.proof.jws.split("."); d.proof.jws = `${btoa(JSON.stringify({ b64: false, crit: ["b64"], alg: "ES384" })).replace(/=+$/, "")}..${s}`; });
+    const dup = f.xxrDscDid.replace('"controller":', '"controller":"did:x","controller":');
+    cases.push(["a duplicate member name", dup]);
+    const s1 = signer(); s1.verificationMethod[0].publicKeyJwk.alg = "ES384";
+    cases.push(["a signer key whose alg is not ES256", f.xxrDscDid, JSON.stringify(s1)]);
+    const s2 = signer(); s2.id = "did:web:example.org";
+    cases.push(["a signer for another DID", f.xxrDscDid, JSON.stringify(s2)]);
+    const wrong = cases.map(([n, d, s]) => [n, proofOk(d, s)] as const).filter(([, g]) => g !== "proof-invalid");
+    return [wrong.length === 0, wrong.map(([n, g]) => `${n}: ${g}`).join("; ")];
+  });
+  run("STT-TRU-006 the trust store adds a verified document, and nothing when the proof fails", () => {
+    const st = new h.trust.TrustStore();
+    const tampered = f.xxrDscDid.replace('"nonce":"', '"nonce":"x');
+    let refused = false;
+    try { st.addVerifiedDidDocument(tampered, f.devTrustList.signer); } catch (e) { refused = (e as { payload?: { tag?: string } }).payload?.tag === "proof-invalid"; }
+    const empty = st.size() === 0;
+    const added = st.addVerifiedDidDocument(f.xxrDscDid, f.devTrustList.signer);
+    return refused && empty && added === 1 && st.size() === 1;
   });
 
   // cose (step 5)
