@@ -44,6 +44,8 @@ Translation rules:
 ```sh
 python3 tools/lm-derive/lm_derive.py            # regenerate models/generated (stdlib only)
 python3 tools/lm-derive/lm_derive.py --check    # CI: fail if stale
+# Both refuse an element, type or invariant they cannot map, unless
+# tools/lm-derive/allow-unmapped.json excuses it with a reason.
 pip install cbor2 base45 pycddl pyshacl rdflib
 python3 tools/check-models/check_models.py         # CDDL + SHACL against vectors/, plus mutations
 tools/fetch-lms/fetch_lms.sh [sha]              # recompile models/fhir from smart-trust-phw (needs network)
