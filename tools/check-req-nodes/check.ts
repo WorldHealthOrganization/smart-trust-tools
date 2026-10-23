@@ -29,6 +29,10 @@
  * - each code list (code-lists/*.json) parses as `folio-code-list/v1`, and
  *   every requirement's area (the AREA of STT-AREA-nnn) is an active code of
  *   the requirement-area list, which the viewers read the areas from;
+ * - the shared negative vectors (vectors/negative/negative-vectors.json) parse
+ *   against the negative-vectors Tool's Zod schema, each case's expected step
+ *   and reason a case of the WIT failure taxonomy (api/wit/types.wit) and each
+ *   trust path a file; the file carries no `$schema`, as its typology says;
  * - each test plan in test/plans/ parses as `test-plan/v1`, its requirements
  *   name requirements, each assertion id is a success criterion
  *   (`req:<id>#<statement>/<criterion>`), each fixed data path and generated
@@ -196,6 +200,11 @@ else {
   }
 }
 
+// The negative vectors, against their schema and the WIT failure taxonomy.
+const { checkNegativeVectors } = await import("../negative-vectors/negative-vectors.schema.ts");
+const negative = checkNegativeVectors(ROOT);
+problems.push(...negative.problems);
+
 /** `req:<id>#<statement key>/<criterion key>`, checked against the statement's criteria. */
 function criterionResolves(ref: string): boolean {
   const m = /^(req:[^#]+)#([^/]+)\/(.+)$/.exec(ref);
@@ -228,5 +237,5 @@ for (const f of plans) {
 }
 
 for (const p of problems) console.error(`  ✗ ${p}`);
-console.log(`${files.length} requirement(s), ${skills} skill(s), ${tests} test(s), ${beans.length} bean(s), ${plans.length} test plan(s), ${upstream.size} smart-trust Requirements, ${sourceNodes} external schema(s) and reference(s), ${codeLists.size} code list(s); ${problems.length} problem(s)`);
+console.log(`${files.length} requirement(s), ${skills} skill(s), ${tests} test(s), ${beans.length} bean(s), ${plans.length} test plan(s), ${upstream.size} smart-trust Requirements, ${sourceNodes} external schema(s) and reference(s), ${codeLists.size} code list(s), ${negative.cases} negative vector(s); ${problems.length} problem(s)`);
 process.exit(problems.length ? 1 : 0);
