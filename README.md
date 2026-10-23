@@ -43,4 +43,8 @@ Every part of the graph is a cat-harness node, declared in
 - [`beans/`](beans/): the open issues, each naming the requirements and
   sources it affects.
 
-`bun run check:req-nodes` fails if any edge names no node.
+The viewers draw these fields as edges under the harness's names (FHIR R5
+Requirements): a requirement `references` what its `reference` names and is
+`derivedFrom` the requirement its `derivedFrom` names; the
+[node kinds page](https://litlfred.github.io/smart-trust-tools/viewers/kinds.html)
+lists every kind and edge. `bun run check:req-nodes` fails if any edge names no node.

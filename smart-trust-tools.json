@@ -59,7 +59,7 @@
       "graphTypologies": [
         "references"
       ],
-      "description": "Other WHO SMART guides and value sets the requirements cite (DDCC, ICVP, PH4H, the GDHCN value sets), as CSL-JSON references."
+      "description": "Other WHO SMART guides and value sets the requirements cite (DDCC, ICVP, PH4H, the GDHCN value sets), as CSL-JSON references; and one reference per library entry the viewers label, held at it (heldAt), whose CSL title-short is the entry's short label."
     },
     {
       "id": "smart-trust-tools-docs",
@@ -76,6 +76,14 @@
         "memory"
       ],
       "description": "Owner directives the requirements cite in reference: languages (Kotlin first, Rust second), targets, open standards only, the user journeys, and the VHL decisions of 2026-10-20."
+    },
+    {
+      "id": "stt-code-lists",
+      "path": "code-lists/",
+      "graphTypologies": [
+        "code-list"
+      ],
+      "description": "This instance's code lists, one folio-code-list/v1 file per list: requirement-area, the areas the requirements are grouped in (the middle segment of STT-<AREA>-nnn), in reading order, with their titles, which the viewers read."
     },
     {
       "id": "beans",
@@ -162,6 +170,12 @@
       "path": "models/generated/",
       "graphTypologies": [
         "payload-models"
+      ],
+      "derivedFrom": [
+        "fhir-logical-models"
+      ],
+      "writer": [
+        "tools/lm-derive/lm_derive.py"
       ],
       "description": "The JSON-LD context, SHACL shapes and CDDL rules lm-derive writes from the logical models."
     },

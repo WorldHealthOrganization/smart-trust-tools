@@ -24,7 +24,15 @@
  * - each external schema (external-schemas/*.json) parses as
  *   `folio-external-schema/v1` and each reference (references/*.json) as
  *   `folio-reference/v1`, the schemas their typologies name, and its id is its
- *   file name: the nodes a `reference` lands on are well formed;
+ *   file name: the nodes a `reference` lands on are well formed; a
+ *   reference's `heldAt`, when it names a library entry, names one that exists;
+ * - each code list (code-lists/*.json) parses as `folio-code-list/v1`, and
+ *   every requirement's area (the AREA of STT-AREA-nnn) is an active code of
+ *   the requirement-area list, which the viewers read the areas from;
+ * - the shared negative vectors (vectors/negative/negative-vectors.json) parse
+ *   against the negative-vectors Tool's Zod schema, each case's expected step
+ *   and reason a case of the WIT failure taxonomy (api/wit/types.wit) and each
+ *   trust path a file; the file carries no `$schema`, as its typology says;
  * - each test plan in test/plans/ parses as `test-plan/v1`, its requirements
  *   name requirements, each assertion id is a success criterion
  *   (`req:<id>#<statement>/<criterion>`), each fixed data path and generated
@@ -165,8 +173,37 @@ for (const [dir, schema, idOf] of [
     const r = schema.safeParse(node);
     if (!r.success) for (const i of r.error.issues) problems.push(`${dir}/${f}: ${i.path.join(".") || "(root)"}: ${i.message}`);
     if (idOf(node) !== basename(f, ".json")) problems.push(`${dir}/${f}: id ${idOf(node)} is not its file name`);
+    const held = typeof node.heldAt === "string" ? /^library\/([^/]+)$/.exec(node.heldAt) : null;
+    if (held && !existsSync(join(ROOT, "library", held[1]!, "structure.json"))) problems.push(`${dir}/${f}: heldAt ${node.heldAt} names no library entry`);
   }
 }
+
+// The code lists, against the harness's schema; the requirement areas resolve in theirs.
+const { parseCodeList, activeCodes } = await import("@litlfred/cat-harness/schemas/code-list.ts");
+const codeListDir = join(ROOT, "code-lists");
+const codeLists = new Map<string, string[]>();
+for (const f of existsSync(codeListDir) ? readdirSync(codeListDir).filter((n) => n.endsWith(".json")).sort() : []) {
+  try {
+    const list = parseCodeList(join(codeListDir, f));
+    if (list.id !== basename(f, ".json")) problems.push(`code-lists/${f}: id ${list.id} is not its file name`);
+    codeLists.set(list.id, activeCodes(list));
+  } catch (e) {
+    problems.push((e as Error).message);
+  }
+}
+const areas = codeLists.get("requirement-area");
+if (!areas) problems.push("code-lists/requirement-area.json: missing; the viewers read the requirement areas from it");
+else {
+  for (const id of nodes.keys()) {
+    const area = /^req:stt-([a-z0-9]+)-\d{3}$/.exec(id)?.[1];
+    if (!area || !areas.includes(area)) problems.push(`${nodes.get(id)!.file}: area ${area ?? "(none)"} is no code of requirement-area`);
+  }
+}
+
+// The negative vectors, against their schema and the WIT failure taxonomy.
+const { checkNegativeVectors } = await import("../negative-vectors/negative-vectors.schema.ts");
+const negative = checkNegativeVectors(ROOT);
+problems.push(...negative.problems);
 
 /** `req:<id>#<statement key>/<criterion key>`, checked against the statement's criteria. */
 function criterionResolves(ref: string): boolean {
@@ -200,5 +237,5 @@ for (const f of plans) {
 }
 
 for (const p of problems) console.error(`  ✗ ${p}`);
-console.log(`${files.length} requirement(s), ${skills} skill(s), ${tests} test(s), ${beans.length} bean(s), ${plans.length} test plan(s), ${upstream.size} smart-trust Requirements, ${sourceNodes} external schema(s) and reference(s); ${problems.length} problem(s)`);
+console.log(`${files.length} requirement(s), ${skills} skill(s), ${tests} test(s), ${beans.length} bean(s), ${plans.length} test plan(s), ${upstream.size} smart-trust Requirements, ${sourceNodes} external schema(s) and reference(s), ${codeLists.size} code list(s), ${negative.cases} negative vector(s); ${problems.length} problem(s)`);
 process.exit(problems.length ? 1 : 0);

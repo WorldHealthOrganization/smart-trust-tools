@@ -23,16 +23,31 @@ Every node and edge here is read from a committed node, never restated:
                 or a whole script for any other file
   test-plan     test/plans/*.test-plan.json (test-plan/v1), whose assertion
                 ids are requirement statements' success criteria
+  model         a FHIR logical model (models/fhir/, fhir-logical-models) or a
+                payload model derived from them (models/generated/,
+                payload-models)
 
-Edges: derivedFrom (a requirement's `reference`), satisfies (a smart-trust
-canonical in `reference`), refines (its `derivedFrom`),
+Edges, named as the harness names the fields they come from (FHIR R5
+Requirements): references (a requirement's `reference`, what it is drawn
+from), satisfies (a smart-trust canonical in `reference`), derivedFrom (its
+`derivedFrom`, the broader requirement it narrows),
 realizedBy (requirement to skill), constrainsApi, affectedBy, concerns,
 partOf, implementedBy (skill to Tool), usedIn (skill to process),
 performedBy (skill to role), testedBy (skill to test), verifies (test to
 requirement), assesses (test plan to requirement, through an assertion on
 one of its success criteria), planCase (test plan to the skill a case is
-named after), precededBy (test plan to the plan that must pass first).
+named after), precededBy (test plan to the plan that must pass first),
+derivedFrom (also: a model or vector to the library entry, standard, model or
+vector it was compiled, derived or taken from), writes (Tool to the model or
+vector it writes: a directory's `writer`, a vector set's `generator`).
 A requirement's success criteria are data on its node.
+
+Read from nodes too, not restated here: the requirement areas and their
+titles (code-lists/requirement-area.json, folio-code-list/v1), the order of
+the pipeline's skills (the sequence flows of the issuance and verification
+processes), a library entry's short label (the CSL `title-short` of the
+reference held at it) and its explorer group (its upstream repository, when
+it was ingested from FSH).
 """
 
 import collections
@@ -45,40 +60,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 UPSTREAM = "http://smart.who.int/trust/Requirements/"
 UPSTREAM_SITE = "https://smart.who.int/trust"
 
-AREA_TITLES = collections.OrderedDict([
-    ("GEN", "Scope, architecture and language strategy"),
-    ("SEL", "Step 1: select payload type"),
-    ("PAY", "Step 2: assemble payload"),
-    ("CWT", "Step 3: CWT claim set"),
-    ("CBR", "Step 4: CBOR"),
-    ("COS", "Step 5: COSE_Sign1"),
-    ("KID", "Key identifier"),
-    ("ZIP", "Step 6: compression"),
-    ("B45", "Step 7: Base45"),
-    ("HC1", "Step 8: context identifier"),
-    ("QR", "Step 9: QR code"),
-    ("VER", "Verification"),
-    ("TRU", "Trust list"),
-    ("VHL", "Verifiable Health Link"),
-    ("ISS", "Issuance"),
-    ("SEC", "Security"),
-    ("NFR", "Non-functional"),
-    ("TST", "Conformance testing"),
-])
-
-ENTRY_SHORT = {
-    "who-smart-trust-qr-code-generation": "QR", "who-smart-trust-hcert-spec": "HCERT",
-    "who-smart-trust-did-gdhcn": "DID", "who-smart-trust-endpoints": "Endpoints",
-    "who-smart-trust-changes": "Changes", "who-smart-trust-trust-domains": "Domains",
-    "who-smart-trust-data-exchange": "Data exchange", "who-smart-trust-reference-implementation": "Ref. impl.",
-    "ihe-iti-vhl-volume-1": "VHL Vol. 1", "ihe-iti-vhl-iti-yy3": "ITI-YY3", "ihe-iti-vhl-iti-yy4": "ITI-YY4",
-    "ihe-iti-vhl-iti-yy5": "ITI-YY5",
-}
-
-# The skills of the HCERT pipeline, in the order of QR Code Generation.
-PIPELINE = ["hcert-select-payload", "hcert-assemble-payload", "hcert-build-cwt", "hcert-encode-cbor",
-            "hcert-sign-cose", "hcert-compress", "hcert-encode-base45", "hcert-prefix-context",
-            "hcert-verify", "hcert-trust-list"]
+# The two processes whose tasks, in sequence-flow order, are the HCERT
+# pipeline's skills: QR Code Generation steps 1 to 9, then verification.
+PIPELINE_PROCESSES = ("hcert-issuance", "hcert-verification")
 
 STT_TAG = re.compile(r"STT-[A-Z0-9]+-\d{3}")
 
@@ -90,6 +74,56 @@ def front_matter(text):
     return (yaml.safe_load(m.group(1)) or {}, m.group(2)) if m else ({}, text)
 
 
+def load_areas():
+    """The requirement areas, in reading order, from the requirement-area code list:
+    {"GEN": "Scope, architecture and language strategy", ...}."""
+    d = json.loads((ROOT / "code-lists" / "requirement-area.json").read_text())
+    return collections.OrderedDict((c["code"].upper(), c["label"]) for c in d["codes"] if c.get("status") != "retired")
+
+
+def load_pipeline():
+    """The skills of the HCERT pipeline, in order: each process of PIPELINE_PROCESSES
+    walked along its sequence flows from its start event, each task's skill taken
+    the first time it is reached."""
+    order = []
+    for name in PIPELINE_PROCESSES:
+        x = (ROOT / "processes" / "content" / (name + ".bpmn")).read_text()
+        flows = dict(re.findall(r'<bpmn:sequenceFlow id="[^"]+" sourceRef="([^"]+)" targetRef="([^"]+)"', x))
+        skill = {}
+        for m in re.finditer(r'<bpmn:(\w*[tT]ask) id="([^"]+)"[^>]*>(.*?)</bpmn:\1>', x, flags=re.S):
+            r = re.search(r'<bootstrap\.processes:skill ref="([^"]+)"', m.group(3))
+            if r:
+                skill[m.group(2)] = r.group(1)
+        node, seen = re.search(r'<bpmn:startEvent id="([^"]+)"', x).group(1), set()
+        while node in flows and node not in seen:
+            seen.add(node)
+            node = flows[node]
+            if node in skill and skill[node] not in order:
+                order.append(skill[node])
+    return order
+
+
+def load_short_titles():
+    """Short labels of library entries: the CSL `title-short` of the reference
+    (references/*.json, folio-reference/v1) whose `heldAt` is the entry."""
+    out = {}
+    for f in sorted((ROOT / "references").glob("*.json")):
+        d = json.loads(f.read_text())
+        if d.get("heldAt", "").startswith("library/") and d.get("title-short"):
+            out[d["heldAt"][len("library/"):]] = d["title-short"]
+    return out
+
+
+def doc_group(repo, path):
+    """The explorer group of a library entry ingested from FSH: one per upstream
+    repository (its FSH logical models, profiles, Requirements, ActorDefinitions),
+    read from the entry's upstream path. Other entries are a group of their own."""
+    if repo and (path or "").startswith("input/fsh/"):
+        name = repo.rstrip("/").rsplit("/", 1)[-1]
+        return "grp:fsh-" + name.lower().replace(".", "-"), name + " FSH sources"
+    return None, None
+
+
 def display_id(req_id):
     """req:stt-cos-002 -> STT-COS-002, the id the IG and the WIT comments use."""
     return req_id[len("req:"):].upper()
@@ -97,6 +131,7 @@ def display_id(req_id):
 
 def load_library():
     entries, sections = {}, {}
+    short = load_short_titles()
     for st in sorted((ROOT / "library").glob("*/structure.json")):
         d = json.loads(st.read_text())
         slug = d["doc_id"]
@@ -105,9 +140,10 @@ def load_library():
         pinned = "%s/blob/%s/%s" % (repo, up["commit"], up["path"]) if repo and up.get("commit") else None
         eid = "library/" + slug
         entries[eid] = {
-            "slug": slug, "title": d["metadata"].get("title") or slug, "short": ENTRY_SHORT.get(slug),
+            "slug": slug, "title": d["metadata"].get("title") or slug, "short": short.get(slug),
+            "group": doc_group(repo, up.get("path")),
             "urls": {k: v for k, v in (("pinned", pinned), ("published", up.get("published"))) if v},
-            "repository": repo, "commit": up.get("commit"), "ref": up.get("ref"),
+            "repository": repo, "commit": up.get("commit"), "ref": up.get("ref"), "path": up.get("path"),
         }
         for s in d["sections"]:
             urls = {}
@@ -355,14 +391,114 @@ def load_plans():
     return plans
 
 
+def declared_dirs():
+    """This instance's directory declarations (smart-trust-tools.json), by id."""
+    d = json.loads((ROOT / "smart-trust-tools.json").read_text())
+    return {x["id"]: x for x in d["directories"]}
+
+
+def dirs_of(typology):
+    return [x for x in declared_dirs().values() if typology in x.get("graphTypologies", [])]
+
+
+# The format of a derived payload model, by suffix: how the viewer names it.
+PAYLOAD_FORMAT = {".jsonld": "JSON-LD context", ".ttl": "SHACL shapes", ".cddl": "CDDL rules"}
+
+
+def load_models(entries):
+    """The FHIR logical models and the payload models derived from them.
+
+    Logical models: each file of a fhir-logical-models directory. A
+    StructureDefinition is matched to the library entry whose ingested FSH
+    declares it (`Logical:` or `Profile:` <name>), in the repository the
+    directory's SOURCE.yaml names, and to its baseDefinition when that is a
+    model here too. The R5 primitive patterns are matched to the external
+    schema of the FHIR core package they were taken from.
+
+    Payload models: each file of a payload-models directory, derived from
+    every file of the directories its declaration's `derivedFrom` names and
+    written by the Tool its `writer` lies in.
+    """
+    import yaml
+    models = collections.OrderedDict()
+    decl = declared_dirs()
+    declares = {}
+    for eid, e in entries.items():
+        for sec in sorted((ROOT / eid / "sections").glob("*.md")):
+            for name in re.findall(r"^(?:Logical|Profile):\s+(\S+)", sec.read_text(), flags=re.M):
+                declares.setdefault((e["repository"], name), eid)
+    by_dir = collections.defaultdict(list)
+    for d in dirs_of("fhir-logical-models"):
+        base = ROOT / d["path"]
+        src = yaml.safe_load((base / "SOURCE.yaml").read_text()) if (base / "SOURCE.yaml").exists() else {}
+        repo = "https://github.com/" + src.get("logical_models", {}).get("repo", "")
+        pkg = src.get("primitives", {}).get("package", "")
+        for f in sorted(base.glob("*.json")):
+            rel = f.relative_to(ROOT).as_posix()
+            j = json.loads(f.read_text())
+            by_dir[d["id"]].append(rel)
+            if j.get("resourceType") == "StructureDefinition":
+                models[rel] = {"kind": "logical", "label": j["name"], "title": j.get("title") or j["name"], "url": j.get("url"),
+                               "file": rel, "fhirVersion": j.get("fhirVersion"), "abstract": j.get("abstract"),
+                               "entry": declares.get((repo, j["name"])), "base": j.get("baseDefinition"), "derivedFrom": []}
+            else:
+                version = pkg.partition("#")[2]
+                std = next((x for x in sorted((ROOT / "external-schemas").glob("hl7-fhir-*.json"))
+                            if version and json.loads(x.read_text()).get("version") == version), None)
+                models[rel] = {"kind": "primitives", "label": f.stem, "title": "FHIR primitive patterns (%s)" % pkg, "file": rel,
+                               "standard": std.relative_to(ROOT).with_suffix("").as_posix() if std else None, "derivedFrom": []}
+    urls = {m["url"]: k for k, m in models.items() if m.get("url")}
+    for m in models.values():
+        if m.get("base") in urls:
+            m["derivedFrom"].append(urls[m["base"]])
+    for d in dirs_of("payload-models"):
+        writer = [w.split("/")[1] for w in d.get("writer", []) if w.startswith("tools/")]
+        for f in sorted((ROOT / d["path"]).iterdir()):
+            if f.suffix not in PAYLOAD_FORMAT:
+                continue
+            rel = f.relative_to(ROOT).as_posix()
+            models[rel] = {"kind": "payload", "label": f.name, "title": "%s (%s)" % (PAYLOAD_FORMAT[f.suffix], f.name), "file": rel,
+                           "derivedFrom": [x for src in d.get("derivedFrom", []) if src in decl for x in by_dir[src]],
+                           "writtenBy": writer}
+    return models
+
+
+def load_vectors(entries):
+    """Every test vector file (hcert-test-vectors directories), with what its set's
+    SOURCE.yaml says of it: the vector it is derived from (`derivedFrom`), the
+    Tool that writes it (`generator`), and the library entry it was taken from
+    (its `files:` line starting with that entry's upstream path in `repo`)."""
+    import yaml
+    vecs = collections.OrderedDict()
+    by_path = {(e["repository"], up_path): eid for eid, e in entries.items() for up_path in [e.get("path")] if up_path}
+    for d in dirs_of("hcert-test-vectors"):
+        for sdir in sorted(p for p in (ROOT / d["path"]).iterdir() if p.is_dir()):
+            src = yaml.safe_load((sdir / "SOURCE.yaml").read_text()) if (sdir / "SOURCE.yaml").exists() else {}
+            repo = "https://github.com/" + src["repo"] if src.get("repo") else ""
+            gen = src.get("generator", "")
+            for f in sorted(sdir.iterdir()):
+                if f.name in ("SOURCE.yaml", "README.md") or not f.is_file():
+                    continue
+                line = str((src.get("files") or {}).get(f.name, "")).strip()
+                entry = next((eid for (r, up), eid in by_path.items() if r == repo and line.startswith(up)), None)
+                vecs[f.relative_to(ROOT).as_posix()] = {
+                    "derivedFrom": [src["derivedFrom"]] if src.get("derivedFrom") else [],
+                    "writtenBy": [gen.split("/")[1]] if gen.startswith("tools/") else [],
+                    "entry": entry,
+                }
+    return vecs
+
+
 def load(with_tools=True):
     """The nodes. Without Tools when the harness is not mounted (CI): tools/index.ts imports it."""
     entries, sections = load_library()
     skills = load_skills()
     return {
+        "areas": load_areas(), "pipeline": load_pipeline(),
         "entries": entries, "sections": sections, "upstream": load_upstream(), "reqs": load_requirements(),
         "skills": skills, "tests": load_tests(skills), "tools": load_tools() if with_tools else {}, "processes": load_processes(),
         "roles": load_roles(), "beans": load_beans(), "wit": load_wit(), "cddl": load_cddl(), "plans": load_plans(),
+        "models": load_models(entries), "vectors": load_vectors(entries),
     }
 
 
@@ -371,6 +507,7 @@ FAMILY = {
     "section": "source", "document": "source", "standard": "source", "directive": "source", "upstream": "source",
     "skill": "realization", "api": "realization", "tool": "realization", "process": "realization", "role": "realization",
     "test": "realization", "test-plan": "realization",
+    "model": "model",
     "issue": "issue",
 }
 
@@ -400,21 +537,31 @@ def build_graph(M):
             edge(nid, UPSTREAM + inst, "partOf")
         return nid
 
+    groups = {}
+
+    def group_of(eid):
+        key, label = M["entries"][eid]["group"]
+        if not key:
+            return {}
+        groups[key] = label
+        return {"docGroup": key}
+
     def add_source(ref):
-        """The node a derivedFrom or Sources reference names; returns its id."""
+        """The node a requirement's `reference` or a bean's Sources names; returns its id."""
         if ref.startswith(UPSTREAM):
             inst, _, key = ref[len(UPSTREAM):].partition("#")
             return add_upstream(inst, key or None)
         if ref in M["sections"]:
             s = M["sections"][ref]
-            add(ref, "section", section_label(M["entries"], s), s["heading"].replace("`", ""), doc=s["entry"], urls=s["urls"])
+            add(ref, "section", section_label(M["entries"], s), s["heading"].replace("`", ""), doc=s["entry"], urls=s["urls"],
+                **group_of(s["entry"]))
             add_source(s["entry"])
             if not any(e["s"] == ref and e["rel"] == "partOf" for e in edges):
                 edge(ref, s["entry"], "partOf")
             return ref
         if ref in M["entries"]:
             e = M["entries"][ref]
-            add(ref, "document", e["short"] or e["title"][:34], e["title"], urls=e["urls"], origin="library")
+            add(ref, "document", e["short"] or e["title"][:34], e["title"], urls=e["urls"], origin="library", **group_of(ref))
             return ref
         path = ROOT / ref
         if ref.startswith("external-schemas/"):
@@ -440,11 +587,11 @@ def build_graph(M):
             iri=r["iri"], file=r["file"], criteria=r["criteria"])
     for r in M["reqs"].values():
         for d in r["derivedFrom"]:
-            edge(r["id"], display_id(d), "refines")
+            edge(r["id"], display_id(d), "derivedFrom")
         for d in r["reference"]:
-            edge(r["id"], add_source(d), "satisfies" if d.startswith(UPSTREAM) else "derivedFrom")
+            edge(r["id"], add_source(d), "satisfies" if d.startswith(UPSTREAM) else "references")
 
-    order = {s: i + 1 for i, s in enumerate(PIPELINE)}
+    order = {s: i + 1 for i, s in enumerate(M["pipeline"])}
     for s in M["skills"].values():
         add("skill:" + s["name"], "skill", s["name"], s["description"], package=s["package"],
             order=order.get(s["name"], 100), file=s["file"])
@@ -492,6 +639,28 @@ def build_graph(M):
         for d in p.get("dependencies", []):
             if d.get("predecessor"):
                 edge(pid, "plan:" + d["predecessor"], "precededBy")
+    for rel, m in M["models"].items():
+        add(rel, "model", m["label"], m["title"], modelKind=m["kind"], file=m["file"], canonical=m.get("url"),
+            urls={"main": "https://github.com/litlfred/smart-trust-tools/blob/main/" + rel})
+    for rel, m in M["models"].items():
+        if m.get("entry"):
+            edge(rel, add_source(m["entry"]), "derivedFrom")
+        if m.get("standard"):
+            edge(rel, add_source(m["standard"]), "derivedFrom")
+        for d in m["derivedFrom"]:
+            edge(rel, d, "derivedFrom")
+        for t in m.get("writtenBy", []):
+            if "tool:" + t in nodes:
+                edge("tool:" + t, rel, "writes")
+    for rel, v in M["vectors"].items():
+        add_source(rel)
+        if v["entry"]:
+            edge(rel, add_source(v["entry"]), "derivedFrom")
+        for d in v["derivedFrom"]:
+            edge(rel, add_source(d), "derivedFrom")
+        for t in v["writtenBy"]:
+            if "tool:" + t in nodes:
+                edge("tool:" + t, rel, "writes")
     for b in M["beans"].values():
         add(b["id"], "issue", b["id"], b["title"], text=b["text"], hint=b["hint"], upstream=b["upstream"],
             status=b["status"], file=b["file"])
@@ -504,7 +673,8 @@ def build_graph(M):
     dangling = [e for e in edges if e["s"] not in known or e["t"] not in known]
     if dangling:
         raise ValueError("edges to no node: %s" % dangling[:5])
-    return {"nodes": list(nodes.values()), "edges": edges, "areas": [[k, v] for k, v in AREA_TITLES.items()]}
+    return {"nodes": list(nodes.values()), "edges": edges, "areas": [[k, v] for k, v in M["areas"].items()],
+            "groups": groups}
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@
     requirement: "Requirement", section: "Source section", document: "Source document",
     standard: "Standard", directive: "Owner directive", upstream: "smart-trust requirement",
     skill: "Skill", api: "WIT item", tool: "Tool", test: "Test", "test-plan": "Test plan", process: "Process (BPMN)", role: "Role",
-    issue: "Open issue (bean)"
+    model: "Model (FHIR logical or payload)", issue: "Open issue (bean)"
   };
   var URL_LABEL = {
     pinned: "Source (pinned commit)", preview: "PR preview build", main: "Source on main",
