@@ -14,8 +14,8 @@ a clean checkout of the release tag, and stops at the first failure.
 
 ## What is published
 
-One version for all of them, from [`VERSION`](../VERSION) (STT-NFR-001), with
-an entry in [`CHANGELOG.md`](../CHANGELOG.md) that cites each smart-trust
+One version for all of them, from [`VERSION`](https://github.com/litlfred/smart-trust-tools/blob/main/VERSION) (STT-NFR-001), with
+an entry in [`CHANGELOG.md`](https://github.com/litlfred/smart-trust-tools/blob/main/CHANGELOG.md) that cites each smart-trust
 `changes.md` entry it implements.
 
 | Registry | Coordinates | Built by |
