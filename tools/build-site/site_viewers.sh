@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # site.build siteStep: write the viewer pages (graph explorer, traceability
-# matrix, requirements, API, models, vocabulary, Kotlin skeleton) into
+# matrix, requirements, API, models, node kinds, Kotlin skeleton) into
 # <built site>/viewers/, after Jekyll, so they are served verbatim.
 set -euo pipefail
 site="${1:?usage: site_viewers.sh <built site>}"

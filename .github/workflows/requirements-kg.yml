@@ -40,6 +40,8 @@ jobs:
         run: python3 tools/lm-derive/lm_derive.py --check
       - name: Validate vectors against CDDL and SHACL
         run: python3 tools/check-models/check_models.py
+      - name: Shared negative vectors are current with the PR 129 vector
+        run: python3 tools/negative-vectors/make_negative_vectors.py --check
       # VERSION is the one version source (STT-NFR-001); the kotlin job
       # repeats this against the built POMs and package.json files.
       - name: One version everywhere, with a changelog entry

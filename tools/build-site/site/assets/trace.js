@@ -6,7 +6,7 @@
   function chipLinks(items, cls) {
     if (!items.length) return '<span class="gap">—</span>';
     return '<div class="chips">' + items.map(function (x) {
-      var n = x.node, label = n.kind === "api" && n.wit ? n.wit : n.label;
+      var n = x.node, label = n.kind === "api" && n.qname ? n.qname : n.label;
       if (n.kind === "test") label = "test: " + n.label;
       if (n.kind === "skill") label = n.label.replace(/^hcert-/, "");
       return '<a class="chip ' + (cls || "") + '" href="explorer.html#' + esc(n.id) + '" title="' + esc(n.title) + '">' + esc(label) + "</a>";

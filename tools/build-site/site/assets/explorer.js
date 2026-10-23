@@ -7,7 +7,7 @@
   var FAMILIES = [
     { id: "requirement", label: "Requirements", color: "--fam-requirement" },
     { id: "source", label: "Sources & smart-trust", color: "--fam-source" },
-    { id: "realization", label: "Skills, Tools & WIT", color: "--fam-realization" },
+    { id: "realization", label: "Skills, Tools & contract", color: "--fam-realization" },
     { id: "issue", label: "Open issues", color: "--status-warning" }
   ];
   var SHAPE = {
@@ -19,7 +19,7 @@
     ["round-rectangle", "requirement"], ["rectangle", "source section"], ["cut-rectangle", "document or standard"],
     ["star", "owner directive"], ["diamond", "smart-trust FHIR requirement"], ["hexagon", "skill"],
     ["barrel", "Tool"], ["rhomboid", "test"], ["tag", "test plan"], ["round-tag", "process (BPMN)"], ["vee", "role"],
-    ["ellipse", "WIT item or interface"], ["triangle", "open issue (bean)"]
+    ["ellipse", "contract item (WIT, CDDL)"], ["triangle", "open issue (bean)"]
   ];
   var COLUMN = { directive: 0, standard: 0, document: 0, section: 0, upstream: 0, requirement: 1,
     skill: 2, api: 2, issue: 2, tool: 3, test: 3, "test-plan": 3, process: 3, role: 3 };
@@ -32,25 +32,24 @@
     derivedFrom: ["Derived from", "Source for"], satisfies: ["Satisfies (smart-trust)", "Satisfied by"],
     refines: ["Refines", "Refined by"],
     assesses: ["Assesses", "Test plans"], planCase: ["Cases (skills)", "In test plans"], precededBy: ["Preceded by", "Precedes"],
-    realizedBy: ["Skills", "Realizes"], constrainsApi: ["WIT items", "Constrained by"],
+    realizedBy: ["Skills", "Realizes"], constrainsApi: ["Contract items (WIT, CDDL)", "Constrained by"],
     implementedBy: ["Tools", "Skills"], usedIn: ["Processes", "Skills"], performedBy: ["Roles", "Skills"],
     testedBy: ["Tests", "Tests the skill"], verifies: ["Verifies", "Verified by tests"],
     affectedBy: ["Open issues", "Affects"], concerns: ["Concerns", "Raised by"], partOf: ["Part of", "Contains"]
   };
   /* Library entries and other sources that read better as one group. */
-  var DOC_GROUPS = {};
   function docGroupOf(n) {
     if (n.origin === "reference") return "grp:other-igs";
     if (n.origin === "vector") return "grp:vectors";
     var id = n.doc || n.id;
     if (/^library\/who-smart-trust-phw-/.test(id)) return "grp:phw";
-    if (/^library\/who-smart-trust-(hcert-model|cwt-payload-model|requirements-fsh|dvc-qr-script)$/.test(id)) return "grp:st-artefacts";
-    return DOC_GROUPS[id] || "doc:" + id;
+    if (/^library\/who-smart-trust-(hcert-model|cwt-payload-model|requirements-fsh)$/.test(id)) return "grp:st-artefacts";
+    return "doc:" + id;
   }
   var GROUP_LABEL = {
     "grp:standards": "Standards (IETF, W3C, ITU-T, HL7, IHE, WHO)", "grp:directives": "Owner directives",
     "grp:phw": "smart-trust-phw logical models", "grp:other-igs": "Other WHO SMART IGs",
-    "grp:st-artefacts": "smart-trust models, Requirements & script", "grp:vectors": "Test vectors",
+    "grp:st-artefacts": "smart-trust models & Requirements", "grp:vectors": "Test vectors",
     "grp:issues-up": "Open issues to fix upstream", "grp:issues-local": "Open issues in this project",
     "grp:tools": "Tools", "grp:tests": "Tests", "grp:plans": "Test plans", "grp:processes": "Processes (BPMN)", "grp:roles": "Roles"
   };
@@ -194,7 +193,7 @@
     if (n.kind === "requirement") return n.id + "\n" + trunc(n.title, 38);
     if (n.kind === "section") return n.label + "\n" + trunc(n.title, 38);
     if (n.kind === "issue") return n.id + "\n" + trunc(n.title, 38);
-    if (n.kind === "api") return n.label + (n.wit ? "\n" + n.wit : "");
+    if (n.kind === "api") return n.label + (n.qname ? "\n" + n.qname : "");
     if (n.kind === "upstream") return n.label + "\n" + trunc(n.title, 34);
     if (n.kind === "skill" || n.kind === "tool") return n.label + "\n" + trunc(n.title, 38);
     if (n.kind === "test") return trunc(n.label, 44);
@@ -474,7 +473,7 @@
     var title = REL_LABEL[rel][dir === "in" ? 1 : 0];
     var lis = items.map(function (x) {
       var n = x.node, extra = "";
-      if (n.kind === "api" && n.wit) extra = ' <span class="muted mono">' + esc(n.wit) + "</span>";
+      if (n.kind === "api" && n.qname) extra = ' <span class="muted mono">' + esc(n.qname) + "</span>";
       else if (n.title && n.title !== n.label) extra = ' <span class="muted">' + esc(n.title) + "</span>";
       var q = x.edge.quote ? '<span class="d-quote">“' + esc(x.edge.quote) + "”</span>" : "";
       var urls = (rel === "derivedFrom" || rel === "concerns") && dir !== "in" ? '<span class="d-urls">' + S.urlList(n.urls) + "</span>" : "";
@@ -540,7 +539,8 @@
       h.push(relSection(id, "concerns", "out"));
     } else if (n.kind === "api") {
       h.push('<div class="chips"><span class="chip">' + esc(n.apiKind) + '</span><span class="chip">module ' + esc(n.module) + "</span></div>");
-      h.push('<p class="small">WIT: <a href="api.html#file-' + esc(n.witFile.replace(/\.wit$/, "")) + '"><code>' + esc(n.wit) + "</code></a> in <code>" + esc(n.witFile) + "</code></p>");
+      var page = n.lang === "CDDL" ? "models.html#" + (n.name === n.module ? "cddl" : "cddl-" + n.name) : "api.html#file-" + n.srcFile.replace(/\.wit$/, "");
+      h.push('<p class="small">' + esc(n.lang) + ': <a href="' + esc(page) + '"><code>' + esc(n.qname) + "</code></a> in <code>" + esc(n.srcFile) + "</code></p>");
       h.push(relSection(id, "constrainsApi", "in"));
       h.push(relSection(id, "partOf", "out"));
       h.push(relSection(id, "partOf", "in"));

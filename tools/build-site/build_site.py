@@ -201,7 +201,7 @@ def requirements_page(ref, M, graph):
             o = out[r["id"]]
             rows = [("Derived from", o["derivedFrom"], True), ("Satisfies (smart-trust)", o["satisfies"], True),
                     ("Refines", o["refines"], False),
-                    ("Realized by skills", o["realizedBy"], False), ("Constrains (WIT)", o["constrainsApi"], False),
+                    ("Realized by skills", o["realizedBy"], False), ("Constrains (WIT, CDDL)", o["constrainsApi"], False),
                     ("Verified by tests", [by_id[e["s"]] for e in graph["edges"] if e["rel"] == "verifies" and e["t"] == r["id"]], False),
                     ("Test plans", [by_id[e["s"]] for e in graph["edges"] if e["rel"] == "assesses" and e["t"] == r["id"]], False),
                     ("Open issues", o["affectedBy"], False)]
@@ -219,15 +219,28 @@ def requirements_page(ref, M, graph):
 <h1>HCERT library requirements</h1>
 <p>%d requirements, one cat-harness <code>req:</code> node each. Every link below is an edge in the graph:
 library sections, external schemas, references and owner directives a requirement is derived from; the smart-trust
-FHIR Requirements it satisfies; the skills that realize it; the WIT items whose comments cite it; and the open issues
+FHIR Requirements it satisfies; the skills that realize it; the WIT items and CDDL rules whose comments cite it; and the open issues
 (beans) that affect it.</p>
 <ul>%s</ul>%s</article></main>""" % (len(reqs), "".join(toc), "".join(blocks)))
 
 
+def wit_files_in_dependency_order():
+    """The contract's .wit files, each after the files whose interfaces it uses,
+    imports or exports (ties alphabetical), read from the files rather than listed."""
+    files = {p.name: p.read_text() for p in sorted((ROOT / "api" / "wit").glob("*.wit"))}
+    defines = {i: f for f, src in files.items() for i in re.findall(r"^\s*interface\s+([a-z0-9-]+)", src, flags=re.M)}
+    needs = {f: {defines[i] for i in re.findall(r"^\s*(?:use|import|export)\s+([a-z0-9-]+)\b(?![:/])", src, flags=re.M)
+                 if i in defines and defines[i] != f} for f, src in files.items()}
+    order = []
+    while needs:
+        ready = sorted(f for f, d in needs.items() if d <= set(order)) or sorted(needs)[:1]
+        order.append(ready[0])
+        del needs[ready[0]]
+    return [ROOT / "api" / "wit" / f for f in order]
+
+
 def api_page(ref, M):
-    files = sorted((ROOT / "api" / "wit").glob("*.wit"))
-    order = ["types.wit", "codec.wit", "cose.wit", "payload.wit", "trust.wit", "pipeline.wit", "worlds.wit"]
-    files.sort(key=lambda p: order.index(p.name) if p.name in order else 99)
+    files = wit_files_in_dependency_order()
     index, blocks = [], []
     for p in files:
         src = p.read_text()
@@ -464,9 +477,9 @@ KIND_SOURCES = [
     ("upstream", "library/who-smart-trust-requirements-fsh", "smart-trust FHIR Requirements, as ingested"),
     ("skill", "skills/<package>/*.md", "skill with satisfies"),
     ("tool", "tools/<id>/<id>.ts", "cat-harness Tool (defineTool)"),
-    ("process", "processes/content/*.bpmn", "BPMN process, tasks naming skills"),
+    ("process", "processes/*/*.bpmn", "BPMN process, tasks naming skills"),
     ("role", "scenarios/roles.json", "role graph"),
-    ("api", "api/wit/*.wit", "WIT item (hcert-contract typology)"),
+    ("api", "api/wit/*.wit, api/cddl/*.cddl", "WIT interface, world or item, or CDDL rule (hcert-contract typology)"),
     ("issue", "beans/defs/*.md", "bean"),
     ("test", "the files a skill's tested-by names", "a Kotlin test function named after the requirements it verifies, or a script"),
     ("test-plan", "test/plans/*.test-plan.json", "test-plan/v1 (cat-harness), shaped after FHIR R5 TestPlan"),
@@ -480,7 +493,7 @@ REL_NOTES = [
     ("implementedBy", "skill → Tool", "the Tool's satisfies"),
     ("usedIn", "skill → process", "a BPMN task's skill ref"),
     ("performedBy", "skill → role", "the role's skills"),
-    ("constrainsApi", "requirement → WIT item", "an [STT-…] tag in the item's doc comment"),
+    ("constrainsApi", "requirement → WIT item or CDDL rule", "an [STT-…] tag in the item's comments"),
     ("affectedBy", "requirement → issue", "the bean's Requirements affected"),
     ("testedBy", "skill → test", "the skill's tested-by"),
     ("verifies", "test → requirement", "the requirement ids a test is named after"),
@@ -488,13 +501,18 @@ REL_NOTES = [
     ("planCase", "test plan → skill", "a case named after the skill"),
     ("precededBy", "test plan → test plan", "a dependency's predecessor"),
     ("concerns", "issue → source", "the bean's Sources"),
-    ("partOf", "section → entry, statement → requirement, item → interface", "structure"),
+    ("partOf", "section → entry, statement → requirement, item → interface or CDDL file", "structure"),
 ]
 
 
 def kinds_page(ref, M, graph):
     counts = collections.Counter(n["kind"] for n in graph["nodes"])
     rels = collections.Counter(e["rel"] for e in graph["edges"])
+    # The tables describe the kinds and edges kg_nodes draws; a kind or edge
+    # added there and not described here fails the build rather than going unlisted.
+    undescribed = (set(kg_nodes.FAMILY) ^ {k for k, _, _ in KIND_SOURCES}) | (set(rels) - {r for r, _, _ in REL_NOTES})
+    if undescribed:
+        raise ValueError("kinds.html does not describe: %s" % sorted(undescribed))
     krows = "".join('<tr><td>%s</td><td class="num">%d</td><td><code>%s</code></td><td class="small muted">%s</td></tr>'
                     % (esc(k), counts[k], esc(src), esc(what)) for k, src, what in KIND_SOURCES)
     rrows = "".join('<tr><td><code>%s</code></td><td class="num">%d</td><td>%s</td><td class="small muted">%s</td></tr>'
@@ -564,11 +582,11 @@ def index_page(ref, M, graph):
     <h2>Viewers</h2>
     <div class="viewer-grid">
       <a class="viewer" href="explorer.html"><span class="eyebrow">Knowledge graph</span><h3>Graph explorer</h3>
-        <p>Every requirement with its sources, smart-trust parents, skills, Tools, processes, WIT items and open issues.
+        <p>Every requirement with its sources, smart-trust parents, skills, Tools, processes, contract items (WIT, CDDL) and open issues.
         Filter, search and focus on a neighbourhood.</p>
-        <span class="legend"><i style="background:var(--fam-requirement)"></i>requirement <i style="background:var(--fam-source)"></i>source <i style="background:var(--fam-realization)"></i>skill, Tool, process, WIT <i style="background:var(--status-warning)"></i>issue</span></a>
+        <span class="legend"><i style="background:var(--fam-requirement)"></i>requirement <i style="background:var(--fam-source)"></i>source <i style="background:var(--fam-realization)"></i>skill, Tool, process, contract <i style="background:var(--status-warning)"></i>issue</span></a>
       <a class="viewer" href="trace.html"><span class="eyebrow">Review</span><h3>Traceability matrix</h3>
-        <p>One row per requirement: what it satisfies upstream, which skill realizes it and which WIT item it shapes, how it is tested,
+        <p>One row per requirement: what it satisfies upstream, which skill realizes it and which WIT item or CDDL rule it shapes, how it is tested,
         and what is still open. Filter by area, conformance or gaps.</p></a>
       <a class="viewer" href="requirements.html"><span class="eyebrow">Document</span><h3>Requirements</h3>
         <p>The full requirement set as a document, each requirement with its source quotes and every edge of the graph.</p></a>

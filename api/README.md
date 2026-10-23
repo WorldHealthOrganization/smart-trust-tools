@@ -4,7 +4,7 @@ The library API is defined here **before** any implementation, in
 [WIT](https://component-model.bytecodealliance.org/design/wit.html), the
 interface definition language of the WebAssembly Component Model. The WIT is
 the reviewable contract. The Kotlin and Rust libraries implement it, and the
-requirements in [`../requirements/`](../requirements/) say what each function
+requirements in [`../skills/requirements/`](../skills/requirements/) say what each function
 must do. Every WIT item is tagged `[STT-…]` with the requirement it
 implements.
 

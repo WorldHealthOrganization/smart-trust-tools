@@ -42,5 +42,6 @@ The verifier's profile is drafted for the guide's DID trust list page as WorldHe
 ## Done when
 
 - [x] the libraries verify the published proofs (STT-TRU-006)
-- [ ] the guide states the verifier profile (WorldHealthOrganization/smart-trust#136)
+- [x] the guide states the verifier profile (WorldHealthOrganization/smart-trust#136)
+- [ ] the guide's DER transition rule is removed once the signer is fixed (WorldHealthOrganization/smart-trust#137)
 - [ ] the signer emits r||s, publishes its contexts and encodes JWKs per RFC 7518, or the guide documents the profile

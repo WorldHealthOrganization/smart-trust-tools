@@ -21,6 +21,10 @@
  * - each file a skill's `tested-by` names exists, and every requirement id a
  *   test in it is named after (`STT-XXX-nnn …`) names a requirement;
  * - each bean's "Requirements affected" and "Sources" resolve likewise;
+ * - each external schema (external-schemas/*.json) parses as
+ *   `folio-external-schema/v1` and each reference (references/*.json) as
+ *   `folio-reference/v1`, the schemas their typologies name, and its id is its
+ *   file name: the nodes a `reference` lands on are well formed;
  * - each test plan in test/plans/ parses as `test-plan/v1`, its requirements
  *   name requirements, each assertion id is a success criterion
  *   (`req:<id>#<statement>/<criterion>`), each fixed data path and generated
@@ -145,6 +149,25 @@ for (const f of beans) {
   }
 }
 
+// The source nodes a `reference` names, against the schemas their typologies
+// (external-schema, references) declare. Loaded here rather than at the top so
+// the module's static imports stay those the Tool loader shares.
+const { ExternalSchemaSchema } = await import("@litlfred/cat-harness/schemas/external-schema.ts");
+const { ReferenceNodeSchema } = await import("@litlfred/folio-assistant-core/schemas/reference.ts");
+let sourceNodes = 0;
+for (const [dir, schema, idOf] of [
+  ["external-schemas", ExternalSchemaSchema, (n: Record<string, any>) => n.id],
+  ["references", ReferenceNodeSchema, (n: Record<string, any>) => n.id],
+] as const) {
+  for (const f of readdirSync(join(ROOT, dir)).filter((n) => n.endsWith(".json")).sort()) {
+    sourceNodes++;
+    const node = JSON.parse(readFileSync(join(ROOT, dir, f), "utf-8"));
+    const r = schema.safeParse(node);
+    if (!r.success) for (const i of r.error.issues) problems.push(`${dir}/${f}: ${i.path.join(".") || "(root)"}: ${i.message}`);
+    if (idOf(node) !== basename(f, ".json")) problems.push(`${dir}/${f}: id ${idOf(node)} is not its file name`);
+  }
+}
+
 /** `req:<id>#<statement key>/<criterion key>`, checked against the statement's criteria. */
 function criterionResolves(ref: string): boolean {
   const m = /^(req:[^#]+)#([^/]+)\/(.+)$/.exec(ref);
@@ -177,5 +200,5 @@ for (const f of plans) {
 }
 
 for (const p of problems) console.error(`  ✗ ${p}`);
-console.log(`${files.length} requirement(s), ${skills} skill(s), ${tests} test(s), ${beans.length} bean(s), ${plans.length} test plan(s), ${upstream.size} smart-trust Requirements; ${problems.length} problem(s)`);
+console.log(`${files.length} requirement(s), ${skills} skill(s), ${tests} test(s), ${beans.length} bean(s), ${plans.length} test plan(s), ${upstream.size} smart-trust Requirements, ${sourceNodes} external schema(s) and reference(s); ${problems.length} problem(s)`);
 process.exit(problems.length ? 1 : 0);
