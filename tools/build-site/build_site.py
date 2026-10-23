@@ -191,7 +191,7 @@ def requirements_page(ref, M, graph):
 
     toc, blocks = [], []
     reqs = list(M["reqs"].values())
-    for area, title in kg_nodes.AREA_TITLES.items():
+    for area, title in M["areas"].items():
         rs = [r for r in reqs if r["area"] == area]
         if not rs:
             continue

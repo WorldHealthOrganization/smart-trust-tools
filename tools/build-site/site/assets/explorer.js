@@ -37,19 +37,19 @@
     testedBy: ["Tests", "Tests the skill"], verifies: ["Verifies", "Verified by tests"],
     affectedBy: ["Open issues", "Affects"], concerns: ["Concerns", "Raised by"], partOf: ["Part of", "Contains"]
   };
-  /* Library entries and other sources that read better as one group. */
+  /* Sources that read better as one group. A library entry's group (its
+     upstream repository's FSH sources) and that group's label come from the
+     graph data (graph.groups), read by kg_nodes from the entry's structure.json. */
   function docGroupOf(n) {
     if (n.origin === "reference") return "grp:other-igs";
     if (n.origin === "vector") return "grp:vectors";
-    var id = n.doc || n.id;
-    if (/^library\/who-smart-trust-phw-/.test(id)) return "grp:phw";
-    if (/^library\/who-smart-trust-(hcert-model|cwt-payload-model|requirements-fsh)$/.test(id)) return "grp:st-artefacts";
-    return "doc:" + id;
+    if (n.docGroup) return n.docGroup;
+    return "doc:" + (n.doc || n.id);
   }
+  /* Labels of the groups the explorer makes by kind: presentation, not data. */
   var GROUP_LABEL = {
     "grp:standards": "Standards (IETF, W3C, ITU-T, HL7, IHE, WHO)", "grp:directives": "Owner directives",
-    "grp:phw": "smart-trust-phw logical models", "grp:other-igs": "Other WHO SMART IGs",
-    "grp:st-artefacts": "smart-trust models & Requirements", "grp:vectors": "Test vectors",
+    "grp:other-igs": "Other WHO SMART IGs", "grp:vectors": "Test vectors",
     "grp:issues-up": "Open issues to fix upstream", "grp:issues-local": "Open issues in this project",
     "grp:tools": "Tools", "grp:tests": "Tests", "grp:plans": "Test plans", "grp:processes": "Processes (BPMN)", "grp:roles": "Roles"
   };
@@ -114,7 +114,7 @@
         g.label = "API module: " + rest; g.shape = "ellipse"; g.col = 2; g.order = 100;
       } else {
         var right = { "grp:tools": [3, 0, "barrel"], "grp:tests": [3, 1, "rhomboid"], "grp:processes": [3, 2, "round-tag"], "grp:roles": [3, 3, "vee"] }[k];
-        g.label = GROUP_LABEL[k] || rest;
+        g.label = (G.groups && G.groups[k]) || GROUP_LABEL[k] || rest;
         if (right) { g.col = right[0]; g.order = right[1]; g.shape = right[2]; return; }
         g.shape = k.indexOf("issues") >= 0 ? "triangle" : (k === "grp:directives" ? "star" : "cut-rectangle");
         g.col = k.indexOf("issues") >= 0 ? 2 : 0;
