@@ -59,7 +59,15 @@
       "graphTypologies": [
         "references"
       ],
-      "description": "Other WHO SMART guides and value sets the requirements cite (DDCC, ICVP, PH4H, the GDHCN value sets), as CSL-JSON references."
+      "description": "Other WHO SMART guides and value sets the requirements cite (DDCC, ICVP, PH4H, the GDHCN value sets), as CSL-JSON references; and one reference per library entry the viewers label, held at it (heldAt), whose CSL title-short is the entry's short label."
+    },
+    {
+      "id": "smart-trust-tools-docs",
+      "path": "docs/",
+      "graphTypologies": [
+        "docs"
+      ],
+      "description": "The site's authored pages: index.md, the home page the site build places (index.config.json site.build.home), journeys.md (what the library must do at each step of user journeys J1 to J4, and whether it does) and RELEASING.md (how an agent publishes the libraries); the site_docs step copies the other pages into the site source."
     },
     {
       "id": "memory",
@@ -68,6 +76,14 @@
         "memory"
       ],
       "description": "Owner directives the requirements cite in reference: languages (Kotlin first, Rust second), targets, open standards only, the user journeys, and the VHL decisions of 2026-10-20."
+    },
+    {
+      "id": "stt-code-lists",
+      "path": "code-lists/",
+      "graphTypologies": [
+        "code-list"
+      ],
+      "description": "This instance's code lists, one folio-code-list/v1 file per list: requirement-area, the areas the requirements are grouped in (the middle segment of STT-<AREA>-nnn), in reading order, with their titles, which the viewers read."
     },
     {
       "id": "beans",
@@ -99,7 +115,7 @@
       "graphTypologies": [
         "tools"
       ],
-      "description": "One Tool per folder (tools/<id>/<id>.ts), with its code beside it: hcert-kotlin (the Kotlin library) and hcert-rust (the Rust library); wit2kotlin, gen-api-types, fetch-lms and lm-derive, which write the contract's and the models' views; check-models, check-req-nodes, conformance-ts, test-plan, negative-vectors and vhl-jwe-fixture, which check them or make what the checks read; release-packaging; and build-site. tools/index.ts loads them."
+      "description": "One Tool per folder (tools/<id>/<id>.ts), with its code beside it: hcert-kotlin (the Kotlin library) and hcert-rust (the Rust library); wit2kotlin, gen-api-types, fetch-lms and lm-derive, which write the contract's and the models' views; check-models, check-req-nodes, fhir-validate, conformance-ts, test-plan, negative-vectors and vhl-jwe-fixture, which check them or make what the checks read; release-packaging; and build-site. tools/index.ts loads them."
     },
     {
       "id": "toolchain",
@@ -154,6 +170,12 @@
       "path": "models/generated/",
       "graphTypologies": [
         "payload-models"
+      ],
+      "derivedFrom": [
+        "fhir-logical-models"
+      ],
+      "writer": [
+        "tools/lm-derive/lm_derive.py"
       ],
       "description": "The JSON-LD context, SHACL shapes and CDDL rules lm-derive writes from the logical models."
     },

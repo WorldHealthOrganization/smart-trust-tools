@@ -13,6 +13,14 @@ Usage:
     python3 tools/lm-derive/lm_derive.py           regenerate
     python3 tools/lm-derive/lm_derive.py --check   fail if generated files are stale
 
+Refuses what it cannot map. Every element, type and invariant of a model is
+either mapped into all three outputs or named as a problem (model, element,
+kind), and any problem fails both modes before anything is written. The one
+way past a problem is an entry in tools/lm-derive/allow-unmapped.json, with a
+reason; an allowed problem keeps its fallback (named below) and is printed on
+every run, and an entry that matches no problem is itself refused, so the
+list cannot outlive what it excuses.
+
 Standard library only.
 """
 
@@ -46,6 +54,39 @@ CONCEPT_IRI = {
     "http://loinc.org": "http://loinc.org/rdf/{code}",
 }
 
+ALLOW_FILE = pathlib.Path(__file__).resolve().parent / "allow-unmapped.json"
+
+# The FHIR version the primitive regexes (primitives-r5.json) were taken from.
+FHIR_VERSION = "5.0.0"
+FHIR_BASE = "http://hl7.org/fhir/StructureDefinition/Base"
+# ElementDefinition properties: mapped into the outputs, or prose that carries
+# no constraint on the payload (short becomes a label; the others are not
+# written). Any other property is a constraint lm-derive does not map.
+ELEMENT_MAPPED = {"path", "min", "max", "type", "binding", "code", "constraint", "short"}
+ELEMENT_PROSE = {"id", "definition", "comment", "requirements", "alias", "label"}
+# The root element: only invariants are mapped there.
+ROOT_MAPPED = {"path", "constraint", "short"}
+TYPE_MAPPED = {"code"}
+BINDING_MAPPED = {"strength", "valueSet", "description"}
+CODING_MAPPED = {"system", "code", "display"}
+CONSTRAINT_MAPPED = {"key", "severity", "human", "expression", "source", "requirements", "xpath"}
+
+# What each kind of problem falls back to when the allow-list excuses it.
+FALLBACK = {
+    "not-logical": "the definition is not read",
+    "fhir-version": "R5 primitive regexes are applied anyway",
+    "unknown-base": "only the model's own differential is read; nothing is inherited",
+    "root-path": "the root element is read as the model's own",
+    "nested-element": "the element is left out of every output",
+    "unmapped-property": "the property is left out of every output",
+    "untyped-element": "the element is typed string",
+    "choice-type": "only the first type is mapped",
+    "type-profile": "the profile is ignored; the type code is mapped",
+    "unknown-type": "the element is typed string, with no pattern",
+    "element-invariant": "the invariant is left out of every output",
+    "untranslated-invariant": "SHACL carries the expression as lmx:untranslatedInvariant; CDDL leaves it out",
+}
+
 INVARIANT_OR_EXISTS = re.compile(r"^\s*([A-Za-z0-9_]+)\.exists\(\)\s+or\s+([A-Za-z0-9_]+)\.exists\(\)\s*$")
 
 
@@ -65,17 +106,41 @@ def anchorless(rx):
     return rx
 
 
-def load():
+class Problems:
+    """What lm-derive cannot map, keyed (model, element, kind)."""
+
+    def __init__(self):
+        self.found = collections.OrderedDict()
+
+    def add(self, model, element, kind, detail):
+        assert kind in FALLBACK, kind
+        self.found.setdefault((model, element, kind), detail)
+
+
+def load(problems):
     prim = json.loads((FHIR_DIR / "primitives-r5.json").read_text())["regex"]
     sds = collections.OrderedDict()
     for p in sorted(FHIR_DIR.glob("StructureDefinition-*.json")):
         sd = json.loads(p.read_text())
-        if sd.get("kind") == "logical":
-            sds[sd["url"]] = sd
+        name = sd.get("name", p.stem)
+        if sd.get("kind") != "logical":
+            problems.add(name, name, "not-logical", "kind is %r; lm-derive maps logical models only" % sd.get("kind"))
+            continue
+        if sd.get("fhirVersion") != FHIR_VERSION:
+            problems.add(name, name, "fhir-version", "fhirVersion is %r; the primitive regexes are FHIR %s" % (sd.get("fhirVersion"), FHIR_VERSION))
+        sds[sd["url"]] = sd
     return prim, sds
 
 
-def effective(sd, sds, cache):
+def invariant_pair(inv, elems):
+    """The two element names of an "a.exists() or b.exists()" invariant over elements of the model, or None."""
+    m = INVARIANT_OR_EXISTS.match(inv.get("expression", ""))
+    if m and m.group(1) in elems and m.group(2) in elems:
+        return m.group(1), m.group(2)
+    return None
+
+
+def effective(sd, sds, cache, problems):
     """Elements of a logical model after applying its parent chain.
 
     Returns (elements, invariants). Each element dict has: name, min, max,
@@ -86,19 +151,36 @@ def effective(sd, sds, cache):
         return cache[url]
     elems = collections.OrderedDict()
     invariants = []
+    model = sd["name"]
     base = sd.get("baseDefinition")
     if base in sds:
-        pe, pi = effective(sds[base], sds, cache)
+        pe, pi = effective(sds[base], sds, cache, problems)
         elems = collections.OrderedDict((k, dict(v)) for k, v in pe.items())
         invariants = list(pi)
+    elif base != FHIR_BASE:
+        problems.add(model, model, "unknown-base", "baseDefinition %s is neither FHIR Base nor a model here" % base)
+    # A specialization's paths start with its own type; a constraint's with the type it constrains.
+    roots = {model, sd.get("type", "").rsplit("/", 1)[-1]}
     for e in sd["differential"]["element"]:
-        parts = e["path"].split(".")
+        path = e["path"]
+        parts = path.split(".")
+        if parts[0] not in roots:
+            problems.add(model, path, "root-path", "path starts with %r, not %s" % (parts[0], " or ".join(sorted(roots))))
+        known = ROOT_MAPPED if len(parts) == 1 else ELEMENT_MAPPED
+        for k in e:
+            if k not in known and k not in ELEMENT_PROSE:
+                problems.add(model, path, "unmapped-property", "%s = %s" % (k, json.dumps(e[k])[:120]))
+        for c in e.get("constraint", []):
+            for k in c:
+                if k not in CONSTRAINT_MAPPED:
+                    problems.add(model, path, "unmapped-property", "constraint %s.%s" % (c.get("key"), k))
         if len(parts) == 1:
             for c in e.get("constraint", []):
-                invariants.append(c)
+                invariants.append(dict(c, _model=model))
             continue
         if len(parts) > 2:
-            continue  # nested backbone elements are not used by these models
+            problems.add(model, path, "nested-element", "lm-derive maps the model's direct elements only")
+            continue
         name = parts[1]
         cur = elems.setdefault(name, {"name": name, "iri": "%s#%s" % (url, name),
                                       "min": 0, "max": "*", "types": [], "binding": None,
@@ -108,12 +190,34 @@ def effective(sd, sds, cache):
                 cur[k] = e[k]
         if "type" in e:
             cur["types"] = [t["code"] for t in e["type"]]
+            if len(e["type"]) > 1:
+                problems.add(model, path, "choice-type", "types %s; lm-derive maps one type" % ", ".join(cur["types"]))
+            for t in e["type"]:
+                extra = sorted(set(t) - TYPE_MAPPED)
+                if extra:
+                    problems.add(model, path, "type-profile", "type %s carries %s" % (t.get("code"), ", ".join(extra)))
+                if t["code"] not in XSD and t["code"] not in sds:
+                    problems.add(model, path, "unknown-type", "type %s is neither a FHIR primitive lm-derive maps nor a model here" % t["code"])
         if "binding" in e:
             cur["binding"] = e["binding"]
+            for k in e["binding"]:
+                if k not in BINDING_MAPPED:
+                    problems.add(model, path, "unmapped-property", "binding.%s" % k)
         if "code" in e:
             cur["codes"] = cur["codes"] + e["code"]
+            for c in e["code"]:
+                for k in c:
+                    if k not in CODING_MAPPED:
+                        problems.add(model, path, "unmapped-property", "code.%s" % k)
         for c in e.get("constraint", []):
             cur["constraints"].append(c)
+            problems.add(model, path, "element-invariant", "%s: %s" % (c.get("key"), c.get("expression")))
+    for el in elems.values():
+        if not el["types"] and el["iri"].startswith(url + "#"):
+            problems.add(model, "%s.%s" % (model, el["name"]), "untyped-element", "no type here or in a parent")
+    for inv in invariants:
+        if inv["_model"] == model and invariant_pair(inv, elems) is None:
+            problems.add(model, model, "untranslated-invariant", "%s: %s" % (inv.get("key"), inv.get("expression")))
     cache[url] = (elems, invariants)
     return cache[url]
 
@@ -122,9 +226,9 @@ def effective(sd, sds, cache):
 # JSON-LD
 # ---------------------------------------------------------------------------
 
-def jsonld_context(sds, roots, cache):
+def jsonld_context(sds, roots, cache, problems):
     def terms(sd):
-        elems, _ = effective(sd, sds, cache)
+        elems, _ = effective(sd, sds, cache, problems)
         out = collections.OrderedDict()
         for el in elems.values():
             t = el["types"][0] if el["types"] else "string"
@@ -161,7 +265,7 @@ def concept_iri(c):
     return pat.format(code=c["code"]) if pat else "%s#%s" % (c["system"], c["code"])
 
 
-def shacl(sds, prim, cache, warnings):
+def shacl(sds, prim, cache, problems):
     L = [
         "@prefix sh: <http://www.w3.org/ns/shacl#> .",
         "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .",
@@ -172,7 +276,7 @@ def shacl(sds, prim, cache, warnings):
     ]
     props = collections.OrderedDict()
     for sd in sds.values():
-        elems, invariants = effective(sd, sds, cache)
+        elems, invariants = effective(sd, sds, cache, problems)
         shape = SHAPES + sd["name"]
         lines = [
             "<%s>" % shape,
@@ -184,12 +288,12 @@ def shacl(sds, prim, cache, warnings):
         ]
         or_pairs = []
         for inv in invariants:
-            m = INVARIANT_OR_EXISTS.match(inv.get("expression", ""))
-            if m and m.group(1) in elems and m.group(2) in elems:
-                a, b = elems[m.group(1)]["iri"], elems[m.group(2)]["iri"]
+            pair = invariant_pair(inv, elems)
+            if pair:
+                a, b = elems[pair[0]]["iri"], elems[pair[1]]["iri"]
                 or_pairs.append((inv, a, b))
             else:
-                warnings.append("%s: invariant %s not translated: %s" % (sd["name"], inv.get("key"), inv.get("expression")))
+                # Reached only through an allow-list entry (main refuses it otherwise).
                 lines.append("    lmx:untranslatedInvariant %s ;" % ttl_str("%s: %s" % (inv.get("key"), inv.get("expression"))))
         for el in elems.values():
             t = el["types"][0] if el["types"] else "string"
@@ -240,7 +344,7 @@ def cddl_text(s):
     return '"%s"' % s.replace("\\", "\\\\").replace('"', '\\"')
 
 
-def cddl(sds, prim, cache, warnings):
+def cddl(sds, prim, cache, problems):
     used_prims = set()
     L = [
         "; Generated by tools/lm-derive/lm_derive.py from FHIR logical models. Do not edit.",
@@ -250,7 +354,7 @@ def cddl(sds, prim, cache, warnings):
         "",
     ]
     for sd in sds.values():
-        elems, invariants = effective(sd, sds, cache)
+        elems, invariants = effective(sd, sds, cache, problems)
         name = kebab(sd["name"])
         entries = collections.OrderedDict()
         for el in elems.values():
@@ -270,17 +374,16 @@ def cddl(sds, prim, cache, warnings):
             entries[el["name"]] = (occ, ty, "; ".join(comment))
         rows = []  # (entry text, comment)
         for inv in invariants:
-            m = INVARIANT_OR_EXISTS.match(inv.get("expression", ""))
-            if m and m.group(1) in entries and m.group(2) in entries:
+            pair = invariant_pair(inv, entries)
+            if pair:
                 # "a.exists() or b.exists()" over two optional entries becomes
                 # a group choice: a required and b optional, or a optional
                 # and b required. Each alternative names both entries.
-                a, b = m.group(1), m.group(2)
+                a, b = pair
                 ta, tb = entries.pop(a)[1], entries.pop(b)[1]
                 rows.append(("(%s: %s, ? %s: %s // ? %s: %s, %s: %s)" % (a, ta, b, tb, a, ta, b, tb),
                              inv.get("key")))
-            else:
-                warnings.append("%s: invariant %s not translated to CDDL" % (sd["name"], inv.get("key")))
+            # else: reached only through an allow-list entry, and left out (FALLBACK).
         rows = [("%s%s: %s" % (occ, k, ty), c) for k, (occ, ty, c) in entries.items()] + rows
         L.append("; %s%s" % (sd["url"], " (abstract)" if sd.get("abstract") else ""))
         L.append("%s = {" % name)
@@ -302,13 +405,45 @@ def cddl(sds, prim, cache, warnings):
     return "\n".join(L) + "\n"
 
 
+def read_allow():
+    """The allow-list: [(model, element, kind, reason)]. A malformed entry is refused."""
+    if not ALLOW_FILE.exists():
+        return [], []
+    data = json.loads(ALLOW_FILE.read_text())
+    entries, bad = [], []
+    for i, e in enumerate(data.get("entries", [])):
+        model, element, kind, reason = (e.get(k) for k in ("model", "element", "kind", "reason"))
+        if not all(isinstance(v, str) and v.strip() for v in (model, element, kind, reason)) or kind not in FALLBACK:
+            bad.append("%s entry %d: needs model, element, a kind (%s) and a reason" % (ALLOW_FILE.name, i, ", ".join(FALLBACK)))
+            continue
+        entries.append((model, element, kind, reason))
+    return entries, bad
+
+
+def triage(problems, allow, bad):
+    """Split the problems into refused and allowed; an allow entry that matches nothing is refused too."""
+    refused, allowed = list(bad), []
+    keys = {(m, el, k): r for m, el, k, r in allow}
+    for (model, element, kind), detail in problems.found.items():
+        reason = keys.get((model, element, kind))
+        if reason is None:
+            refused.append("%s %s: %s (%s) cannot be mapped" % (model, element, kind, detail))
+        else:
+            allowed.append("%s %s: %s (%s) allowed: %s; %s" % (model, element, kind, detail, reason, FALLBACK[kind]))
+    for model, element, kind, _ in allow:
+        if (model, element, kind) not in problems.found:
+            refused.append("%s names %s %s %s, which matches no problem: remove the entry" % (ALLOW_FILE.name, model, element, kind))
+    return refused, allowed
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args()
 
-    prim, sds = load()
-    cache, warnings = {}, []
+    problems = Problems()
+    prim, sds = load(problems)
+    cache = {}
     by_ig = collections.OrderedDict()
     for url, sd in sds.items():
         by_ig.setdefault(ig_of(url), collections.OrderedDict())[url] = sd
@@ -317,11 +452,18 @@ def main():
         used_as_type = {t["code"] for sd in group.values()
                         for e in sd["differential"]["element"] for t in e.get("type", [])}
         roots = [u for u in group if u not in used_as_type]
-        outputs["%s.context.jsonld" % ig] = json.dumps(jsonld_context(group, roots, cache), indent=2) + "\n"
-        outputs["%s.shacl.ttl" % ig] = shacl(group, prim, cache, warnings)
-        outputs["%s.cddl" % ig] = cddl(group, prim, cache, warnings)
-    for w in sorted(set(warnings)):
-        print("warning: " + w, file=sys.stderr)
+        outputs["%s.context.jsonld" % ig] = json.dumps(jsonld_context(group, roots, cache, problems), indent=2) + "\n"
+        outputs["%s.shacl.ttl" % ig] = shacl(group, prim, cache, problems)
+        outputs["%s.cddl" % ig] = cddl(group, prim, cache, problems)
+    refused, allowed = triage(problems, *read_allow())
+    for a in allowed:
+        print("allowed: " + a, file=sys.stderr)
+    if refused:
+        for r in refused:
+            print("error: " + r, file=sys.stderr)
+        print("lm-derive: %d problem(s); nothing %s. Map them in tools/lm-derive/lm_derive.py, or excuse each in %s with a reason."
+              % (len(refused), "checked" if args.check else "written", ALLOW_FILE.relative_to(ROOT)), file=sys.stderr)
+        return 1
 
     if args.check:
         stale = [n for n, c in outputs.items()

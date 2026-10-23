@@ -24,7 +24,7 @@ The libraries verify the documents as published: a DER or r||s signature, the bu
 Reported upstream, as the owner chose (2026-10-23), as issues on tng-key-distribution:
 
 - WorldHealthOrganization/tng-key-distribution#85 (https://github.com/WorldHealthOrganization/tng-key-distribution/issues/85): the DER signature
-- WorldHealthOrganization/tng-key-distribution#86 (https://github.com/WorldHealthOrganization/tng-key-distribution/issues/86): the unpublished contexts
+- WorldHealthOrganization/tng-key-distribution#86 (https://github.com/WorldHealthOrganization/tng-key-distribution/issues/86): the unpublished contexts. The owner closed it as completed on 2026-10-23, after the guide documented the contexts (WorldHealthOrganization/smart-trust#136)
 - WorldHealthOrganization/tng-key-distribution#87 (https://github.com/WorldHealthOrganization/tng-key-distribution/issues/87): the JWK encoding
 
 The owner's decision, 2026-10-23: **keep refusing** what the published documents never contain. That covers a JWK member that is not a string or an array of strings (a number would need RFC 8785's number formatting, an implicit conversion), and any character above U+FFFF (the canonical N-Quads order by code point and Java's UTF-16 order disagree only there). If WHO publishes such a document, the profile is widened on purpose, with a vector.

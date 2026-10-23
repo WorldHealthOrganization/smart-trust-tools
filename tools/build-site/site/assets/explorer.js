@@ -8,49 +8,51 @@
     { id: "requirement", label: "Requirements", color: "--fam-requirement" },
     { id: "source", label: "Sources & smart-trust", color: "--fam-source" },
     { id: "realization", label: "Skills, Tools & contract", color: "--fam-realization" },
+    { id: "model", label: "Models (FHIR, payload)", color: "--fam-model" },
     { id: "issue", label: "Open issues", color: "--status-warning" }
   ];
   var SHAPE = {
     requirement: "round-rectangle", section: "rectangle", document: "cut-rectangle", standard: "cut-rectangle",
     directive: "star", upstream: "diamond", skill: "hexagon", api: "ellipse", tool: "barrel",
-    process: "round-tag", role: "vee", test: "rhomboid", "test-plan": "tag", issue: "triangle"
+    process: "round-tag", role: "vee", test: "rhomboid", "test-plan": "tag", model: "pentagon", issue: "triangle"
   };
   var SHAPE_NOTE = [
     ["round-rectangle", "requirement"], ["rectangle", "source section"], ["cut-rectangle", "document or standard"],
     ["star", "owner directive"], ["diamond", "smart-trust FHIR requirement"], ["hexagon", "skill"],
     ["barrel", "Tool"], ["rhomboid", "test"], ["tag", "test plan"], ["round-tag", "process (BPMN)"], ["vee", "role"],
-    ["ellipse", "contract item (WIT, CDDL)"], ["triangle", "open issue (bean)"]
+    ["ellipse", "contract item (WIT, CDDL)"], ["pentagon", "model (FHIR logical, payload)"], ["triangle", "open issue (bean)"]
   ];
   var COLUMN = { directive: 0, standard: 0, document: 0, section: 0, upstream: 0, requirement: 1,
-    skill: 2, api: 2, issue: 2, tool: 3, test: 3, "test-plan": 3, process: 3, role: 3 };
+    skill: 2, api: 2, issue: 2, tool: 3, test: 3, "test-plan": 3, process: 3, role: 3, model: 4 };
   var KIND_ORDER = { directive: 0, document: 1, section: 1, standard: 2, upstream: 3, requirement: 0,
-    skill: 0, api: 1, issue: 2, tool: 0, test: 1, "test-plan": 1, process: 2, role: 3 };
+    skill: 0, api: 1, issue: 2, tool: 0, test: 1, "test-plan": 1, process: 2, role: 3, model: 0 };
   var COLUMN_TITLE = ["Sources and smart-trust requirements", "Library requirements", "Skills · WIT · open issues",
-    "Tools · tests · test plans · processes · roles"];
+    "Tools · tests · test plans · processes · roles", "Models (FHIR logical, payload)"];
   var CARD_W = 230, COL_GAP = 300;
   var REL_LABEL = {
-    derivedFrom: ["Derived from", "Source for"], satisfies: ["Satisfies (smart-trust)", "Satisfied by"],
-    refines: ["Refines", "Refined by"],
+    references: ["References", "Referenced by"], satisfies: ["Satisfies (smart-trust)", "Satisfied by"],
+    derivedFrom: ["Derived from", "Basis for"],
     assesses: ["Assesses", "Test plans"], planCase: ["Cases (skills)", "In test plans"], precededBy: ["Preceded by", "Precedes"],
     realizedBy: ["Skills", "Realizes"], constrainsApi: ["Contract items (WIT, CDDL)", "Constrained by"],
-    implementedBy: ["Tools", "Skills"], usedIn: ["Processes", "Skills"], performedBy: ["Roles", "Skills"],
+    implementedBy: ["Tools", "Skills"], writes: ["Writes", "Written by"], usedIn: ["Processes", "Skills"], performedBy: ["Roles", "Skills"],
     testedBy: ["Tests", "Tests the skill"], verifies: ["Verifies", "Verified by tests"],
     affectedBy: ["Open issues", "Affects"], concerns: ["Concerns", "Raised by"], partOf: ["Part of", "Contains"]
   };
-  /* Library entries and other sources that read better as one group. */
+  /* Sources that read better as one group. A library entry's group (its
+     upstream repository's FSH sources) and that group's label come from the
+     graph data (graph.groups), read by kg_nodes from the entry's structure.json. */
   function docGroupOf(n) {
     if (n.origin === "reference") return "grp:other-igs";
     if (n.origin === "vector") return "grp:vectors";
-    var id = n.doc || n.id;
-    if (/^library\/who-smart-trust-phw-/.test(id)) return "grp:phw";
-    if (/^library\/who-smart-trust-(hcert-model|cwt-payload-model|requirements-fsh)$/.test(id)) return "grp:st-artefacts";
-    return "doc:" + id;
+    if (n.docGroup) return n.docGroup;
+    return "doc:" + (n.doc || n.id);
   }
+  /* Labels of the groups the explorer makes by kind: presentation, not data. */
   var GROUP_LABEL = {
     "grp:standards": "Standards (IETF, W3C, ITU-T, HL7, IHE, WHO)", "grp:directives": "Owner directives",
-    "grp:phw": "smart-trust-phw logical models", "grp:other-igs": "Other WHO SMART IGs",
-    "grp:st-artefacts": "smart-trust models & Requirements", "grp:vectors": "Test vectors",
+    "grp:other-igs": "Other WHO SMART IGs", "grp:vectors": "Test vectors",
     "grp:issues-up": "Open issues to fix upstream", "grp:issues-local": "Open issues in this project",
+    "grp:models-logical": "FHIR logical models", "grp:models-payload": "Payload models (derived)",
     "grp:tools": "Tools", "grp:tests": "Tests", "grp:plans": "Test plans", "grp:processes": "Processes (BPMN)", "grp:roles": "Roles"
   };
 
@@ -73,6 +75,7 @@
       case "role": return "grp:roles";
       case "test": return "grp:tests";
       case "test-plan": return "grp:plans";
+      case "model": return n.modelKind === "payload" ? "grp:models-payload" : "grp:models-logical";
       case "issue": return n.upstream ? "grp:issues-up" : "grp:issues-local";
     }
     return "grp:other";
@@ -113,8 +116,9 @@
       } else if (kind === "mod") {
         g.label = "API module: " + rest; g.shape = "ellipse"; g.col = 2; g.order = 100;
       } else {
-        var right = { "grp:tools": [3, 0, "barrel"], "grp:tests": [3, 1, "rhomboid"], "grp:processes": [3, 2, "round-tag"], "grp:roles": [3, 3, "vee"] }[k];
-        g.label = GROUP_LABEL[k] || rest;
+        var right = { "grp:tools": [3, 0, "barrel"], "grp:tests": [3, 1, "rhomboid"], "grp:processes": [3, 2, "round-tag"], "grp:roles": [3, 3, "vee"],
+          "grp:models-logical": [4, 0, "pentagon"], "grp:models-payload": [4, 1, "pentagon"] }[k];
+        g.label = (G.groups && G.groups[k]) || GROUP_LABEL[k] || rest;
         if (right) { g.col = right[0]; g.order = right[1]; g.shape = right[2]; return; }
         g.shape = k.indexOf("issues") >= 0 ? "triangle" : (k === "grp:directives" ? "star" : "cut-rectangle");
         g.col = k.indexOf("issues") >= 0 ? 2 : 0;
@@ -139,7 +143,8 @@
       "round-tag": '<path d="M2 3h7l4 4-4 4H2z"/>',
       "vee": '<path d="M1 2l6 3 6-3-6 10z"/>',
       "rhomboid": '<path d="M4 3h9l-3 8H1z"/>',
-      "tag": '<path d="M1 3h8l4 4-4 4H1z"/>'
+      "tag": '<path d="M1 3h8l4 4-4 4H1z"/>',
+      "pentagon": '<path d="M7 1l6 4.4-2.3 7H3.3L1 5.4z"/>'
     }[shape];
     return '<svg class="glyph" viewBox="0 0 14 14" aria-hidden="true" fill="' + color + '">' + p + "</svg>";
   }
@@ -147,7 +152,7 @@
   function colors() {
     return {
       requirement: S.cssVar("--fam-requirement"), source: S.cssVar("--fam-source"),
-      realization: S.cssVar("--fam-realization"), issue: S.cssVar("--status-warning"),
+      realization: S.cssVar("--fam-realization"), model: S.cssVar("--fam-model"), issue: S.cssVar("--status-warning"),
       fg: S.cssVar("--fg"), fg2: S.cssVar("--fg-2"), fg3: S.cssVar("--fg-3"), line: S.cssVar("--line"),
       accent: S.cssVar("--accent"), surface: S.cssVar("--surface"), bg: S.cssVar("--bg")
     };
@@ -266,7 +271,8 @@
     G.edges.forEach(function (e) {
       var a = groupOf[e.s], b = groupOf[e.t];
       if (!a || !b || a === b || !shown[a] || !shown[b]) return;
-      if (a.indexOf("area:") !== 0 && b.indexOf("area:") !== 0) return;
+      var anchor = function (k) { return k.indexOf("area:") === 0 || k.indexOf("grp:models-") === 0; };
+      if (!anchor(a) && !anchor(b)) return;
       var key = a < b ? a + "|" + b : b + "|" + a;
       weights[key] = (weights[key] || 0) + 1;
     });
@@ -476,7 +482,7 @@
       if (n.kind === "api" && n.qname) extra = ' <span class="muted mono">' + esc(n.qname) + "</span>";
       else if (n.title && n.title !== n.label) extra = ' <span class="muted">' + esc(n.title) + "</span>";
       var q = x.edge.quote ? '<span class="d-quote">“' + esc(x.edge.quote) + "”</span>" : "";
-      var urls = (rel === "derivedFrom" || rel === "concerns") && dir !== "in" ? '<span class="d-urls">' + S.urlList(n.urls) + "</span>" : "";
+      var urls = (rel === "references" || rel === "concerns") && dir !== "in" ? '<span class="d-urls">' + S.urlList(n.urls) + "</span>" : "";
       return "<li><span>" + nodeLink(n) + extra + "</span>" + q + urls + "</li>";
     }).join("");
     return '<div class="d-sec"><h4>' + esc(title) + " (" + items.length + ')</h4><ul class="d-list">' + lis + "</ul></div>";
@@ -526,10 +532,10 @@
       if (n.criteria && n.criteria.length) h.push('<div class="d-sec"><h4>Success criteria</h4><ul class="small">' + n.criteria.map(function (c) {
         return '<li><span class="chip">' + esc(c.verification) + '</span> <span class="mono">' + esc(c.key) + "</span> " + esc(c.criterion) + "</li>";
       }).join("") + "</ul></div>");
-      ["derivedFrom", "satisfies", "realizedBy", "constrainsApi", "refines", "affectedBy"].forEach(function (r) { h.push(relSection(id, r, "out")); });
+      ["references", "satisfies", "realizedBy", "constrainsApi", "derivedFrom", "affectedBy"].forEach(function (r) { h.push(relSection(id, r, "out")); });
       h.push(relSection(id, "verifies", "in"));
       h.push(relSection(id, "assesses", "in"));
-      h.push(relSection(id, "refines", "in"));
+      h.push(relSection(id, "derivedFrom", "in"));
     } else if (n.kind === "issue") {
       h.push('<div class="chips"><span class="issue-mark">open</span>' + (n.upstream ? '<span class="chip">fix upstream</span>' : '<span class="chip">this project</span>') + "</div>");
       h.push('<p class="small">' + esc(n.text) + "</p>");
@@ -564,15 +570,27 @@
       }).join("") + "</ul></div>");
       ["precededBy", "planCase", "assesses"].forEach(function (r) { h.push(relSection(id, r, "out")); });
       h.push(relSection(id, "precededBy", "in"));
+    } else if (n.kind === "model") {
+      h.push('<div class="chips"><span class="chip">' + esc({ logical: "FHIR logical model", primitives: "FHIR primitive patterns", payload: "derived payload model" }[n.modelKind] || n.modelKind) + "</span></div>");
+      if (n.canonical) h.push('<p class="small mono">' + esc(n.canonical) + "</p>");
+      h.push(fileLink(n));
+      h.push('<p class="small"><a href="models.html">Wire &amp; payload models</a></p>');
+      h.push(relSection(id, "derivedFrom", "out"));
+      h.push(relSection(id, "derivedFrom", "in"));
+      h.push(relSection(id, "writes", "in"));
     } else if (n.kind === "tool" || n.kind === "process" || n.kind === "role") {
       if (n.text) h.push('<p class="small">' + esc(n.text) + "</p>");
       if (n.actorKinds) h.push('<div class="chips">' + n.actorKinds.map(function (a) { return '<span class="chip">' + esc(a) + "</span>"; }).join("") + "</div>");
       h.push(fileLink(n));
       h.push(relSection(id, { tool: "implementedBy", process: "usedIn", role: "performedBy" }[n.kind], "in"));
+      if (n.kind === "tool") h.push(relSection(id, "writes", "out"));
     } else {
       if (n.note) h.push('<p class="small muted">' + esc(n.note) + "</p>");
       if (n.urls) h.push('<p class="d-urls">' + S.urlList(n.urls) + "</p>");
       ["partOf"].forEach(function (r) { h.push(relSection(id, r, "out")); h.push(relSection(id, r, "in")); });
+      h.push(relSection(id, "derivedFrom", "out"));
+      h.push(relSection(id, "writes", "in"));
+      h.push(relSection(id, "references", "in"));
       h.push(relSection(id, "derivedFrom", "in"));
       h.push(relSection(id, "satisfies", "in"));
       h.push(relSection(id, "concerns", "in"));

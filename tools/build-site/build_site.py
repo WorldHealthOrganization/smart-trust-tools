@@ -191,7 +191,7 @@ def requirements_page(ref, M, graph):
 
     toc, blocks = [], []
     reqs = list(M["reqs"].values())
-    for area, title in kg_nodes.AREA_TITLES.items():
+    for area, title in M["areas"].items():
         rs = [r for r in reqs if r["area"] == area]
         if not rs:
             continue
@@ -199,8 +199,8 @@ def requirements_page(ref, M, graph):
         blocks.append('<h2 id="area-%s">%s · %s</h2>' % (area.lower(), area, esc(title)))
         for r in rs:
             o = out[r["id"]]
-            rows = [("Derived from", o["derivedFrom"], True), ("Satisfies (smart-trust)", o["satisfies"], True),
-                    ("Refines", o["refines"], False),
+            rows = [("References", o["references"], True), ("Satisfies (smart-trust)", o["satisfies"], True),
+                    ("Derived from (broader requirement)", o["derivedFrom"], False),
                     ("Realized by skills", o["realizedBy"], False), ("Constrains (WIT, CDDL)", o["constrainsApi"], False),
                     ("Verified by tests", [by_id[e["s"]] for e in graph["edges"] if e["rel"] == "verifies" and e["t"] == r["id"]], False),
                     ("Test plans", [by_id[e["s"]] for e in graph["edges"] if e["rel"] == "assesses" and e["t"] == r["id"]], False),
@@ -218,8 +218,8 @@ def requirements_page(ref, M, graph):
 <span class="eyebrow">Requirements · read from skills/requirements/</span>
 <h1>HCERT library requirements</h1>
 <p>%d requirements, one cat-harness <code>req:</code> node each. Every link below is an edge in the graph:
-library sections, external schemas, references and owner directives a requirement is derived from; the smart-trust
-FHIR Requirements it satisfies; the skills that realize it; the WIT items and CDDL rules whose comments cite it; and the open issues
+library sections, external schemas, references and owner directives a requirement references; the broader
+requirement it is derived from; the smart-trust FHIR Requirements it satisfies; the skills that realize it; the WIT items and CDDL rules whose comments cite it; and the open issues
 (beans) that affect it.</p>
 <ul>%s</ul>%s</article></main>""" % (len(reqs), "".join(toc), "".join(blocks)))
 
@@ -414,6 +414,8 @@ def models_page(ref, M):
     <div class="chips">
       <a class="chip" href="#cddl">CDDL</a><a class="chip" href="#example">CBOR example</a>
       <a class="chip" href="#jsonld">JSON-LD</a><a class="chip" href="#shacl">SHACL shapes</a>
+      <a class="chip" href="explorer.html#grp-grp--models-logical">Logical models in the graph</a>
+      <a class="chip" href="explorer.html#grp-grp--models-payload">Payload models in the graph</a>
     </div>
   </section>
 
@@ -471,7 +473,7 @@ def models_page(ref, M):
 KIND_SOURCES = [
     ("requirement", "skills/requirements/*.json", "bootstrap requirement (req:)"),
     ("section", "library/<entry>/sections/", "cat-harness library section"),
-    ("document", "library/<entry>/, references/*.json, vectors/", "library entry, folio-reference/v1, test vector"),
+    ("document", "library/<entry>/, references/*.json, vectors/<set>/*", "library entry, folio-reference/v1, test vector (every file of a vector set but its SOURCE.yaml and README)"),
     ("standard", "external-schemas/*.json", "folio-external-schema/v1"),
     ("directive", "memory/dir-*.md", "folio-memory/v1"),
     ("upstream", "library/who-smart-trust-requirements-fsh", "smart-trust FHIR Requirements, as ingested"),
@@ -483,12 +485,17 @@ KIND_SOURCES = [
     ("issue", "beans/defs/*.md", "bean"),
     ("test", "the files a skill's tested-by names", "a Kotlin test function named after the requirements it verifies, or a script"),
     ("test-plan", "test/plans/*.test-plan.json", "test-plan/v1 (cat-harness), shaped after FHIR R5 TestPlan"),
+    ("model", "models/fhir/*.json, models/generated/*", "FHIR logical model (fhir-logical-models: an R5 StructureDefinition, or the R5 primitive patterns), or a payload model lm-derive writes from them (payload-models: JSON-LD context, SHACL shapes, CDDL)"),
 ]
 
 REL_NOTES = [
-    ("derivedFrom", "requirement → source", "reference of the req: node (FHIR Requirements.reference)"),
+    ("references", "requirement → source", "reference of the req: node (FHIR Requirements.reference): what it is drawn from"),
     ("satisfies", "requirement → smart-trust", "a smart-trust FHIR Requirements canonical in reference"),
-    ("refines", "requirement → requirement", "derivedFrom of the req: node"),
+    ("derivedFrom", "requirement → requirement; model or vector → library entry, standard, model or vector",
+     "derivedFrom of the req: node (FHIR Requirements.derivedFrom): the broader requirement it narrows. For a model: the library entry whose FSH declares it, "
+     "its baseDefinition, the FHIR core package it was taken from, or the directory declaration's derivedFrom (a payload model). For a vector: its "
+     "SOURCE.yaml's derivedFrom, or the library entry its files: line names"),
+    ("writes", "Tool → model or vector", "the directory declaration's writer (payload-models), or a vector set's SOURCE.yaml generator"),
     ("realizedBy", "requirement → skill", "the skill's satisfies"),
     ("implementedBy", "skill → Tool", "the Tool's satisfies"),
     ("usedIn", "skill → process", "a BPMN task's skill ref"),
@@ -582,9 +589,10 @@ def index_page(ref, M, graph):
     <h2>Viewers</h2>
     <div class="viewer-grid">
       <a class="viewer" href="explorer.html"><span class="eyebrow">Knowledge graph</span><h3>Graph explorer</h3>
-        <p>Every requirement with its sources, smart-trust parents, skills, Tools, processes, contract items (WIT, CDDL) and open issues.
+        <p>Every requirement with its sources, smart-trust parents, skills, Tools, processes, contract items (WIT, CDDL) and open issues,
+        and the FHIR logical models with the payload models derived from them.
         Filter, search and focus on a neighbourhood.</p>
-        <span class="legend"><i style="background:var(--fam-requirement)"></i>requirement <i style="background:var(--fam-source)"></i>source <i style="background:var(--fam-realization)"></i>skill, Tool, process, contract <i style="background:var(--status-warning)"></i>issue</span></a>
+        <span class="legend"><i style="background:var(--fam-requirement)"></i>requirement <i style="background:var(--fam-source)"></i>source <i style="background:var(--fam-realization)"></i>skill, Tool, process, contract <i style="background:var(--fam-model)"></i>model <i style="background:var(--status-warning)"></i>issue</span></a>
       <a class="viewer" href="trace.html"><span class="eyebrow">Review</span><h3>Traceability matrix</h3>
         <p>One row per requirement: what it satisfies upstream, which skill realizes it and which WIT item or CDDL rule it shapes, how it is tested,
         and what is still open. Filter by area, conformance or gaps.</p></a>

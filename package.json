@@ -23,6 +23,7 @@
   "scripts": {
     "cat": "bun cat-harness-tools/scripts/run-script.ts",
     "check:req-nodes": "bun tools/check-req-nodes/check.ts",
+    "check:fhir-validate": "python3 tools/fhir-validate/fhir_validate.py --site",
     "site:viewers": "bash tools/build-site/site_viewers.sh",
     "site:docs": "bash tools/build-site/site_docs.sh"
   }
