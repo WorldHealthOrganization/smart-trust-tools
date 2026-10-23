@@ -201,7 +201,7 @@ class TrustListTest {
         assertEquals(0, store.size())
         // A document that verifies but holds a bad certificate further on adds none of its certificates.
         val resigned = resignWithTestkit(
-            xxrDsc.replaceFirst("}],\"proof\"", "},{\"id\":\"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC#bad\",\"type\":\"JsonWebKey2020\",\"publicKeyJwk\":{\"x5c\":[\"AAAA\"]}}],\"proof\""),
+            xxrDsc.replaceFirst("}],\"proof\"", "},{\"id\":\"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC#bad\",\"type\":\"JsonWebKey2020\",\"controller\":\"did:web:x\",\"publicKeyJwk\":{\"x5c\":[\"AAAA\"]}}],\"proof\""),
         )
         val tk = signerWith(b64u(testkitPoint.first), b64u(testkitPoint.second))
         HcertTrust.verifyDidProof(resigned, tk).ok()
@@ -262,69 +262,124 @@ class TrustListTest {
         for (doc in listOf("{", "[]", "{}", """{"proof":{}}""", """{"proof":{"jws":"a.b.c.d"}}""", xxrDsc.replaceFirst("{", "{\"id\":\"did:x\","))) proofInvalid(doc)
     }
 
-    @Test fun `STT-TRU-006 the canonical form covers the profile's shapes and refuses the rest`() {
-        fun nq(doc: String) = DidProof.documentNQuads(parseJson(doc) as Map<*, *>)
-        val ctx = "\"@context\":[\"https://www.w3.org/ns/did/v1\",\"https://w3id.org/security/suites/jws-2020/v1\",\"https://smart.who.int/trust/tng-context/v1"
-        val vm = "{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"domain\":{\"code\":\"#DDCC\"}}"
-        val prod = nq("{$ctx.jsonld\"],\"id\":\"did:web:a\",\"controller\":[\"did:web:c1\",\"did:web:c2\"],\"verificationMethod\":[\"did:web:b#k\",$vm,$vm]}")
+    /** [xxrDsc] with [from] replaced by [to] (which must occur), as JSON text. */
+    private fun edit(from: String, to: String): String {
+        assertTrue(from in xxrDsc, from)
+        return xxrDsc.replaceFirst(from, to)
+    }
+
+    private val vmHead = """{"id":"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC#kW/6VnwPRKI=","type":"JsonWebKey2020","controller":"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR","""
+    private val jwkHead = """"publicKeyJwk":{"""
+
+    @Test fun `STT-TRU-006 STT-GEN-006 the unified profile's document shapes, and what it refuses`() {
+        fun nq(doc: String) = DidProof.documentNQuads((parseJson(doc) as Map<*, *>).filterKeys { it != "proof" })
+        val ctx = """"@context":["https://www.w3.org/ns/did/v1","https://w3id.org/security/suites/jws-2020/v1","https://smart.who.int/trust/tng-context/v1"""
+        val vm = """{"id":"did:web:a#k","type":"JsonWebKey2020","controller":"did:web:c","publicKeyJwk":{"kty":"EC"},"domain":{"code":"#DDCC"}}"""
+        // Production and UAT contexts; plain DID URL references; duplicate quads collapse.
         assertEquals(
             listOf(
                 "<did:web:a#k> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/security#JsonWebKey2020> .",
                 "<did:web:a#k> <https://smart.who.int/trust/ValueSet-Domains.jsonld> <https://smart.who.int/trust/ValueSet-Domains.jsonld#DDCC> .",
-                "<did:web:a> <https://w3id.org/security#controller> <did:web:c1> .",
-                "<did:web:a> <https://w3id.org/security#controller> <did:web:c2> .",
+                "<did:web:a#k> <https://w3id.org/security#controller> <did:web:c> .",
+                "<did:web:a#k> <https://w3id.org/security#publicKeyJwk> \"{\\\"kty\\\":\\\"EC\\\"}\"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON> .",
+                "<did:web:a> <https://w3id.org/security#controller> <did:web:c> .",
                 "<did:web:a> <https://w3id.org/security#verificationMethod> <did:web:a#k> .",
                 "<did:web:a> <https://w3id.org/security#verificationMethod> <did:web:b#k> .",
                 "",
             ).joinToString("\n"),
-            prod,
+            nq("""{$ctx.jsonld"],"id":"did:web:a","controller":"did:web:c","verificationMethod":["did:web:b#k",$vm,$vm]}"""),
         )
-        assertTrue("ValueSet-Domains-UAT.jsonld#DDCC" in nq("{$ctx-UAT.jsonld\"],\"id\":\"did:web:a\",\"verificationMethod\":[$vm]}"))
-        assertEquals("", nq("{$ctx-DEV.jsonld\"],\"id\":\"did:web:a\"}"))
-        // JCS: members by UTF-16 code unit, escapes, literals; numbers refused.
-        assertEquals("""{"":null,"a":[true,false],"b":"\"\\\b\f\n\r\t\u0001é😀","é":"x"}""",
-            DidProof.jcs(parseJson("""{"é":"x","b":"\"\\\b\f\n\r\t\u0001é😀","a":[true,false],"":null}""")))
-        assertTrue(nq("{$ctx-DEV.jsonld\"],\"id\":\"did:web:a\",\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"publicKeyJwk\":{\"k\":\"a\\\"b\"}}]}")
-            .contains(""""{\"k\":\"a\\\"b\"}"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON>"""))
-        val dv = "{$ctx-DEV.jsonld\"],\"id\":\"did:web:a\""
-        for (bad in listOf(
-            "{\"id\":\"did:web:a\"}",
-            "{\"@context\":\"https://www.w3.org/ns/did/v1\",\"id\":\"did:web:a\"}",
-            "{$ctx-PROD.jsonld\"],\"id\":\"did:web:a\"}",
-            "{\"@context\":[\"https://www.w3.org/ns/did/v1\",\"https://w3id.org/security/suites/jws-2020/v1\",7],\"id\":\"did:web:a\"}",
-            "{$ctx-DEV.jsonld\",\"https://example.org/more\"],\"id\":\"did:web:a\"}",
-            "{$ctx-DEV.jsonld\"],\"id\":\"https://a.example\"}",
-            "{$ctx-DEV.jsonld\"],\"id\":7}",
-            "{$ctx-DEV.jsonld\"],\"id\":\"did:web:a b\"}",
-            "{$ctx-DEV.jsonld\"],\"id\":\"did:web:\\ud800\"}",
-            "$dv,\"verificationMethod\":{}}",
-            "$dv,\"verificationMethod\":[7]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\"}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"Ed25519VerificationKey2020\"}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"publicKeyJwk\":\"x\"}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"publicKeyJwk\":{\"e\":65537}}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"publicKeyJwk\":{\"k\":\"\\udc00\"}}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"publicKeyJwk\":{\"k\":\"\u007f\"}}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"domain\":\"#DDCC\"}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"domain\":{\"code\":7}}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"domain\":{\"code\":\"DDCC\"}}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"domain\":{\"code\":\"#\"}}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"domain\":{\"code\":\"#a#b\"}}]}",
-            "$dv,\"verificationMethod\":[{\"id\":\"did:web:a#k\",\"type\":\"JsonWebKey2020\",\"domain\":{}}]}",
-            // Code unit and code point order disagree: refused rather than guessed.
-            "$dv,\"verificationMethod\":[\"did:web:a\\ud83d\\ude00\",\"did:web:a\\ue000\"]}",
-        )) assertIs<TrustError.ProofInvalid>(DidProof.verify(bad.replaceFirst("{", "{\"proof\":{\"jws\":\"eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJFUzI1NiJ9..AAAA\"},"), signer).err(), bad)
-        // Proof options: optional domain and challenge; literals with control characters refused.
+        assertTrue("ValueSet-Domains-UAT.jsonld#DDCC" in nq("""{$ctx-UAT.jsonld"],"id":"did:web:a","controller":"did:web:c","verificationMethod":[$vm]}"""))
+        // JCS: members by UTF-16 code unit; '"' and '\' escaped; arrays of strings.
+        assertEquals("""{"":"","a":["x","y"],"b":"\"\\é","é":"x"}""", DidProof.jcs(parseJson("""{"é":"x","b":"\"\\é","a":["x","y"],"":""}""") as Map<*, *>))
+        assertTrue(""""{\"k\":\"a\\\"b\"}"^^""" in nq(xxrDsc.replace(Regex(""""publicKeyJwk":\{[^}]*\}"""), """"publicKeyJwk":{"k":"a\\"b"}""")))
+
+        val proofLess = xxrDsc.replace(Regex(""","proof":\{.*\}\}$"""), "}")
+        val refused = listOf(
+            // 1. Document keys: all required; controller a single string; verificationMethod an array.
+            proofLess,
+            edit(""","controller":"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR","verificationMethod"""", ""","verificationMethod""""),
+            edit(""""controller":"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR","verificationMethod"""", """"controller":["did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR"],"verificationMethod""""),
+            xxrDsc.replace(Regex(""","verificationMethod":\[.*\],"proof""""), ""","proof""""),
+            edit(""""verificationMethod":[""", """"verificationMethod":[7,"""),
+            xxrDsc.replace(Regex(""""proof":\{.*\}\}$"""), """"proof":"x"}"""),
+            // 2. Verification method objects: controller and publicKeyJwk required, type JsonWebKey2020, value sets {code: #fragment}.
+            edit(vmHead, vmHead.replace(""""controller":"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR",""", "")),
+            xxrDsc.replace(Regex(""""publicKeyJwk":\{[^}]*\},"""), ""),
+            xxrDsc.replace(Regex(""""publicKeyJwk":\{[^}]*\}"""), """"publicKeyJwk":"x""""),
+            edit(""""type":"JsonWebKey2020"""", """"type":"Ed25519VerificationKey2020""""),
+            edit("""{"code":"#PH4H"}""", """"#PH4H""""),
+            edit("""{"code":"#PH4H"}""", """{"code":7}"""),
+            edit("""{"code":"#PH4H"}""", """{"code":"PH4H"}"""),
+            edit("""{"code":"#PH4H"}""", """{"code":"#"}"""),
+            edit("""{"code":"#PH4H"}""", """{"code":"#a#b"}"""),
+            edit("""{"code":"#PH4H"}""", """{}"""),
+            // 4. JWK values: strings or arrays of strings only.
+            edit(jwkHead, jwkHead + """"ext":true,"""),
+            edit(jwkHead, jwkHead + """"ext":null,"""),
+            edit(jwkHead, jwkHead + """"e":65537,"""),
+            edit(jwkHead, jwkHead + """"o":{"a":"b"},"""),
+            edit(jwkHead, jwkHead + """"key_ops":["verify",1],"""),
+            // 5. IRIs: did:, printable ASCII, no forbidden characters.
+            edit(""""id":"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC",""", """"id":"https://tng-cdn-dev.who.int/XXR",""""),
+            edit(""""id":"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC",""", """"id":"did:web:a b",""""),
+            edit(""""id":"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC",""", """"id":"did:web:é",""""),
+            edit(""""id":"did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXR:DSC",""", """"id":"did:web:a{b}",""""),
+            // 6. Literals, every string of the JWK included (member names too): no control character, DEL or lone surrogate.
+            edit(jwkHead, jwkHead + """"k":"a\tb","""),
+            edit(jwkHead, jwkHead + """"k":"a${'\u007f'}b","""),
+            edit(jwkHead, jwkHead + """"k":"\udc00","""),
+            edit(jwkHead, jwkHead + """"k":["a\nb"],"""),
+            edit(jwkHead, jwkHead + """"a\u0001":"b","""),
+            // 7. A code point above U+FFFF anywhere in a line.
+            edit(jwkHead, jwkHead + """"k":"\ud83d\ude00","""),
+            // 11. Duplicate member names, at any depth.
+            edit(jwkHead, jwkHead + """"kty":"EC","""),
+            edit(""""proof":{""", """"proof":{"nonce":"a","""),
+        )
+        for (bad in refused) {
+            val e = HcertTrust.verifyDidProof(bad, signer).err()
+            assertIs<TrustError.ProofInvalid>(e, bad.take(120))
+            assertTrue("does not verify" !in e.value, "refused by the profile, not the signature: ${e.value}")
+        }
+        // A code point above U+FFFF is refused even where both orders would agree.
+        assertTrue("U+FFFF" in proofInvalid(edit(""""nonce":"z9n9""", """"nonce":"😀z9n9""")))
+
+        // 3. Proof: domain and challenge optional; proofValue, signatureValue, expires, creator refused.
         val p = parseJson(xxrDsc).let { (it as Map<*, *>)["proof"] as Map<*, *> }.filterKeys { it != "jws" }
-        val withDomain = DidProof.proofOptionsNQuads(p + mapOf("domain" to "d\"x", "challenge" to "c", "proofValue" to "ignored").filterKeys { it != "proofValue" })
+        val withDomain = DidProof.proofOptionsNQuads(p + mapOf("domain" to "d\"x", "challenge" to "c"))
         assertTrue("<https://w3id.org/security#domain> \"d\\\"x\" ." in withDomain && "<https://w3id.org/security#challenge> \"c\" ." in withDomain, withDomain)
-        HcertTrust.verifyDidProof(xxrDsc.replace("\"jws\":", "\"proofValue\":\"z\",\"signatureValue\":\"z\",\"jws\":"), signer).ok()
+        for (extra in listOf("proofValue", "signatureValue", "expires", "creator"))
+            assertTrue("does not model" in proofInvalid(xxrDsc.replace("\"jws\":", "\"$extra\":\"z\",\"jws\":")), extra)
         for (bad in listOf(p - "created", p + ("type" to "Ed25519Signature2020"), p + ("proofPurpose" to "authentication"),
                 p + ("nonce" to 7), p + ("nonce" to "a\nb"), p + ("verificationMethod" to "https://example.org/k")))
             assertTrue(runCatching { DidProof.proofOptionsNQuads(bad) }.isFailure, bad.toString())
+        // 11. In the JWS header too.
+        val sig = jwsOf(xxrDsc).substringAfter("..")
+        assertTrue("twice" in proofInvalid(withJws(xxrDsc, b64u("""{"b64":false,"crit":["b64"],"alg":"ES256","alg":"ES256"}""".encodeToByteArray()) + ".." + sig)))
         // The reader refuses duplicate members and bad escapes when asked to.
         assertEquals(mapOf("a" to 2.0), parseJson("""{"a":1,"a":2}"""))
         assertTrue(runCatching { parseJson("""{"a":1,"a":2}""", rejectDuplicates = true) }.isFailure)
         for (bad in listOf("\"\\u+123\"", "\"\\u12\"", "\"\\u-001\"")) assertTrue(runCatching { parseJson(bad) }.isFailure, bad)
+    }
+
+    @Test fun `STT-TRU-006 STT-GEN-006 the signer's key controller, and DER signatures, are held to the unified profile`() {
+        // 8. A signer key's controller, when given, is the signer.
+        HcertTrust.verifyDidProof(xxrDsc, signer).ok() // WHO's signing DID key names the DID itself
+        assertTrue("controller" in proofInvalid(xxrDsc, signer.replace(
+            "\"controller\": \"$signerId\",\n            \"publicKeyJwk\"", "\"controller\": \"did:web:other\",\n            \"publicKeyJwk\"")))
+        // 9. DER is strict: a non-minimal INTEGER or a long-form length is not DER.
+        val (header, derB64) = jwsOf(xxrDsc).split("..")
+        val der = Base64Std.decode(derB64)
+        val rLen = der[3].toInt()
+        val nonMinimal = byteArrayOf(0x30, (der[1] + 1).toByte(), 0x02, (rLen + 1).toByte(), 0) + der.copyOfRange(4, der.size)
+        EcdsaSignature.derToRaw(nonMinimal) // the lenient COSE parser would take it
+        assertTrue("neither DER" in proofInvalid(withJws(xxrDsc, "$header..${b64u(nonMinimal)}")))
+        val longForm = byteArrayOf(0x30, 0x81.toByte(), der[1]) + der.copyOfRange(2, der.size)
+        assertTrue("neither DER" in proofInvalid(withJws(xxrDsc, "$header..${b64u(longForm)}")))
+        val negative = der.copyOf().also { it[4] = (it[4].toInt() or 0x80).toByte() }
+        assertTrue("neither DER" in proofInvalid(withJws(xxrDsc, "$header..${b64u(negative)}")))
+        for (cut in listOf(der.copyOf(7), der.copyOf(der.size - 1), der + byteArrayOf(0)))
+            assertTrue("neither DER" in proofInvalid(withJws(xxrDsc, "$header..${b64u(cut)}")))
     }
 }
