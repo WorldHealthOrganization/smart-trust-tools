@@ -8,9 +8,6 @@ plugins {
     jacoco
 }
 
-group = "who.smart.trust" // placeholder coordinates (OI-14)
-version = "0.1.0-SNAPSHOT"
-
 kotlin {
     jvm {
         compilerOptions {

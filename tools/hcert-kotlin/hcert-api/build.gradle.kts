@@ -4,9 +4,6 @@ plugins {
     kotlin("multiplatform")
 }
 
-group = "who.smart.trust" // placeholder coordinates (OI-14)
-version = "0.1.0-SNAPSHOT"
-
 kotlin {
 
     // JVM (Java 11+). Android consumes this pure-Kotlin artifact directly;
