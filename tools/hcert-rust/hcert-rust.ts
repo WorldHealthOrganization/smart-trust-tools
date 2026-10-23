@@ -20,7 +20,7 @@ export default toolFactory((t) =>
     satisfies: ["hcert-select-payload", "hcert-assemble-payload", "hcert-build-cwt", "hcert-encode-cbor", "hcert-sign-cose", "hcert-compress", "hcert-encode-base45", "hcert-prefix-context", "hcert-verify", "hcert-trust-list", "hcert-conformance-testing"],
     selection: {
       when: "A Rust program or a web page issues or verifies an HCERT, or a demo shows the QR Code Generation steps live; or the second implementation is checked against the first on the shared vectors.",
-      limits: "No coverage-guided fuzzing in CI (cargo-fuzz needs nightly); the seeded fuzzer runs instead. The codec does not yet build without std. Not yet published to crates.io or npm (STT-NFR-002).",
+      limits: "No coverage-guided fuzzing in CI (cargo-fuzz needs nightly); the seeded fuzzer runs instead. The codec does not yet build without std. Not yet published to crates.io or npm (STT-NFR-002); the crate (cargo package) and the npm component package (tools/release-packaging) are ready, for an agent to publish by docs/RELEASING.md.",
       cost: "Seconds once the crates are cached; the first build downloads the crates Cargo.lock pins (72 for the library, 29 more for the component).",
     },
     requires: { runtime: ["cargo", "node"], network: true },

@@ -55,3 +55,12 @@ The tests sign with the throw-away keys in [`../../vectors/testkit/`](../../vect
 Kotlin/JS uses the machine's Node.js; its npm packages (the mocha runner) come only from
 `kotlin-js-store/yarn.lock`, and Gradle artifacts only as listed in
 `gradle/verification-metadata.xml`.
+
+## Release packaging
+
+Both modules are packaged for Maven Central as `io.github.litlfred:hcert-api`
+and `io.github.litlfred:hcert-core`, at the version in [`../../VERSION`](../../VERSION),
+with Gradle's built-in `maven-publish` only. `gradle -p tools/hcert-kotlin
+publishDryRun` publishes them into `build/maven-dry-run/` (no remote) and lists
+the artefacts; nothing is published from here or from CI.
+[`../../docs/RELEASING.md`](../../docs/RELEASING.md) is the runbook.
