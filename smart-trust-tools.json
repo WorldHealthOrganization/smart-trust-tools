@@ -163,6 +163,12 @@
       "graphTypologies": [
         "payload-models"
       ],
+      "derivedFrom": [
+        "fhir-logical-models"
+      ],
+      "writer": [
+        "tools/lm-derive/lm_derive.py"
+      ],
       "description": "The JSON-LD context, SHACL shapes and CDDL rules lm-derive writes from the logical models."
     },
     {

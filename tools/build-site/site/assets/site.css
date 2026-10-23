@@ -20,6 +20,7 @@
   --fam-requirement: #2a78d6;
   --fam-source: #eb6834;
   --fam-realization: #1baf7a;
+  --fam-model: #8e5cd9;
   --status-warning: #fab219;
   --status-warning-ink: #6b4500;
   --font-display: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
@@ -38,7 +39,7 @@
     --fg: #e4ece9; --fg-2: #b2c0bb; --fg-3: #8a9893;
     --accent: #3cc4b2; --accent-ink: #062320; --link: #6cc3ea;
     --code-bg: #1a2321; --tok-comment: #8a9893; --tok-key: #f0a56b; --tok-name: #6cc3ea; --tok-str: #9ad27f;
-    --fam-requirement: #3987e5; --fam-source: #d95926; --fam-realization: #199e70;
+    --fam-requirement: #3987e5; --fam-source: #d95926; --fam-realization: #199e70; --fam-model: #a37ae6;
     --status-warning-ink: #fab219;
     color-scheme: dark;
   }
@@ -48,7 +49,7 @@
   --fg: #e4ece9; --fg-2: #b2c0bb; --fg-3: #8a9893;
   --accent: #3cc4b2; --accent-ink: #062320; --link: #6cc3ea;
   --code-bg: #1a2321; --tok-comment: #8a9893; --tok-key: #f0a56b; --tok-name: #6cc3ea; --tok-str: #9ad27f;
-  --fam-requirement: #3987e5; --fam-source: #d95926; --fam-realization: #199e70;
+  --fam-requirement: #3987e5; --fam-source: #d95926; --fam-realization: #199e70; --fam-model: #a37ae6;
   --status-warning-ink: #fab219;
   color-scheme: dark;
 }
