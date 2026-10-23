@@ -4,15 +4,34 @@
 # unicode-normalization for NFC; versions are pinned in Cargo.lock, each a
 # release at least 14 days old (DEPENDENCIES.md). Build with --locked.
 [package]
-name = "hcert"
+# crates.io has no namespaces: the name carries the repository's GitHub org
+# (tools/release-packaging/coordinates.mjs); the library is `hcert` ([lib]).
+name = "litlfred-hcert"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.82"
 license = "Apache-2.0"
-description = "SMART Trust HCERT: issue and verify WHO GDHCN health certificates"
-publish = false
+description = "SMART Trust HCERT: issue and verify WHO GDHCN health certificates and Verifiable Health Links"
+repository = "https://github.com/litlfred/smart-trust-tools"
+homepage = "https://litlfred.github.io/smart-trust-tools/"
+readme = "README.md"
+keywords = ["hcert", "gdhcn", "health-certificate", "cose", "cwt"]
+categories = ["cryptography", "encoding", "wasm"]
+authors = ["Carl Leitner (litlfred)"]
+# The version must equal the repository's VERSION file
+# (tools/release-packaging/check-version.mjs). Only crates.io, and only by an
+# agent following docs/RELEASING.md; nothing here is published yet.
+publish = ["crates-io"]
+# The crate is the library and its documentation. The tests read the shared
+# vectors at ../../vectors and the demos and component scripts are the
+# repository's, so they stay out; they run from the repository (cargo test).
+# The `component` feature reads the WIT contract at ../../api/wit, so it builds
+# only from the repository; the component is distributed on npm instead
+# (@litlfred/hcert-component).
+include = ["/src/**/*.rs", "/README.md", "/DEPENDENCIES.md", "/LICENSE", "/Cargo.toml", "/Cargo.lock"]
 
 [lib]
+name = "hcert"
 crate-type = ["rlib", "cdylib"]
 
 [dependencies]

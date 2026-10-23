@@ -9,9 +9,9 @@ permissions:
 
 on:
   push:
-    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "tools/**", "toolchain/**", ".github/workflows/requirements-kg.yml"]
+    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "tools/**", "toolchain/**", "VERSION", "CHANGELOG.md", ".github/workflows/requirements-kg.yml"]
   pull_request:
-    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "tools/**", "toolchain/**", ".github/workflows/requirements-kg.yml"]
+    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "tools/**", "toolchain/**", "VERSION", "CHANGELOG.md", ".github/workflows/requirements-kg.yml"]
 
 jobs:
   check:
@@ -40,6 +40,10 @@ jobs:
         run: python3 tools/lm-derive/lm_derive.py --check
       - name: Validate vectors against CDDL and SHACL
         run: python3 tools/check-models/check_models.py
+      # VERSION is the one version source (STT-NFR-001); the kotlin job
+      # repeats this against the built POMs and package.json files.
+      - name: One version everywhere, with a changelog entry
+        run: node tools/release-packaging/check-version.mjs
 
   kotlin:
     runs-on: ubuntu-latest
@@ -81,6 +85,23 @@ jobs:
         run: tools/hcert-rust/build-component.sh "$RUNNER_TEMP/component"
       - name: Each library verifies the other's certificates
         run: node tools/conformance-ts/cross.mjs "$RUNNER_TEMP/component" tools/hcert-kotlin/hcert-core/build/compileSync/js/main/productionLibrary/kotlin
+      # Release packaging, dry runs only (STT-NFR-002, docs/RELEASING.md).
+      # Nothing is published from CI and no job holds a credential: an agent
+      # publishes, by the runbook.
+      - name: "Dry run: publish the Maven artefacts into a build-local repository"
+        run: gradle -p tools/hcert-kotlin --no-daemon publishDryRun
+      - name: "Dry run: assemble the npm packages"
+        run: node tools/release-packaging/assemble-npm.mjs --out "$RUNNER_TEMP/npm" --component "$RUNNER_TEMP/component" --kotlin-js tools/hcert-kotlin/hcert-core/build/compileSync/js/main/productionLibrary/kotlin
+      - name: The conformance suite on the files the npm packages would ship
+        run: |
+          node tools/conformance-ts/run.mjs rust "$RUNNER_TEMP/npm/hcert-component"
+          node tools/conformance-ts/run.mjs kotlin "$RUNNER_TEMP/npm/hcert-kotlin-js"
+      - name: "Dry run: npm pack"
+        run: |
+          (cd "$RUNNER_TEMP/npm/hcert-component" && npm pack --dry-run --ignore-scripts)
+          (cd "$RUNNER_TEMP/npm/hcert-kotlin-js" && npm pack --dry-run --ignore-scripts)
+      - name: The built POMs and package.json files carry VERSION
+        run: node tools/release-packaging/check-version.mjs "$RUNNER_TEMP/npm" tools/hcert-kotlin/build/maven-dry-run
 
 
   rust:
@@ -122,3 +143,10 @@ jobs:
         run: ../../toolchain/node/node_modules/.bin/tsc -p ../conformance-ts/tsconfig.json
       - name: Run the TypeScript conformance suite on the component
         run: node ../conformance-ts/run.mjs rust "$RUNNER_TEMP/component"
+      # Dry run only (STT-NFR-002): the .crate an agent would publish, listed
+      # and built on its own; the tests stay in the repository (they read
+      # ../../vectors).
+      - name: "Dry run: cargo package"
+        run: |
+          cargo package --locked --list
+          cargo package --locked
