@@ -20,7 +20,8 @@ Every part of the graph is a cat-harness node, declared in
 `smart-trust-tools.json`:
 
 - [`skills/requirements/`](skills/requirements/): one `req:` node per library
-  requirement, each `derivedFrom` the sources below.
+  requirement, each citing the sources below in `reference` and naming in
+  `derivedFrom` the broader requirement it specialises.
 - [`library/`](library/): the WHO SMART Trust, smart-trust-phw and IHE ITI VHL
   pages and FSH the requirements cite, ingested section by section at a pinned
   commit.
