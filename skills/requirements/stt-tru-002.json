@@ -23,7 +23,7 @@
       "key": "statement",
       "label": "GDHCN DID trustlist v2 documents",
       "conformance": "SHALL",
-      "requirement": "The trust store SHALL load GDHCN DID trustlist v2 documents, embedded and reference variants, reading DSCs from verificationMethod publicKeyJwk (x5c) with the kid as the fragment. Fetching the documents, caching them and checking their proofs are the host's.",
+      "requirement": "The trust store SHALL load GDHCN DID trustlist v2 documents, embedded and reference variants, reading DSCs from verificationMethod publicKeyJwk (x5c) with the kid as the fragment. Fetching and caching the documents are the host's; checking their proofs is the host's choice, with the library's proof verification (STT-TRU-006) or its own.",
       "category": "functional",
       "successCriteria": [
         {

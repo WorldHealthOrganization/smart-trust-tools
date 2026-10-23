@@ -65,6 +65,7 @@
     "req:stt-tru-001",
     "req:stt-tru-002",
     "req:stt-tru-005",
+    "req:stt-tru-006",
     "req:stt-tst-001",
     "req:stt-tst-002",
     "req:stt-tst-003",
@@ -484,6 +485,11 @@
           "id": "req:stt-tru-005#statement/test",
           "type": "required",
           "expectation": "A test named after STT-TRU-005 passes in each implementation's suite (Kotlin: `STT-TRU-005 a static list of PEM certificates loads` (TrustListTest.kt))."
+        },
+        {
+          "id": "req:stt-tru-006#statement/test",
+          "type": "required",
+          "expectation": "Tests named after STT-TRU-006 pass in each implementation's suite: the vectors in vectors/gdhcn-dev-trustlist (XXR, XXR DSC, XXA and the 234-key root document) verify against WHO-signing-did.json, the XXR DSC document's canonical N-Quads equal the golden files byte for byte, and a changed byte in the document, the wrong signer, and an unmodelled term each fail with proof-invalid."
         },
         {
           "id": "req:stt-ver-006#statement/test",

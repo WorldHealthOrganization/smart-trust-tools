@@ -10,6 +10,7 @@ satisfies:
   - "req:stt-tru-001#statement"
   - "req:stt-tru-002#statement"
   - "req:stt-tru-005#statement"
+  - "req:stt-tru-006#statement"
   - "req:stt-ver-006#statement"
   - "req:stt-ver-009#statement"
 tested-by:
