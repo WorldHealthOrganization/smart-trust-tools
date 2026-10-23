@@ -37,7 +37,7 @@ import { basename, join } from "node:path";
 
 import { RequirementSchema } from "@litlfred/bootstrap-tools/schemas/requirement.ts";
 
-import { TestPlanSchema } from "../../cat-harness/schemas/test-plan.ts";
+import { TestPlanSchema } from "@litlfred/cat-harness/schemas/test-plan.ts";
 
 const ROOT = join(import.meta.dir, "..", "..");
 const REQ_DIR = join(ROOT, "skills", "requirements");
