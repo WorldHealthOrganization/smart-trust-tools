@@ -138,6 +138,17 @@ impl TrustStore {
         Ok(n)
     }
 
+    /// [`Self::add_did_document`], but only once the document's proof
+    /// verifies against `signer`, the did:web document of the proof's
+    /// verificationMethod; on any failure nothing is added (STT-TRU-006).
+    pub fn add_verified_did_document(&mut self, text: &str, signer: &str) -> Result<u32, TrustError> {
+        crate::didproof::verify_did_proof(text, signer)?;
+        let mut next = self.clone();
+        let n = next.add_did_document(text)?;
+        *self = next;
+        Ok(n)
+    }
+
     pub fn candidates(&self, kid: &Kid) -> Vec<&TrustedDsc> {
         self.dscs.iter().filter(|d| &d.kid == kid).collect()
     }

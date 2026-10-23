@@ -153,6 +153,7 @@ fn trust_error(e: TrustError) -> WTrustError {
     match e {
         TrustError::Parse(m) => WTrustError::Parse(m),
         TrustError::UnknownTrustDomain(d) => WTrustError::UnknownTrustDomain(d),
+        TrustError::ProofInvalid(m) => WTrustError::ProofInvalid(m),
     }
 }
 fn issue_error(e: IssueError) -> WIssueError {
@@ -308,6 +309,9 @@ impl w::trust::GuestTrustStore for TrustStore {
     }
     fn add_did_document(&self, json: String) -> Result<u32, WTrustError> {
         self.0.borrow_mut().add_did_document(&json).map_err(trust_error)
+    }
+    fn add_verified_did_document(&self, json: String, signer: String) -> Result<u32, WTrustError> {
+        self.0.borrow_mut().add_verified_did_document(&json, &signer).map_err(trust_error)
     }
     fn load_trust_domains(&self, codesystem_json: String) -> Result<u32, WTrustError> {
         self.0.borrow_mut().load_trust_domains(&codesystem_json).map_err(trust_error)
@@ -485,6 +489,9 @@ impl w::vhl::Guest for Component {
 
 impl w::trust::Guest for Component {
     type TrustStore = TrustStore;
+    fn verify_did_proof(document: String, signer: String) -> Result<(), WTrustError> {
+        crate::didproof::verify_did_proof(&document, &signer).map_err(trust_error)
+    }
 }
 
 impl w::verifier::Guest for Component {
