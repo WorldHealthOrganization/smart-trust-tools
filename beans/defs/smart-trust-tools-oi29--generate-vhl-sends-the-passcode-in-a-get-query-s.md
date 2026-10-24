@@ -8,10 +8,14 @@ tags:
     - open-issue
     - upstream
 created_at: 2026-10-20T00:00:00Z
-updated_at: 2026-10-20T20:00:00Z
+updated_at: 2026-10-24T14:54:54Z
 ---
 
 ITI-YY3's $generate-vhl is a GET with passcode as a query parameter, so the passcode lands in server and proxy logs. Host concern, not the library's; noted for the policy track.
+
+## Reported
+
+Reported 2026-10-24 to IHE as point 6 of a comment on IHE/ITI.VHL#48, the July 2026 update PR (https://github.com/IHE/ITI.VHL/pull/48#issuecomment-6385626316). That PR does not yet address it.
 
 ## Requirements affected
 

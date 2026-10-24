@@ -8,10 +8,14 @@ tags:
     - open-issue
     - upstream
 created_at: 2026-10-20T00:00:00Z
-updated_at: 2026-10-20T20:00:00Z
+updated_at: 2026-10-24T14:54:54Z
 ---
 
 Both pages cite draft-faltstrom-base45. That draft was published as RFC 9285, which should be the reference.
+
+## Reported
+
+Reported 2026-10-24 to WHO as point 2 of WorldHealthOrganization/smart-trust#138 (https://github.com/WorldHealthOrganization/smart-trust/issues/138).
 
 ## Requirements affected
 
