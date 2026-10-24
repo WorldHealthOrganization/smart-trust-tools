@@ -1,14 +1,14 @@
 ---
 # smart-trust-tools-oi38
 title: 'OI-38: Rust tests for the assertions hcert-rust leaves uncovered'
-status: todo
+status: in-progress
 type: task
 priority: normal
 tags:
     - open-issue
     - testing
 created_at: 2026-10-24T14:30:00Z
-updated_at: 2026-10-24T14:30:00Z
+updated_at: 2026-10-24T15:00:00Z
 ---
 
 test/systems/hcert-rust.system.json (smart-trust-tools#32) lists 42 required assertions that no test verifies on at least one of the system's targets: 8 on native only, 12 on wasm32 only, 22 on both. Many are tested in substance already, under a test whose name does not start with the requirement id, so the generator cannot bind it. The rest need a test.
@@ -20,3 +20,7 @@ Work in small batches, one requirement group (COS, CWT, GEN, PAY, SEC, SEL, TRU,
 ## Done when
 
 - [ ] `uncovered` in test/systems/hcert-rust.system.json is empty, each remaining gap stated in `unbound`
+
+## Notes
+
+- 2026-10-24: claimed by Claude, session https://claude.ai/code/session_01PeeabG4WKeuCzLfTEqH3Yz (smart-trust-tools bean drain). Batch 1, COS and CWT on native: smart-trust-tools#35.
