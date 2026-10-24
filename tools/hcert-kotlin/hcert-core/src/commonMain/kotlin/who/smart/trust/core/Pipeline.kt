@@ -177,12 +177,14 @@ object HcertVerifier : Verifier {
     private val hcertEkus = setOf(EKU_TEST, EKU_VACCINATION, EKU_RECOVERY)
 
     /**
-     * The EKU a certificate type needs. DVC (-6) and DDCC VS (3) are
-     * vaccinations, DDCC TR (4) is a test; a DCC (1) says which by carrying
-     * a v, t or r entry (EU DCC schema).
+     * The EKU a certificate type needs. DVC (under whichever subclaim the
+     * registry gives it [STT-SEL-003]) and DDCC VS (3) are vaccinations,
+     * DDCC TR (4) is a test; a DCC (1) says which by carrying a v, t or r
+     * entry (EU DCC schema).
      */
-    private fun ekuFor(subclaim: Int, body: CborItem?): String? = when (subclaim) {
-        -6, 3 -> EKU_VACCINATION
+    private fun ekuFor(subclaim: Int, body: CborItem?, reg: Registry): String? = when (subclaim) {
+        reg.subclaimFor(PayloadKind.DVC_MIN) -> EKU_VACCINATION
+        3 -> EKU_VACCINATION
         4 -> EKU_TEST
         1 -> (body as? CborItem.Map)?.let { m ->
             listOfNotNull(
@@ -331,7 +333,7 @@ object HcertVerifier : Verifier {
         val authorised = entries.map { (keyItem, body) ->
             val subclaim = (keyItem as? CborItem.Int)?.value?.toInt()
             if (dscHcertEkus.isEmpty() || subclaim == null) return@map true
-            val needed = ekuFor(subclaim, body)
+            val needed = ekuFor(subclaim, body, reg)
             if (needed == null) {
                 diagnostics += Diagnostic(Step.KEY_USAGE, Severity.WARNING, "no certificate type is known for subclaim $subclaim")
                 true

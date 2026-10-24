@@ -785,6 +785,11 @@
         {
           "surface": "library",
           "target": "jvm",
+          "selector": "tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-003 DVC moves to an assigned subclaim without an API change"
+        },
+        {
+          "surface": "library",
+          "target": "jvm",
           "selector": "tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-003 a development-range subclaim needs the explicit opt-in"
         }
       ]

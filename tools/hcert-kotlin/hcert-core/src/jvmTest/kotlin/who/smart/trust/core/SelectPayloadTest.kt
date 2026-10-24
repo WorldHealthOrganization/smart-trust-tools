@@ -48,6 +48,23 @@ class SelectPayloadTest {
         assertEquals(IssueError.DevelopmentSubclaimNotAllowed(-6), r.err())
     }
 
+    @Test fun `STT-SEL-003 DVC moves to an assigned subclaim without an API change`() {
+        // WHO assigns DVC a production number (6 here): registry configuration only.
+        val assigned = SubclaimRegistry()
+        assigned.register(Subclaim(6, "DVCMin", "http://smart.who.int/trust-phw/StructureDefinition/DVCMin"))
+        assigned.setSubclaimFor(PayloadKind.DVC_MIN, 6)
+        // A production number needs no development opt-in.
+        val es = Testkit.issue(Testkit.request(Payload.DvcMin(NEWBORN), dev = false), assigned)
+        val v = assertIs<VerificationResult.Verified>(HcertVerifier.verify(es.hc1, Testkit.store(Testkit.esPem), assigned, Testkit.now, OPTIONS)).value
+        assertEquals(listOf(6), v.entries.map { it.subclaim })
+        assertIs<Payload.DvcMin>(v.entries.single().payload)
+        // The key-usage check follows the number too: the PS256 DSC's EKU is
+        // test certificates only, so a DVC under 6 is refused, as under -6.
+        val ps = Testkit.issue(Testkit.request(Payload.DvcMin(NEWBORN), CoseAlgorithm.PS256, dev = false), assigned)
+        val f = assertIs<VerificationResult.Failed>(HcertVerifier.verify(ps.hc1, Testkit.store(Testkit.psPem), assigned, Testkit.now, OPTIONS)).value
+        assertEquals(Step.KEY_USAGE to FailureReason.KEY_USAGE_MISMATCH, f.step to f.reason)
+    }
+
     @Test fun `STT-SEL-004 an issued HCERT carries each payload under its own subclaim, in key order`() {
         val hcert = claimsOf(Testkit.issue(Testkit.request(listOf(Payload.DvcMin(NEWBORN), vhl))).cose)[-260L] as CborItem.Map
         // deterministic CBOR orders the keys by their encoding: 5 (0x05) before -6 (0x25)

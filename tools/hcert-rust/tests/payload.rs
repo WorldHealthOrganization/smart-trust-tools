@@ -97,3 +97,26 @@ fn stt_sel_001_stt_sel_003_the_subclaims_are_the_guides_and_development_ones_nee
     r.allow_development_subclaims = false;
     assert_eq!(issuer::prepare(&r, &reg()), Err(IssueError::DevelopmentSubclaimNotAllowed(-6)));
 }
+
+#[test]
+fn stt_sel_003_dvc_moves_to_an_assigned_subclaim_without_an_api_change() {
+    // WHO assigns DVC a production number (6 here): registry configuration only.
+    let mut assigned = reg();
+    assigned.register(payload::Subclaim { key: 6, name: "DVCMin".into(), profile: Some("http://smart.who.int/trust-phw/StructureDefinition/DVCMin".into()) });
+    assigned.set_subclaim_for(payload::PayloadKind::DvcMin, 6);
+    for alg in [CoseAlgorithm::Es256, CoseAlgorithm::Ps256] {
+        let mut r = request(alg);
+        // A production number needs no development opt-in.
+        r.allow_development_subclaims = false;
+        let p = issuer::prepare(&r, &assigned).unwrap();
+        let issued = issuer::finish(&p, &sign(alg, &p.to_be_signed)).unwrap();
+        let der = if alg == CoseAlgorithm::Es256 { es_der() } else { ps_der() };
+        match (alg, verifier::verify(&issued.hc1, &store_with(&der), &assigned, TESTKIT_NOW, &options())) {
+            (CoseAlgorithm::Es256, Ok(v)) => assert_eq!((only(&v).subclaim, &only(&v).payload), (6, &Payload::DvcMin(newborn()))),
+            // The key-usage check follows the number too: the PS256 DSC's EKU is
+            // test certificates only, so a DVC under 6 is refused, as under -6.
+            (CoseAlgorithm::Ps256, Err(f)) => assert_eq!((f.step, f.reason), (Step::KeyUsage, FailureReason::KeyUsageMismatch)),
+            (a, r) => panic!("{a:?}: {r:?}"),
+        }
+    }
+}
