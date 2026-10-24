@@ -28,7 +28,7 @@ The only Python CDDL validator, pycddl (wrapping the Rust cddl crate), deviates 
 
 ## Cross-check, 2026-10-24
 
-Claude (session https://claude.ai/code/session_01PeeabG4WKeuCzLfTEqH3Yz) ran a second validator: the `cddl` tool by Carsten Bormann (Ruby gem cddl 0.12.14, released 2026-06-11, by one of RFC 8610's authors). It ran on the CDDL files as committed, with none of check_models.py's rewrites. The instances were the ones check_models.py checks, from vectors/smart-trust-pr129 and vectors/smart-trust-af75be2 (bcg, hepb1).
+Claude (session https://claude.ai/code/session_01PeeabG4WKeuCzLfTEqH3Yz) ran a second validator: the `cddl` tool by Carsten Bormann, one of RFC 8610's authors (Ruby gem cddl 0.12.14, released 2026-06-11). It ran on the CDDL files as committed, with none of check_models.py's rewrites. The instances were the ones check_models.py checks, from vectors/smart-trust-pr129 and vectors/smart-trust-af75be2 (bcg, hepb1).
 
 - The COSE_Sign1, protected header and CWT claims of all four certificates are accepted (12 of 12).
 - The four mutations check_models.py rejects (no is and no cn, dob 2026-13-01, no n, an is with spaces) are rejected, and the two it accepts (cn only, year-only dob) are accepted, for each certificate (24 of 24). So `.regexp` anchors and `\s` classes behave as RFC 8610 and XSD say, which confirms deviations 2 and 3 are pycddl's.
