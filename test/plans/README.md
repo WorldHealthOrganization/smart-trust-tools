@@ -37,7 +37,7 @@ suite's test names are listed in the criterion text.
 **Where things stand (Kotlin, JVM):**
 
 - 80 named tests pass.
-- 87 of the 94 requirements are verified by a test named after them, the
+- 88 of the 95 requirements are verified by a test named after them, the
   Rust library's tests included.
 - Kotlin line coverage is 91.3% and branch coverage 71.1% (JaCoCo, hcert-core
   commonMain and jvmMain).
@@ -45,7 +45,7 @@ suite's test names are listed in the criterion text.
   library's sources under `cargo test`).
 
 The unverified requirements are STT-TST-009, and the six verified by
-inspection or review (bean OI-32).
+inspection or review (bean OI-32, closed 2026-10-24).
 
 ## Which test verifies which assertion
 
