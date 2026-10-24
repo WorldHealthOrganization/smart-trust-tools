@@ -99,6 +99,44 @@ fn stt_sel_001_stt_sel_003_the_subclaims_are_the_guides_and_development_ones_nee
 }
 
 #[test]
+fn stt_pay_004_stt_pay_007_an_invalid_payload_is_refused_naming_each_rule() {
+    let mut bad = newborn();
+    bad.nt = "LA".into();
+    bad.vx.is = None;
+    bad.vx.cn = None;
+    let mut r = request(CoseAlgorithm::Es256);
+    r.payloads = vec![Payload::DvcMin(bad)];
+    let Err(IssueError::PayloadInvalid(issues)) = issuer::prepare(&r, &reg()) else { panic!("not refused") };
+    let mut codes: Vec<_> = issues.iter().map(|i| i.code.as_str()).collect();
+    codes.sort();
+    codes.dedup();
+    assert_eq!(codes, ["must-have-issuer-or-clinician-name", "not-alpha3"]);
+    // User-assigned alpha-3 codes, such as XXA for testing, are accepted.
+    let mut xxa = newborn();
+    xxa.nt = "XXA".into();
+    assert!(payload::validate(&xxa).is_empty());
+}
+
+#[test]
+fn stt_sel_002_a_host_registers_its_own_subclaim_and_issues_under_it() {
+    let mut r = reg();
+    assert!(r.lookup(42).is_none());
+    let body = cbor::encode(&Item::Map(vec![(Item::Text("k".into()), Item::Text("v".into()))])).unwrap();
+    let mut req = request(CoseAlgorithm::Es256);
+    req.payloads = vec![Payload::Raw { subclaim: 42, cbor: body.clone() }];
+    assert_eq!(issuer::prepare(&req, &r).err(), Some(IssueError::UnknownSubclaim(42)));
+    r.register(payload::Subclaim { key: 42, name: "Local payload".into(), profile: None });
+    let p = issuer::prepare(&req, &r).unwrap();
+    let issued = issuer::finish(&p, &sign(CoseAlgorithm::Es256, &p.to_be_signed)).unwrap();
+    let v = verifier::verify(&issued.hc1, &store_with(&es_der()), &r, TESTKIT_NOW, &options()).unwrap();
+    assert_eq!(only(&v).payload, Payload::Raw { subclaim: 42, cbor: body });
+    // A default can be overridden too: the same key, a new name.
+    r.register(payload::Subclaim { key: -7, name: "Local medication list".into(), profile: None });
+    assert_eq!(r.lookup(-7).unwrap().name, "Local medication list");
+    assert_eq!(r.all().iter().filter(|s| s.key == -7).count(), 1);
+}
+
+#[test]
 fn stt_sel_003_dvc_moves_to_an_assigned_subclaim_without_an_api_change() {
     // WHO assigns DVC a production number (6 here): registry configuration only.
     let mut assigned = reg();
@@ -118,5 +156,31 @@ fn stt_sel_003_dvc_moves_to_an_assigned_subclaim_without_an_api_change() {
             (CoseAlgorithm::Ps256, Err(f)) => assert_eq!((f.step, f.reason), (Step::KeyUsage, FailureReason::KeyUsageMismatch)),
             (a, r) => panic!("{a:?}: {r:?}"),
         }
+    }
+}
+
+#[test]
+fn stt_pay_005_a_newborns_dvcmin_has_no_identity_document_and_names_a_guardian() {
+    let p = newborn();
+    assert_eq!((p.id.as_deref(), p.dt.as_deref(), p.gn.as_deref()), (None, None, Some("Test MOTHER")));
+    assert!(payload::validate(&p).iter().all(|i| i.severity != Severity::Blocking));
+    let v = verifier::verify(&issue(CoseAlgorithm::Es256).hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap();
+    let Payload::DvcMin(got) = &only(&v).payload else { panic!("not a DVC") };
+    assert_eq!((got.id.as_deref(), got.dt.as_deref(), got.gn.as_deref()), (None, None, Some("Test MOTHER")));
+}
+
+#[test]
+fn stt_pay_009_stt_gen_003_another_payload_passes_through_the_core_untouched() {
+    // Each under a DSC whose key usage allows its certificate type: the PS256
+    // testkit DSC signs test certificates only, the ES256 one vaccinations.
+    let entry = |k: &str| cbor::encode(&Item::Map(vec![(Item::Text(k.into()), Item::Text("x".into()))])).unwrap();
+    for (subclaim, k, alg, der) in [(4, "t", CoseAlgorithm::Ps256, ps_der()), (1, "v", CoseAlgorithm::Es256, es_der()), (3, "v", CoseAlgorithm::Es256, es_der()), (-7, "m", CoseAlgorithm::Es256, es_der())] {
+        let body = entry(k);
+        let mut r = request(alg);
+        r.payloads = vec![Payload::Raw { subclaim, cbor: body.clone() }];
+        let p = issuer::prepare(&r, &reg()).unwrap();
+        let issued = issuer::finish(&p, &sign(alg, &p.to_be_signed)).unwrap();
+        let v = verifier::verify(&issued.hc1, &store_with(&der), &reg(), TESTKIT_NOW, &options()).unwrap_or_else(|f| panic!("{subclaim}: {f:?}"));
+        assert_eq!(only(&v).payload, Payload::Raw { subclaim, cbor: body }, "{subclaim}");
     }
 }
