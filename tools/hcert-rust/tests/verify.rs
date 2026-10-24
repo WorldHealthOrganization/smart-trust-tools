@@ -113,3 +113,62 @@ fn stt_ver_008_every_failure_is_a_value_naming_its_step_and_reason() {
     let f = verifier::verify(&long, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap_err();
     assert_eq!(f.reason, FailureReason::LimitExceeded);
 }
+
+#[test]
+fn stt_gen_001_stt_gen_009_issue_and_verify_with_es256_and_ps256_and_the_cose_bytes_travel_alone() {
+    // ES256 signs a DVC; the PS256 testkit DSC may sign test certificates only (subclaim 4).
+    let dvc = issue(CoseAlgorithm::Es256);
+    assert_eq!(only(&verifier::verify(&dvc.hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap()).payload, Payload::DvcMin(newborn()));
+    let mut r = request(CoseAlgorithm::Ps256);
+    r.payloads = vec![Payload::Raw { subclaim: 4, cbor: cbor::encode(&Item::Map(vec![(Item::Text("t".into()), Item::Text("x".into()))])).unwrap() }];
+    let p = issuer::prepare(&r, &reg()).unwrap();
+    let test = issuer::finish(&p, &sign(CoseAlgorithm::Ps256, &p.to_be_signed)).unwrap();
+    assert!(verifier::verify(&test.hc1, &store_with(&ps_der()), &reg(), TESTKIT_NOW, &options()).is_ok());
+    // The same certificates as COSE bytes, for NFC, Bluetooth or app-to-app.
+    assert_eq!(codec::from_hc1(&dvc.hc1, &DEFAULT_LIMITS).unwrap(), dvc.cose);
+    assert!(verifier::verify_cose(&dvc.cose, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).is_ok());
+    assert!(verifier::verify_cose(&test.cose, &store_with(&ps_der()), &reg(), TESTKIT_NOW, &options()).is_ok());
+}
+
+#[test]
+fn stt_ver_002_stt_sec_001_a_failure_carries_no_payload_and_names_none_of_it() {
+    let issued = issue(CoseAlgorithm::Es256);
+    let f = verifier::verify(&issued.hc1, &TrustStore::new(), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    // A failure is step, reason and detail: no claims, no payload.
+    let verifier::VerificationFailure { step, reason, detail } = f;
+    assert_eq!((step, reason), (Step::TrustLookup, FailureReason::KidNotFound));
+    for secret in ["Test CHILD", "Test MOTHER", "XM9V38", &issued.hc1[4..24]] {
+        assert!(!detail.contains(secret), "{secret}: {detail}");
+    }
+    // Reading without verifying is its own, named call, and says so.
+    let u = verifier::read_unverified(&issued.hc1, &reg(), &DEFAULT_LIMITS).unwrap();
+    assert!(u.diagnostics[0].message.starts_with("NOT VERIFIED"));
+}
+
+#[test]
+fn stt_ver_005_time_is_the_clock_the_caller_passes_with_the_skew_it_allows() {
+    let mut r = request(CoseAlgorithm::Es256);
+    r.exp = TESTKIT_NOW + 86_400;
+    let p = issuer::prepare(&r, &reg()).unwrap();
+    let hc1 = issuer::finish(&p, &sign(CoseAlgorithm::Es256, &p.to_be_signed)).unwrap().hc1;
+    let at = |now| verifier::verify(&hc1, &store_with(&es_der()), &reg(), now, &options());
+    let skew = options().clock_skew_seconds;
+    assert!(at(r.exp + skew - 1).is_ok());
+    assert_eq!(at(r.exp + skew + 1).unwrap_err().reason, FailureReason::Expired);
+    assert!(at(TESTKIT_NOW - skew + 1).is_ok());
+    assert_eq!(at(TESTKIT_NOW - skew - 1).unwrap_err().reason, FailureReason::NotYetValid);
+    let strict = verifier::VerifierOptions { clock_skew_seconds: 0, ..options() };
+    assert_eq!(verifier::verify(&hc1, &store_with(&es_der()), &reg(), r.exp + 1, &strict).unwrap_err().reason, FailureReason::Expired);
+}
+
+#[test]
+fn stt_ver_006_stt_kid_002_trust_list_presence_is_the_validity_check() {
+    let issued = issue(CoseAlgorithm::Es256);
+    // A kid nobody trusts fails the trust lookup; no CRL or OCSP is asked.
+    let f = verifier::verify(&issued.hc1, &TrustStore::new(), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    assert_eq!((f.step, f.reason), (Step::TrustLookup, FailureReason::KidNotFound));
+    // A trusted DSC outside its X.509 validity is reported, not refused.
+    let late = verifier::VerifierOptions { clock_skew_seconds: 86_400 * 365 * 20, ..options() };
+    let v = verifier::verify(&issued.hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW + 86_400 * 365 * 11, &late).unwrap();
+    assert!(v.diagnostics.iter().any(|d| d.step == Step::TrustLookup && d.message.contains("X.509 validity")), "{:?}", v.diagnostics);
+}

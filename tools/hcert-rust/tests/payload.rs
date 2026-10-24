@@ -158,3 +158,29 @@ fn stt_sel_003_dvc_moves_to_an_assigned_subclaim_without_an_api_change() {
         }
     }
 }
+
+#[test]
+fn stt_pay_005_a_newborns_dvcmin_has_no_identity_document_and_names_a_guardian() {
+    let p = newborn();
+    assert_eq!((p.id.as_deref(), p.dt.as_deref(), p.gn.as_deref()), (None, None, Some("Test MOTHER")));
+    assert!(payload::validate(&p).iter().all(|i| i.severity != Severity::Blocking));
+    let v = verifier::verify(&issue(CoseAlgorithm::Es256).hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap();
+    let Payload::DvcMin(got) = &only(&v).payload else { panic!("not a DVC") };
+    assert_eq!((got.id.as_deref(), got.dt.as_deref(), got.gn.as_deref()), (None, None, Some("Test MOTHER")));
+}
+
+#[test]
+fn stt_pay_009_stt_gen_003_another_payload_passes_through_the_core_untouched() {
+    // Each under a DSC whose key usage allows its certificate type: the PS256
+    // testkit DSC signs test certificates only, the ES256 one vaccinations.
+    let entry = |k: &str| cbor::encode(&Item::Map(vec![(Item::Text(k.into()), Item::Text("x".into()))])).unwrap();
+    for (subclaim, k, alg, der) in [(4, "t", CoseAlgorithm::Ps256, ps_der()), (1, "v", CoseAlgorithm::Es256, es_der()), (3, "v", CoseAlgorithm::Es256, es_der()), (-7, "m", CoseAlgorithm::Es256, es_der())] {
+        let body = entry(k);
+        let mut r = request(alg);
+        r.payloads = vec![Payload::Raw { subclaim, cbor: body.clone() }];
+        let p = issuer::prepare(&r, &reg()).unwrap();
+        let issued = issuer::finish(&p, &sign(alg, &p.to_be_signed)).unwrap();
+        let v = verifier::verify(&issued.hc1, &store_with(&der), &reg(), TESTKIT_NOW, &options()).unwrap_or_else(|f| panic!("{subclaim}: {f:?}"));
+        assert_eq!(only(&v).payload, Payload::Raw { subclaim, cbor: body }, "{subclaim}");
+    }
+}
