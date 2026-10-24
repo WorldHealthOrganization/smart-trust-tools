@@ -202,6 +202,11 @@
           "surface": "component",
           "target": "wasm32",
           "selector": "tools/conformance-ts/suite.ts::STT-COS-001 STT-COS-002 STT-COS-003 STT-KID-001 the COSE_Sign1 is tagged ES256 with the vector's kid in the protected header"
+        },
+        {
+          "surface": "library",
+          "target": "native",
+          "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cos_001_the_issued_cose_sign1_is_tagged_18_and_an_untagged_one_also_verifies"
         }
       ]
     },
@@ -247,6 +252,11 @@
           "surface": "component",
           "target": "wasm32",
           "selector": "tools/conformance-ts/suite.ts::STT-COS-004 STT-COS-002 verify-sign1 checks the Sig_structure against the DSC"
+        },
+        {
+          "surface": "library",
+          "target": "native",
+          "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cos_004_the_signature1_structure_uses_the_protected_bytes_as_received"
         }
       ]
     },
@@ -296,6 +306,26 @@
       ]
     },
     {
+      "assertion": "req:stt-cwt-002#statement/test",
+      "tests": [
+        {
+          "surface": "library",
+          "target": "native",
+          "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cwt_002_iat_and_exp_are_integer_numeric_dates"
+        }
+      ]
+    },
+    {
+      "assertion": "req:stt-cwt-003#statement/test",
+      "tests": [
+        {
+          "surface": "library",
+          "target": "native",
+          "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cwt_003_an_hcert_without_exp_is_refused_on_issue_and_on_verify"
+        }
+      ]
+    },
+    {
       "assertion": "req:stt-cwt-004#statement/test",
       "tests": [
         {
@@ -307,6 +337,26 @@
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cwt_004_validity_outside_the_dsc_is_refused"
+        }
+      ]
+    },
+    {
+      "assertion": "req:stt-cwt-005#statement/test",
+      "tests": [
+        {
+          "surface": "library",
+          "target": "native",
+          "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cwt_005_iss_is_optional_and_two_upper_case_letters_when_present"
+        }
+      ]
+    },
+    {
+      "assertion": "req:stt-cwt-006#statement/test",
+      "tests": [
+        {
+          "surface": "library",
+          "target": "native",
+          "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cwt_006_claims_this_version_does_not_know_are_kept"
         }
       ]
     },
@@ -1188,18 +1238,6 @@
   ],
   "uncovered": [
     {
-      "assertion": "req:stt-cos-001#statement/test",
-      "targets": [
-        "native"
-      ]
-    },
-    {
-      "assertion": "req:stt-cos-004#statement/test",
-      "targets": [
-        "native"
-      ]
-    },
-    {
       "assertion": "req:stt-cwt-001#statement/test",
       "targets": [
         "wasm32"
@@ -1208,28 +1246,24 @@
     {
       "assertion": "req:stt-cwt-002#statement/test",
       "targets": [
-        "native",
         "wasm32"
       ]
     },
     {
       "assertion": "req:stt-cwt-003#statement/test",
       "targets": [
-        "native",
         "wasm32"
       ]
     },
     {
       "assertion": "req:stt-cwt-005#statement/test",
       "targets": [
-        "native",
         "wasm32"
       ]
     },
     {
       "assertion": "req:stt-cwt-006#statement/test",
       "targets": [
-        "native",
         "wasm32"
       ]
     },
