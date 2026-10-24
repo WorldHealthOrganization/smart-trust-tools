@@ -9,9 +9,9 @@ permissions:
 
 on:
   push:
-    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "tools/**", "toolchain/**", "VERSION", "CHANGELOG.md", "index.lock.json", "package.json", "bun.lock", "bunfig.toml", ".github/workflows/requirements-kg.yml"]
+    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "test/**", "tools/**", "toolchain/**", "VERSION", "CHANGELOG.md", "index.lock.json", "package.json", "bun.lock", "bunfig.toml", ".github/workflows/requirements-kg.yml"]
   pull_request:
-    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "tools/**", "toolchain/**", "VERSION", "CHANGELOG.md", "index.lock.json", "package.json", "bun.lock", "bunfig.toml", ".github/workflows/requirements-kg.yml"]
+    paths: ["skills/**", "library/**", "external-schemas/**", "references/**", "memory/**", "beans/**", "processes/**", "scenarios/**", "api/**", "models/**", "vectors/**", "test/**", "tools/**", "toolchain/**", "VERSION", "CHANGELOG.md", "index.lock.json", "package.json", "bun.lock", "bunfig.toml", ".github/workflows/requirements-kg.yml"]
 
 jobs:
   check:
@@ -61,6 +61,8 @@ jobs:
           git diff --exit-code -- api/generated/ts
       - name: Library test plan is current with the success criteria
         run: python3 tools/test-plan/make_test_plan.py --check
+      - name: Each system under test's bindings are current with its tests' tags
+        run: python3 tools/test-systems/make_test_systems.py --check
       - name: Check derived payload models are current
         run: python3 tools/lm-derive/lm_derive.py --check
       - name: Validate vectors against CDDL and SHACL

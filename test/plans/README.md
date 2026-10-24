@@ -47,6 +47,16 @@ suite's test names are listed in the criterion text.
 The unverified requirements are STT-TST-009, and the six verified by
 inspection or review (bean OI-32).
 
+## Which test verifies which assertion
+
+Each implementation is a system under test in [`../systems/`](../systems/README.md)
+(`system/v1`). Its `bindings` map every assertion of this plan to the tests
+that verify it, per surface and target. They are generated from the tags in
+the tests themselves, the requirement ids each test's name starts with. Its
+`uncovered` list names each required assertion that a declared target leaves
+unverified. The counts above are therefore computed per system and target,
+not by hand.
+
 ## Test levels
 
 | Level | What it shows | Kotlin | Rust (to build) | Data | Requirements |
@@ -175,4 +185,6 @@ STT_FUZZ_ITERATIONS=60000 gradle -p tools/hcert-kotlin --no-daemon --init-script
 # The plans resolve, and the library plan is current
 bun run check:req-nodes
 python3 tools/test-plan/make_test_plan.py --check
+# Each system under test's bindings are current with its tests' tags (test/systems/)
+python3 tools/test-systems/make_test_systems.py --check
 ```

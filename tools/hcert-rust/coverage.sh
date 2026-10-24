@@ -3,6 +3,8 @@
 # and fails below the floor (STT-TST-010). Uses only what the pinned toolchain
 # ships: rustc's -C instrument-coverage and the llvm-tools component
 # (rust-toolchain.toml), so there is no coverage tool to install.
+# Verifies STT-TST-010/rust-floor.
+#
 #   tools/hcert-rust/coverage.sh [--report]
 # --report also prints the per-file table. Stable rustc measures lines and
 # regions, not branches, so the floor is on those two; it sits beside the
