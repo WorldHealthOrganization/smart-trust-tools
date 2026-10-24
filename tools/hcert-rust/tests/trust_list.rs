@@ -290,3 +290,29 @@ fn stt_tru_006_unified_profile_rows_give_the_same_verdict() {
     refused(verify(&swap(h, &dup), &signer).map(|_| String::new()), "duplicate key: alg");
     refused(verify(&doc, &signer.replacen("\"kty\": \"EC\"", "\"kty\": \"EC\", \"kty\": \"EC\"", 1)).map(|_| String::new()), "duplicate key: kty");
 }
+
+#[test]
+fn stt_kid_003_a_kid_reads_and_writes_as_hex_standard_and_url_safe_base64() {
+    // The kid of the PR 129 example, WHM+BYqqZiE=, has a '+' (bean OI-12).
+    let kid = cose::base64_decode("WHM+BYqqZiE=").unwrap();
+    assert_eq!(cose::base64_encode(&kid, false), "WHM+BYqqZiE=");
+    assert_eq!(cose::base64_encode(&kid, true), "WHM-BYqqZiE=");
+    assert_eq!(cose::base64_decode("WHM-BYqqZiE").unwrap(), kid);
+    for k in [kid_of(&es_der()).to_vec(), kid_of(&ps_der()).to_vec()] {
+        for url_safe in [false, true] {
+            assert_eq!(cose::base64_decode(&cose::base64_encode(&k, url_safe)).unwrap(), k);
+        }
+        assert_eq!(to_hex(&k).len(), 16);
+        assert_eq!(from_hex(&to_hex(&k)).unwrap(), k);
+    }
+    assert_eq!(to_hex(&kid), "58733e058aaa6621");
+    assert!(cose::base64_decode("WHM BYqqZiE=").is_err());
+    assert_eq!(from_hex("5873z"), None);
+    // Matching is on the bytes: the store finds the DSC whichever text form the kid came in.
+    let store = store_with(&es_der());
+    let k = kid_of(&es_der());
+    for text in [cose::base64_encode(&k, false), cose::base64_encode(&k, true)] {
+        let bytes: [u8; 8] = cose::base64_decode(&text).unwrap().try_into().unwrap();
+        assert_eq!(store.candidates(&bytes).len(), 1, "{text}");
+    }
+}

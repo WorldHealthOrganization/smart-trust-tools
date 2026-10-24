@@ -97,3 +97,41 @@ fn stt_sel_001_stt_sel_003_the_subclaims_are_the_guides_and_development_ones_nee
     r.allow_development_subclaims = false;
     assert_eq!(issuer::prepare(&r, &reg()), Err(IssueError::DevelopmentSubclaimNotAllowed(-6)));
 }
+
+#[test]
+fn stt_pay_004_stt_pay_007_an_invalid_payload_is_refused_naming_each_rule() {
+    let mut bad = newborn();
+    bad.nt = "LA".into();
+    bad.vx.is = None;
+    bad.vx.cn = None;
+    let mut r = request(CoseAlgorithm::Es256);
+    r.payloads = vec![Payload::DvcMin(bad)];
+    let Err(IssueError::PayloadInvalid(issues)) = issuer::prepare(&r, &reg()) else { panic!("not refused") };
+    let mut codes: Vec<_> = issues.iter().map(|i| i.code.as_str()).collect();
+    codes.sort();
+    codes.dedup();
+    assert_eq!(codes, ["must-have-issuer-or-clinician-name", "not-alpha3"]);
+    // User-assigned alpha-3 codes, such as XXA for testing, are accepted.
+    let mut xxa = newborn();
+    xxa.nt = "XXA".into();
+    assert!(payload::validate(&xxa).is_empty());
+}
+
+#[test]
+fn stt_sel_002_a_host_registers_its_own_subclaim_and_issues_under_it() {
+    let mut r = reg();
+    assert!(r.lookup(42).is_none());
+    let body = cbor::encode(&Item::Map(vec![(Item::Text("k".into()), Item::Text("v".into()))])).unwrap();
+    let mut req = request(CoseAlgorithm::Es256);
+    req.payloads = vec![Payload::Raw { subclaim: 42, cbor: body.clone() }];
+    assert_eq!(issuer::prepare(&req, &r).err(), Some(IssueError::UnknownSubclaim(42)));
+    r.register(payload::Subclaim { key: 42, name: "Local payload".into(), profile: None });
+    let p = issuer::prepare(&req, &r).unwrap();
+    let issued = issuer::finish(&p, &sign(CoseAlgorithm::Es256, &p.to_be_signed)).unwrap();
+    let v = verifier::verify(&issued.hc1, &store_with(&es_der()), &r, TESTKIT_NOW, &options()).unwrap();
+    assert_eq!(only(&v).payload, Payload::Raw { subclaim: 42, cbor: body });
+    // A default can be overridden too: the same key, a new name.
+    r.register(payload::Subclaim { key: -7, name: "Local medication list".into(), profile: None });
+    assert_eq!(r.lookup(-7).unwrap().name, "Local medication list");
+    assert_eq!(r.all().iter().filter(|s| s.key == -7).count(), 1);
+}

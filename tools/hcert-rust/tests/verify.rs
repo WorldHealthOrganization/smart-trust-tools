@@ -71,3 +71,45 @@ fn stt_ver_011_read_unverified_says_so() {
     assert_eq!(u.entries.iter().map(|e| e.subclaim).collect::<Vec<_>>(), [-6]);
     assert_eq!(u.iss.as_deref(), Some("XX"));
 }
+
+#[test]
+fn stt_ver_001_stt_ver_002_a_tampered_payload_fails_at_the_signature_before_any_payload_is_read() {
+    // A payload that would also fail its model check: the signature step comes first.
+    let mut bad = newborn();
+    bad.nt = "LA".into();
+    let claims = Item::Map(vec![
+        (Item::Int(4), Item::Int(TESTKIT_NOW + 1000)),
+        (Item::Int(6), Item::Int(TESTKIT_NOW)),
+        (Item::Int(-260), Item::Map(vec![(Item::Int(-6), payload::to_item(&bad).unwrap())])),
+    ]);
+    let s = cose::parse_sign1(&signed_claims(&claims), &DEFAULT_LIMITS).unwrap();
+    let mut tampered_payload = s.payload.clone();
+    *tampered_payload.last_mut().unwrap() ^= 1;
+    let tampered = cose::assemble_sign1(&s.protected, &tampered_payload, &s.signature);
+    let f = verifier::verify_cose(&tampered, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    assert_eq!((f.step, f.reason), (Step::Signature, FailureReason::SignatureInvalid));
+    // The trust lookup comes before the signature, and time before the payload.
+    let f = verifier::verify_cose(&tampered, &TrustStore::new(), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    assert_eq!((f.step, f.reason), (Step::TrustLookup, FailureReason::KidNotFound));
+    let f = verifier::verify_cose(&signed_claims(&claims), &store_with(&es_der()), &reg(), TESTKIT_NOW + 100_000, &options()).unwrap_err();
+    assert_eq!((f.step, f.reason), (Step::Time, FailureReason::Expired));
+    let f = verifier::verify_cose(&signed_claims(&claims), &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    assert_eq!((f.step, f.reason), (Step::Payload, FailureReason::PayloadInvalid));
+}
+
+#[test]
+fn stt_ver_008_every_failure_is_a_value_naming_its_step_and_reason() {
+    let cases = [
+        ("NCFOXN", FailureReason::BadPrefix),
+        ("HC2:NCFOXN", FailureReason::UnsupportedContextVersion),
+        ("HC1:abc", FailureReason::Base45Invalid),
+    ];
+    for (hc1, reason) in cases {
+        let f = verifier::verify(hc1, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+        assert_eq!(f.reason, reason, "{hc1}");
+        assert!(!f.detail.is_empty(), "{hc1}");
+    }
+    let long = format!("HC1:{}", "0".repeat(9000));
+    let f = verifier::verify(&long, &store_with(&es_der()), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    assert_eq!(f.reason, FailureReason::LimitExceeded);
+}
