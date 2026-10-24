@@ -166,12 +166,15 @@ fn payload_of(subclaim: i64, body: &Item, reg: &Registry) -> Result<Payload, Ver
     }
 }
 
-/// The EKU a certificate type needs. DVC (-6) and DDCC VS (3) are
-/// vaccinations, DDCC TR (4) a test; a DCC (1) says which by carrying a v,
-/// t or r entry (STT-VER-004).
-fn eku_for(subclaim: i64, body: &Item) -> Option<&'static str> {
+/// The EKU a certificate type needs. DVC (under whichever subclaim the
+/// registry gives it, STT-SEL-003) and DDCC VS (3) are vaccinations, DDCC TR
+/// (4) a test; a DCC (1) says which by carrying a v, t or r entry (STT-VER-004).
+fn eku_for(subclaim: i64, body: &Item, reg: &Registry) -> Option<&'static str> {
+    if subclaim == reg.subclaim_for(PayloadKind::DvcMin) {
+        return Some(EKU_VACCINATION);
+    }
     match subclaim {
-        -6 | 3 => Some(EKU_VACCINATION),
+        3 => Some(EKU_VACCINATION),
         4 => Some(EKU_TEST),
         1 => {
             let found: Vec<_> = [("v", EKU_VACCINATION), ("t", EKU_TEST), ("r", EKU_RECOVERY)].into_iter().filter(|(k, _)| body.get_text(k).is_some()).map(|(_, e)| e).collect();
@@ -223,7 +226,7 @@ fn run(cose_bytes: &[u8], store: &TrustStore, reg: &Registry, now: NumericDate, 
             if dsc_ekus.is_empty() {
                 return true;
             }
-            match eku_for(sc, body) {
+            match eku_for(sc, body, reg) {
                 None => {
                     warn(&mut diagnostics, Step::KeyUsage, &format!("no certificate type is known for subclaim {sc}"));
                     true
