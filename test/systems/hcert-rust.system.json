@@ -100,6 +100,56 @@
       "assertion": "req:stt-tst-007#statement/ts-suite",
       "target": "native",
       "reason": "Checked through the component only, by design: tools/conformance-ts runs the jco component on Node."
+    },
+    {
+      "assertion": "req:stt-gen-006#statement/same-vectors",
+      "target": "native",
+      "reason": "Checked through the component only, by design: tools/conformance-ts runs the shared vectors on the jco component and cross.ts compares it with the Kotlin package."
+    },
+    {
+      "assertion": "req:stt-gen-011#statement/test",
+      "target": "native",
+      "reason": "A criterion on the Node packages; the crate itself has no TypeScript surface."
+    },
+    {
+      "assertion": "req:stt-tst-010#statement/rust-floor",
+      "target": "wasm32",
+      "reason": "The floor is measured on the native test run (coverage.sh); rustc's instrument-coverage is not run on wasm32."
+    },
+    {
+      "assertion": "req:stt-gen-010#statement/test",
+      "target": "wasm32",
+      "reason": "Checked on the library's sources by tests/architecture.rs, which reads every file the component is compiled from, its bindings (src/component.rs) included."
+    },
+    {
+      "assertion": "req:stt-gen-012#statement/test",
+      "target": "wasm32",
+      "reason": "Checked on the library's sources by tests/architecture.rs, which reads every file the component is compiled from, its bindings (src/component.rs) included."
+    },
+    {
+      "assertion": "req:stt-iss-003#statement/test",
+      "target": "wasm32",
+      "reason": "Checked on the library's sources by tests/architecture.rs, which reads every file the component is compiled from, its bindings (src/component.rs) included."
+    },
+    {
+      "assertion": "req:stt-sec-001#statement/test",
+      "target": "wasm32",
+      "reason": "Checked on the library's sources by tests/architecture.rs, which reads every file the component is compiled from, its bindings (src/component.rs) included."
+    },
+    {
+      "assertion": "req:stt-sec-002#statement/test",
+      "target": "wasm32",
+      "reason": "Checked on the library's sources by tests/architecture.rs, which reads every file the component is compiled from, its bindings (src/component.rs) included."
+    },
+    {
+      "assertion": "req:stt-ver-009#statement/test",
+      "target": "wasm32",
+      "reason": "Checked on the library's sources by tests/architecture.rs, which reads every file the component is compiled from, its bindings (src/component.rs) included."
+    },
+    {
+      "assertion": "req:stt-vhl-010#statement/test",
+      "target": "wasm32",
+      "reason": "Checked on the library's sources by tests/architecture.rs, which reads every file the component is compiled from, its bindings (src/component.rs) included."
     }
   ],
   "bindings": [
@@ -307,6 +357,11 @@
       "assertion": "req:stt-cwt-001#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-CWT-001 STT-CWT-002 the claim set has integer keys and integer NumericDates"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cwt_001_stt_cos_002_stt_cos_003_prepare_builds_the_claims_and_a_protected_alg_and_kid"
@@ -317,6 +372,11 @@
       "assertion": "req:stt-cwt-002#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-CWT-001 STT-CWT-002 the claim set has integer keys and integer NumericDates"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cwt_002_iat_and_exp_are_integer_numeric_dates"
@@ -326,6 +386,11 @@
     {
       "assertion": "req:stt-cwt-003#statement/test",
       "tests": [
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-CWT-003 an HCERT without exp is refused on issue and on verify"
+        },
         {
           "surface": "library",
           "target": "native",
@@ -352,6 +417,11 @@
       "assertion": "req:stt-cwt-005#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-CWT-005 iss is optional, and two upper-case letters when present"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/build_cwt_sign_cose.rs::stt_cwt_005_iss_is_optional_and_two_upper_case_letters_when_present"
@@ -361,6 +431,11 @@
     {
       "assertion": "req:stt-cwt-006#statement/test",
       "tests": [
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-CWT-006 claims this version does not know are kept"
+        },
         {
           "surface": "library",
           "target": "native",
@@ -372,6 +447,11 @@
       "assertion": "req:stt-gen-001#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-GEN-001 STT-GEN-009 ES256 and PS256 issue and verify, and the COSE bytes travel without the QR layers"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/verify.rs::stt_gen_001_stt_gen_009_issue_and_verify_with_es256_and_ps256_and_the_cose_bytes_travel_alone"
@@ -382,6 +462,11 @@
       "assertion": "req:stt-gen-002#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-GEN-002 every step is callable on its own, and the steps compose to the issued HC1"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/api.rs::stt_gen_002_every_step_is_its_own_call_and_they_compose_to_a_verifiable_hc1"
@@ -391,6 +476,11 @@
     {
       "assertion": "req:stt-gen-003#statement/test",
       "tests": [
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-PAY-009 STT-GEN-003 payloads under 1, 3, 4 and -7 pass through the core untouched"
+        },
         {
           "surface": "library",
           "target": "native",
@@ -422,6 +512,11 @@
       "assertion": "req:stt-gen-009#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-GEN-001 STT-GEN-009 ES256 and PS256 issue and verify, and the COSE bytes travel without the QR layers"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/verify.rs::stt_gen_001_stt_gen_009_issue_and_verify_with_es256_and_ps256_and_the_cose_bytes_travel_alone"
@@ -435,6 +530,16 @@
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/architecture.rs::stt_gen_010_the_component_exports_the_wit_contract"
+        }
+      ]
+    },
+    {
+      "assertion": "req:stt-gen-011#statement/test",
+      "tests": [
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts"
         }
       ]
     },
@@ -592,6 +697,11 @@
       "assertion": "req:stt-pay-003#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-PAY-003 one immunization event per DVC"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/payload.rs::stt_pay_002_stt_pay_003_the_logical_model_rules_are_checked"
@@ -602,6 +712,11 @@
       "assertion": "req:stt-pay-004#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-PAY-004 STT-PAY-007 an invalid payload is refused, naming each rule"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/payload.rs::stt_pay_004_stt_pay_007_an_invalid_payload_is_refused_naming_each_rule"
@@ -611,6 +726,11 @@
     {
       "assertion": "req:stt-pay-005#statement/test",
       "tests": [
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-PAY-005 a newborn's DVCMin has no identity document and names a guardian"
+        },
         {
           "surface": "library",
           "target": "native",
@@ -625,6 +745,11 @@
           "surface": "component",
           "target": "wasm32",
           "selector": "tools/conformance-ts/suite.ts::STT-PAY-002 STT-PAY-007 the logical model's rules are enforced"
+        },
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-PAY-004 STT-PAY-007 an invalid payload is refused, naming each rule"
         },
         {
           "surface": "library",
@@ -651,6 +776,11 @@
     {
       "assertion": "req:stt-pay-009#statement/test",
       "tests": [
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-PAY-009 STT-GEN-003 payloads under 1, 3, 4 and -7 pass through the core untouched"
+        },
         {
           "surface": "library",
           "target": "native",
@@ -762,6 +892,11 @@
       "assertion": "req:stt-sel-004#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-SEL-004 one entry per payload, in wire order; no payload and a duplicate subclaim are refused"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/payload.rs::stt_sel_004_an_invalid_entry_is_left_out_and_reported"
@@ -812,6 +947,11 @@
       "assertion": "req:stt-tru-001#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-TRU-001 STT-TRU-002 a DID trustlist v2 document's DSCs are held by the store and found by kid"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/api.rs::stt_tst_011_stt_tru_001_the_xxr_certificates_verify_through_the_json_surface_against_a_did_document"
@@ -821,6 +961,11 @@
     {
       "assertion": "req:stt-tru-002#statement/test",
       "tests": [
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-TRU-001 STT-TRU-002 a DID trustlist v2 document's DSCs are held by the store and found by kid"
+        },
         {
           "surface": "library",
           "target": "native",
@@ -1007,6 +1152,11 @@
       "assertion": "req:stt-tst-006#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-TST-006 seeded mutations of an HC1 string never throw out of verify"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/fuzz.rs::stt_tst_006_fuzzed_base45_never_panics_and_never_decodes_more_than_its_input"
@@ -1122,6 +1272,11 @@
       "assertion": "req:stt-ver-002#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-VER-002 a failure carries no payload, and an unverified read is its own named call"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/verify.rs::stt_ver_001_stt_ver_002_a_tampered_payload_fails_at_the_signature_before_any_payload_is_read"
@@ -1137,6 +1292,11 @@
       "assertion": "req:stt-ver-003#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-VER-003 a protected header with an unsupported alg, or a short kid, is refused before the signature"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/verify.rs::stt_ver_003_headers_are_checked_before_any_signature"
@@ -1146,6 +1306,11 @@
     {
       "assertion": "req:stt-ver-004#statement/test",
       "tests": [
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-VER-004 key usage is checked per entry, and alone a DVC under a test-only DSC is refused"
+        },
         {
           "surface": "library",
           "target": "native",
@@ -1157,6 +1322,11 @@
       "assertion": "req:stt-ver-005#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-VER-005 time is the clock the caller passes, with the skew it allows"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/verify.rs::stt_ver_005_time_is_the_clock_the_caller_passes_with_the_skew_it_allows"
@@ -1167,6 +1337,11 @@
       "assertion": "req:stt-ver-006#statement/test",
       "tests": [
         {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-VER-006 trust-list presence is the validity check; a DSC outside its X.509 period is reported"
+        },
+        {
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/verify.rs::stt_ver_006_stt_kid_002_trust_list_presence_is_the_validity_check"
@@ -1176,6 +1351,11 @@
     {
       "assertion": "req:stt-ver-007#statement/test",
       "tests": [
+        {
+          "surface": "component",
+          "target": "wasm32",
+          "selector": "tools/conformance-ts/suite.ts::STT-VER-007 each entry is decoded by its subclaim's codec, falling back to raw"
+        },
         {
           "surface": "library",
           "target": "native",
@@ -1444,205 +1624,5 @@
       ]
     }
   ],
-  "uncovered": [
-    {
-      "assertion": "req:stt-cwt-001#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-cwt-002#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-cwt-003#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-cwt-005#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-cwt-006#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-gen-001#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-gen-002#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-gen-003#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-gen-006#statement/same-vectors",
-      "targets": [
-        "native"
-      ]
-    },
-    {
-      "assertion": "req:stt-gen-009#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-gen-010#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-gen-011#statement/test",
-      "targets": [
-        "native",
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-gen-012#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-iss-003#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-pay-003#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-pay-004#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-pay-005#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-pay-009#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-sec-001#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-sec-002#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-sel-004#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-tru-001#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-tru-002#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-tst-006#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-tst-010#statement/rust-floor",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-ver-002#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-ver-003#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-ver-004#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-ver-005#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-ver-006#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-ver-007#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-ver-009#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    },
-    {
-      "assertion": "req:stt-vhl-010#statement/test",
-      "targets": [
-        "wasm32"
-      ]
-    }
-  ]
+  "uncovered": []
 }
