@@ -54,7 +54,8 @@ tools/fetch-lms/fetch_lms.sh [sha]              # recompile models/fhir from sma
 ## Known issues
 
 - OI-17: `DVCMin` is abstract upstream, but the example payloads are DVCMin.
-- OI-18: the `s` binding points at a CodeSystem URL instead of a ValueSet.
+- OI-36: the `s` binding points at a CodeSystem URL instead of a ValueSet
+  (reported as smart-trust-phw#20, fix in smart-trust-phw#21).
 - OI-19: these artefacts should eventually be generated and published by the
   smart-trust-phw IG build. The HCERT envelope CDDL belongs in smart-trust.
 - OI-20: the CDDL validator used in CI (pycddl) deviates from RFC 8610.
