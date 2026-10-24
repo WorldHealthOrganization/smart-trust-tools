@@ -1,5 +1,7 @@
 // Drives the jco-transpiled component through every interface of the
-// `hcert` world, against the shared vectors (STT-GEN-005, STT-TST-005):
+// `hcert` world, against the shared vectors (STT-GEN-005, STT-TST-005).
+// Verifies STT-GEN-005 and STT-TST-005.
+//
 //   tools/hcert-rust/build-component.sh <dir> && node tools/hcert-rust/js/component/component-test.mjs <dir>
 import { readFileSync } from "node:fs";
 import { createPrivateKey, sign as nodeSign, createVerify } from "node:crypto";

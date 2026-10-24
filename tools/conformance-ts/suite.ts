@@ -3,6 +3,7 @@
 // api/generated/ts, the TypeScript that jco derives from the WIT contract, so
 // a call or a result that differs from the contract fails tsc before it runs.
 // The data comes from the shared vectors (STT-TST-005), passed in by run.mjs.
+// Verifies STT-TST-007.
 
 import type * as codecT from "../../api/generated/ts/interfaces/who-smart-trust-codec.js";
 import type * as coseT from "../../api/generated/ts/interfaces/who-smart-trust-cose.js";
