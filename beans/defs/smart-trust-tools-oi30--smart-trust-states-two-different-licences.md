@@ -8,7 +8,7 @@ tags:
     - open-issue
     - upstream
 created_at: 2026-10-20T00:00:00Z
-updated_at: 2026-10-20T20:00:00Z
+updated_at: 2026-10-24T14:54:54Z
 ---
 
 WorldHealthOrganization/smart-trust's LICENSE file says Creative Commons Attribution-NonCommercial-ShareAlike 3.0 IGO; its own input/pagecontent/license.md says Creative Commons Attribution 3.0 IGO. The library entries under library/who-smart-trust-* record the LICENSE file's terms and this contradiction.

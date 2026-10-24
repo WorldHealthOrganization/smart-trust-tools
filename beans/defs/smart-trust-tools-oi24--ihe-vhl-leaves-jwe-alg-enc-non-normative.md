@@ -8,7 +8,7 @@ tags:
     - open-issue
     - upstream
 created_at: 2026-10-20T00:00:00Z
-updated_at: 2026-10-20T20:00:00Z
+updated_at: 2026-10-24T14:54:54Z
 ---
 
 Document encryption names dir / A256GCM only in an example and defers to "Cryptographic Algorithm Selection", which mandates nothing for encryption (its only baseline is RS256 for signatures). Two conformant implementations need not interoperate. SMART Health Links, which the section cites, fixes dir / A256GCM.
@@ -16,6 +16,10 @@ Document encryption names dir / A256GCM only in an example and defers to "Crypto
 ## Resolution
 
 The library implements dir / A256GCM only and refuses anything else (STT-VHL-007).
+
+## Reported
+
+Reported 2026-10-24 to IHE as point 1 of a comment on IHE/ITI.VHL#48, the July 2026 update PR (https://github.com/IHE/ITI.VHL/pull/48#issuecomment-6385626316). That PR does not yet address it.
 
 ## Requirements affected
 
