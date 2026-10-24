@@ -637,6 +637,11 @@
           "surface": "library",
           "target": "native",
           "selector": "tools/hcert-rust/tests/payload.rs::stt_sel_001_stt_sel_003_the_subclaims_are_the_guides_and_development_ones_need_opting_in"
+        },
+        {
+          "surface": "library",
+          "target": "native",
+          "selector": "tools/hcert-rust/tests/payload.rs::stt_sel_003_dvc_moves_to_an_assigned_subclaim_without_an_api_change"
         }
       ]
     },

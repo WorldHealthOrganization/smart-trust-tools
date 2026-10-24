@@ -134,6 +134,9 @@ fn stt_sel_002_a_host_registers_its_own_subclaim_and_issues_under_it() {
     r.register(payload::Subclaim { key: -7, name: "Local medication list".into(), profile: None });
     assert_eq!(r.lookup(-7).unwrap().name, "Local medication list");
     assert_eq!(r.all().iter().filter(|s| s.key == -7).count(), 1);
+}
+
+#[test]
 fn stt_sel_003_dvc_moves_to_an_assigned_subclaim_without_an_api_change() {
     // WHO assigns DVC a production number (6 here): registry configuration only.
     let mut assigned = reg();
