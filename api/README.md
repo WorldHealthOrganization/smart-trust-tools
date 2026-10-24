@@ -43,7 +43,11 @@ WIT also has limits, which shaped the design:
 - **No recursive types**, so arbitrary CBOR crosses as encoded bytes
   (`cbor-bytes`). Typed payloads (DVCMin, VHL) cross as records.
 - **Calls are synchronous** in WASI 0.2, so the core does no I/O and makes no
-  async callbacks (see the design rules below and OI-15).
+  async callbacks (see the design rules below and OI-15). Verify stays
+  synchronous on every target: the Kotlin/JS target is Node only, using
+  Node's synchronous `crypto` and `zlib`, and browsers use the Rust
+  component, which verifies with in-WASM RustCrypto (owner's decision,
+  2026-10-24, OI-37 option C).
 - `s64` maps to `bigint` in JavaScript, so it is used only for timestamps.
   Subclaim numbers are `s32`.
 
