@@ -8,7 +8,7 @@ tags:
     - open-issue
     - testing
 created_at: 2026-10-21T00:00:00Z
-updated_at: 2026-10-24T14:30:00Z
+updated_at: 2026-10-24T14:03:22Z
 ---
 
 87 of the 94 requirements are verified by a test named after them (the tests the skills' tested-by names; the traceability matrix's "Not verified by a test" filter lists the rest). One of the other 7 has its own work: STT-TST-009 (agreement with the WHO-ITB, bean OI-33). STT-TST-010, the coverage floor, is enforced in CI by :hcert-core:jvmTestCoverageCheck (Kotlin) and tools/hcert-rust/coverage.sh (Rust), which the skill's tested-by names. The remaining 6 are verified by review; the Kotlin gaps and the Rust group are closed. Every requirement now carries success criteria; the test plans in test/plans/ use them as assertion ids.

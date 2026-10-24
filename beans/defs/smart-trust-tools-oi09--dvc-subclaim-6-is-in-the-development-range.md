@@ -8,7 +8,7 @@ tags:
     - open-issue
     - this-repository
 created_at: 2026-10-20T00:00:00Z
-updated_at: 2026-10-24T14:40:00Z
+updated_at: 2026-10-24T14:07:28Z
 ---
 
 The number "is not guaranteed to be stable". The library must not bake -6 into its wire format, and has to be able to move DVC to a WHO-assigned number without a breaking API change.
