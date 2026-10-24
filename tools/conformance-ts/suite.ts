@@ -3,7 +3,8 @@
 // api/generated/ts, the TypeScript that jco derives from the WIT contract, so
 // a call or a result that differs from the contract fails tsc before it runs.
 // The data comes from the shared vectors (STT-TST-005), passed in by run.mjs.
-// Verifies STT-TST-007.
+// Verifies STT-TST-007 and STT-GEN-011: tsc type-checks it against api/generated/ts
+// for both packages before it runs.
 
 import type * as codecT from "../../api/generated/ts/interfaces/who-smart-trust-codec.js";
 import type * as coseT from "../../api/generated/ts/interfaces/who-smart-trust-cose.js";
@@ -59,6 +60,10 @@ export interface Fixtures {
   signEs256Der(data: Uint8Array): Uint8Array;
   /** Verifies a 64-byte r||s ES256 signature with the testkit key. */
   verifyEs256Raw(data: Uint8Array, raw: Uint8Array): boolean;
+  /** The PS256 testkit DSC, whose EKU allows test certificates only. */
+  testkitPsDsc: Uint8Array;
+  /** PS256 over `data` with the testkit RSA key. */
+  signPs256(data: Uint8Array): Uint8Array;
 }
 
 export interface Outcome {
@@ -85,6 +90,47 @@ function thrownTag(f: () => unknown): string | undefined {
     return (e as { payload?: { tag?: string } }).payload?.tag;
   }
 }
+
+/** CBOR head (RFC 8949 3.1) for major type `mt` and argument `n`. */
+function head(mt: number, n: number): number[] {
+  const m = mt << 5;
+  if (n < 24) return [m | n];
+  if (n < 0x100) return [m | 24, n];
+  if (n < 0x10000) return [m | 25, n >> 8, n & 0xff];
+  return [m | 26, (n >>> 24) & 0xff, (n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
+}
+const cborInt = (n: number) => (n >= 0 ? head(0, n) : head(1, -1 - n));
+const cborBytes = (b: Uint8Array) => [...head(2, b.length), ...b];
+const cborText = (t: string) => { const b = new TextEncoder().encode(t); return [...head(3, b.length), ...b]; };
+
+/** A minimal CBOR reader for the tests' own checks: ints, byte and text strings, arrays, maps, tags. */
+type Cbor = number | Uint8Array | string | Cbor[] | Map<Cbor, Cbor> | { tag: number; item: Cbor };
+function cborRead(b: Uint8Array): Cbor {
+  let i = 0;
+  const arg = (ai: number): number => {
+    if (ai < 24) return ai;
+    const n = [1, 2, 4][ai - 24]!;
+    let v = 0;
+    for (let k = 0; k < n; k++) v = v * 256 + b[i++]!;
+    return v;
+  };
+  const item = (): Cbor => {
+    const ib = b[i++]!;
+    const mt = ib >> 5, n = arg(ib & 31);
+    switch (mt) {
+      case 0: return n;
+      case 1: return -1 - n;
+      case 2: return b.slice(i, (i += n));
+      case 3: return new TextDecoder().decode(b.slice(i, (i += n)));
+      case 4: return Array.from({ length: n }, item);
+      case 5: { const m = new Map<Cbor, Cbor>(); for (let k = 0; k < n; k++) { const key = item(); m.set(key, item()); } return m; }
+      case 6: return { tag: n, item: item() };
+      default: throw new Error(`major type ${mt} not read here`);
+    }
+  };
+  return item();
+}
+const mapKeys = (c: Cbor) => [...(c as Map<Cbor, Cbor>).keys()];
 
 export const newborn: DvcMin = {
   n: "Test CHILD", dob: "2026-09-28", s: "female", nt: "LAO", gn: "Test MOTHER",
@@ -321,6 +367,178 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   run("STT-COS-006 finish refuses a signature from another key", () => {
     const p = h.issuer.prepare({ payloads: [{ tag: "dvc-min", val: newborn }], validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
     return thrownTag(() => h.issuer.finish(p, f.signEs256Der(new Uint8Array([9])))) === "bad-signature-format";
+  });
+
+  // OI-38: the assertions the Rust component's run left unnamed. Each one
+  // runs against both packages, as every check here does.
+  const esStore = () => { const st = new h.trust.TrustStore(); st.addDer(f.testkitDsc); return st; };
+  const psStore = () => { const st = new h.trust.TrustStore(); st.addDer(f.testkitPsDsc); return st; };
+  const validity = { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n };
+  type Req = Parameters<typeof h.issuer.prepare>[0];
+  const req = (over: Partial<Req> = {}): Req => ({ payloads: [{ tag: "dvc-min", val: newborn }], iss: "XX", validity, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true, ...over });
+  const issueWith = (r: Req, registry = reg) => {
+    const p = h.issuer.prepare(r, registry);
+    return h.issuer.finish(p, r.alg === "ps256" ? f.signPs256(p.toBeSigned()) : f.signEs256Der(p.toBeSigned()));
+  };
+  /** A COSE_Sign1 over the claim set `payload` (encoded CBOR), signed by the ES256 testkit key, with the given protected header. */
+  const signedCose = (payload: Uint8Array, protectedHeader?: Uint8Array) => {
+    const ph = protectedHeader ?? new Uint8Array([0xa2, 0x01, 0x26, 0x04, ...cborBytes(h.cose.kidFromDsc(f.testkitDsc))]);
+    const sig = h.cose.ecdsaDerToRaw(f.signEs256Der(h.cose.sigStructure(ph, payload)));
+    return new Uint8Array([0xd2, 0x84, ...cborBytes(ph), 0xa0, ...cborBytes(payload), ...cborBytes(sig)]);
+  };
+  const dvcCbor = () => h.dvc.toCbor(newborn);
+  /** {4: exp, 6: iat, -260: {-6: DVC}} plus `extra` encoded claims, exp left out when null. */
+  const claims = (exp: bigint | null, extra: number[][] = []) => {
+    const entries: number[][] = [];
+    if (exp !== null) entries.push([...cborInt(4), ...cborInt(Number(exp))]);
+    entries.push([...cborInt(6), ...cborInt(Number(TESTKIT_NOW))]);
+    entries.push([...cborInt(-260), ...head(5, 1), ...cborInt(-6), ...dvcCbor()]);
+    entries.push(...extra);
+    return new Uint8Array([...head(5, entries.length), ...entries.flat()]);
+  };
+
+  run("STT-CWT-001 STT-CWT-002 the claim set has integer keys and integer NumericDates", () => {
+    const s = h.cose.parseSign1(issueWith(req()).cose, L);
+    const c = cborRead(s.payload) as Map<Cbor, Cbor>;
+    const hc = c.get(-260) as Map<Cbor, Cbor>;
+    return [mapKeys(c).join() === "1,4,6,-260" && c.get(4) === Number(validity.exp) && c.get(6) === Number(TESTKIT_NOW) && c.get(1) === "XX" && mapKeys(hc).join() === "-6", mapKeys(c).join()];
+  });
+  run("STT-CWT-003 an HCERT without exp is refused on issue and on verify", () => {
+    const r = h.verifier.verifyCose(signedCose(claims(null)), esStore(), reg, TESTKIT_NOW, OPTIONS);
+    return thrownTag(() => h.issuer.prepare(req({ validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW } }), reg)) === "payload-invalid" &&
+      r.tag === "failed" && r.val.step === "cwt" && r.val.reason === "cose-malformed";
+  });
+  run("STT-CWT-005 iss is optional, and two upper-case letters when present", () => {
+    const none = issueWith(req({ iss: undefined }));
+    const c = cborRead(h.cose.parseSign1(none.cose, L).payload) as Map<Cbor, Cbor>;
+    const r = h.verifier.verify(none.hc1, esStore(), reg, TESTKIT_NOW, OPTIONS);
+    return ["Xx", "XXX"].every((iss) => thrownTag(() => h.issuer.prepare(req({ iss }), reg)) === "payload-invalid") && !c.has(1) && r.tag === "verified" && r.val.iss === undefined;
+  });
+  run("STT-CWT-006 claims this version does not know are kept", () => {
+    const r = h.verifier.verifyCose(signedCose(claims(TESTKIT_NOW + 1000n, [[...cborInt(-70000), ...cborText("future")]])), esStore(), reg, TESTKIT_NOW, OPTIONS);
+    return r.tag === "verified" && r.val.otherClaims.length === 1 && cborRead(r.val.otherClaims[0]![0]) === -70000 && cborRead(r.val.otherClaims[0]![1]) === "future";
+  });
+  run("STT-GEN-001 STT-GEN-009 ES256 and PS256 issue and verify, and the COSE bytes travel without the QR layers", () => {
+    const dvc = issueWith(req());
+    const test = issueWith(req({ alg: "ps256", dscDer: f.testkitPsDsc, payloads: [{ tag: "raw", val: { subclaim: 4, cbor: new Uint8Array([0xa1, ...cborText("t"), ...cborText("x")]) } }] }));
+    const ok = (r: VerificationResult) => r.tag === "verified";
+    return ok(h.verifier.verify(dvc.hc1, esStore(), reg, TESTKIT_NOW, OPTIONS)) && ok(h.verifier.verify(test.hc1, psStore(), reg, TESTKIT_NOW, OPTIONS)) &&
+      hex(h.codec.fromHc1(dvc.hc1, L)) === hex(dvc.cose) && ok(h.verifier.verifyCose(dvc.cose, esStore(), reg, TESTKIT_NOW, OPTIONS)) && ok(h.verifier.verifyCose(test.cose, psStore(), reg, TESTKIT_NOW, OPTIONS));
+  });
+  run("STT-GEN-002 every step is callable on its own, and the steps compose to the issued HC1", () => {
+    const issued = issueWith(req());
+    const text = "HC1:" + h.codec.base45Encode(h.codec.zlibCompress(issued.cose, 9));
+    const [, rest] = h.codec.detectContext(text);
+    const back = h.codec.zlibInflate(h.codec.base45Decode(rest), 65536);
+    return hex(back) === hex(issued.cose) && h.verifier.verify(text, esStore(), reg, TESTKIT_NOW, OPTIONS).tag === "verified";
+  });
+  run("STT-PAY-009 STT-GEN-003 payloads under 1, 3, 4 and -7 pass through the core untouched", () => {
+    const body = (k: string) => new Uint8Array([0xa1, ...cborText(k), ...cborText("x")]);
+    const cases: [number, string, boolean][] = [[4, "t", true], [1, "v", false], [3, "v", false], [-7, "m", false]];
+    return cases.every(([subclaim, k, ps]) => {
+      const issued = issueWith(req(ps ? { alg: "ps256", dscDer: f.testkitPsDsc, payloads: [{ tag: "raw", val: { subclaim, cbor: body(k) } }] } : { payloads: [{ tag: "raw", val: { subclaim, cbor: body(k) } }] }));
+      const r = h.verifier.verify(issued.hc1, ps ? psStore() : esStore(), reg, TESTKIT_NOW, OPTIONS);
+      const p = r.tag === "verified" ? r.val.entries[0]?.payload : undefined;
+      return p?.tag === "raw" && p.val.subclaim === subclaim && hex(p.val.cbor) === hex(body(k));
+    });
+  });
+  run("STT-PAY-003 one immunization event per DVC", () => {
+    const vx = (cborRead(h.dvc.toCbor(newborn)) as Map<Cbor, Cbor>).get("vx");
+    return vx instanceof Map && vx.get("vp") === "XM9V38";
+  });
+  run("STT-PAY-004 STT-PAY-007 an invalid payload is refused, naming each rule", () => {
+    try {
+      h.issuer.prepare(req({ payloads: [{ tag: "dvc-min", val: { ...newborn, nt: "LA", vx: { ...newborn.vx, is: undefined, cn: undefined } } }] }), reg);
+      return [false, "issued"];
+    } catch (e) {
+      const err = (e as { payload?: { tag?: string; val?: { code: string }[] } }).payload;
+      const codes = [...new Set((err?.val ?? []).map((i) => i.code))].sort().join();
+      return [err?.tag === "payload-invalid" && codes === "must-have-issuer-or-clinician-name,not-alpha3" && h.dvc.validate({ ...newborn, nt: "XXA" }).length === 0, codes];
+    }
+  });
+  run("STT-PAY-005 a newborn's DVCMin has no identity document and names a guardian", () => {
+    const r = h.verifier.verify(issueWith(req()).hc1, esStore(), reg, TESTKIT_NOW, OPTIONS);
+    const p = r.tag === "verified" ? r.val.entries[0]?.payload : undefined;
+    return p?.tag === "dvc-min" && p.val.id === undefined && p.val.dt === undefined && p.val.gn === "Test MOTHER";
+  });
+  run("STT-SEL-004 one entry per payload, in wire order; no payload and a duplicate subclaim are refused", () => {
+    const vhl = { ...ihe, exp: TESTKIT_NOW + 86400n };
+    const r = h.verifier.verify(issueWith(req({ payloads: [{ tag: "dvc-min", val: newborn }, { tag: "vhl", val: vhl }] })).hc1, esStore(), reg, TESTKIT_NOW, OPTIONS);
+    const subclaims = r.tag === "verified" ? r.val.entries.map((e) => e.subclaim).join() : r.val.reason;
+    return [subclaims === "5,-6" && thrownTag(() => h.issuer.prepare(req({ payloads: [] }), reg)) === "no-payload" &&
+      thrownTag(() => h.issuer.prepare(req({ payloads: [{ tag: "dvc-min", val: newborn }, { tag: "dvc-min", val: newborn }] }), reg)) === "duplicate-subclaim", subclaims];
+  });
+  run("STT-TRU-001 STT-TRU-002 a DID trustlist v2 document's DSCs are held by the store and found by kid", () => {
+    const b64 = (b: Uint8Array) => btoa(String.fromCharCode(...b));
+    const id = "did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXA:DSC";
+    // One embedded key and one reference to another document, which the host resolves.
+    const did = JSON.stringify({ id, verificationMethod: [{ id: `${id}#k1`, type: "JsonWebKey2020", publicKeyJwk: { kty: "EC", crv: "P-256", x5c: [b64(f.testkitDsc)] } }, "did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXB:DSC"] });
+    const st = new h.trust.TrustStore();
+    const n = st.addDidDocument(did);
+    const kid = h.cose.kidFromDsc(f.testkitDsc);
+    const found = st.candidates(kid);
+    return [n === 1 && st.size() === 1 && found.length === 1 && hex(found[0]!.der) === hex(f.testkitDsc) && st.candidates(new Uint8Array(8)).length === 0 &&
+      h.verifier.verify(issueWith(req()).hc1, st, reg, TESTKIT_NOW, OPTIONS).tag === "verified", `${n} ${found.length}`];
+  });
+  run("STT-VER-002 a failure carries no payload, and an unverified read is its own named call", () => {
+    const issued = issueWith(req());
+    const r = h.verifier.verify(issued.hc1, new h.trust.TrustStore(), reg, TESTKIT_NOW, OPTIONS);
+    if (r.tag !== "failed") return [false, "verified"];
+    const v = r.val as unknown as Record<string, unknown>;
+    const said = [r.val.detail, ...r.val.diagnostics.map((d) => d.message)].join(" ");
+    return [["entries", "otherClaims", "iss", "payload"].every((k) => v[k] === undefined) && !said.includes("Test CHILD") && !said.includes("XM9V38") &&
+      h.verifier.readUnverified(issued.hc1, reg, L).diagnostics[0]!.message.startsWith("NOT VERIFIED"), said];
+  });
+  run("STT-VER-003 a protected header with an unsupported alg, or a short kid, is refused before the signature", () => {
+    const kid = h.cose.kidFromDsc(f.testkitDsc);
+    const payload = claims(TESTKIT_NOW + 1000n);
+    const badAlg = h.verifier.verifyCose(signedCose(payload, new Uint8Array([0xa2, 0x01, ...cborInt(-999), 0x04, ...cborBytes(kid)])), esStore(), reg, TESTKIT_NOW, OPTIONS);
+    const shortKid = h.verifier.verifyCose(signedCose(payload, new Uint8Array([0xa2, 0x01, 0x26, 0x04, ...cborBytes(kid.slice(0, 2))])), esStore(), reg, TESTKIT_NOW, OPTIONS);
+    const got = [badAlg, shortKid].map((r) => (r.tag === "failed" ? `${r.val.step} ${r.val.reason}` : "verified"));
+    return [got[0]!.startsWith("header") && got[1] === "header header-invalid", got.join(";")];
+  });
+  run("STT-VER-004 key usage is checked per entry, and alone a DVC under a test-only DSC is refused", () => {
+    const vhl = { ...ihe, exp: TESTKIT_NOW + 86400n };
+    const both = h.verifier.verify(issueWith(req({ alg: "ps256", dscDer: f.testkitPsDsc, payloads: [{ tag: "dvc-min", val: newborn }, { tag: "vhl", val: vhl }] })).hc1, psStore(), reg, TESTKIT_NOW, OPTIONS);
+    const alone = h.verifier.verify(issueWith(req({ alg: "ps256", dscDer: f.testkitPsDsc })).hc1, psStore(), reg, TESTKIT_NOW, OPTIONS);
+    const marks = both.tag === "verified" ? both.val.entries.map((e) => `${e.subclaim}:${e.keyUsageAuthorised}`).join() : both.val.reason;
+    return [marks === "5:true,-6:false" && alone.tag === "failed" && alone.val.step === "key-usage" && alone.val.reason === "key-usage-mismatch", marks];
+  });
+  run("STT-VER-005 time is the clock the caller passes, with the skew it allows", () => {
+    const hc1 = issueWith(req()).hc1;
+    const at = (now: bigint) => { const r = h.verifier.verify(hc1, esStore(), reg, now, OPTIONS); return r.tag === "verified" ? "ok" : r.val.reason; };
+    const exp = validity.exp;
+    return [at(exp + 299n), at(exp + 301n), at(TESTKIT_NOW - 299n), at(TESTKIT_NOW - 301n)].join() === "ok,expired,ok,not-yet-valid";
+  });
+  run("STT-VER-006 trust-list presence is the validity check; a DSC outside its X.509 period is reported", () => {
+    const hc1 = issueWith(req()).hc1;
+    const none = h.verifier.verify(hc1, new h.trust.TrustStore(), reg, TESTKIT_NOW, OPTIONS);
+    const late = h.verifier.verify(hc1, esStore(), reg, TESTKIT_NOW + 86400n * 365n * 11n, { ...OPTIONS, clockSkewSeconds: 86400 * 365 * 20 });
+    return none.tag === "failed" && none.val.reason === "kid-not-found" && late.tag === "verified" && late.val.diagnostics.some((d) => d.step === "trust-lookup" && d.message.includes("X.509 validity"));
+  });
+  run("STT-VER-007 each entry is decoded by its subclaim's codec, falling back to raw", () => {
+    const st = esStore();
+    const c = claims(TESTKIT_NOW + 1000n);
+    // The same claims with a -7 entry beside the DVC: {-6: DVC, -7: {}}.
+    const dvc = dvcCbor();
+    const two = new Uint8Array([...c.slice(0, c.length - dvc.length - cborInt(-6).length - 1), ...head(5, 2), ...cborInt(-6), ...dvc, ...cborInt(-7), 0xa0]);
+    const r = h.verifier.verifyCose(signedCose(two), st, reg, TESTKIT_NOW, OPTIONS);
+    const tags = r.tag === "verified" ? r.val.entries.map((e) => `${e.subclaim}:${e.payload.tag}`).join() : r.val.reason;
+    return [tags === "-6:dvc-min,-7:raw", tags];
+  });
+  run("STT-TST-006 seeded mutations of an HC1 string never throw out of verify", () => {
+    let seed = 0x2545f491;
+    const rnd = (n: number) => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return (seed >>> 0) % n; };
+    const base = issueWith(req()).hc1;
+    const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+    const st = esStore();
+    for (let k = 0; k < 300; k++) {
+      const chars = base.split("");
+      for (let m = 1 + rnd(4); m > 0; m--) chars[4 + rnd(chars.length - 4)] = alphabet[rnd(alphabet.length)]!;
+      const r = h.verifier.verify(chars.join("").slice(0, chars.length - rnd(3)), st, reg, TESTKIT_NOW, OPTIONS);
+      if (r.tag !== "verified" && r.tag !== "failed") return [false, `mutation ${k}`];
+    }
+    return true;
   });
 
   // vhl
