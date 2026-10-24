@@ -7,8 +7,8 @@ priority: normal
 tags:
     - open-issue
     - testing
-created_at: 2026-10-24T14:30:00Z
-updated_at: 2026-10-24T16:10:00Z
+created_at: 2026-10-24T14:03:22Z
+updated_at: 2026-10-24T14:22:16Z
 ---
 
 test/systems/hcert-rust.system.json (smart-trust-tools#32) lists 42 required assertions that no test verifies on at least one of the system's targets: 8 on native only, 12 on wasm32 only, 22 on both. Many are tested in substance already, under a test whose name does not start with the requirement id, so the generator cannot bind it. The rest need a test.
