@@ -23,7 +23,7 @@ Feature: The rules every implementation follows
     And "verify" two days later fails at step "TIME" with reason "EXPIRED"
 
   @req:stt-gen-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::STT-GEN-002_every_step_is_callable_on_its_own,_and_the_steps_compose_to_the_pipeline
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::ArchitectureTest::STT-GEN-002_every_step_is_callable_on_its_own,_and_the_steps_compose_to_the_pipeline
   Scenario: Every step is callable on its own, and the steps compose to the pipeline (Kotlin)
     Given a newborn's DVCMin issued by the testkit
     When its COSE_Sign1 is compressed with ZLIB at level 9, Base45-encoded and prefixed with "HC1:"
@@ -89,7 +89,7 @@ Feature: The rules every implementation follows
     Then no line uses std::net, std::fs, std::io::, std::env, std::process, SystemTime, Instant::, async fn, .await, tokio, reqwest or hyper
 
   @req:stt-gen-012 @req:stt-vhl-010 @req:stt-ver-009
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::STT-GEN-012_STT-VHL-010_STT-VER-009_the_core_does_no_network,_file_or_asynchronous_I-O
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::ArchitectureTest::STT-GEN-012_STT-VHL-010_STT-VER-009_the_core_does_no_network,_file_or_asynchronous_I-O
   Scenario: The core does no network, file or asynchronous I/O (Kotlin)
     Given the core's commonMain, jvmMain and jsMain sources
     When they are searched
@@ -103,7 +103,7 @@ Feature: The rules every implementation follows
     Then no line uses println!, eprintln!, print!(, eprint!(, dbg!, log::, tracing::, console_log or web_sys::console
 
   @req:stt-sec-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::STT-SEC-001_the_core_writes_nothing_to_a_log_or_console
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::ArchitectureTest::STT-SEC-001_the_core_writes_nothing_to_a_log_or_console
   Scenario: The core writes nothing to a log or console (Kotlin)
     Given the core's commonMain, jvmMain and jsMain sources
     When they are searched
@@ -118,7 +118,7 @@ Feature: The rules every implementation follows
     And no source line outside comments holds a SHA-256 round constant, an AES S-box, or a fn aes, gcm, ghash, mod_pow, modpow, point_add or scalar_mul, or a struct BigUint
 
   @req:stt-sec-002 @req:stt-gen-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::STT-SEC-002_STT-GEN-004_cryptography_comes_from_the_platform,_with_no_third-party_runtime_dependency
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::ArchitectureTest::STT-SEC-002_STT-GEN-004_cryptography_comes_from_the_platform,_with_no_third-party_runtime_dependency
   Scenario: Cryptography comes from the platform, with no third-party runtime dependency (Kotlin)
     Given hcert-core's build.gradle.kts
     Then its commonMain dependencies are exactly api(project(":hcert-api"))
@@ -132,7 +132,7 @@ Feature: The rules every implementation follows
     Then no line holds "PRIVATE KEY", "vectors/testkit", include_bytes! or include_str!
 
   @req:stt-iss-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::STT-ISS-003_no_private_key,_and_no_test_key,_is_in_the_library's_sources
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ArchitectureTest.kt::ArchitectureTest::STT-ISS-003_no_private_key,_and_no_test_key,_is_in_the_library's_sources
   Scenario: No private key, and no test key, is in the library's sources (Kotlin)
     Given the core's commonMain, jvmMain and jsMain sources
     When they are searched

@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "2:3.YY3.5.2 QR Code Security",
   "text": "../sections/s017-2-3-yy3-5-2-qr-code-security.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-iti-yy3/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-iti-yy3/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-iti-yy3",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-iti-yy3",
   "provenance": "ingested"
 }

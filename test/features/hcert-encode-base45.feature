@@ -36,7 +36,7 @@ Feature: Encode the compressed bytes as RFC 9285 Base45, and decode strictly
       | :::: |
 
   @req:stt-b45-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/Base45Test.kt::STT-B45-001_the_RFC_9285_section_4-3_examples
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/Base45Test.kt::Base45Test::STT-B45-001_the_RFC_9285_section_4-3_examples
   Scenario: The RFC 9285 section 4.3 examples (Kotlin)
     When the text "AB" is Base45-encoded
     Then the result is "BB8"
@@ -45,7 +45,7 @@ Feature: Encode the compressed bytes as RFC 9285 Base45, and decode strictly
     And "QED8WEX0" decodes to the text "ietf!"
 
   @req:stt-b45-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/Base45Test.kt::STT-B45-002_lower_case,_a_dangling_character_and_an_out-of-range_triple_are_refused
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/Base45Test.kt::Base45Test::STT-B45-002_lower_case,_a_dangling_character_and_an_out-of-range_triple_are_refused
   Scenario Outline: Lower case, a dangling character and an out-of-range group are refused (Kotlin)
     Given an empty trust store and the default subclaim registry
     When "<hc1>" is verified

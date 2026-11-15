@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "input/pagecontent/ITI-YY5.md",
   "text": "../sections/s001-input-pagecontent-iti-yy5-md.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-iti-yy5/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-iti-yy5/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-iti-yy5",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-iti-yy5",
   "provenance": "ingested"
 }

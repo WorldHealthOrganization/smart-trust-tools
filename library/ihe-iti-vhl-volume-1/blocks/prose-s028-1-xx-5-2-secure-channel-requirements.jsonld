@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "1:XX.5.2 Secure Channel Requirements",
   "text": "../sections/s028-1-xx-5-2-secure-channel-requirements.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-volume-1/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-volume-1/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-volume-1",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-volume-1",
   "provenance": "ingested"
 }

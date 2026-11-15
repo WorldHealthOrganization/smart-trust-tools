@@ -51,7 +51,9 @@ import kg_nodes as K  # noqa: E402
 
 SYSTEMS = ROOT / "test" / "systems"
 PLANS = ROOT / "test" / "plans"
-LEADING = re.compile(r"^((?:STT-[A-Z0-9]+-\d{3}\s+)+)")
+# Leading requirement ids, separated by spaces, or by "-" in a looped id[${key}] title (no whitespace).
+LEADING = re.compile(r"^((?:STT-[A-Z0-9]+-\d{3}[\s-]+)+)")
+REQ_ID = re.compile(r"STT-[A-Z0-9]+-\d{3}")
 TS_TEST = re.compile(r"\brun\(\s*[\"`](STT-[^\"`]*)[\"`]")
 VERIFIES = re.compile(r"\bVerifies\s+(.*?)(?:\n\s*(?:#|//)?\s*\n|\"\"\"|$)", re.S)
 SCRIPT_TAG = re.compile(r"STT-[A-Z0-9]+-\d{3}(?:/[a-z0-9-]+)?")
@@ -117,7 +119,7 @@ def tests_in(path, lang):
     result = []
     for selector, name in out:
         m = LEADING.match(name + " ")
-        tags = m.group(1).split() if m else []
+        tags = REQ_ID.findall(m.group(1)) if m else []
         # A TypeScript name may carry a template expression; the selector keeps it as written.
         result.append(("%s::%s" % (path, selector), tags, name))
     return result

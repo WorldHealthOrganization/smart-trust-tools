@@ -68,11 +68,24 @@ jobs:
         run: |
           bun tools/gen-api-types/check.ts
           bun tools/check-models/check-sources.ts
-      - name: Library test plan is current with the success criteria
+      - name: Library test plan is current, and every case's feature file is linked
         run: python3 tools/test-plan/make_test_plan.py --check
-      # Temporary local check until cat-harness check:test-gherkin is pinned.
+      # The @itb: Scenarios bind WHO-ITB GITB test cases; they resolve against
+      # the suite at the commit references/who-itb.json cites, fetched by SHA.
+      - name: WHO-ITB test suites at the cited commit
+        run: |
+          set -euo pipefail
+          sha="$(python3 -c 'import json, re; print(re.search(r"/tree/([0-9a-f]{40})$", json.load(open("references/who-itb.json"))["URL"]).group(1))')"
+          git init -q "$RUNNER_TEMP/who-itb"
+          git -C "$RUNNER_TEMP/who-itb" fetch -q --depth 1 https://github.com/WorldHealthOrganization/WHO-ITB.git "$sha"
+          git -C "$RUNNER_TEMP/who-itb" checkout -q FETCH_HEAD
+      # The shared checker from the pinned cat-harness-tools: every test has a
+      # Scenario tagged @test:<file>::<scope>::<name>, every tag names a test,
+      # and every @itb: tag names a GITB test case. Run here by path, not as a
+      # package.json check:* script: a downstream index runs those by bare name,
+      # and check:test-gherkin is the harness's own (#58).
       - name: Every test has a Gherkin Scenario, and every Scenario a test
-        run: python3 tools/test-gherkin/check_test_gherkin.py
+        run: bun cat-harness-tools/scripts/check-test-gherkin.ts --root . --itb "$RUNNER_TEMP/who-itb"
       - name: Each system under test's bindings are current with its tests' tags
         run: python3 tools/test-systems/make_test_systems.py --check
       - name: Check derived payload models are current

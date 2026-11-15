@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "input/fsh/models/hcert.fsh",
   "text": "../sections/s001-input-fsh-models-hcert-fsh.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-hcert-model/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-hcert-model/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-hcert-model",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-hcert-model",
   "provenance": "ingested"
 }

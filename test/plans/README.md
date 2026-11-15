@@ -62,18 +62,21 @@ not by hand.
 Each case of both plans has a `feature`, its Gherkin file in
 [`../features/`](../features/): `test/features/<case>.feature`. The feature is
 the specification and the tests are the binding. Each Scenario is one test,
-written from what that test sets up and asserts, and names it in a tag,
-`@test:<path>::<test>`. A Rust or Kotlin test or TypeScript `run(...)` name
-has each run of whitespace written as `_`, since a tag ends at whitespace.
+written from what that test sets up and asserts, and names it in a tag in
+the shared grammar `@test:<file>::<scope>::<name>`: the scope is the Rust
+`mod` or Kotlin class the test is in, and each run of whitespace is written
+`_`, since a tag ends at whitespace. The TypeScript conformance suites run
+their own `run("title", …)`, and say so in a `@test-runner run` comment; a
+looped case is titled `id[${key}]` and tagged as written.
 The WHO-ITB cases have one Scenario per GITB test case, tagged
 `@itb:<suite>/<testcase>` and written from the suite at the commit
 `references/who-itb` cites; its test data is cited, not copied. No CI job
 runs them yet (bean OI-33).
 
-`python3 tools/test-gherkin/check_test_gherkin.py` (CI runs it) fails when
-a `#[test]`, `@Test` or conformance `run(...)` has no Scenario, a tag names
-no test, an `@itb:` tag is malformed, or a case's feature is missing. It is a temporary local check until
-cat-harness `check:test-gherkin` is pinned here.
+cat-harness-tools' `check:test-gherkin` (CI runs it, with `--itb` at the
+WHO-ITB commit) fails when a test has no Scenario, a tag names no test, or an
+`@itb:` tag names no GITB test case. `make_test_plan.py --check` fails when a
+case's feature is missing or a feature file is no case's.
 
 ## Test levels
 
@@ -203,8 +206,8 @@ STT_FUZZ_ITERATIONS=60000 gradle -p tools/hcert-kotlin --no-daemon --init-script
 # The plans resolve, and the library plan is current
 bun run check:req-nodes
 python3 tools/test-plan/make_test_plan.py --check
-# Every test has a Gherkin Scenario (test/features/)
-python3 tools/test-gherkin/check_test_gherkin.py
+# Every test has a Gherkin Scenario (test/features/); --itb <WHO-ITB checkout> resolves the @itb: tags
+bun cat-harness-tools/scripts/check-test-gherkin.ts --root . --itb ../WHO-ITB
 # Each system under test's bindings are current with its tests' tags (test/systems/)
 python3 tools/test-systems/make_test_systems.py --check
 ```

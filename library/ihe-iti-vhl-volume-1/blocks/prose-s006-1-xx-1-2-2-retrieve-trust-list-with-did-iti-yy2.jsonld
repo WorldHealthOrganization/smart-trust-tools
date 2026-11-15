@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "1:XX.1.2.2 Retrieve Trust List with DID [ITI-YY2]",
   "text": "../sections/s006-1-xx-1-2-2-retrieve-trust-list-with-did-iti-yy2.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-volume-1/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-volume-1/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-volume-1",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-volume-1",
   "provenance": "ingested"
 }

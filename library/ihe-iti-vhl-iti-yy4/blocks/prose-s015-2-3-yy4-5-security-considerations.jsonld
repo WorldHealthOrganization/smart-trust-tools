@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "2:3.YY4.5 Security Considerations",
   "text": "../sections/s015-2-3-yy4-5-security-considerations.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-iti-yy4/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-iti-yy4/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-iti-yy4",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-iti-yy4",
   "provenance": "ingested"
 }

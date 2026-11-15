@@ -13,7 +13,7 @@
   "contains": [
     "library/ihe-iti-vhl-iti-yy4/blocks/prose-s012-2-3-yy4-4-2-1-trigger-events"
   ],
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-iti-yy4/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-iti-yy4/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-iti-yy4",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-iti-yy4",
   "provenance": "ingested"
 }

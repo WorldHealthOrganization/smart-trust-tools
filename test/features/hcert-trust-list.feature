@@ -7,7 +7,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
   DID document's proof is verified against WHO's signing DID before its keys
   are trusted.
 
-  @test:tools/hcert-rust/src/didproof.rs::base64url_is_strict
+  @test:tools/hcert-rust/src/didproof.rs::tests::base64url_is_strict
   Scenario: The proof's base64url is read strictly (Rust)
     When "AQ" is read as base64url
     Then it gives the single byte 1
@@ -16,7 +16,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And "A", a dangling character, is refused
     And "+/", from the standard alphabet, is refused
 
-  @test:tools/hcert-rust/src/didproof.rs::jcs_sorts_by_utf16_and_escapes
+  @test:tools/hcert-rust/src/didproof.rs::tests::jcs_sorts_by_utf16_and_escapes
   Scenario: The JWK's JCS sorts members by UTF-16 code unit, and escapes (Rust)
     Given the JWK {"😀":"a","｡":"b","x":["\"\\"]}
     When it is written as JCS
@@ -182,7 +182,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And a store holding the testkit ES256 DSC finds 1 candidate for its kid read from either base64 form
 
   @req:stt-tru-001 @req:stt-kid-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-001_STT-KID-001_a_DSC_is_found_by_its_kid,_the_first_8_bytes_of_its_SHA-256
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-001_STT-KID-001_a_DSC_is_found_by_its_kid,_the_first_8_bytes_of_its_SHA-256
   Scenario: A DSC is found by its kid, the first 8 bytes of its SHA-256 (Kotlin)
     Given a trust store holding the testkit ES256 DSC
     When candidates are looked up for the first 8 bytes of the DSC's SHA-256
@@ -190,14 +190,14 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And 8 zero bytes find no candidate
 
   @req:stt-kid-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-KID-003_a_kid_reads_and_writes_as_standard_and_URL-safe_base64
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-KID-003_a_kid_reads_and_writes_as_standard_and_URL-safe_base64
   Scenario: A kid reads and writes as standard and URL-safe base64 (Kotlin)
     Given the testkit ES256 DSC's kid
     When it is written in each base64 alphabet, standard and URL-safe, and read back
     Then the same kid comes back
 
   @req:stt-tru-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-002_a_GDHCN_DID_trustlist_v2_document_loads_its_DSCs
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-002_a_GDHCN_DID_trustlist_v2_document_loads_its_DSCs
   Scenario: A GDHCN DID trustlist v2 document loads its DSCs (Kotlin)
     Given a DID document "did:web:tng-cdn-dev.who.int:v2:trustlist:-:XXA:DSC" with one embedded JsonWebKey2020 holding the testkit ES256 DSC, and one reference to the XXB document
     When it is added to an empty trust store
@@ -205,14 +205,14 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And the DSC's candidate has no trust domain, participant "XXA" and country "XX"
 
   @req:stt-tru-005
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-005_a_static_list_of_PEM_certificates_loads
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-005_a_static_list_of_PEM_certificates_loads
   Scenario: A static list of PEM certificates loads (Kotlin)
     Given an empty trust store
     When the testkit ES256 and PS256 DSC PEMs, concatenated, are added
     Then 2 certificates are added and the store holds 2
 
   @req:stt-sel-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-SEL-006_trust_domains_are_read_from_the_GDHCN_code_system,_not_a_closed_list
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-SEL-006_trust_domains_are_read_from_the_GDHCN_code_system,_not_a_closed_list
   Scenario: Trust domains are read from the GDHCN code system, not a closed list (Kotlin)
     Given an empty trust store, which has no trust domains
     When a DID document for domain "FUTURE" holding the testkit ES256 DSC is added
@@ -227,7 +227,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And loading a ValueSet fails with Parse
 
   @req:stt-tru-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-001_bad_trust_material_is_refused_with_a_typed_error_and_nothing_is_added
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-001_bad_trust_material_is_refused_with_a_typed_error_and_nothing_is_added
   Scenario: Bad trust material is refused with a typed error, and nothing is added (Kotlin)
     Given a trust store with the PR 129 XXA PEM added, 2 certificates: the DSC and its CSCA
     Then adding the PEM again adds 0
@@ -245,7 +245,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And the first store still finds 1 candidate for the DSC's kid
 
   @req:stt-tru-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-006_the_XXR_DSC_document's_canonical_N-Quads_equal_the_golden_files_byte_for_byte
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-006_the_XXR_DSC_document's_canonical_N-Quads_equal_the_golden_files_byte_for_byte
   Scenario: The XXR DSC document's canonical N-Quads equal the golden files byte for byte (Kotlin)
     Given the XXR DSC DID document from the merged guide
     When the document without its proof, and the proof without its jws, are canonicalised
@@ -253,7 +253,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And the SHA-256 of XXR-DSC-did.doc.nq starts "68d4f58e"
 
   @req:stt-tru-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-006_the_DEV_trust_list_documents,_the_234-key_root_among_them,_verify_against_WHO's_signing_DID
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-006_the_DEV_trust_list_documents,_the_234-key_root_among_them,_verify_against_WHO's_signing_DID
   Scenario: The DEV trust list documents, the 234-key root among them, verify against WHO's signing DID (Kotlin)
     Given WHO's DEV signing DID document
     When the proofs of the merged guide's XXR-DSC-did.json, XXR-DSC-did-2026-10-23.json, XXR-did.json, XXA-did.json and root-did.json are verified
@@ -261,7 +261,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And root-did.json verifies 5 more times, its time reported
 
   @req:stt-tru-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-006_a_changed_byte_in_an_x5c,_the_wrong_signer,_an_unmodelled_term_and_a_wrong_JWS_header_fail_proof-invalid
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-006_a_changed_byte_in_an_x5c,_the_wrong_signer,_an_unmodelled_term_and_a_wrong_JWS_header_fail_proof-invalid
   Scenario: A changed byte in an x5c, the wrong signer, an unmodelled term and a wrong JWS header fail proof-invalid (Kotlin)
     Given the XXR DSC DID document and WHO's signing DID document
     Then each of these fails with ProofInvalid, its message containing:
@@ -279,7 +279,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
       | a JWS with the payload "e30" attached                          | detached         |
 
   @req:stt-tru-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-006_the_trust_store_adds_a_document_whose_proof_verifies,_and_nothing_when_it_does_not
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-006_the_trust_store_adds_a_document_whose_proof_verifies,_and_nothing_when_it_does_not
   Scenario: The trust store adds a document whose proof verifies, and nothing when it does not (Kotlin)
     Given WHO's DEV signing DID document
     When each of the five DEV trust list documents is added as verified to a new store
@@ -290,7 +290,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And the store still holds 0
 
   @req:stt-tru-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-006_a_64-byte_r-s_signature_verifies_as_the_DER_one_does,_and_so_do_00-padded_coordinates
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-006_a_64-byte_r-s_signature_verifies_as_the_DER_one_does,_and_so_do_00-padded_coordinates
   Scenario: A 64-byte r||s signature verifies as the DER one does, and so do 00-padded coordinates (Kotlin)
     Given the XXR DSC DID document and WHO's signing DID document
     When its DER proof signature is re-encoded as 64-byte r||s
@@ -301,7 +301,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And it is proof-invalid against WHO's signing DID
 
   @req:stt-tru-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-006_the_signer_document_and_the_signature_are_checked_before_any_key_is_trusted
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-006_the_signer_document_and_the_signature_are_checked_before_any_key_is_trusted
   Scenario: The signer document and the signature are checked before any key is trusted (Kotlin)
     Given the XXR DSC DID document re-signed with the testkit key
     Then against each of these signer documents it fails with ProofInvalid, its message containing:
@@ -334,7 +334,7 @@ Feature: Hold the trusted DSCs the host obtained, and find every candidate for a
     And the documents "{", "[]", "{}", {"proof":{}}, a jws of four parts, and the document with a second id are each proof-invalid
 
   @req:stt-tru-006 @req:stt-gen-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::STT-TRU-006_STT-GEN-006_the_unified_profile's_document_shapes,_and_what_it_refuses
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/TrustListTest.kt::TrustListTest::STT-TRU-006_STT-GEN-006_the_unified_profile's_document_shapes,_and_what_it_refuses
   Scenario: The unified profile's document shapes, and what it refuses (Kotlin)
     Given a production-context document "did:web:a" whose verificationMethod holds the reference "did:web:b#k" and the same JsonWebKey2020 method twice
     When it is canonicalised

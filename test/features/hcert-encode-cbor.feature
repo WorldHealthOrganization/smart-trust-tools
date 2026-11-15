@@ -73,7 +73,7 @@ Feature: Serialise as deterministic CBOR, and decode untrusted CBOR within limit
     And a byte string of 0x5000 bytes is refused with LimitExceeded
 
   @req:stt-cbr-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::STT-CBR-001_maps_are_encoded_in_deterministic_key_order,_whatever_order_they_were_built_in
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::EncodeCborTest::STT-CBR-001_maps_are_encoded_in_deterministic_key_order,_whatever_order_they_were_built_in
   Scenario: Maps are encoded in deterministic key order, whatever order they were built in (Kotlin)
     Given the map {"b": 2, -1: 1, 10: 3}
     And the same map with its entries built in reverse order
@@ -82,7 +82,7 @@ Feature: Serialise as deterministic CBOR, and decode untrusted CBOR within limit
     And decoding the encoding gives the keys in the order 10, -1, "b"
 
   @req:stt-cbr-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::STT-CBR-002_text_is_NFC-normalised_on_encode,_and_a_non-normalised_string_still_decodes
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::EncodeCborTest::STT-CBR-002_text_is_NFC-normalised_on_encode,_and_a_non-normalised_string_still_decodes
   Scenario: Text is NFC-normalised on encode, and a non-normalised string still decodes (Kotlin)
     Given the text "Hoa" followed by a combining grave accent (U+0300)
     When it is encoded as CBOR and decoded again
@@ -90,14 +90,14 @@ Feature: Serialise as deterministic CBOR, and decode untrusted CBOR within limit
     And a CBOR text string holding the decomposed UTF-8 bytes, as another encoder may send it, decodes to the decomposed text unchanged
 
   @req:stt-cbr-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::STT-CBR-003_nesting_beyond_the_limit_is_refused
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::EncodeCborTest::STT-CBR-003_nesting_beyond_the_limit_is_refused
   Scenario: Nesting beyond the limit is refused (Kotlin)
     Given 40 nested one-element arrays around a 0
     When they are verified as a COSE_Sign1
     Then verification fails with reason LIMIT_EXCEEDED
 
   @req:stt-cbr-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::STT-CBR-001_RFC_8949_Appendix_A_numbers_re-encode_in_their_shortest_form
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::EncodeCborTest::STT-CBR-001_RFC_8949_Appendix_A_numbers_re-encode_in_their_shortest_form
   Scenario: RFC 8949 Appendix A numbers re-encode in their shortest form (Kotlin)
     Given these RFC 8949 Appendix A items, already in preferred serialisation:
       | 1b000000e8d4a51000 | 3b7fffffffffffffff | f90000             | f98000 |
@@ -118,7 +118,7 @@ Feature: Serialise as deterministic CBOR, and decode untrusted CBOR within limit
       | 190064             | 1864       |
 
   @req:stt-cbr-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::STT-CBR-001_indefinite_lengths_re-encode_as_definite_(RFC_8949_Appendix_A)
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::EncodeCborTest::STT-CBR-001_indefinite_lengths_re-encode_as_definite_(RFC_8949_Appendix_A)
   Scenario: Indefinite lengths re-encode as definite (Kotlin)
     When these indefinite-length items are re-encoded deterministically
     Then each comes back definite-length, with map keys in deterministic order:
@@ -131,7 +131,7 @@ Feature: Serialise as deterministic CBOR, and decode untrusted CBOR within limit
       | bf6346756ef563416d7421ff   | a263416d74216346756ef5 |
 
   @req:stt-cbr-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::STT-CBR-003_malformed_indefinite-length_items_and_out-of-range_integers_are_refused_with_a_typed_error
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/EncodeCborTest.kt::EncodeCborTest::STT-CBR-003_malformed_indefinite-length_items_and_out-of-range_integers_are_refused_with_a_typed_error
   Scenario: Malformed indefinite-length items and out-of-range integers are refused with a typed error (Kotlin)
     When each of these items is re-encoded deterministically with the default limits
       | 5f42010243         |

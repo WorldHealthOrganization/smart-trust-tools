@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "2024-01-29 v1.0.0 - First stable release",
   "text": "../sections/s002-2024-01-29-v1-0-0-first-stable-release.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-changes/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-changes/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-changes",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-changes",
   "provenance": "ingested"
 }

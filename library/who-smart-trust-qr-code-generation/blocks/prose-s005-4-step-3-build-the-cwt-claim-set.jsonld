@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "4. Step 3 — Build the CWT claim set",
   "text": "../sections/s005-4-step-3-build-the-cwt-claim-set.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-qr-code-generation/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-qr-code-generation/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-qr-code-generation",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-qr-code-generation",
   "provenance": "ingested"
 }

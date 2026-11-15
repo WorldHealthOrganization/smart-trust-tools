@@ -5,7 +5,7 @@
       "@base": "https://litlfred.github.io/folio/"
     }
   ],
-  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-endpoints/manifest.jsonld",
+  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-endpoints",
   "@type": [
     "cat-harness:SourceDocument"
   ],

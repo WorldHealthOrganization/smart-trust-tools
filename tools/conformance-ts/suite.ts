@@ -145,6 +145,7 @@ export const ihe: VhlPayload = {
   fhirBaseUrl: "https://vhl-sharer.example.org",
 };
 
+// @test-runner run — each run("title", …) below is a test (check:test-gherkin).
 export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   const out: Outcome[] = [];
   const check = (name: string, ok: boolean, detail?: string) => out.push({ name, ok, detail });
@@ -327,7 +328,7 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   const store = new h.trust.TrustStore();
   store.addPem(f.pr129Pem);
   for (const [name, c] of Object.entries(f.pr129.certificates)) {
-    run(`STT-TST-001 STT-VER-001 the PR 129 ${name} certificate verifies as published`, () => {
+    run(`STT-TST-001-STT-VER-001-PR-129-certificate-verifies-as-published[${name}]`, () => {
       const r = h.verifier.verify(c.hc1, store, reg, NOW, OPTIONS);
       return r.tag === "verified" && r.val.iss === "XX" && r.val.entries.length === 1 && r.val.entries[0]!.subclaim === -6 && r.val.entries[0]!.payload.tag === "dvc-min" && r.val.entries[0]!.payload.val.n === c.payload.n && r.val.dsc.notBefore < NOW;
     });
@@ -338,7 +339,8 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   });
   const negative = f.negative;
   for (const c of negative.cases) {
-    run(`STT-TST-004 STT-TST-005 STT-VER-008 negative vector ${c.id} stops at ${c.expect.step} ${c.expect.reason}`, () => {
+    const key = `${c.id}: ${c.expect.step} ${c.expect.reason}`;
+    run(`STT-TST-004-STT-TST-005-STT-VER-008-negative-vector-stops-at-the-named-step[${key}]`, () => {
       const st = new h.trust.TrustStore();
       for (const p of c.trust ?? negative.defaults.trust) st.addPem(f.pem[p]!);
       const now = BigInt(c.now ?? negative.defaults.now);

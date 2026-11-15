@@ -46,7 +46,7 @@ Feature: Sign the CWT as a COSE_Sign1, in two phases
     Then it verifies, giving the newborn's DVCMin
 
   @req:stt-cos-001 @req:stt-cos-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::STT-COS-001_STT-COS-003_a_tagged_COSE_Sign1_with_alg_and_kid_in_the_protected_header
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::SignCoseTest::STT-COS-001_STT-COS-003_a_tagged_COSE_Sign1_with_alg_and_kid_in_the_protected_header
   Scenario: A tagged COSE_Sign1 with alg and kid in the protected header (Kotlin)
     Given a newborn's DVCMin issued by the testkit
     When its COSE bytes are decoded as CBOR
@@ -56,7 +56,7 @@ Feature: Sign the CWT as a COSE_Sign1, in two phases
     And it maps 4 (kid) to the kid derived from the ES256 testkit DSC
 
   @req:stt-cos-004 @req:stt-iss-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::STT-COS-004_STT-ISS-004_what_is_signed_is_the_Signature1_structure_prepare_returns
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::SignCoseTest::STT-COS-004_STT-ISS-004_what_is_signed_is_the_Signature1_structure_prepare_returns
   Scenario: What is signed is the Signature1 structure prepare returns (Kotlin)
     Given a newborn's DVCMin prepared for issuance, and the same DVCMin issued by the testkit
     When the issued COSE_Sign1 is parsed
@@ -64,7 +64,7 @@ Feature: Sign the CWT as a COSE_Sign1, in two phases
     And the prepared issuance's to-be-signed bytes are that same array
 
   @req:stt-cos-002 @req:stt-gen-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::STT-COS-002_STT-GEN-001_both_ES256_and_PS256_sign_and_verify
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::SignCoseTest::STT-COS-002_STT-GEN-001_both_ES256_and_PS256_sign_and_verify
   Scenario: Both ES256 and PS256 sign and verify (Kotlin)
     Given a newborn's DVCMin issued with ES256
     And a raw test-certificate payload {"t": "x"} under subclaim 4 issued with PS256, whose DSC may sign test certificates only
@@ -72,7 +72,7 @@ Feature: Sign the CWT as a COSE_Sign1, in two phases
     Then both are verified
 
   @req:stt-cos-005
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::STT-COS-005_an_ES256_signature_is_a_fixed-width_64-byte_r_and_s,_whatever_the_signer_returns
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::SignCoseTest::STT-COS-005_an_ES256_signature_is_a_fixed-width_64-byte_r_and_s,_whatever_the_signer_returns
   Scenario: An ES256 signature is a fixed-width 64-byte r and s, whatever the signer returns (Kotlin)
     Given a newborn's DVCMin issued by the testkit, whose signer returns DER
     Then the COSE_Sign1's signature is 64 bytes
@@ -80,7 +80,7 @@ Feature: Sign the CWT as a COSE_Sign1, in two phases
     And r||s with leading zeros in r and s (r = 1, s = 2) converted to DER and back is unchanged, still 64 bytes
 
   @req:stt-cos-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::STT-COS-006_the_library_holds_no_private_key,_and_refuses_a_signature_from_another_key
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::SignCoseTest::STT-COS-006_the_library_holds_no_private_key,_and_refuses_a_signature_from_another_key
   Scenario: The library holds no private key, and refuses a signature from another key (Kotlin)
     Given a newborn's DVCMin prepared for ES256 issuance
     And a SHA256withECDSA signature over its to-be-signed bytes from a freshly generated P-256 key, not the DSC's
@@ -88,7 +88,7 @@ Feature: Sign the CWT as a COSE_Sign1, in two phases
     Then it fails with BadSignatureFormat
 
   @req:stt-ver-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::STT-VER-003_a_protected_header_with_an_unsupported_alg_is_refused
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SignCoseTest.kt::SignCoseTest::STT-VER-003_a_protected_header_with_an_unsupported_alg_is_refused
   Scenario: A protected header with an unsupported alg is refused (Kotlin)
     Given an untagged COSE_Sign1 whose protected header is {1: -8}, with an empty unprotected header, payload and signature
     When it is verified against an empty trust store

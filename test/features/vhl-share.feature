@@ -67,7 +67,7 @@ Feature: Issue a Verifiable Health Link
     And decrypting with the key gives back "hello"
 
   @req:stt-vhl-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::STT-VHL-001_the_IHE_ITI-YY3_example_payload_is_valid,_and_each_rule_is_enforced
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::VhlShareTest::STT-VHL-001_the_IHE_ITI-YY3_example_payload_is_valid,_and_each_rule_is_enforced
   Scenario: The IHE ITI-YY3 example payload is valid, and each rule is enforced (Kotlin)
     Given the IHE ITI-YY3 example VHL payload, flag "LP", label "Patient Health Summary"
     When it is validated with no current time
@@ -81,7 +81,7 @@ Feature: Issue a Verifiable Health Link
       | url "http://vhl-sharer.example.org/List?_id=1"                      | not-https          |
 
   @req:stt-vhl-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::STT-VHL-002_the_payload_is_a_CBOR_map_at_HCERT_key_5,_and_verifies
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::VhlShareTest::STT-VHL-002_the_payload_is_a_CBOR_map_at_HCERT_key_5,_and_verifies
   Scenario: The payload is a CBOR map at HCERT key 5, and verifies (Kotlin)
     Given the IHE example VHL payload, expiring a day after the testkit's now
     When it is issued as an HCERT by the testkit
@@ -90,7 +90,7 @@ Feature: Issue a Verifiable Health Link
     And its single entry is at subclaim 5 and is the same VHL payload
 
   @req:stt-vhl-002 @req:stt-vhl-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::STT-VHL-002_STT-VHL-003_a_vhlink_string_at_key_5_still_verifies,_and_the_map_is_smaller
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::VhlShareTest::STT-VHL-002_STT-VHL-003_a_vhlink_string_at_key_5_still_verifies,_and_the_map_is_smaller
   Scenario: A vhlink string at key 5 still verifies, and the map is smaller (Kotlin)
     Given the IHE example VHL payload, expiring a day after the testkit's now
     When its vhlink:/ string is issued as a CBOR text at raw subclaim 5
@@ -99,7 +99,7 @@ Feature: Issue a Verifiable Health Link
     And the HC1 string issued with the payload as a map is under 80% of the length of the one with the string
 
   @req:stt-vhl-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::STT-VHL-003_vhlink_round-trips,_and_reads_the_IHE_example_link
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::VhlShareTest::STT-VHL-003_vhlink_round-trips,_and_reads_the_IHE_example_link
   Scenario: vhlink round-trips, and reads the IHE example link (Kotlin)
     Given the IHE example VHL payload
     When it is written as a vhlink
@@ -109,7 +109,7 @@ Feature: Issue a Verifiable Health Link
     And reading "shlink:/abc" fails with NotAVhlink
 
   @req:stt-vhl-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::STT-VHL-004_a_new_key_is_32_random_bytes,_base64url_without_padding
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::VhlShareTest::STT-VHL-004_a_new_key_is_32_random_bytes,_base64url_without_padding
   Scenario: A new key is 32 random bytes, base64url without padding (Kotlin)
     When a new VHL key is made
     Then it is 43 characters long
@@ -117,7 +117,7 @@ Feature: Issue a Verifiable Health Link
     And a second new key is different
 
   @req:stt-vhl-007
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::STT-VHL-007_a_document_is_encrypted_as_compact_JWE_dir_A256GCM
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlShareTest.kt::VhlShareTest::STT-VHL-007_a_document_is_encrypted_as_compact_JWE_dir_A256GCM
   Scenario: A document is encrypted as compact JWE dir A256GCM (Kotlin)
     Given a new VHL key
     When "hello" is encrypted with content type "text/plain"

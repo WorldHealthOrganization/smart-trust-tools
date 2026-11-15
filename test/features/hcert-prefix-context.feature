@@ -16,7 +16,7 @@ Feature: Prefix the HC1: context identifier, giving a QR-ready string
     And decoding "HC2:00" as an HC1 string fails with UnsupportedContextVersion
 
   @req:stt-hc1-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/PrefixContextTest.kt::STT-HC1-001_HC1_is_the_only_context,_version_1_the_only_version
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/PrefixContextTest.kt::PrefixContextTest::STT-HC1-001_HC1_is_the_only_context,_version_1_the_only_version
   Scenario: HC1 is the only context, version 1 the only version (Kotlin)
     Given an empty trust store and the default subclaim registry
     When "NCFOXN", with no prefix, is verified
@@ -25,7 +25,7 @@ Feature: Prefix the HC1: context identifier, giving a QR-ready string
     And detecting the context of "HC1:NCFOXN" gives version "1" and the rest "NCFOXN"
 
   @req:stt-qr-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/PrefixContextTest.kt::STT-QR-001_the_output_is_a_QR-ready_string_in_the_Alphanumeric_alphabet
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/PrefixContextTest.kt::PrefixContextTest::STT-QR-001_the_output_is_a_QR-ready_string_in_the_Alphanumeric_alphabet
   Scenario: The output is a QR-ready string in the Alphanumeric alphabet (Kotlin)
     Given a newborn's DVCMin issued by the testkit
     When its HC1 string is read
@@ -33,7 +33,7 @@ Feature: Prefix the HC1: context identifier, giving a QR-ready string
     And every character is in the Base45 alphabet or is ":", the QR Alphanumeric set
 
   @req:stt-gen-009
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/PrefixContextTest.kt::STT-GEN-009_the_COSE_bytes_travel_without_the_QR_layers_too
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/PrefixContextTest.kt::PrefixContextTest::STT-GEN-009_the_COSE_bytes_travel_without_the_QR_layers_too
   Scenario: The COSE bytes travel without the QR layers too (Kotlin)
     Given a newborn's DVCMin issued by the testkit with the ES256 key
     And a trust store holding the testkit ES256 DSC

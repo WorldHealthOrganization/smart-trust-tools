@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "Operational Metadata",
   "text": "../sections/s002-operational-metadata.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-endpoints/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-endpoints/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-endpoints",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-endpoints",
   "provenance": "ingested"
 }

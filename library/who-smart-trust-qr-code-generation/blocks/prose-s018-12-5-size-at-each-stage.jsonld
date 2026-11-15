@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "12.5 Size at each stage",
   "text": "../sections/s018-12-5-size-at-each-stage.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-qr-code-generation/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-qr-code-generation/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-qr-code-generation",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-qr-code-generation",
   "provenance": "ingested"
 }

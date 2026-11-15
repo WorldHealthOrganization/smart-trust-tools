@@ -52,7 +52,7 @@ Feature: Build and validate the payload against its logical model
       | -7       | m   | ES256 |
 
   @req:stt-pay-001 @req:stt-pay-002 @req:stt-pay-005
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::STT-PAY-001_STT-PAY-002_STT-PAY-005_a_newborn's_DVCMin,_with_no_identity_document,_round-trips_as_typed_fields
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::AssemblePayloadTest::STT-PAY-001_STT-PAY-002_STT-PAY-005_a_newborn's_DVCMin,_with_no_identity_document,_round-trips_as_typed_fields
   Scenario: A newborn's DVCMin, with no identity document, round-trips as typed fields (Kotlin)
     Given a newborn's DVCMin with no identity document
     Then validating it gives no blocking issue
@@ -61,13 +61,13 @@ Feature: Build and validate the payload against its logical model
     And its vaccine product vx.vp is "XM9V38"
 
   @req:stt-pay-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::STT-PAY-003_one_immunization_event_per_DVC
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::AssemblePayloadTest::STT-PAY-003_one_immunization_event_per_DVC
   Scenario: One immunization event per DVC (Kotlin)
     Given a newborn's DVCMin encoded to CBOR
     Then its "vx" element is a map, one event, not an array
 
   @req:stt-pay-004 @req:stt-pay-007
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::STT-PAY-004_STT-PAY-007_an_invalid_payload_is_refused,_naming_each_rule
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::AssemblePayloadTest::STT-PAY-004_STT-PAY-007_an_invalid_payload_is_refused,_naming_each_rule
   Scenario: An invalid payload is refused, naming each rule (Kotlin)
     Given a newborn's DVCMin with nt "LA" and neither a vaccine issuer nor a clinician name
     When it is prepared for issuance
@@ -75,14 +75,14 @@ Feature: Build and validate the payload against its logical model
     And the issue codes are exactly "not-alpha3" and "must-have-issuer-or-clinician-name"
 
   @req:stt-pay-008
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::STT-PAY-008_unknown_payload_elements_are_kept
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::AssemblePayloadTest::STT-PAY-008_unknown_payload_elements_are_kept
   Scenario: Unknown payload elements are kept (Kotlin)
     Given a newborn's DVCMin with an unknown element "zz"
     When it is issued and verified
     Then the verified DVCMin's extensions are "zz" alone, with the same CBOR bytes
 
   @req:stt-pay-009 @req:stt-gen-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::STT-PAY-009_STT-GEN-003_another_payload_passes_through_the_core_untouched
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/AssemblePayloadTest.kt::AssemblePayloadTest::STT-PAY-009_STT-GEN-003_another_payload_passes_through_the_core_untouched
   Scenario: Another payload passes through the core untouched (Kotlin)
     Given a raw payload {"t": "x"} under subclaim 4
     When it is issued with PS256 and verified against the PS256 testkit DSC

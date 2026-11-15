@@ -111,14 +111,6 @@
       "status": "candidate"
     },
     {
-      "id": "test-gherkin",
-      "prefLabel": "Every test has a Gherkin Scenario",
-      "definition": "Check test/features/*.feature against the suites: every Rust #[test], Kotlin @Test and TypeScript conformance run(...) has a Scenario tagged @test:<path>::<test>, every such tag names a test, WHO-ITB Scenarios carry @itb:<suite>/<testcase>, and every test-plan case names its feature file. Temporary, until cat-harness check:test-gherkin is pinned.",
-      "notation": "test-gherkin",
-      "source": "smart-trust-tools/tools/test-gherkin/test-gherkin.ts#test-gherkin",
-      "status": "candidate"
-    },
-    {
       "id": "test-plan",
       "prefLabel": "Library conformance test plan",
       "definition": "Write test/plans/hcert-library-conformance.test-plan.json (test-plan/v1) from the skills and the requirements' success criteria: one case per skill, one assertion per criterion verified by test. The plan any implementation of the library, Kotlin or Rust, runs.",

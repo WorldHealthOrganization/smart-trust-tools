@@ -57,7 +57,7 @@ Feature: Wrap the payload in a CWT claim set inside the DSC's validity
     And that claim decodes to key -70000 and value "future"
 
   @req:stt-cwt-001 @req:stt-cwt-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::STT-CWT-001_STT-CWT-002_claim_keys_are_integers_and_dates_are_integer_NumericDates
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::BuildCwtTest::STT-CWT-001_STT-CWT-002_claim_keys_are_integers_and_dates_are_integer_NumericDates
   Scenario: Claim keys are integers and dates are integer NumericDates (Kotlin)
     Given the newborn's DVCMin issued with ES256
     When its claim set is read from the COSE payload
@@ -65,7 +65,7 @@ Feature: Wrap the payload in a CWT claim set inside the DSC's validity
     And exp (4) and iat (6) are integers
 
   @req:stt-cwt-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::STT-CWT-003_an_HCERT_without_exp_is_refused_on_issue_and_on_verify
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::BuildCwtTest::STT-CWT-003_an_HCERT_without_exp_is_refused_on_issue_and_on_verify
   Scenario: An HCERT without exp is refused on issue and on verify (Kotlin)
     Given an issue request for the newborn's DVCMin whose exp equals its iat
     When it is prepared
@@ -73,14 +73,14 @@ Feature: Wrap the payload in a CWT claim set inside the DSC's validity
     And a claim set without exp, signed with the ES256 testkit key, fails verification at step CWT with reason COSE_MALFORMED
 
   @req:stt-cwt-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::STT-CWT-004_the_validity_must_fit_inside_the_DSC's
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::BuildCwtTest::STT-CWT-004_the_validity_must_fit_inside_the_DSC's
   Scenario: The validity must fit inside the DSC's (Kotlin)
     Given an issue request for the newborn's DVCMin whose exp is 20 years after its iat
     When it is prepared
     Then it is refused with ValidityOutsideDsc
 
   @req:stt-cwt-005
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::STT-CWT-005_iss_is_optional,_and_alpha-2_when_present
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::BuildCwtTest::STT-CWT-005_iss_is_optional,_and_alpha-2_when_present
   Scenario: iss is optional, and alpha-2 when present (Kotlin)
     Given issue requests for the newborn's DVCMin with iss "Xx", "XXX" and "x"
     When each is prepared
@@ -90,7 +90,7 @@ Feature: Wrap the payload in a CWT claim set inside the DSC's validity
     And the testkit's certificate, issued with iss "XX", verifies with iss "XX"
 
   @req:stt-cwt-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::STT-CWT-006_claims_this_version_does_not_know_are_kept
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/BuildCwtTest.kt::BuildCwtTest::STT-CWT-006_claims_this_version_does_not_know_are_kept
   Scenario: Claims this version does not know are kept (Kotlin)
     Given a claim set with the extra claim -70000: "future", signed with the ES256 testkit key
     When it is verified as COSE with the ES256 testkit DSC trusted

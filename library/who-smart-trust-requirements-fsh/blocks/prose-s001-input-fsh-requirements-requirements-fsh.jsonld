@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "input/fsh/requirements/requirements.fsh",
   "text": "../sections/s001-input-fsh-requirements-requirements-fsh.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-requirements-fsh/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-requirements-fsh/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-requirements-fsh",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-requirements-fsh",
   "provenance": "ingested"
 }

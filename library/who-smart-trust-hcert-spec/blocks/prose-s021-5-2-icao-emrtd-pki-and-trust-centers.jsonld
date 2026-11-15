@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "5.2 ICAO eMRTD PKI and Trust Centers",
   "text": "../sections/s021-5-2-icao-emrtd-pki-and-trust-centers.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-hcert-spec/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-hcert-spec/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-hcert-spec",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-hcert-spec",
   "provenance": "ingested"
 }

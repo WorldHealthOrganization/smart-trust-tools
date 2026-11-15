@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "5. Step 4 — Serialise as CBOR",
   "text": "../sections/s006-5-step-4-serialise-as-cbor.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-qr-code-generation/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-qr-code-generation/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-qr-code-generation",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-qr-code-generation",
   "provenance": "ingested"
 }

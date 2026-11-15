@@ -117,7 +117,7 @@ Feature: Verify an HC1 string or raw COSE, or read it explicitly unverified
     And a TrustLookup diagnostic mentions "X.509 validity"
 
   @req:stt-ver-001 @req:stt-ver-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::STT-VER-001_STT-VER-002_a_tampered_payload_fails_at_the_signature,_before_any_payload_is_read
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::VerifyTest::STT-VER-001_STT-VER-002_a_tampered_payload_fails_at_the_signature,_before_any_payload_is_read
   Scenario: A tampered payload fails at the signature, before any payload is read (Kotlin)
     Given a tagged COSE_Sign1 over the newborn's claim set, signed with the ES256 testkit key
     And a copy whose payload has the last byte's low bit flipped
@@ -125,14 +125,14 @@ Feature: Verify an HC1 string or raw COSE, or read it explicitly unverified
     Then it fails at step SIGNATURE with reason SIGNATURE_INVALID
 
   @req:stt-ver-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::STT-VER-004_a_DSC_whose_key_usage_allows_test_certificates_only_cannot_sign_a_vaccination
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::VerifyTest::STT-VER-004_a_DSC_whose_key_usage_allows_test_certificates_only_cannot_sign_a_vaccination
   Scenario: A DSC whose key usage allows test certificates only cannot sign a vaccination (Kotlin)
     Given the newborn's DVCMin issued with the PS256 testkit DSC, whose key usage allows test certificates only
     When it is verified with that DSC trusted
     Then it fails at step KEY_USAGE with reason KEY_USAGE_MISMATCH
 
   @req:stt-ver-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::STT-VER-004_a_DCC_is_a_test,_vaccination_or_recovery_certificate_by_its_own_entry
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::VerifyTest::STT-VER-004_a_DCC_is_a_test,_vaccination_or_recovery_certificate_by_its_own_entry
   Scenario: A DCC is a test, vaccination or recovery certificate by its own entry (Kotlin)
     Given the PS256 testkit DSC, whose key usage allows test certificates only, is trusted
     When a raw subclaim 1 payload {"t": [{}]} issued with it is verified
@@ -140,7 +140,7 @@ Feature: Verify an HC1 string or raw COSE, or read it explicitly unverified
     And a raw subclaim 1 payload {"v": [{}]} issued with it fails with reason KEY_USAGE_MISMATCH
 
   @req:stt-ver-005
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::STT-VER-005_time_is_the_clock_the_caller_passes,_with_the_skew_it_allows
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::VerifyTest::STT-VER-005_time_is_the_clock_the_caller_passes,_with_the_skew_it_allows
   Scenario: Time is the clock the caller passes, with the skew it allows (Kotlin)
     Given the newborn's DVCMin issued with iat now and exp one day later
     And a clock skew of 300 seconds
@@ -150,14 +150,14 @@ Feature: Verify an HC1 string or raw COSE, or read it explicitly unverified
     And at iat - 301 it fails with reason NOT_YET_VALID
 
   @req:stt-ver-006 @req:stt-kid-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::STT-VER-006_STT-KID-002_a_kid_nobody_trusts_fails_the_trust_lookup
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::VerifyTest::STT-VER-006_STT-KID-002_a_kid_nobody_trusts_fails_the_trust_lookup
   Scenario: A kid nobody trusts fails the trust lookup (Kotlin)
     Given the newborn's DVCMin issued with ES256
     When it is verified against an empty trust store
     Then it fails at step TRUST_LOOKUP with reason KID_NOT_FOUND
 
   @req:stt-ver-007
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::STT-VER-007_the_payload_is_dispatched_to_its_logical_model_by_subclaim
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::VerifyTest::STT-VER-007_the_payload_is_dispatched_to_its_logical_model_by_subclaim
   Scenario: The payload is dispatched to its logical model by subclaim (Kotlin)
     Given the newborn's DVCMin issued with ES256
     When it is verified with the ES256 testkit DSC trusted
@@ -165,7 +165,7 @@ Feature: Verify an HC1 string or raw COSE, or read it explicitly unverified
     And that entry's payload is a DvcMin
 
   @req:stt-ver-008 @req:stt-ver-009
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::STT-VER-008_STT-VER-009_every_failure_is_a_value_naming_its_step_and_reason,_offline
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::VerifyTest::STT-VER-008_STT-VER-009_every_failure_is_a_value_naming_its_step_and_reason,_offline
   Scenario Outline: Every failure is a value naming its step and reason, offline (Kotlin)
     Given the ES256 testkit DSC is trusted
     When "<input>" is verified
@@ -180,7 +180,7 @@ Feature: Verify an HC1 string or raw COSE, or read it explicitly unverified
       | HC1: followed by 9000 zeros  | LIMIT_EXCEEDED              |
 
   @req:stt-ver-011
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::STT-VER-011_an_unverified_read_for_triage_is_marked_so
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::VerifyTest::STT-VER-011_an_unverified_read_for_triage_is_marked_so
   Scenario: An unverified read for triage is marked so (Kotlin)
     Given the newborn's DVCMin issued with ES256
     When it is read unverified
@@ -189,7 +189,7 @@ Feature: Verify an HC1 string or raw COSE, or read it explicitly unverified
     And reading "HC1:abc" unverified fails with reason BASE45_INVALID
 
   @req:stt-sec-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::STT-SEC-001_a_failure's_message_does_not_carry_the_payload
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VerifyTest.kt::VerifyTest::STT-SEC-001_a_failure's_message_does_not_carry_the_payload
   Scenario: A failure's message does not carry the payload (Kotlin)
     Given the newborn's DVCMin issued with ES256
     When it is verified against an empty trust store

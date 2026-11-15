@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "input/fsh/models/cwt_payload.fsh",
   "text": "../sections/s001-input-fsh-models-cwt-payload-fsh.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-cwt-payload-model/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-cwt-payload-model/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-cwt-payload-model",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-cwt-payload-model",
   "provenance": "ingested"
 }

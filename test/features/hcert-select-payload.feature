@@ -70,7 +70,7 @@ Feature: Choose the logical model and hcert subclaim for a use case
     And the PS256 certificate fails at step KeyUsage with reason KeyUsageMismatch, its DSC's EKU allowing test certificates only
 
   @req:stt-sel-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-001_the_registry_holds_the_subclaims_the_guide_defines
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-SEL-001_the_registry_holds_the_subclaims_the_guide_defines
   Scenario: The registry holds the subclaims the guide defines (Kotlin)
     Given a new subclaim registry
     Then its keys are 1, 3, 4, 5, -6 and -7
@@ -78,7 +78,7 @@ Feature: Choose the logical model and hcert subclaim for a use case
     And DVCMin maps to subclaim -6 and VHL to subclaim 5
 
   @req:stt-sel-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-002_a_host_registers_its_own_subclaim_and_issues_under_it
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-SEL-002_a_host_registers_its_own_subclaim_and_issues_under_it
   Scenario: A host registers its own subclaim and issues under it (Kotlin)
     Given a new registry, which has no subclaim 42
     And a raw payload {"k": "v"} under subclaim 42
@@ -88,14 +88,14 @@ Feature: Choose the logical model and hcert subclaim for a use case
     Then the raw payload issues under it
 
   @req:stt-sel-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-003_a_development-range_subclaim_needs_the_explicit_opt-in
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-SEL-003_a_development-range_subclaim_needs_the_explicit_opt-in
   Scenario: A development-range subclaim needs the explicit opt-in (Kotlin)
     Given a newborn's DVCMin issuance request that does not allow development subclaims
     When it is prepared with the default registry
     Then it fails with DevelopmentSubclaimNotAllowed(-6)
 
   @req:stt-sel-003
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-003_DVC_moves_to_an_assigned_subclaim_without_an_API_change
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-SEL-003_DVC_moves_to_an_assigned_subclaim_without_an_API_change
   Scenario: DVC moves to an assigned subclaim without an API change (Kotlin)
     Given a registry where subclaim 6 is registered as DVCMin, with the DVCMin profile, and DVCMin is set to subclaim 6
     When a newborn's DVCMin is issued with ES256, development subclaims not allowed
@@ -104,7 +104,7 @@ Feature: Choose the logical model and hcert subclaim for a use case
     Then it fails verification at step KEY_USAGE with reason KEY_USAGE_MISMATCH, its DSC's EKU allowing test certificates only
 
   @req:stt-sel-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-004_an_issued_HCERT_carries_each_payload_under_its_own_subclaim,_in_key_order
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-SEL-004_an_issued_HCERT_carries_each_payload_under_its_own_subclaim,_in_key_order
   Scenario: An issued HCERT carries each payload under its own subclaim, in key order (Kotlin)
     Given a newborn's DVCMin and a live VHL issued together
     When the -260 claim of its COSE payload is read
@@ -112,7 +112,7 @@ Feature: Choose the logical model and hcert subclaim for a use case
     And a certificate with the DVCMin alone has the one key -6
 
   @req:stt-sel-004 @req:stt-iss-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-004_STT-ISS-004_a_certificate_with_a_DVC_and_a_VHL_verifies_with_both_entries
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-SEL-004_STT-ISS-004_a_certificate_with_a_DVC_and_a_VHL_verifies_with_both_entries
   Scenario: A certificate with a DVC and a VHL verifies with both entries (Kotlin)
     Given a newborn's DVCMin and a live VHL issued together with ES256
     When the COSE_Sign1 is verified
@@ -123,7 +123,7 @@ Feature: Choose the logical model and hcert subclaim for a use case
     And read-unverified on the HC1 string gives entries 5 then -6, each with its payload
 
   @req:stt-sel-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-004_maxPayloads_refuses_more_entries_than_the_profile_allows
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-SEL-004_maxPayloads_refuses_more_entries_than_the_profile_allows
   Scenario: maxPayloads refuses more entries than the profile allows (Kotlin)
     Given a certificate with a newborn's DVCMin and a live VHL
     When it is verified with maxPayloads 1
@@ -135,7 +135,7 @@ Feature: Choose the logical model and hcert subclaim for a use case
     And verified with maxPayloads 1 it fails at step HCERT with reason MULTIPLE_SUBCLAIMS
 
   @req:stt-sel-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-004_an_invalid_entry_is_left_out_and_reported
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-SEL-004_an_invalid_entry_is_left_out_and_reported
   Scenario: An invalid entry is left out and reported (Kotlin)
     Given a signed claim set whose hcert holds, under -6, a DVCMin whose nt is "Laos" and, under 5, a live VHL
     When it is verified
@@ -146,7 +146,7 @@ Feature: Choose the logical model and hcert subclaim for a use case
     And a claim set with a valid DVCMin and a VHL that expired an hour ago verifies with only entry -6, and a TIME diagnostic starting "subclaim 5: "
 
   @req:stt-ver-004 @req:stt-sel-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-VER-004_STT-SEL-004_key_usage_is_checked_per_entry
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-VER-004_STT-SEL-004_key_usage_is_checked_per_entry
   Scenario: Key usage is checked per entry (Kotlin)
     Given a newborn's DVCMin and a live VHL issued together with PS256, whose DSC's EKU allows test certificates only
     When the COSE_Sign1 is verified against the PS256 DSC
@@ -156,7 +156,7 @@ Feature: Choose the logical model and hcert subclaim for a use case
     And the DVCMin issued alone with PS256 fails at step KEY_USAGE with reason KEY_USAGE_MISMATCH
 
   @req:stt-sel-004
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::STT-SEL-004_issuance_refuses_no_payload_and_a_duplicate_subclaim
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/SelectPayloadTest.kt::SelectPayloadTest::STT-SEL-004_issuance_refuses_no_payload_and_a_duplicate_subclaim
   Scenario: Issuance refuses no payload and a duplicate subclaim (Kotlin)
     When an issuance request with no payloads is prepared
     Then it fails with NoPayload

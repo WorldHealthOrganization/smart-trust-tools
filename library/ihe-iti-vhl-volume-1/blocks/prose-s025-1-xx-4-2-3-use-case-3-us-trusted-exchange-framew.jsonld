@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "1:XX.4.2.3 Use Case \\#3: US Trusted Exchange Framework and Common Agreement (TEFCA)",
   "text": "../sections/s025-1-xx-4-2-3-use-case-3-us-trusted-exchange-framew.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-volume-1/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-volume-1/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-volume-1",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-volume-1",
   "provenance": "ingested"
 }

@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "1:XX.4.2.1 Use Case \\#1: WHO Global Digital Health Certification Network",
   "text": "../sections/s021-1-xx-4-2-1-use-case-1-who-global-digital-health-.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-volume-1/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-volume-1/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-volume-1",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-volume-1",
   "provenance": "ingested"
 }

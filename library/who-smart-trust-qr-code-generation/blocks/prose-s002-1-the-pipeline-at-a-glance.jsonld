@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "1. The pipeline at a glance",
   "text": "../sections/s002-1-the-pipeline-at-a-glance.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-qr-code-generation/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-qr-code-generation/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-qr-code-generation",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-qr-code-generation",
   "provenance": "ingested"
 }

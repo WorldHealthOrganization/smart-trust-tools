@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "input/fsh/models/DVCMinVaccineDetails.fsh",
   "text": "../sections/s001-input-fsh-models-dvcminvaccinedetails-fsh.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-phw-dvcmin-vaccine-details/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-phw-dvcmin-vaccine-details/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-phw-dvcmin-vaccine-details",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-phw-dvcmin-vaccine-details",
   "provenance": "ingested"
 }

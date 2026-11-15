@@ -6,7 +6,11 @@ criteria, laid out as a test-plan/v1: one case per skill, one assertion per
 criterion its requirements verify by test, id req:<id>#<statement>/<criterion>.
 Written from them so it cannot drift: --check fails when the file is stale.
 The test data per case and the plan's prose are set here. Each case's
-feature is test/features/<case>.feature, its Gherkin (tools/test-gherkin).
+feature is test/features/<case>.feature, its Gherkin; the shared
+cat-harness check:test-gherkin joins its Scenarios to the tests.
+
+--check also fails when any plan's case names no feature file, or a feature
+file in test/features/ is the feature of no case.
 
 Usage:
     python3 tools/test-plan/make_test_plan.py [--check]
@@ -69,10 +73,32 @@ plan = {
                   "description": "The platform default: the run completed, its data hashed, every case has a verdict, the untainted checker agrees, no required assertion failed and at least one passed."},
 }
 text = json.dumps(plan, indent=2, ensure_ascii=False) + "\n"
+def feature_links():
+    """Every plan's case names a feature file, and every feature file is some case's."""
+    problems, named = [], set()
+    for p in sorted((ROOT / "test" / "plans").glob("*.test-plan.json")):
+        for case in json.loads(p.read_text()).get("testCases", []):
+            feat = case.get("feature")
+            if not feat:
+                problems.append("%s: case %s has no feature" % (p.name, case["id"]))
+            elif not (ROOT / feat).is_file():
+                problems.append("%s: case %s's feature %s is not a file" % (p.name, case["id"], feat))
+            else:
+                named.add(feat)
+    for f in sorted((ROOT / "test" / "features").glob("**/*.feature")):
+        rel = f.relative_to(ROOT).as_posix()
+        if rel not in named:
+            problems.append("%s is the feature of no test-plan case" % rel)
+    return problems
+
+
 if "--check" in sys.argv:
     if not OUT.exists() or OUT.read_text() != text:
         sys.exit("%s is stale: run python3 tools/test-plan/make_test_plan.py" % OUT.relative_to(ROOT))
-    print("test plan is up to date")
+    problems = feature_links()
+    if problems:
+        sys.exit("\n".join(problems))
+    print("test plan is up to date, and every case's feature file is linked")
 else:
     OUT.write_text(text)
     print(len(cases), "cases", sum(len(c["assertions"]) for c in cases), "assertions", len(reqs), "requirements")

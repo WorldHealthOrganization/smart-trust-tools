@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "3.2.3 Key Identifier",
   "text": "../sections/s009-3-2-3-key-identifier.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-hcert-spec/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-hcert-spec/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-hcert-spec",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-hcert-spec",
   "provenance": "ingested"
 }

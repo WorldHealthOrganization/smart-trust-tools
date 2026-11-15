@@ -104,7 +104,7 @@ Feature: Use a Verifiable Health Link
     And the payload with exp 1000 seconds before the testkit's now, issued in an HCERT valid at that now, fails verification with Expired
 
   @req:stt-vhl-005
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-005_the_ITI-YY5_request_is_the_exact_body_of_the_IHE_example
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-005_the_ITI-YY5_request_is_the_exact_body_of_the_IHE_example
   Scenario: The ITI-YY5 request is the exact body of the IHE example (Kotlin)
     Given the IHE example VHL payload, flag "LP"
     When the manifest request is built for recipient "Dr. Smith Hospital", passcode "user-pin" and embeddedLengthMax 10000
@@ -113,7 +113,7 @@ Feature: Use a Verifiable Health Link
     And its body is exactly "_id=abc123def456&code=folder&status=current&patient.identifier=urn%3Aoid%3A2.16.840.1.113883.2.4.6.3%7CPASSPORT123&_include=List%3Aitem&recipient=Dr.+Smith+Hospital&passcode=user-pin&embeddedLengthMax=10000"
 
   @req:stt-vhl-005
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-005_a_List_URL_is_searched,_and_the_passcode_follows_the_P_flag
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-005_a_List_URL_is_searched,_and_the_passcode_follows_the_P_flag
   Scenario: A List URL is searched, and the passcode follows the P flag (Kotlin)
     Given a VHL with no flag whose url is "https://vhl-sharer.example.org/List?_id=abc&code=folder&status=current&patient.identifier=s%7Cv"
     When the manifest request is built for recipient "Clinic B" with no passcode
@@ -123,7 +123,7 @@ Feature: Use a Verifiable Health Link
     And the unflagged VHL whose url has no _id fails with a Manifest error
 
   @req:stt-vhl-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-006_the_IHE_Case_B_manifest_Bundle_reads_as_documents
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-006_the_IHE_Case_B_manifest_Bundle_reads_as_documents
   Scenario: The IHE Case B manifest Bundle reads as documents (Kotlin)
     Given the IHE ITI-YY5 Case B manifest Bundle (vectors/ihe-vhl/iti-yy5-manifest-case-b.json)
     When it is parsed
@@ -132,7 +132,7 @@ Feature: Use a Verifiable Health Link
     And the other three, abbreviated in the example to bare ids, are handed back as references "DocumentReference/doc002", "DocumentReference/doc003" and "DocumentReference/doc004"
 
   @req:stt-vhl-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-006_a_Case_A_manifest_without_includes_hands_back_references
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-006_a_Case_A_manifest_without_includes_hands_back_references
   Scenario: A Case A manifest without includes hands back references (Kotlin)
     Given a searchset Bundle with one List whose one item references "DocumentReference/d1", and no included resources
     When it is parsed
@@ -140,7 +140,7 @@ Feature: Use a Verifiable Health Link
     And a Bundle of type "document" fails with a Manifest error
 
   @req:stt-vhl-007
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-007_decrypts_what_node_crypto_encrypted,_with_and_without_zip_DEF
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-007_decrypts_what_node_crypto_encrypted,_with_and_without_zip_DEF
   Scenario Outline: Decrypts what node:crypto encrypted, with and without zip DEF (Kotlin)
     Given the node:crypto fixture vectors/ihe-vhl/jwe-dir-a256gcm.json
     When its "<jwe>" is decrypted with its key
@@ -153,7 +153,7 @@ Feature: Use a Verifiable Health Link
       | jweZipDef |
 
   @req:stt-vhl-007
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-007_a_wrong_key,_a_changed_byte_and_another_enc_are_refused
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-007_a_wrong_key,_a_changed_byte_and_another_enc_are_refused
   Scenario: A wrong key, a changed byte and another enc are refused (Kotlin)
     Given "hello" encrypted as "text/plain" with a new VHL key
     When it is decrypted with another new key
@@ -162,14 +162,14 @@ Feature: Use a Verifiable Health Link
     And with the protected header replaced by {"alg":"dir","enc":"A128GCM"} it fails with Unsupported
 
   @req:stt-vhl-008
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-008_the_Content-Digest_is_RFC_9530
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-008_the_Content-Digest_is_RFC_9530
   Scenario: The Content-Digest is RFC 9530 (Kotlin)
     Given a POST to vhl-sharer.example.org/List/_search with body {"hello": "world"}
     When its signature base is built
     Then the content digest is "sha-256=:X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=:", RFC 9530 Appendix B.1's
 
   @req:stt-vhl-008
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-008_the_RFC_9421_signature_base_has_the_IHE_shape
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-008_the_RFC_9421_signature_base_has_the_IHE_shape
   Scenario: The RFC 9421 signature base has the IHE shape (Kotlin)
     Given a POST to vhl-sharer.example.org/List/_search, content type "application/x-www-form-urlencoded", body {"hello": "world"}, keyid "receiver-key-123", alg "ecdsa-p256-sha256", created 1735689600
     When its signature base is built
@@ -185,7 +185,7 @@ Feature: Use a Verifiable Health Link
       """
 
   @req:stt-vhl-008
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-008_a_DER_signature_becomes_the_raw_header_value_and_verifies
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-008_a_DER_signature_becomes_the_raw_header_value_and_verifies
   Scenario: A DER signature becomes the raw header value, and verifies (Kotlin)
     Given the signature base of the same POST request
     And a freshly generated P-256 key pair
@@ -194,7 +194,7 @@ Feature: Use a Verifiable Health Link
     And those raw bytes, converted back to DER, verify over the base with the public key
 
   @req:stt-vhl-009
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::STT-VHL-009_an_expired_link_fails_verification,_by_its_own_exp
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/VhlReceiveTest.kt::VhlReceiveTest::STT-VHL-009_an_expired_link_fails_verification,_by_its_own_exp
   Scenario: An expired link fails verification, by its own exp (Kotlin)
     Given the IHE example VHL payload, exp 1735689600
     When it is validated at 1735689601

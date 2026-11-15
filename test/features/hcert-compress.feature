@@ -17,7 +17,7 @@ Feature: Compress the signed COSE_Sign1 with ZLIB, and inflate it within a limit
     And inflating it with its last 3 bytes cut off fails with InflateFailed
 
   @req:stt-zip-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/CompressTest.kt::STT-ZIP-001_what_is_compressed_is_the_signed_COSE_Sign1,_as_a_ZLIB_stream
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/CompressTest.kt::CompressTest::STT-ZIP-001_what_is_compressed_is_the_signed_COSE_Sign1,_as_a_ZLIB_stream
   Scenario: What is compressed is the signed COSE_Sign1, as a ZLIB stream (Kotlin)
     Given a newborn's DVCMin issued by the testkit
     When the HC1 string's "HC1:" prefix is removed and the rest Base45-decoded
@@ -25,7 +25,7 @@ Feature: Compress the signed COSE_Sign1 with ZLIB, and inflate it within a limit
     And inflating it gives exactly the issued COSE_Sign1 bytes
 
   @req:stt-zip-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/CompressTest.kt::STT-ZIP-002_a_decompression_bomb_stops_at_the_limit
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/CompressTest.kt::CompressTest::STT-ZIP-002_a_decompression_bomb_stops_at_the_limit
   Scenario: A decompression bomb stops at the limit (Kotlin)
     Given an HC1 string made from 1000000 zero bytes
     When it is decoded

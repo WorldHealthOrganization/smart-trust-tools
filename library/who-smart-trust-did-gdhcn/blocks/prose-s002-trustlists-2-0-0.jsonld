@@ -14,7 +14,7 @@
   "kind": "prose",
   "title": "Trustlists 2.0.0",
   "text": "../sections/s002-trustlists-2-0-0.md",
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-did-gdhcn/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-did-gdhcn/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-did-gdhcn",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-did-gdhcn",
   "provenance": "ingested"
 }

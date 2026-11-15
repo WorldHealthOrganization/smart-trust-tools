@@ -17,7 +17,7 @@ Feature: Test an implementation against the shared vectors
     And its kid is 58733e058aaa6621
 
   @req:stt-tst-001 @req:stt-kid-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::STT-TST-001_STT-KID-001_the_vector's_kid_is_the_DSC's
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::ConformanceVectorsTest::STT-TST-001_STT-KID-001_the_vector's_kid_is_the_DSC's
   Scenario: The vector's kid is the DSC's (Kotlin)
     Given a trust store holding the PR 129 DSC (dvc-qr-example-XXA-dsc.pem)
     When it is asked for candidates for the kid "WHM+BYqqZiE=", base64-decoded
@@ -36,7 +36,7 @@ Feature: Test an implementation against the shared vectors
     And there are no diagnostics
 
   @req:stt-tst-001 @req:stt-pay-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::STT-TST-001_STT-PAY-001_both_PR_129_certificates_verify_and_decode_as_published
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::ConformanceVectorsTest::STT-TST-001_STT-PAY-001_both_PR_129_certificates_verify_and_decode_as_published
   Scenario: Both PR 129 certificates verify and decode as published (Kotlin)
     Given a trust store holding the PR 129 DSC
     And the clock at 1792454400 (2026-10-20T00:00:00Z) with a clock skew of 300 seconds
@@ -47,7 +47,7 @@ Feature: Test an implementation against the shared vectors
     And there are no diagnostics
 
   @req:stt-tst-001 @req:stt-ver-001
-  @test:tools/conformance-ts/suite.ts::STT-TST-001_STT-VER-001_the_PR_129_${name}_certificate_verifies_as_published
+  @test:tools/conformance-ts/suite.ts::STT-TST-001-STT-VER-001-PR-129-certificate-verifies-as-published[${name}]
   Scenario Outline: The PR 129 <name> certificate verifies as published (TypeScript, either package)
     Given a trust store holding the PR 129 DSC
     And the clock at 1792454400 (2026-10-20T00:00:00Z)
@@ -71,7 +71,7 @@ Feature: Test an implementation against the shared vectors
     And encoding the COSE_Sign1 back to HC1 and decoding it again gives the same COSE_Sign1
 
   @req:stt-tst-002 @req:stt-cbr-001
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::STT-TST-002_STT-CBR-001_deterministic_re-encoding_reproduces_the_issued_CWT_byte_for_byte
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::ConformanceVectorsTest::STT-TST-002_STT-CBR-001_deterministic_re-encoding_reproduces_the_issued_CWT_byte_for_byte
   Scenario: Deterministic re-encoding reproduces the issued CWT byte for byte (Kotlin)
     Given the PR 129 "hepb1" HC1 string, decoded through the QR layers to its COSE_Sign1
     When the COSE_Sign1 is parsed and its CWT payload re-encoded deterministically
@@ -94,7 +94,7 @@ Feature: Test an implementation against the shared vectors
     And the hepb1 figures are 222, 307, 293 and 444, as section 12.5 prints them
 
   @req:stt-tst-011 @req:stt-tst-002
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::STT-TST-011_STT-TST-002_the_merged_guide's_XXR_certificates_decode_as_published
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::ConformanceVectorsTest::STT-TST-011_STT-TST-002_the_merged_guide's_XXR_certificates_decode_as_published
   Scenario: The merged guide's XXR certificates decode as published (Kotlin)
     Given the "hepb1" and the "bcg" certificates of the XXR vector (dvc-qr-example-XXR.json)
     When each HC1 string is read unverified
@@ -128,7 +128,7 @@ Feature: Test an implementation against the shared vectors
     And there are no diagnostics
 
   @req:stt-tst-011
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::STT-TST-011_the_merged_guide's_XXR_certificates_verify_against_the_DEV_trust_list's_DSC
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::ConformanceVectorsTest::STT-TST-011_the_merged_guide's_XXR_certificates_verify_against_the_DEV_trust_list's_DSC
   Scenario: The merged guide's XXR certificates verify against the DEV trust list's DSC (Kotlin)
     Given a trust store to which XXR's DSC DID document (XXR-DSC-did.json) adds exactly 1 DSC
     When the XXR vector's "hepb1" and "bcg" HC1 strings are each verified one hour after their iat
@@ -160,7 +160,7 @@ Feature: Test an implementation against the shared vectors
     And the failure's step and reason, by wire name, are the case's expect.step and expect.reason
 
   @req:stt-tst-004 @req:stt-tst-005
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::STT-TST-004_STT-TST-005_the_shared_negative_vectors_fail_at_the_named_step_with_the_named_reason
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/ConformanceVectorsTest.kt::ConformanceVectorsTest::STT-TST-004_STT-TST-005_the_shared_negative_vectors_fail_at_the_named_step_with_the_named_reason
   Scenario: The shared negative vectors fail at the named step with the named reason (Kotlin)
     Given the shared negative vectors (vectors/negative/negative-vectors.json), at least 15 cases
     And for each case a trust store of its PEMs, or the defaults' when it names none
@@ -170,7 +170,7 @@ Feature: Test an implementation against the shared vectors
     And the failure's step and reason names are the case's expect.step and expect.reason
 
   @req:stt-tst-004 @req:stt-tst-005 @req:stt-ver-008
-  @test:tools/conformance-ts/suite.ts::STT-TST-004_STT-TST-005_STT-VER-008_negative_vector_${c.id}_stops_at_${c.expect.step}_${c.expect.reason}
+  @test:tools/conformance-ts/suite.ts::STT-TST-004-STT-TST-005-STT-VER-008-negative-vector-stops-at-the-named-step[${key}]
   Scenario: Each shared negative vector stops at its named step and reason (TypeScript, either package)
     Given each case of the shared negative vectors (vectors/negative/negative-vectors.json), run as its own check
     And a trust store of the case's PEMs, or the defaults' when it names none
@@ -192,7 +192,7 @@ Feature: Test an implementation against the shared vectors
     And any decoded result has no more bytes than the input has characters
 
   @req:stt-tst-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::STT-TST-006_fuzzed_Base45_never_throws_and_never_decodes_more_than_its_input
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::FuzzTest::STT-TST-006_fuzzed_Base45_never_throws_and_never_decodes_more_than_its_input
   Scenario: Fuzzed Base45 never throws and never decodes more than its input (Kotlin)
     Given the Base45 text of the PR 129 HC1 strings, without "HC1:"
     When it is mutated (characters replaced, inserted, some outside Base45, removed, truncated, duplicated) and decoded
@@ -208,7 +208,7 @@ Feature: Test an implementation against the shared vectors
     And any inflated result is no larger than the default maximum inflated size
 
   @req:stt-tst-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::STT-TST-006_fuzzed_ZLIB_never_throws_and_never_inflates_past_the_limit
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::FuzzTest::STT-TST-006_fuzzed_ZLIB_never_throws_and_never_inflates_past_the_limit
   Scenario: Fuzzed ZLIB never throws and never inflates past the limit (Kotlin)
     Given the deflated bytes of the PR 129 HC1 strings
     When they are mutated (bit flips, inserted, removed and special bytes, truncation, duplicated runs) and inflated with the default limit
@@ -223,7 +223,7 @@ Feature: Test an implementation against the shared vectors
     Then no call panics and none takes a second
 
   @req:stt-tst-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::STT-TST-006_fuzzed_CBOR_never_throws_in_the_deterministic_re-encoder
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::FuzzTest::STT-TST-006_fuzzed_CBOR_never_throws_in_the_deterministic_re-encoder
   Scenario: Fuzzed CBOR never throws in the deterministic re-encoder (Kotlin)
     Given the CWT payloads of the PR 129 certificates
     When they are mutated and re-encoded deterministically with the default limits
@@ -237,7 +237,7 @@ Feature: Test an implementation against the shared vectors
     Then no call panics and none takes a second
 
   @req:stt-tst-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::STT-TST-006_fuzzed_COSE_never_throws_in_the_Sign1_parser
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::FuzzTest::STT-TST-006_fuzzed_COSE_never_throws_in_the_Sign1_parser
   Scenario: Fuzzed COSE never throws in the Sign1 parser (Kotlin)
     Given the COSE_Sign1 bytes of the PR 129 certificates
     When they are mutated and parsed as COSE_Sign1 with the default limits
@@ -252,7 +252,7 @@ Feature: Test an implementation against the shared vectors
     And any COSE_Sign1 the QR layers give is no larger than the default maximum inflated size
 
   @req:stt-tst-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::STT-TST-006_fuzzed_HC1_strings_never_throw_in_the_QR_layers_or_the_verifier
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::FuzzTest::STT-TST-006_fuzzed_HC1_strings_never_throw_in_the_QR_layers_or_the_verifier
   Scenario: Fuzzed HC1 strings never throw in the QR layers or the verifier (Kotlin)
     Given the PR 129 HC1 strings and a trust store holding the PR 129 DSC
     When they are mutated and each is decoded through the QR layers, verified at 1792454400, and read unverified
@@ -267,7 +267,7 @@ Feature: Test an implementation against the shared vectors
     Then no call panics and none takes a second
 
   @req:stt-tst-006
-  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::STT-TST-006_fuzzed_COSE_bytes_never_throw_in_the_verifier
+  @test:tools/hcert-kotlin/hcert-core/src/jvmTest/kotlin/who/smart/trust/core/FuzzTest.kt::FuzzTest::STT-TST-006_fuzzed_COSE_bytes_never_throw_in_the_verifier
   Scenario: Fuzzed COSE bytes never throw in the verifier (Kotlin)
     Given the COSE_Sign1 bytes of the PR 129 certificates and a trust store holding the PR 129 DSC
     When they are mutated and each is verified as COSE bytes at 1792454400
@@ -284,7 +284,7 @@ Feature: Test an implementation against the shared vectors
   # --- Cross-implementation (both packages at once) -------------------------------
 
   @req:stt-tst-003 @req:stt-gen-006
-  @test:tools/conformance-ts/cross.ts::STT-TST-003_STT-GEN-006_${alg.toUpperCase()}_${label}_issued_by_${iName}_verifies_in_${vName},_from_the_same_bytes
+  @test:tools/conformance-ts/cross.ts::STT-TST-003-STT-GEN-006-issued-verifies-across-from-the-same-bytes[${key}]
   Scenario Outline: <ALG> <label> issued by one package verifies in the other, from the same bytes (TypeScript, both packages)
     Given an issue request for <payloads>, iss "XX", valid for one day from the testkit clock, with the <ALG> testkit DSC and development subclaims allowed
     When the issuing package and the verifying package each prepare it
@@ -304,7 +304,7 @@ Feature: Test an implementation against the shared vectors
       | PS256 | DVC+VHL | the newborn's DVCMin and the IHE VHL           | verifies with the VHL at 5, key-usage authorised, then the DVCMin at -6, not key-usage authorised                |
 
   @req:stt-tst-003
-  @test:tools/conformance-ts/cross.ts::STT-TST-003_a_signature_over_${aName}'s_bytes,_attached_by_${bName}_to_a_different_payload,_is_refused
+  @test:tools/conformance-ts/cross.ts::STT-TST-003-signature-over-other-bytes-refused[${pair}]
   Scenario: A signature over one package's bytes, attached by the other to a different payload, is refused (TypeScript, both packages)
     Given the first package prepares the newborn's DVCMin, iss "XX", ES256 with the testkit DSC
     And the testkit key signs its Sig_structure
