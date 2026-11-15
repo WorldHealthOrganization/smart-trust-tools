@@ -235,5 +235,9 @@
         "glossary"
       ]
     }
+  ],
+  "enableSubgraphs": [
+    "folio-assistant-core.collab",
+    "fhir-harness.collab"
   ]
 }
