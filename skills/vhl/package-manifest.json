@@ -1,7 +1,7 @@
 {
   "name": "vhl",
   "version": "0.1.0",
-  "description": "Verifiable Health Links (IHE ITI VHL, SMART Health Links payload format) carried in an HCERT.",
+  "description": "Health links: Verifiable Health Links (IHE ITI VHL, SMART Health Links payload format) carried in an HCERT, and plain SMART Health Links, issued and received by the same two skills.",
   "skills": [
     "vhl-share",
     "vhl-receive"

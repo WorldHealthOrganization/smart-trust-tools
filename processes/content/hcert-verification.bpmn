@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bootstrap.processes="https://litlfred.github.io/bootstrap/0.1.0/processes/ns#" xmlns:cat-harness.processes="https://litlfred.github.io/cat-harness/0.1.0/processes/ns#"
+<bpmn:definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bootstrap.processes="https://litlfred.github.io/bootstrap/v0/processes/ns#" xmlns:cat-harness.processes="https://litlfred.github.io/cat-harness/v0/processes/ns#"
                   id="Definitions_Process_HcertVerification" targetNamespace="https://litlfred.github.io/smart-trust-tools/processes" exporter="smart-trust-tools" exporterVersion="1">
   <bpmn:resource id="hcert-verifying-system" name="HCERT verifying system"/>
   <bpmn:collaboration id="Collaboration_Process_HcertVerification">
@@ -10,6 +10,7 @@
     <bpmn:extensionElements><cat-harness.processes:policy enforcement="advisory"/><cat-harness.processes:log capture="off"/></bpmn:extensionElements>
     <bpmn:laneSet id="LaneSet_Process_HcertVerification">
       <bpmn:lane id="Lane_Verifier" name="HCERT verifying system" partitionElementRef="hcert-verifying-system">
+        <bpmn:documentation>The HCERT side of the VHL Receiver (smart-trust: Receiver): a clinic EMR, border system or CHW app that verifies, or triage-reads, an HCERT.</bpmn:documentation>
         <bpmn:flowNodeRef>Start</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Task_Decode</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Task_Parse</bpmn:flowNodeRef>

@@ -13,7 +13,7 @@
   "contains": [
     "library/who-smart-trust-phw-dvcmin-vaccine-details/blocks/prose-s001-input-fsh-models-dvcminvaccinedetails-fsh"
   ],
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-phw-dvcmin-vaccine-details/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-phw-dvcmin-vaccine-details/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-phw-dvcmin-vaccine-details",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-phw-dvcmin-vaccine-details",
   "provenance": "ingested"
 }

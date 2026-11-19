@@ -510,7 +510,7 @@
         {
           "surface": "js-package",
           "target": "node",
-          "selector": "tools/conformance-ts/cross.ts::STT-TST-003 STT-GEN-006 ${alg.toUpperCase()} ${label} issued by ${iName} verifies in ${vName}, from the same bytes"
+          "selector": "tools/conformance-ts/cross.ts::STT-TST-003-STT-GEN-006-issued-verifies-across-from-the-same-bytes[${key}]"
         },
         {
           "surface": "library",
@@ -1090,7 +1090,7 @@
         {
           "surface": "js-package",
           "target": "node",
-          "selector": "tools/conformance-ts/suite.ts::STT-TST-001 STT-VER-001 the PR 129 ${name} certificate verifies as published"
+          "selector": "tools/conformance-ts/suite.ts::STT-TST-001-STT-VER-001-PR-129-certificate-verifies-as-published[${name}]"
         },
         {
           "surface": "library",
@@ -1130,12 +1130,12 @@
         {
           "surface": "js-package",
           "target": "node",
-          "selector": "tools/conformance-ts/cross.ts::STT-TST-003 STT-GEN-006 ${alg.toUpperCase()} ${label} issued by ${iName} verifies in ${vName}, from the same bytes"
+          "selector": "tools/conformance-ts/cross.ts::STT-TST-003-STT-GEN-006-issued-verifies-across-from-the-same-bytes[${key}]"
         },
         {
           "surface": "js-package",
           "target": "node",
-          "selector": "tools/conformance-ts/cross.ts::STT-TST-003 a signature over ${aName}'s bytes, attached by ${bName} to a different payload, is refused"
+          "selector": "tools/conformance-ts/cross.ts::STT-TST-003-signature-over-other-bytes-refused[${pair}]"
         }
       ]
     },
@@ -1145,7 +1145,7 @@
         {
           "surface": "js-package",
           "target": "node",
-          "selector": "tools/conformance-ts/suite.ts::STT-TST-004 STT-TST-005 STT-VER-008 negative vector ${c.id} stops at ${c.expect.step} ${c.expect.reason}"
+          "selector": "tools/conformance-ts/suite.ts::STT-TST-004-STT-TST-005-STT-VER-008-negative-vector-stops-at-the-named-step[${key}]"
         },
         {
           "surface": "library",
@@ -1160,7 +1160,7 @@
         {
           "surface": "js-package",
           "target": "node",
-          "selector": "tools/conformance-ts/suite.ts::STT-TST-004 STT-TST-005 STT-VER-008 negative vector ${c.id} stops at ${c.expect.step} ${c.expect.reason}"
+          "selector": "tools/conformance-ts/suite.ts::STT-TST-004-STT-TST-005-STT-VER-008-negative-vector-stops-at-the-named-step[${key}]"
         },
         {
           "surface": "library",
@@ -1275,7 +1275,7 @@
         {
           "surface": "js-package",
           "target": "node",
-          "selector": "tools/conformance-ts/suite.ts::STT-TST-001 STT-VER-001 the PR 129 ${name} certificate verifies as published"
+          "selector": "tools/conformance-ts/suite.ts::STT-TST-001-STT-VER-001-PR-129-certificate-verifies-as-published[${name}]"
         },
         {
           "surface": "library",
@@ -1390,7 +1390,7 @@
         {
           "surface": "js-package",
           "target": "node",
-          "selector": "tools/conformance-ts/suite.ts::STT-TST-004 STT-TST-005 STT-VER-008 negative vector ${c.id} stops at ${c.expect.step} ${c.expect.reason}"
+          "selector": "tools/conformance-ts/suite.ts::STT-TST-004-STT-TST-005-STT-VER-008-negative-vector-stops-at-the-named-step[${key}]"
         },
         {
           "surface": "library",

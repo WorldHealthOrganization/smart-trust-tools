@@ -40,8 +40,10 @@ Every part of the graph is a cat-harness node, declared in
   logical models and what is derived from them) and [`vectors/`](vectors/)
   (test vectors): the schemas, each directory a kind of its own
   ([`typologies/`](typologies/)).
-- [`beans/`](beans/): the open issues, each naming the requirements and
-  sources it affects.
+- `beans/`: the open issues, each naming the requirements and sources it
+  affects, kept on the state branch
+  [`cat/smart-trust-tools/beans`](https://github.com/litlfred/smart-trust-tools/tree/cat/smart-trust-tools/beans/beans/defs)
+  (`bun run cat state:mount` puts it on disk).
 
 The viewers draw these fields as edges under the harness's names (FHIR R5
 Requirements): a requirement `references` what its `reference` names and is

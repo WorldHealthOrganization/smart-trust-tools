@@ -23,4 +23,6 @@ cp "$NODE_TOOLS/cytoscape/dist/cytoscape.min.js" "$vendor/"
 tsc -p "$root/tools/build-site/site/tsconfig.typedoc.json"
 rm -rf "$out/api/typedoc"
 typedoc --options "$root/tools/build-site/site/typedoc.json" --out "$out/api/typedoc" --logLevel Warn
+# TypeDoc writes its own page shell; give it the viewer top bar too.
+python3 "$root/tools/build-site/inject_topbar.py" "$out"
 echo "site ready: $out"

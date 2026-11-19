@@ -58,6 +58,8 @@ export interface Fixtures {
   testkitDsc: Uint8Array;
   /** ES256 over `data` with the testkit key, as DER (as JCA and OpenSSL give it). */
   signEs256Der(data: Uint8Array): Uint8Array;
+  /** ES256 (DER) by a fresh P-256 key that no DSC holds: for the wrong-key refusal. */
+  signEs256DerOtherKey(data: Uint8Array): Uint8Array;
   /** Verifies a 64-byte r||s ES256 signature with the testkit key. */
   verifyEs256Raw(data: Uint8Array, raw: Uint8Array): boolean;
   /** The PS256 testkit DSC, whose EKU allows test certificates only. */
@@ -143,6 +145,7 @@ export const ihe: VhlPayload = {
   fhirBaseUrl: "https://vhl-sharer.example.org",
 };
 
+// @test-runner run — each run("title", …) below is a test (check:test-gherkin).
 export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   const out: Outcome[] = [];
   const check = (name: string, ok: boolean, detail?: string) => out.push({ name, ok, detail });
@@ -325,7 +328,7 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   const store = new h.trust.TrustStore();
   store.addPem(f.pr129Pem);
   for (const [name, c] of Object.entries(f.pr129.certificates)) {
-    run(`STT-TST-001 STT-VER-001 the PR 129 ${name} certificate verifies as published`, () => {
+    run(`STT-TST-001-STT-VER-001-PR-129-certificate-verifies-as-published[${name}]`, () => {
       const r = h.verifier.verify(c.hc1, store, reg, NOW, OPTIONS);
       return r.tag === "verified" && r.val.iss === "XX" && r.val.entries.length === 1 && r.val.entries[0]!.subclaim === -6 && r.val.entries[0]!.payload.tag === "dvc-min" && r.val.entries[0]!.payload.val.n === c.payload.n && r.val.dsc.notBefore < NOW;
     });
@@ -336,7 +339,8 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   });
   const negative = f.negative;
   for (const c of negative.cases) {
-    run(`STT-TST-004 STT-TST-005 STT-VER-008 negative vector ${c.id} stops at ${c.expect.step} ${c.expect.reason}`, () => {
+    const key = `${c.id}: ${c.expect.step} ${c.expect.reason}`;
+    run(`STT-TST-004-STT-TST-005-STT-VER-008-negative-vector-stops-at-the-named-step[${key}]`, () => {
       const st = new h.trust.TrustStore();
       for (const p of c.trust ?? negative.defaults.trust) st.addPem(f.pem[p]!);
       const now = BigInt(c.now ?? negative.defaults.now);
@@ -366,7 +370,8 @@ export function runSuite(h: Hcert, f: Fixtures): Outcome[] {
   });
   run("STT-COS-006 finish refuses a signature from another key", () => {
     const p = h.issuer.prepare({ payloads: [{ tag: "dvc-min", val: newborn }], validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
-    return thrownTag(() => h.issuer.finish(p, f.signEs256Der(new Uint8Array([9])))) === "bad-signature-format";
+    // A well-formed signature over the right bytes, by a key that is not the DSC's.
+    return thrownTag(() => h.issuer.finish(p, f.signEs256DerOtherKey(p.toBeSigned()))) === "bad-signature-format";
   });
 
   // OI-38: the assertions the Rust component's run left unnamed. Each one

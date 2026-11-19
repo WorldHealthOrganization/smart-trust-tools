@@ -32,7 +32,8 @@
           "type": "required",
           "expectation": "For Track 1, the library reads the same VHL link (url, flags, key) from the HCERT, and with the track's PIN fetches the ITI-YY5 manifest and decrypts the IPS bundle the ITB retrieves."
         }
-      ]
+      ],
+      "feature": "test/features/track-1-vhl.feature"
     },
     {
       "id": "track-2-icvp",
@@ -53,7 +54,8 @@
           "type": "required",
           "expectation": "For Track 2, the library returns the ICVP claim byte for byte as the content the ITB passes to the ICVPClaimtoIPS StructureMap."
         }
-      ]
+      ],
+      "feature": "test/features/track-2-icvp.feature"
     },
     {
       "id": "track-3-ph4h-meow",
@@ -74,7 +76,8 @@
           "type": "required",
           "expectation": "For Track 3, the library returns the PH4H medication overview claim byte for byte as the content the ITB passes to the MedicationOverviewMinToMedicationOverviewBundle StructureMap."
         }
-      ]
+      ],
+      "feature": "test/features/track-3-ph4h-meow.feature"
     }
   ],
   "dependencies": [

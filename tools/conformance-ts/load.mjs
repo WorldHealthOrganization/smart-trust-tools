@@ -3,7 +3,7 @@
 // and the fixtures built from vectors/ (signing with node:crypto and the
 // testkit keys, so the suites themselves need no Node types).
 import { readFileSync } from "node:fs";
-import { constants, createPrivateKey, sign, createVerify } from "node:crypto";
+import { constants, createPrivateKey, sign, createVerify, generateKeyPairSync } from "node:crypto";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -36,6 +36,8 @@ const pemPaths = new Set([...negative.defaults.trust, ...negative.cases.flatMap(
 const pemDer = (pem) => new Uint8Array(Buffer.from(pem.split("-----BEGIN CERTIFICATE-----")[1].split("-----END CERTIFICATE-----")[0].replace(/\s/g, ""), "base64"));
 const key = createPrivateKey(read("vectors/testkit/es256-key.pem"));
 const psKey = createPrivateKey(read("vectors/testkit/ps256-key.pem"));
+// A P-256 key no DSC holds, made fresh each run: a signature by it must be refused (STT-COS-006).
+const otherKey = generateKeyPairSync("ec", { namedCurve: "P-256" }).privateKey;
 export const fixtures = {
   pr129: JSON.parse(read("vectors/smart-trust-pr129/dvc-qr-example-XXA.json")),
   pr129Pem: read("vectors/smart-trust-pr129/dvc-qr-example-XXA-dsc.pem"),
@@ -52,6 +54,7 @@ export const fixtures = {
   jwe: JSON.parse(read("vectors/ihe-vhl/jwe-dir-a256gcm.json")),
   testkitDsc: pemDer(read("vectors/testkit/es256-dsc.pem")),
   signEs256Der: (data) => new Uint8Array(sign("sha256", data, key)),
+  signEs256DerOtherKey: (data) => new Uint8Array(sign("sha256", data, otherKey)),
   verifyEs256Raw: (data, raw) => createVerify("sha256").update(data).verify({ key, dsaEncoding: "ieee-p1363" }, raw),
   testkitPsDsc: pemDer(read("vectors/testkit/ps256-dsc-test-eku.pem")),
   // COSE PS256 (RFC 8230): RSASSA-PSS, SHA-256, MGF1 with SHA-256, salt length 32.
