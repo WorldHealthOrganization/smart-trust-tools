@@ -1,0 +1,367 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-qr-code-generation",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s001-generating-a-qr-code",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Generating a QR Code",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-generating-a-qr-code.md",
+      "narrative": null,
+      "content": "### Generating a QR Code\n\nThis page is a step-by-step, implementer-facing walkthrough of how a signed\nhealth certificate becomes a QR code on a piece of paper or a phone screen, and\nhow a verifier turns that QR code back into trustworthy data.\n\nThe container, the signature and the transport encoding are the *same* for every\nGDHCN trust domain, and are specified normatively in the\n[HCERT Specification](hcert_spec.html). What changes from one use case to the\nnext is only the **payload**: which logical model goes inside the `hcert` claim,\nand under which subclaim. Everything after that choice is",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s002-1-the-pipeline-at-a-glance",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1. The pipeline at a glance",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-1-the-pipeline-at-a-glance.md",
+      "narrative": null,
+      "content": "#### 1. The pipeline at a glance\n\n```\n   Step 1  Select payload type              DVC, for this walkthrough\n   Step 2  Assemble payload                 { \"n\": ..., \"dob\": ..., \"vx\": {...} }\n   Step 3  Wrap in CWT claim set            { 1: iss, 6: iat, 4: exp, -260: { -6: payload } }\n   Step 4  Serialise as CBOR                binary\n   Step 5  Sign as COSE_Sign1 (ES256)       binary, tag 18\n   Step 6  Compress with ZLIB/Deflate       binary\n   Step 7  Encode as Base45                 ASCII\n   Step 8  Prefix context identifier        \"HC1:\" + ASCII\n   Step 9  Render QR (Alphanumeric, EC Q)   im",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s003-2-step-1-select-the-payload-type",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2. Step 1 — Select the payload type",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-2-step-1-select-the-payload-type.md",
+      "narrative": null,
+      "content": "#### 2. Step 1 — Select the payload type\n\nA payload is identified by a **subclaim** inside the `hcert` claim (`-260`).\nThe subclaims, and the logical model each one carries, are enumerated in the\n[HCert logical model](StructureDefinition-HCert.html); section\n[3.2.7.1](hcert_spec.html#3271-subclaims) of the HCERT Specification is\nauthoritative for which are assigned. The registered trust domains are listed in\nthe [GDHCN Trust Domain value set](ValueSet-Domains.html) and described under\n[Trust Domains](trust_domains.html).\n\nTwo things are worth knowing before picking a number. Subclaims **0 and",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s004-3-step-2-assemble-the-payload",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3. Step 2 — Assemble the payload",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-3-step-2-assemble-the-payload.md",
+      "narrative": null,
+      "content": "#### 3. Step 2 — Assemble the payload\n\nPopulate the logical model for the payload type you selected. For a DVC that is\n[DVCMinPreQual](http://smart.who.int/trust-phw/StructureDefinition-DVCMinPreQual.html),\nwhose vaccine details are\n[DVCMinVaccineDetailsPreQual](http://smart.who.int/trust-phw/StructureDefinition-DVCMinVaccineDetailsPreQual.html).\nFollow those definitions for the element list, cardinalities and bindings rather\nthan any copy of them.\n\n`DVCMinPreQual` is the concrete model: its parent `DVCMin` is abstract, as is\n`DVCMinVaccineDetails`, so neither can be instantiated directly.\n\nTh",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s005-4-step-3-build-the-cwt-claim-set",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "4. Step 3 — Build the CWT claim set",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s005-4-step-3-build-the-cwt-claim-set.md",
+      "narrative": null,
+      "content": "#### 4. Step 3 — Build the CWT claim set\n\nPlace the payload under its subclaim, inside the `hcert` claim, inside a\n[CWT claim set](StructureDefinition-CWTPayload.html) — see that model for the\nclaim keys and types, and\n[section 3.2](hcert_spec.html#32-cwt-claims) of the specification for their\nnormative definitions.\n\n`exp` deserves attention because it is the only revocation mechanism this\nspecification offers: certificates cannot be reliably revoked once issued, so\nthe validity period must be chosen to bound the damage from a compromised key,\nbalanced against the holder's ability to come back",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s006-5-step-4-serialise-as-cbor",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "5. Step 4 — Serialise as CBOR",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s006-5-step-4-serialise-as-cbor.md",
+      "narrative": null,
+      "content": "#### 5. Step 4 — Serialise as CBOR\n\nEncode the claim set as CBOR ([RFC 7049](https://tools.ietf.org/html/rfc7049)).\nThe JSON shown on this page and in the logical models is schema notation only —\n**the wire format is CBOR**, and an implementation need never produce the JSON\nform at all.\n\nStrings SHOULD be NFC-normalised. Decoders SHOULD be permissive about input that\nis not.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s007-6-step-5-sign-as-a-cose-sign1",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "6. Step 5 — Sign as a COSE_Sign1",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s007-6-step-5-sign-as-a-cose-sign1.md",
+      "narrative": null,
+      "content": "#### 6. Step 5 — Sign as a COSE_Sign1\n\nWrap the CBOR payload in a single-signer COSE structure\n([RFC 8152](https://tools.ietf.org/html/rfc8152)), CBOR tag `18`, with `alg`\n(label 1) and `kid` (label 4) in the protected header.\n\nES256 is the primary algorithm (`alg` `-7`) and PS256 the secondary (`-37`).\nBoth MUST be implemented even though only one signs any given certificate; the\nsecondary exists so that a break in the primary does not strand the whole\nnetwork. `kid` MAY instead sit in the unprotected header, and verifiers MUST\naccept both placements — but when it appears in both, the protect",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s008-7-step-6-compress",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "7. Step 6 — Compress",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s008-7-step-6-compress.md",
+      "narrative": null,
+      "content": "#### 7. Step 6 — Compress\n\nCompress the COSE structure with ZLIB\n([RFC 1950](https://tools.ietf.org/html/rfc1950)) using Deflate\n([RFC 1951](https://tools.ietf.org/html/rfc1951)). Compression comes *after*\nsigning, so the verifier decompresses before it verifies.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s009-8-step-7-encode-as-base45",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "8. Step 7 — Encode as Base45",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s009-8-step-7-encode-as-base45.md",
+      "narrative": null,
+      "content": "#### 8. Step 7 — Encode as Base45\n\nEncode the compressed bytes with\n[Base45](https://datatracker.ietf.org/doc/draft-faltstrom-base45). Base45 exists\nfor one reason: its 45-character alphabet is exactly the QR Alphanumeric\ncharacter set, which stores data far more densely than byte mode.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s010-9-step-8-prefix-the-context-identifier",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "9. Step 8 — Prefix the context identifier",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s010-9-step-8-prefix-the-context-identifier.md",
+      "narrative": null,
+      "content": "#### 9. Step 8 — Prefix the context identifier\n\nPrefix the Base45 string with `HC1:`. Verifiers use this to recognise what they\nhave scanned and which decoding scheme to apply. A future\nbackwards-incompatible revision will use a new identifier, incrementing through\n`[1-9]` and then `[A-Z]`.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s011-10-step-9-render-the-qr-code",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "10. Step 9 — Render the QR code",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s011-10-step-9-render-the-qr-code.md",
+      "narrative": null,
+      "content": "#### 10. Step 9 — Render the QR code\n\n| Property | Requirement |\n|----------|-------------|\n| Symbology | QR Code, ISO/IEC 18004:2015 — SHALL |\n| Encoding mode | Alphanumeric (Mode 2, symbols `0010`) — MUST, in conjunction with Base45 |\n| Error correction | Level `Q`, approximately 25% — RECOMMENDED |\n| Rendered size | 35 mm to 60 mm diagonal — RECOMMENDED |\n\nIf you are printing below 300 dpi, make sure each module is rendered as an exact\nsquare. Non-proportional scaling turns modules into rectangles and is a frequent\ncause of certificates that scan on screen but not on paper.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s012-11-verifying-the-same-steps-upwards",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "11. Verifying: the same steps upwards",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s012-11-verifying-the-same-steps-upwards.md",
+      "narrative": null,
+      "content": "#### 11. Verifying: the same steps upwards\n\n1. Confirm the `HC1:` prefix and strip it.\n2. Base45-decode, then ZLIB-decompress.\n3. Parse the COSE_Sign1 and read `alg` and `kid` from the protected header.\n4. **Validate the input before trusting it.** Parsing the protected header\n   necessarily happens before signature verification, which makes it an attack\n   surface; check types and lengths defensively. See\n   [section 6.3](hcert_spec.html#63-input-data-validation).\n5. Look the `kid` up on the trust list, retrieving every DSC that matches.\n6. Rebuild the `Sig_structure` and verify the signature",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s013-12-worked-example-a-newborn-birth-dose-dvc",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "12. Worked example — a newborn birth dose DVC",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s013-12-worked-example-a-newborn-birth-dose-dvc.md",
+      "narrative": null,
+      "content": "#### 12. Worked example — a newborn birth dose DVC",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s014-12-1-scenario",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "12.1 Scenario",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s014-12-1-scenario.md",
+      "narrative": null,
+      "content": "##### 12.1 Scenario\n\nA family from the Lao People's Democratic Republic is visiting relatives abroad\nwhen the mother delivers. The newborn receives the routine birth-dose\nvaccinations of the **host country's** national childhood immunization schedule\nbefore discharge. The clinic records the doses and issues a signed certificate;\nthe family has one shared phone between them, so the clinic prints a paper card\nwith the QR code and offers digital delivery as an option.\n\nThis drives the design decisions directly:\n\n* **A DVC rather than an ICVP.** Hepatitis B and BCG are routine schedule\n  vaccines,",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s015-12-2-host-country-schedule",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "12.2 Host-country schedule",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s015-12-2-host-country-schedule.md",
+      "narrative": null,
+      "content": "##### 12.2 Host-country schedule\n\nThailand's Expanded Programme on Immunization gives two vaccines at birth: **BCG\nas soon as possible after birth**, and the **first dose of hepatitis B vaccine\nwithin 24 hours of birth**. The DTP-HepB and OPV series begin later, at 2, 4 and\n6 months. A birth visit in Thailand therefore produces exactly the two\ncertificates modelled here.\n\nImplementers should confirm the current schedule against the national authority\nbefore relying on it; schedules are revised.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s016-12-3-issuer",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "12.3 Issuer",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s016-12-3-issuer.md",
+      "narrative": null,
+      "content": "##### 12.3 Issuer\n\nThe example is issued by GDHCN **DEV participant `XXR`**, not by any Member\nState. GDHCN participant codes are ISO 3166-1 alpha-3, while the CWT `iss` claim\nand the X.509 country attribute take the alpha-2 form — here `XR`, matching the\n`C=XR` attribute of the Document Signing Certificate subject.\n\nSigning uses a key whose public key is onboarded to the GDHCN DEV trust network,\nso the example verifies against the DEV trust list. The private key is held in\nthe build environment and never enters this repository; only the DSC, the SCA,\nthe QR images and the `HC1:` strings are p",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s017-12-4-the-payload",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "12.4 The payload",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s017-12-4-the-payload.md",
+      "narrative": null,
+      "content": "##### 12.4 The payload\n\nHepatitis B birth dose, `hcert` subclaim `-6`, shown in JSON notation. `vp`\ncarries the PreQual product identifier of the product actually administered:\n\n```json\n{\n  \"n\":   \"Chanthala SOUVANNALATH\",\n  \"dob\": \"2026-10-21\",\n  \"s\":   \"female\",\n  \"nt\":  \"LAO\",\n  \"gn\":  \"Mali SOUVANNALATH\",\n  \"vx\": {\n    \"vp\": \"a3K3X000006MiiXUAS\",\n    \"dv\": \"2026-10-21\",\n    \"cn\": \"Dr Pimchanok WATTANA\",\n    \"is\": \"org-xxr-provincial-hospital\",\n    \"bo\": \"HEPB-2026-0914\"\n  },\n  \"v\": \"1.0.0\"\n}\n```\n\n`a3K3X000006MiiXUAS` is *Hepatitis B Vaccine (rDNA) (Paediatric)* (FVP-P-132) in\nthe [WHO PreQ",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s018-12-5-size-at-each-stage",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "12.5 Size at each stage",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s018-12-5-size-at-each-stage.md",
+      "narrative": null,
+      "content": "##### 12.5 Size at each stage\n\nFor the hepatitis B certificate:\n\n| Stage | Size |\n|-------|------|\n| CWT claim set, CBOR | 222 bytes |\n| COSE_Sign1, signed | 307 bytes |\n| ZLIB/Deflate compressed | 293 bytes |\n| Base45 + `HC1:` prefix | 444 characters |\n| QR symbol | Version 16, error correction `Q`, Alphanumeric mode |\n\nThe signature and its headers account for 85 of the 307 bytes — on payloads this\nsmall, the cryptography costs more than the clinical data. This is why the\nminimal models use two-character element names, and why a payload much larger\nthan this does not belong in a QR code at a",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-qr-code-generation/blocks/prose-s019-12-6-the-certificates",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "12.6 The certificates",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s019-12-6-the-certificates.md",
+      "narrative": null,
+      "content": "##### 12.6 The certificates\n\nHepatitis B birth dose:\n\n<div style=\"display:block\">\n  <img src=\"dvc-qr-example-hepb1-XXR.png\" alt=\"DVC QR code, Hepatitis B birth dose, GDHCN DEV participant XXR\" width=\"300\" />\n</div>\n\n```\nHC1:NCFOXN%TSMAHN-HHPC*8W$BM70GZW8WI47X5JU9V21HJI.OR.6J:X90$TZIPAN9I6TSQLMN2SRPOK62YU%E6SOEGW2Z0W/TO+4W3R3ZP3XQ7KUHMQQTOE2QERM2ZGA2:UG%UBPISWUO FFPEUCAQZ4K%I7YV4SVO*I1R5LK90DQK7E$BESW6846OVQICMKR6PK96M53A5/41B$P6 0JIIO*LM4UJH2/JT0DJ$JAGU09VCRCKCWC.XI5TBC+J$ZIMOBKEALOB3YIX1JM7JZIJXUK0HIQVBPEB:CJZTAI8A+BDWZD$BCTD0D4OZFJ3JKJMOZD5+B9$/G547Z2ETZVJFD-ST53VMK9E/AUJ6R9KFAQB+RL7JYX69$1K",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

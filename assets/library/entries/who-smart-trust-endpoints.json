@@ -1,0 +1,158 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-endpoints",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-endpoints/blocks/prose-s001-endpoints",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Endpoints",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-endpoints.md",
+      "narrative": null,
+      "content": "### Endpoints \n\nThe following describes the active services and endpoints for the GDHCN Trust Network Gateway.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-endpoints/blocks/prose-s002-operational-metadata",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Operational Metadata",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-operational-metadata.md",
+      "narrative": null,
+      "content": "#### Operational Metadata",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-endpoints/blocks/prose-s003-trust-domains",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Trust Domains",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-trust-domains.md",
+      "narrative": null,
+      "content": "##### Trust Domains\n\nThe list of active trust domains is maintained in the [GDHCN Trust Domain Value Set](ValueSet-Domains.html).",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-endpoints/blocks/prose-s004-key-usage-codes",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Key Usage Codes",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-key-usage-codes.md",
+      "narrative": null,
+      "content": "##### Key Usage Codes\n\nThe list of key usage codes is maintained in the [GDHCN Key Usage Value Set](ValueSet-KeyUsage.html).",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-endpoints/blocks/prose-s005-participants",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Participants",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s005-participants.md",
+      "narrative": null,
+      "content": "##### Participants\n\nThe list of onboarded Trust Network Participants is availabe in the  [GDHCN Participants Value Set](ValueSet-Participants.html).",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-endpoints/blocks/prose-s006-trustlist-distribution-endpoints",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Trustlist Distribution Endpoints",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s006-trustlist-distribution-endpoints.md",
+      "narrative": null,
+      "content": "#### Trustlist Distribution Endpoints\n\nTHe following are the endpoints for the [GDHCN DID Trust List](concepts_did_gdhcn.html) for each of development (DEV), user-acceptence testing (UAT) and production (PROD) **environment*s:\n\n|  Environment   |      Variant         | URL                                                                                     |\n|---------|------------|--------------------------------------------------------------------------------------------------------------|\n|  DEV   |  Embedded    | [https://tng-cdn-dev.who.int/v2/trustlist/did.json](https://tng-cdn-dev.who.in",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-endpoints/blocks/prose-s007-trust-network-gateway",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Trust Network Gateway",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s007-trust-network-gateway.md",
+      "narrative": null,
+      "content": "#### Trust Network Gateway \n\n\nTHe following are the endpoints for the [Trust Network Gateway](concepts.html#trust-network-gateway-tng) for each of development (DEV), user-acceptence testing (UAT) and production (PROD) **environment*s:\n\n| Environment | URL |\n|-------------|-----|\n| PROD |\t https://tng.who.int |\n| UAT |\t https://tng-uat.who.int |\n| DEV |\t https://tng-dev.who.int |",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-endpoints/blocks/prose-s008-status-monitoring-dashboards",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Status Monitoring Dashboards",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s008-status-monitoring-dashboards.md",
+      "narrative": null,
+      "content": "#### Status Monitoring Dashboards\n\nThe following dashboards reflect the realtime status of key materials for each of development (DEV), user-acceptence testing (UAT) and production (PROD) **environment*s:\n\n\n| Environment | Dashboard | \n|----------|--------------|\n| DEV | [Country certificate expiry](https://tng-monitor-dev.who.int/grafana/d/dev-cert-expiry/dev-country-certificate-expiry) |\n| DEV | [Country Onboarding Status](https://tng-monitor-dev.who.int/grafana/d/ddh0xqz9diio0c/dev-country-onboarding-status) |\n| DEV | [Country Queries](https://tng-monitor-dev.who.int/grafana/d/dev-country-q",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

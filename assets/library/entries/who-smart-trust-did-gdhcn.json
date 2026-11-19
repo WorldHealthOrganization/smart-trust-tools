@@ -1,0 +1,120 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-did-gdhcn",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-did-gdhcn/blocks/prose-s001-gdhcn-trustlists",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "GDHCN Trustlists",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-gdhcn-trustlists.md",
+      "narrative": null,
+      "content": "#### GDHCN Trustlists\n\nThis specification describes the publication of Global Digital Health Certification Network (GDHCN) key material as Decentralized Identifier (DID) documents. \nDIDs are specified by the [W3C DID Core Specification](https://www.w3.org/TR/did-core/).\nThe [DID concept](concepts_did.html) summarizes the core drivers and usage of the DID format in scope of GDHCN. \n\nA key to real interoperability among existing trust networks is to find alignment on trust list formats.\n\n| Version | Status   | Description",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-did-gdhcn/blocks/prose-s002-trustlists-2-0-0",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Trustlists 2.0.0",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-trustlists-2-0-0.md",
+      "narrative": null,
+      "content": "##### Trustlists 2.0.0\n\nVersion 2.0.0 introduces two **variant**s of the trust lists - embedded and by reference.\n\n<img src=\"did-trustlist-types.png\" alt=\"Types of DID trustlists\" style=\"width:300px; float:none; margin: 0px 0px 0px 0px;\"/>\n\nFor each of development (DEV), user-acceptence testing (UAT) and production (PROD) **environment**s there is a trust list according to the following table:\n\n|  Environment   |      Variant         | URL                                                                                     |\n|---------|------------|----------------------------------------------",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-did-gdhcn/blocks/prose-s003-did-trustlists-structure",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "DID trustlists structure",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-did-trustlists-structure.md",
+      "narrative": null,
+      "content": "###### DID trustlists structure\n\nVersion 2.0.0 introduces a hierarchical structure for DID documents, to support more fine grained resolution and discovery of key material.\nThese DID documents are parameterized by the following according to the levels in the following table.\n\n| Level          | Description                                                                                       |\n|----------------|---------------------------------------------------------------------------------------------------|\n| **root**           | A fixed parameter for all trusted key material or trusted DID",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-did-gdhcn/blocks/prose-s004-example-did-documents",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Example DID documents",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-example-did-documents.md",
+      "narrative": null,
+      "content": "###### Example DID documents\n\nReference type DID document linking the embedded trustlist for **$domain**: DCC, **$participant**: XXA and key **$usage** type: DSC.\n\n```js\n{\n    \"@context\": [\n        \"https://www.w3.org/ns/did/v1\",\n        \"https://w3id.org/security/suites/jws-2020/v1\"\n    ], \n        \"id\": \"did:web:worldhealthorganization.github.io:tng-cdn-dev:v2:trustlist-ref:DCC:XXA:DSC\",\n        \"controller\": \"did:web:worldhealthorganization.github.io:tng-cdn-dev:v2:trustlist-ref:DCC:XXA\",\n        \"verificationMethod\": [\n        \"did:web:worldhealthorganization.github.io:tng-cdn-dev:v2:trust",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-did-gdhcn/blocks/prose-s005-environments-repositories",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Environments & Repositories",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s005-environments-repositories.md",
+      "narrative": null,
+      "content": "###### Environments & Repositories\n\nThe trustlists are maintained using GitHub and published via GitHub pages.\n\n| Environment | Repository Link                                                                                                  | Pages Link                                                                                                     |\n|-------------|------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-did-gdhcn/blocks/prose-s006-trustlist-specification-1-0-0",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Trustlist Specification 1.0.0",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s006-trustlist-specification-1-0-0.md",
+      "narrative": null,
+      "content": "##### Trustlist Specification 1.0.0\n\n[Initial specification](concepts_did.html) is deprecated.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

@@ -1,0 +1,405 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "ihe-iti-vhl-iti-yy3",
+  "blocks": [
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s001-input-pagecontent-iti-yy3-md",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/pagecontent/ITI-YY3.md",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-pagecontent-iti-yy3-md.md",
+      "narrative": null,
+      "content": "{% assign linkvhlh = '<a href=\"ActorDefinition-VHLHolder.html\">VHL Holder</a>' %}\n{% assign linkvhls = '<a href=\"ActorDefinition-VHLSharer.html\">VHL Sharer</a>' %}\n{% assign linkvhlr = '<a href=\"ActorDefinition-VHLReceiver.html\">VHL Receiver</a>' %}\n\n {% assign reqGenerateVHLRequest = site.data.Requirements-InitiateVHLGenerationRequest %}\n {% assign reqGenerateVHLResponse = site.data.Requirements-RespondtoGenerateVHLRequest %}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s002-2-3-yy3-1-scope",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.1 Scope",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-2-3-yy3-1-scope.md",
+      "narrative": null,
+      "content": "### 2:3.YY3.1 Scope\n\n{% assign reqGenerateVHLRequestTitle = reqGenerateVHLRequest.extension  | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.title\" | first %}\n{% assign reqGenerateVHLResponseTitle = reqGenerateVHLResponse.extension  | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.title\" | first %}\n\n\n{% assign reqGenerateVHLRequestDescription = reqGenerateVHLRequest.extension  | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.description\" | first %}\n{% assign reqGenerateVHLResponseDescripti",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s003-2-3-yy3-2-actor-roles",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.2 Actor Roles",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-2-3-yy3-2-actor-roles.md",
+      "narrative": null,
+      "content": "### 2:3.YY3.2 Actor Roles\n\n| Actor | Role |\n|-------|------|\n| {{ linkvhlh}} | {{ reqGenerateVHLRequestTitle.valueString }}     |\n| {{ linkvhls }}            | {{ reqGenerateVHLResponseTitle.valueString }} |\n{: .grid}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s004-2-3-yy3-3-referenced-standards",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.3 Referenced Standards",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-2-3-yy3-3-referenced-standards.md",
+      "narrative": null,
+      "content": "### 2:3.YY3.3 Referenced Standards\n\n- **SMART Health Links Specification**: [SMART Health Links and SMART Health Cards](http://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html)\n- **RFC 4648**: Base64url Encoding\n- **RFC 7515**: JSON Web Signature (JWS)\n- **ISO/IEC 18004:2015**: QR Code specification\n- **FHIR R4**: [HL7 FHIR Release 4](http://hl7.org/fhir/R4/)\n\n**OAuth with SSRAA (Optional):**\n- **RFC 7519**: JSON Web Token (JWT)\n- **HL7 Security for Scalable Registration, Authentication, and Authorization IG**: [SSRAA](http://hl7.org/fhir/us/udap-security/) — used by the V",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s005-2-3-yy3-4-messages",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4 Messages",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s005-2-3-yy3-4-messages.md",
+      "narrative": null,
+      "content": "### 2:3.YY3.4 Messages\n\n<figure >\n  <div style=\"width:35em; max-width:100%;\">\n     {%include ITI-YY3.svg%}\n  </div>\n  <p id=\"figure-2:3.YY3.4-1\" class=\"figureTitle\">Figure 2:3.YY3.4-1: Generate VHL Interaction Diagram</p>\n</figure>\n<br clear=\"all\">",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s006-2-3-yy3-4-1-generate-vhl-request-message",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4.1 Generate VHL Request Message",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s006-2-3-yy3-4-1-generate-vhl-request-message.md",
+      "narrative": null,
+      "content": "#### 2:3.YY3.4.1 Generate VHL Request Message\nThis message is implemented as an HTTP GET operation from the client app used by the Holder to the VHL Sharer using the FHIR $generate-vhl operation described in [2:3.YY3.4.1.2 Message Semantics](#23yy3412-message-semantics).",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s007-2-3-yy3-4-1-1-trigger-events",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4.1.1 Trigger Events",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s007-2-3-yy3-4-1-1-trigger-events.md",
+      "narrative": null,
+      "content": "##### 2:3.YY3.4.1.1 Trigger Events\n{{ reqGenerateVHLRequestDescription.valueMarkdown}}\n\n{% include requirements-list-statements.liquid site=site req=reqGenerateVHLRequest  %}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s008-2-3-yy3-4-1-2-message-semantics",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4.1.2 Message Semantics",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s008-2-3-yy3-4-1-2-message-semantics.md",
+      "narrative": null,
+      "content": "##### 2:3.YY3.4.1.2 Message Semantics\n\nThe Generate VHL message is a FHIR operation request as defined in FHIR (<http://hl7.org/fhir/operations.html>) with the [$generate-vhl operation definition](OperationDefinition-generate-vhl.html).\n\nGiven that the parameters are not complex types, the HTTP GET operation shall be used as defined in FHIR (<http://hl7.org/fhir/operations.html#request>).\n\nThe name of the operation is `$generate-vhl`, and it is applied to FHIR Patient Resource type.\n\nThe URL for this operation is: `[base]/Patient/$generate-vhl`\n\nWhere **[base]** is the URL of VHL Sharer Servic",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s009-2-3-yy3-4-1-2-1-output-carrier-options",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4.1.2.1 Output Carrier Options",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s009-2-3-yy3-4-1-2-1-output-carrier-options.md",
+      "narrative": null,
+      "content": "###### 2:3.YY3.4.1.2.1 Output Carrier Options\n\nThe `format` request parameter selects one of two carriers for the returned VHL. Both carriers convey the same VHL payload (manifest URL, decryption key, flags, label, expiration, optional extension); they differ only in encoding, signature format, and the trust chain used for verification. **On a successful response**, exactly one of the response output parameters `qrcode` or `verifiableCredential` (see [2:3.YY3.4.2.2 Message Semantics](#23yy3422--message-semantics)) SHALL be populated; on failure, the response is an `OperationOutcome` with neith",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s010-2-3-yy3-4-1-3-expected-actions",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4.1.3 Expected Actions",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s010-2-3-yy3-4-1-3-expected-actions.md",
+      "narrative": null,
+      "content": "##### 2:3.YY3.4.1.3 Expected Actions\n{{ reqGenerateVHLResponseDescription.valueMarkdown }}\n\n{% include requirements-list-statements.liquid req=reqGenerateVHLResponse site=site  %}\n\nBased on the requested `format`, the {{ linkvhls }} generates the VHL as either a QR code (HCERT/CWT-encoded per the [WHO SMART Trust HCERT specification](https://smart.who.int/trust/hcert_spec.html), with the VHL payload embedded at claim key 5) or a Verifiable Credential (JSON-LD per the [W3C VC Data Model v2](https://www.w3.org/TR/vc-data-model-2.0/), with the VHL payload under `credentialSubject`). Both carriers",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s011-2-3-yy3-4-2-generate-vhl-response-message",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4.2  Generate VHL Response Message",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s011-2-3-yy3-4-2-generate-vhl-response-message.md",
+      "narrative": null,
+      "content": "#### 2:3.YY3.4.2  Generate VHL Response Message \nThe {{ linkvhls }} returns failure, or generates and returns a QR code containing the VHL encoded as an HCERT/CWT structure.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s012-2-3-yy3-4-2-1-trigger-events",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4.2.1 Trigger Events",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s012-2-3-yy3-4-2-1-trigger-events.md",
+      "narrative": null,
+      "content": "##### 2:3.YY3.4.2.1 Trigger Events\nThis message shall be sent when a request initiated by the {{linkvhlh}} has been processed successfully.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s013-2-3-yy3-4-2-2-message-semantics",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4.2.2  Message Semantics",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s013-2-3-yy3-4-2-2-message-semantics.md",
+      "narrative": null,
+      "content": "##### 2:3.YY3.4.2.2  Message Semantics\n\nSee [ITI TF-2: Appendix Z.6](https://profiles.ihe.net/ITI/TF/Volume2/ch-Z.html#z.6-populating-the-expected-response-format) for more details on response format handling.\n\nThe response message is a FHIR operation response (<http://hl7.org/fhir/operations.html#response>).\n\nOn Failure, the response message is an HTTP status code of 4xx or 5xx\nindicates an error, and an OperationOutcome Resource shall be returned\nwith details.\n\n**Success Response:**\n\nThe response SHALL include exactly one of the following output parameters, selected by the `format` input:\n\n|",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s014-2-3-yy3-4-2-3-expected-actions",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.4.2.3 Expected Actions",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s014-2-3-yy3-4-2-3-expected-actions.md",
+      "narrative": null,
+      "content": "##### 2:3.YY3.4.2.3 Expected Actions\n\nThe VHL Holder SHALL:\n- Display or print the QR code for scanning by VHL Receivers\n- Cache the encryption key securely (extracted from VHL payload) for future document decryption\n- If a passcode was provided during generation:\n  - Securely store the plaintext passcode separately from the QR code\n  - Provide the passcode to authorized VHL Receivers for manifest retrieval (ITI-YY5)\n  - Use secure transmission methods when sharing the passcode out-of-band\n\nThe VHL Holder MAY:\n- Maintain record of QR code presentations\n- Revoke VHL access if supported by VHL S",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s015-2-3-yy3-5-security-considerations",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.5 Security Considerations",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s015-2-3-yy3-5-security-considerations.md",
+      "narrative": null,
+      "content": "### 2:3.YY3.5 Security Considerations",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s016-2-3-yy3-5-1-encryption-key-security",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.5.1 Encryption Key Security",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s016-2-3-yy3-5-1-encryption-key-security.md",
+      "narrative": null,
+      "content": "#### 2:3.YY3.5.1 Encryption Key Security\n- The 32-byte encryption key SHALL be generated using a cryptographically secure random number generator\n- The key is embedded in the VHL payload within the QR code and SHALL be kept confidential\n- Loss of the key means loss of access to encrypted documents\n- The encryption key is not directly visible in the QR code as it is embedded within the signed and compressed HCERT structure",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s017-2-3-yy3-5-2-qr-code-security",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.5.2 QR Code Security",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s017-2-3-yy3-5-2-qr-code-security.md",
+      "narrative": null,
+      "content": "#### 2:3.YY3.5.2 QR Code Security\n- QR codes contain the complete VHL including the encryption key\n- QR codes can be photographed or copied - use time-limited expiration\n- QR codes SHALL be encoded as HCERT with digital signatures for authenticity\n- Display QR codes in controlled environments when possible\n- Consider short expiration times (minutes to hours) for high-security scenarios",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s018-2-3-yy3-5-3-passcode-security",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.5.3 Passcode Security",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s018-2-3-yy3-5-3-passcode-security.md",
+      "narrative": null,
+      "content": "#### 2:3.YY3.5.3 Passcode Security\n- If a passcode is provided, it SHALL be securely hashed before storage using industry-standard algorithms (bcrypt, Argon2, PBKDF2)\n- The plaintext passcode SHALL NOT be included in the VHL URL or QR code\n- The plaintext passcode SHALL NOT be stored by the VHL Sharer\n- The VHL Holder SHOULD securely store the plaintext passcode for sharing with authorized VHL Receivers\n- During ITI-YY5 Retrieve Manifest, the VHL Receiver provides the passcode which the VHL Sharer validates against the stored hash\n- Use of passcode adds an additional authentication factor beyo",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s019-2-3-yy3-5-4-manifest-url-construction",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.5.4 Manifest URL Construction",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s019-2-3-yy3-5-4-manifest-url-construction.md",
+      "narrative": null,
+      "content": "#### 2:3.YY3.5.4 Manifest URL Construction\n- The manifest URL SHALL include all mandatory FHIR search parameters\n- The `_include` parameter SHOULD only be included if the VHL Sharer supports the Include DocumentReference Option\n- This ensures VHL Receivers can successfully retrieve the manifest using ITI-YY5",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s020-2-3-yy3-5-5-oauth-with-ssraa-option-fhir-base-ur",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.5.5 OAuth with SSRAA Option — FHIR Base URL Extension",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s020-2-3-yy3-5-5-oauth-with-ssraa-option-fhir-base-ur.md",
+      "narrative": null,
+      "content": "#### 2:3.YY3.5.5 OAuth with SSRAA Option — FHIR Base URL Extension\nWhen the {{ linkvhls }} supports the OAuth with SSRAA Option, it SHALL include `extension.fhirBaseUrl` in the VHL payload:\n- The `fhirBaseUrl` value SHALL be the canonical FHIR base URL of the {{ linkvhls }} (e.g., `https://vhl-sharer.example.org`)\n- This URL is used by the {{ linkvhlr }} to perform UDAP Discovery (`{fhirBaseUrl}/.well-known/udap`) and, if not already registered, Dynamic Client Registration with the {{ linkvhls }} before initiating ITI-YY5\n- The `fhirBaseUrl` value is typically derivable from the `url` field (m",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy3/blocks/prose-s021-2-3-yy3-5-6-vc-enveloped-vhl-option",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY3.5.6 VC Enveloped VHL Option",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s021-2-3-yy3-5-6-vc-enveloped-vhl-option.md",
+      "narrative": null,
+      "content": "#### 2:3.YY3.5.6 VC Enveloped VHL Option\n- The VC's `DataIntegrityProof` SHALL chain to a trust anchor in the trust list (same framework used for HCERT/CWT verification).\n- The VC `expirationDate` SHOULD be consistent with the VHL payload `exp`; the VHL Receiver SHALL reject the VHL if either has passed.\n- Confidentiality considerations are equivalent to the QR form: the VC carries the `key` and MUST be treated as sensitive.\n- VHL Sharers MAY issue single-use VCs; short lifetimes are RECOMMENDED for high-security scenarios.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

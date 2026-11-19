@@ -1,0 +1,16 @@
+[
+  {
+    "id": "who-smart-trust-trust-domains",
+    "type": "document",
+    "title": "Trust Domains",
+    "URL": "https://github.com/WorldHealthOrganization/smart-trust/blob/main/input/pagecontent/trust_domains.md"
+  },
+  {
+    "id": "who-smart-trust-trust-domains",
+    "type": "webpage",
+    "title": "Trust Domains",
+    "publisher": "World Health Organization",
+    "URL": "https://smart.who.int/trust/trust_domains.html",
+    "title-short": "Domains"
+  }
+]

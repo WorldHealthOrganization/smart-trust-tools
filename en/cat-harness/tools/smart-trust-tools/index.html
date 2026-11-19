@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="../../../../assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="../../../../assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  
+
+  
+
+  
+    <script src="../../../../assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="../../../../assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Tools — smart-trust-tools | SMART Trust HCERT library tools</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Tools — smart-trust-tools" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The Tool nodes smart-trust-tools declares — how each is installed and invoked, and which skill it satisfies." />
+<meta name="twitter:description" property="og:description" content="The Tool nodes smart-trust-tools declares — how each is installed and invoked, and which skill it satisfies." />
+<link rel="canonical" href="https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/tools/smart-trust-tools/" />
+<meta property="og:url" content="https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/tools/smart-trust-tools/" />
+<meta property="og:site_name" content="SMART Trust HCERT library tools" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Tools — smart-trust-tools" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"The Tool nodes smart-trust-tools declares — how each is installed and invoked, and which skill it satisfies.","headline":"Tools — smart-trust-tools","url":"https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/tools/smart-trust-tools/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <script type="application/json" id="fa-site-scheme">{"scheme": "dark"}</script><!-- fa-first-paint:begin -->
+<script>(function(){var d=document.documentElement,s=null,c="dark";try{s=localStorage.getItem("fa-color-scheme")}catch(e){}if(s!=="light"&&s!=="dark"){s="light";try{if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)s="dark"}catch(e){}}try{var n=document.getElementById("fa-site-scheme");if(n)c=JSON.parse(n.textContent).scheme==="light"?"light":"dark"}catch(e){}d.setAttribute("data-fa-scheme",s);var j=window.jtd;if(s!==c&&j&&typeof j.setTheme==="function"){try{j.setTheme(s)}catch(e){}}})();</script>
+<style>html{background-color:#27262b}html[data-fa-scheme="light"]{background-color:#ffffff}</style>
+<!-- fa-first-paint:end --><meta name="fa-render-regions" content="1">
+<script>document.documentElement.setAttribute("data-fa-render","pending");</script><style>
+  .bpmn-figure {
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid rgba(128, 128, 128, 0.35);
+    border-radius: 6px;
+    margin: 1em 0 0.4em;
+  }
+  .bpmn-figure img {
+    display: block;
+    width: 100%;
+    min-width: 1200px;
+    max-width: none;
+  }
+  .bpmn-source {
+    margin-top: 0;
+    font-size: 0.75rem;
+  }
+</style><script type="application/json" id="fa-translation-meta">{
+  "lang": "en",
+  "translationStatus": "",
+  "translationSource": "",
+  "supportedLocales": ["ar","zh","en","fr","ru","es"],
+  "availableLocales": null,
+  "translationQa":{
+    "key": "page.translation",
+    "slug": "en-cat-harness-tools-smart-trust-tools-index",
+    "src": "../../../../assets/qa/en-cat-harness-tools-smart-trust-tools-index/page.translation.json",
+    "index": "../../../../assets/qa/en-cat-harness-tools-smart-trust-tools-index/qa-index.json",
+    "list": "../../../../assets/qa/translation-qa-pages.json"
+  },
+  "sweep":{
+    "absent": "smart-trust-tools publishes no translation QA sweep on this site",
+    "run": false,
+    "sweptAt": "",
+    "totalPages": 0,
+    "pagesWithTranslations": 0,
+    "complete": false
+  },
+  "statusSrc":"../../../../assets/translation-status/index.json",
+  "reviewSrc":"../../../../assets/translation-status/review.json"
+}</script><script type="application/json" id="fa-navbar-row" data-fa-row-src="harness-data"></script><script type="application/json" id="fa-site-links">{"kg":"https://litlfred.github.io/folio-assistant/smart-trust-tools/","jsonld":"https://litlfred.github.io/folio-assistant/smart-trust-tools/smart-trust-tools.jsonld","source":"https://github.com/WorldHealthOrganization/smart-trust-tools"}</script><meta name="fa-site-index-src" content="../../../../assets/harness/site.json">
+<meta name="fa-todo-src" content="../../../../assets/todos/index.json"><meta name="fa-todo-graph" content="../../../../todos.jsonld"><meta name="fa-zoom-src" content="../../../../assets/semantic-zoom.json"><meta name="fa-tiles" content="" data-fa-src="harness-data">
+<meta name="fa-glass-strip" content="[&quot;glass-todos&quot;,&quot;glass-settings&quot;]"><meta name="fa-baseurl" content="../../../.."><meta name="fa-staging" content=""><meta name="fa-search-index" content="">
+
+<meta name="fa-beans-src" content="../../../../assets/beans/index.json"><meta name="fa-processes-src" content="../../../../subgraph/index.jsonld"><meta name="fa-build-src" content="../../../../build.json"><link rel="stylesheet" href="../../../../assets/css/navbar-row.css?v=263225e79ed9">
+<link rel="stylesheet" href="../../../../assets/css/docs-ui.css?v=eb56f2150b3d"><link rel="stylesheet" href="../../../../assets/css/narrow-viewport.css?v=173ef819dbf2"><link rel="stylesheet" href="../../../../assets/css/themes.css?v=5c199f8420d3"><link rel="stylesheet" href="../../../../assets/css/uml.css?v=e677f91cbf66"><link rel="stylesheet" href="../../../../assets/css/avatars.css?v=9923b8bfedd1"><script type="application/json" id="fa-declared-kinds">["beans","code","code-list","docs","external-schema","fhir-logical-models","glossary","hcert-contract","hcert-generated-contract","hcert-test-vectors","library","memory","payload-models","processes","references","scenarios","schemas","skills","test-plan","tools","typologies","upstream-patches"]</script><script src="../../../../assets/js/harness-data.js" defer></script><script src="../../../../assets/js/kg-render.js" defer></script><script src="../../../../assets/js/navbar-row.js?v=fb3cd5c0d28c" defer></script>
+<script src="../../../../assets/js/docs-ui.js?v=2abe761c2b06" defer></script><script src="../../../../assets/js/edit-links.js?v=7b072444cbb5" defer></script><script src="../../../../assets/js/translation-review.js?v=1902d883e072" defer></script><script src="../../../../assets/js/code-highlight.js?v=0f94772226c3" defer></script><style>
+  .folio-landing { position: relative; margin: 0 0 2rem; }
+
+  /* WHAT IS LEFT HERE, AND WHY IT IS SO LITTLE.
+     `landing.html` emits exactly one folio-landing class —
+     `folio-landing folio-landing--plain` — the no-stickies fallback, which
+     renders the description and no art. The art path moved to the sticky
+     board (`fa-sticky--backdrop` in docs-ui.css), which composites text into
+     the picture through a declared `textRegion` and a scrim.
+
+     So this block used to carry fourteen selectors of which ELEVEN matched
+     nothing: every rule reaching for `folio-landing__art`,
+     `folio-landing__text` or `folio-landing--no-region`. Measured before they
+     were cut — those three classes appear in no markup in this repository and
+     on none of the 331 published pages that were inlining the CSS for them.
+     CSS has no error for a selector that matches nothing, which is the same
+     silence that let `.fa-sticky--backdrop > .fa-sticky-art` ship wrong.
+
+     The reasoning did not go with them. The blend-direction argument for the
+     fade is now at `.fa-sticky--backdrop::before`, where a scrim replaces it;
+     the region, overflow and breakpoint-parity lessons were already
+     re-derived and better stated on `.fa-landing-sticky--fixed`. What is NOT
+     carried over is the `cqw` container-query sizing: the successor scales
+     through `--fa-text-scale` rather than container queries, so a note about
+     `container-type` not being its own query container would be advice about
+     a mechanism nothing here uses. Bean `alox`, issue #873. */
+  .folio-landing--plain {
+    position: static; width: auto; height: auto; color: inherit;
+  }
+  .folio-landing--plain p { font-size: inherit; font-weight: inherit; }
+</style>
+
+<link rel="stylesheet" href="../../../../assets/css/navbar.css"><script src="../../../../assets/navbar/rail-j29dkqi0u1.js" defer></script><script src="../../../../assets/js/navbar.js" defer></script><link rel="stylesheet" href="../../../../assets/page-layout.css" data-fa-page-layout><script src="../../../../assets/page-layout.js" defer data-fa-page-layout></script><meta name="fa-pinned-data" content="../../../.."></head>
+
+<body><script type="application/json" id="fa-rail" data-fa-root="https://litlfred.github.io/folio-assistant" data-fa-to-root="../../../..">{"data":"rail-j29dkqi0u1","here":"/en/cat-harness/tools/smart-trust-tools/","documentIndex":{"label":"On this page","icon":"§","items":[{"href":"#how-they-are-invoked-and-installed","label":"How they are invoked, and installed"},{"href":"#does-every-satisfies-name-a-skill-that-exists","label":"Does every satisfies name a skill that exists?"},{"href":"#every-tool","label":"Every tool"}],"collapsible":true}}</script><nav class="fa-nav" aria-label="folio-assistant" data-fa-rail="pending"><a href="../../../../">SMART Trust HCERT library tools</a></nav>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header fa-site-bar fa-page-bar"><a class="fa-page-bar-home" href="../../../../">SMART Trust HCERT library tools</a>
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search SMART Trust HCERT library tools" autocomplete="off">
+    <label for="search-input" class="search-label">
+      <span class="sr-only">Search SMART Trust HCERT library tools</span>
+      <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+    </label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+<span class="fa-page-bar-locale" data-fa-slot="locale"></span></div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <style>
+.tg-tag{display:inline-block;padding:.05rem .4rem;border-radius:3px;font-size:.72rem;
+  font-weight:600;white-space:nowrap;border:1px solid currentColor;margin-right:.2rem}
+/* Bean rtuo: these inks were chosen for a LIGHT page and measured 2.33-2.54:1
+   on this site's default dark one (#27262b), under the 4.5:1 text floor. The
+   dark inks are the default; the site's light scheme keeps the originals,
+   which clear 5.9:1 on white. Every ratio computed, not eyeballed. */
+.tg-shell{color:#5cd3bd}   /* 8.23:1 on #27262b */
+.tg-mcp{color:#b9a8ec}     /* 7.06:1 */
+.tg-inproc{color:#86b8f2}  /* 7.26:1 */
+.tg-manual{color:#f5a070}  /* 7.25:1 */
+.tg-action{color:#e6c07b}
+:root[data-fa-scheme="light"] .tg-action{color:#7a5a00}
+.tg-filter{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:.5rem 0}
+.tg-filter button{font:inherit;font-size:.8rem;padding:.15rem .6rem;border-radius:3px;border:1px solid rgba(128,128,128,.5);background:transparent;color:inherit;cursor:pointer}
+.tg-filter button[aria-pressed="true"]{border-color:currentColor;font-weight:600}
+:root[data-fa-scheme="light"] .tg-shell{color:#0d6e5e}
+:root[data-fa-scheme="light"] .tg-mcp{color:#6b5b95}
+:root[data-fa-scheme="light"] .tg-inproc{color:#1d5fa8}
+:root[data-fa-scheme="light"] .tg-manual{color:#a8430f}
+.tg-grid{display:flex;flex-wrap:wrap;gap:.75rem;margin:1rem 0}
+.tg-stat{flex:1 1 8rem;border:1px solid rgba(128,128,128,.35);border-radius:6px;padding:.5rem .7rem;text-decoration:none;color:inherit;display:block}
+.tg-stat:hover,.tg-stat:focus{border-color:currentColor;text-decoration:none}
+.tg-stat b{display:block;font-size:1.25rem;line-height:1.2}
+.tg-stat span{font-size:.75rem;opacity:.75}
+.table-wrapper{position:relative}
+.table-wrapper table{min-width:36rem}
+@media (max-width: 799.98px) {
+  @supports (animation-timeline: scroll()) {
+    .table-wrapper {
+      mask-image: linear-gradient(to right,
+        transparent 0, #000 var(--fa-cue-l, 0px),
+        #000 calc(100% - var(--fa-cue-r, 2.5rem)), transparent 100%);
+      animation: fa-scroll-cue linear both;
+      animation-timeline: scroll(self inline);
+    }
+  }
+  @supports not (animation-timeline: scroll()) {
+    .table-wrapper {
+      mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent 100%);
+    }
+  }
+}
+@property --fa-cue-l { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --fa-cue-r { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@keyframes fa-scroll-cue {
+  0%   { --fa-cue-l: 0px;    --fa-cue-r: 2.5rem; }
+  12%  { --fa-cue-l: 2.5rem; }
+  88%  { --fa-cue-r: 2.5rem; }
+  100% { --fa-cue-l: 2.5rem; --fa-cue-r: 0px; }
+}
+</style>
+
+<p>The Tool nodes <strong>smart-trust-tools</strong> declares in its <code class="language-plaintext highlighter-rouge">tools</code> graph — one instance’s slice of <a href="../">every instance’s tools</a>.</p>
+
+<p><strong>As an API:</strong> <a href="openapi.json">OpenAPI document</a> · <a href="mcp-tools.json">MCP tool list</a> · <a href="api/">API reference</a>.</p>
+
+<p>A <strong>skill</strong> states a capability generically: what an actor needs to know to
+perform a task. A <strong>Tool</strong> is one concrete way to exercise it, with an
+installation, an invocation and typed inputs and outputs. One skill may be
+satisfied by several tools, and one tool may satisfy several skills.</p>
+
+<p>They are separate graphs and this is the tools one. The relation between them
+is <code class="language-plaintext highlighter-rouge">satisfies</code>, and it runs <strong>from a tool to a skill</strong> — <em>this tool is one way
+to do that</em>, never <em>this skill is a tool</em>.</p>
+
+<div class="tg-grid">
+<a class="tg-stat" href="#every-tool"><b>17</b><span>Tool nodes</span></a>
+<a class="tg-stat" href="#does-every-satisfies-name-a-skill-that-exists"><b>16</b><span>skills satisfied</span></a>
+<a class="tg-stat" href="#how-they-are-invoked-and-installed"><b>17</b><span>invoked as a shell command</span></a>
+<a class="tg-stat" href="#how-they-are-invoked-and-installed"><b>0</b><span>reachable over MCP</span></a>
+</div>
+
+<h2 id="how-they-are-invoked-and-installed">
+  
+  
+    <a href="#how-they-are-invoked-and-installed" class="anchor-heading" aria-labelledby="how-they-are-invoked-and-installed"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> How they are invoked, and installed
+  
+  
+</h2>
+    
+
+<p>A tool may declare more than one invocation, so these do not sum to the total.</p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>invocation</th>
+      <th>tools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span></td>
+      <td>17</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>installation</th>
+      <th>tools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">none</code></td>
+      <td>17</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="does-every-satisfies-name-a-skill-that-exists">
+  
+  
+    <a href="#does-every-satisfies-name-a-skill-that-exists" class="anchor-heading" aria-labelledby="does-every-satisfies-name-a-skill-that-exists"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Does every <code class="language-plaintext highlighter-rouge">satisfies</code> name a skill that exists?
+  
+  
+</h2>
+    
+
+<p>Yes — all <strong>16</strong> skills named across <strong>17</strong> tools resolve to a
+skill document in this checkout. A <code class="language-plaintext highlighter-rouge">satisfies</code> pointing at nothing would be a
+tool advertising a capability the graph cannot locate.</p>
+<h2 id="every-tool">
+  
+  
+    <a href="#every-tool" class="anchor-heading" aria-labelledby="every-tool"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Every tool
+  
+  
+</h2>
+    
+
+<div class="tg-filter" id="tg-filter" role="group" aria-label="Filter by how a tool is reached"><span>Reached as:</span><button type="button" aria-pressed="true" data-surface="">all</button><button type="button" aria-pressed="false" data-surface="action">github action (9)</button><button type="button" aria-pressed="false" data-surface="shell">cli (17)</button><span><span id="tg-shown">17</span> of 17 shown</span></div>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>tool</th>
+      <th>what it does</th>
+      <th>invoked</th>
+      <th>satisfies</th>
+      <th>i/o</th>
+      <th>qa</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a id="build-site"></a><a href="build-site/"><code class="language-plaintext highlighter-rouge">build-site</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/build-site.jsonld">JSON-LD</a><br />Build the viewer pages</td>
+      <td>Write the viewer pages that site.build serves under viewers/: the graph explorer and traceability matrix over this instance’s nodes (requirements, library sections, external schemas, references, directives, skills, Tools, processes, roles and beans), the requirements document, the WIT contract, the TypeScript reference (TypeDoc), the Kotlin skeleton and the wire and payload models. Also copies docs/*.md into the Jekyll source (site_docs.sh).</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-kg-publication</code></td>
+      <td>1 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="check-models"></a><a href="check-models/"><code class="language-plaintext highlighter-rouge">check-models</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/check-models.jsonld">JSON-LD</a><br />Check the vectors against the models</td>
+      <td>Decode the smart-trust PR 129 certificate and validate its payload against the CDDL (api/cddl and models/generated) and, through the JSON-LD context, the SHACL shapes.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span> <span class="tg-tag tg-action" data-surface="action">github action</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-conformance-testing</code></td>
+      <td>0 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="check-req-nodes"></a><a href="check-req-nodes/"><code class="language-plaintext highlighter-rouge">check-req-nodes</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/check-req-nodes.jsonld">JSON-LD</a><br />Check the requirement graph</td>
+      <td>Check every node of this instance’s requirement graph: each skills/requirements/*.json parses as a bootstrap requirement with id req:<file>; every derivedFrom names a requirement and every reference a node that exists (a library section or entry, an external schema, a reference, a directive, a test vector, or a smart-trust FHIR Requirements canonical); every statement has a success criterion; every skill's satisfies and tested-by, every bean's requirements and sources, and every test plan resolve; every external schema and reference parses against its typology's schema; every code list parses as folio-code-list/v1, with every requirement's area a code of requirement-area; and the shared negative vectors parse against their schema, each expected step and reason a case of the WIT failure taxonomy.</file></td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-kg-publication</code></td>
+      <td>0 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="check-upstream-patches"></a><a href="check-upstream-patches/"><code class="language-plaintext highlighter-rouge">check-upstream-patches</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/check-upstream-patches.jsonld">JSON-LD</a><br />Check the upstream patches are well-formed</td>
+      <td>Check every file under upstream/ (the upstream-patches graph, kept on the state branch cat/smart-trust-tools/upstream-patches and mounted by state:mount): each is a numbered git format-patch file, upstream/<target>/NNNN-<subject>.patch, with the mbox From line, an author, a date, a [PATCH] subject, a --- separator and at least one diff --git hunk.</subject></target></td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-contract-maintenance</code></td>
+      <td>0 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="conformance-ts"></a><a href="conformance-ts/"><code class="language-plaintext highlighter-rouge">conformance-ts</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/conformance-ts.jsonld">JSON-LD</a><br />One TypeScript conformance suite for both libraries</td>
+      <td>suite.ts: 45 checks over every interface of the <code class="language-plaintext highlighter-rouge">hcert</code> world, type-checked (tsc, toolchain/node) against api/generated/ts, the TypeScript jco derives from the WIT contract, and driven by the shared vectors. run.mjs runs it against the Kotlin/JS package (hcert-core’s WitJs facade) or the jco-transpiled Rust component; each loader only regroups its package’s exports under the interface names. Both must pass (STT-TST-007). cross.mjs loads both and runs cross.ts: each library verifies the other’s ES256 and PS256 certificates, built from byte-identical Sig_structures (STT-TST-003, STT-GEN-006).</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span> <span class="tg-tag tg-action" data-surface="action">github action</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-conformance-testing</code></td>
+      <td>2 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="fetch-lms"></a><a href="fetch-lms/"><code class="language-plaintext highlighter-rouge">fetch-lms</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/fetch-lms.jsonld">JSON-LD</a><br />Fetch the FHIR logical models</td>
+      <td>Fetch the DVCMin logical models as FHIR R5 StructureDefinitions from the smart-trust-phw build at the commit models/fhir/SOURCE.yaml pins, into models/fhir/.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-contract-maintenance</code></td>
+      <td>0 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="fhir-validate"></a><a href="fhir-validate/"><code class="language-plaintext highlighter-rouge">fhir-validate</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/fhir-validate.jsonld">JSON-LD</a><br />Validate the FHIR logical models</td>
+      <td>Run the HL7 FHIR Validator (validator_cli.jar) on the StructureDefinitions in models/fhir against the FHIR version they declare, with the jar and every FHIR package pinned by sha256 in toolchain/fhir-validator/validator.json, verified before use, and no fetch at run time (-no-http-access, -tx n/a). The site’s pre step: it runs when the site is published to main and says it is not run for a staging preview.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-contract-maintenance</code></td>
+      <td>2 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="gen-api-types"></a><a href="gen-api-types/"><code class="language-plaintext highlighter-rouge">gen-api-types</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/gen-api-types.jsonld">JSON-LD</a><br />TypeScript declarations from the WIT contract</td>
+      <td>Run jco over api/wit to write the TypeScript view of the contract into api/generated/ts, the API reference that Node and browser callers read. jco comes from the pinned toolchain/node lockfile, installed with scripts disabled.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span> <span class="tg-tag tg-action" data-surface="action">github action</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-contract-maintenance</code></td>
+      <td>0 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="hcert-kotlin"></a><a href="hcert-kotlin/"><code class="language-plaintext highlighter-rouge">hcert-kotlin</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/hcert-kotlin.jsonld">JSON-LD</a><br />HCERT and VHL library (Kotlin Multiplatform)</td>
+      <td>The Kotlin implementation of the HCERT pipeline and Verifiable Health Links, for the JVM (Android as-is) and Node: <code class="language-plaintext highlighter-rouge">hcert-api</code>, the declarations wit2kotlin generates from the WIT contract, and <code class="language-plaintext highlighter-rouge">hcert-core</code>, the behaviour (deterministic CBOR, COSE_Sign1 ES256/PS256, ZLIB, Base45, HC1, the trust list, verification, the VHL payload, the ITI-YY5 manifest request and JWE dir/A256GCM). No third-party runtime dependency; every build artefact is pinned in gradle/verification-metadata.xml.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-assemble-payload</code><br /><code class="language-plaintext highlighter-rouge">hcert-build-cwt</code><br /><code class="language-plaintext highlighter-rouge">hcert-compress</code><br /><code class="language-plaintext highlighter-rouge">hcert-encode-base45</code><br /><code class="language-plaintext highlighter-rouge">hcert-encode-cbor</code><br /><code class="language-plaintext highlighter-rouge">hcert-library-architecture</code><br /><code class="language-plaintext highlighter-rouge">hcert-prefix-context</code><br /><code class="language-plaintext highlighter-rouge">hcert-select-payload</code><br /><code class="language-plaintext highlighter-rouge">hcert-sign-cose</code><br /><code class="language-plaintext highlighter-rouge">hcert-trust-list</code><br /><code class="language-plaintext highlighter-rouge">hcert-verify</code><br /><code class="language-plaintext highlighter-rouge">vhl-receive</code><br /><code class="language-plaintext highlighter-rouge">vhl-share</code></td>
+      <td>1 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="hcert-rust"></a><a href="hcert-rust/"><code class="language-plaintext highlighter-rouge">hcert-rust</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/hcert-rust.jsonld">JSON-LD</a><br />HCERT library (Rust, native and WebAssembly)</td>
+      <td>The Rust implementation of the HCERT pipeline: Base45, ZLIB, deterministic CBOR, COSE_Sign1 ES256/PS256 (RustCrypto p256, rsa, sha2), CWT, the DVCMin payload, the trust store (PEM, DER, GDHCN DID trustlist v2, trust domains), the section 11 verifier, two-phase issuance and Verifiable Health Links (payload, vhlink:/, the ITI-YY5 manifest, JWE dir/A256GCM with aes-gcm, the RFC 9421 signature base). It builds natively; as the WebAssembly component of the <code class="language-plaintext highlighter-rouge">hcert</code> world in api/wit (feature component, wit-bindgen; build-component.sh componentises and transpiles it with the pinned jco into an ES module for browsers and Node, whose only import, wasi:random, maps to crypto.getRandomValues); and as an import-free module with a JSON call surface for the live demos (js/hcert.mjs, with a TEST ONLY builder of self-signed DSCs). Every crate is pinned in Cargo.lock (DEPENDENCIES.md).</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-assemble-payload</code><br /><code class="language-plaintext highlighter-rouge">hcert-build-cwt</code><br /><code class="language-plaintext highlighter-rouge">hcert-compress</code><br /><code class="language-plaintext highlighter-rouge">hcert-conformance-testing</code><br /><code class="language-plaintext highlighter-rouge">hcert-encode-base45</code><br /><code class="language-plaintext highlighter-rouge">hcert-encode-cbor</code><br /><code class="language-plaintext highlighter-rouge">hcert-prefix-context</code><br /><code class="language-plaintext highlighter-rouge">hcert-select-payload</code><br /><code class="language-plaintext highlighter-rouge">hcert-sign-cose</code><br /><code class="language-plaintext highlighter-rouge">hcert-trust-list</code><br /><code class="language-plaintext highlighter-rouge">hcert-verify</code></td>
+      <td>1 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="lm-derive"></a><a href="lm-derive/"><code class="language-plaintext highlighter-rouge">lm-derive</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/lm-derive.jsonld">JSON-LD</a><br />Payload models from the FHIR logical models</td>
+      <td>Derive, from the FHIR logical models in models/fhir, the JSON-LD context, SHACL shapes and CDDL rules in models/generated/ that the payload codecs and the conformance checks read.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span> <span class="tg-tag tg-action" data-surface="action">github action</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-contract-maintenance</code></td>
+      <td>1 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="negative-vectors"></a><a href="negative-vectors/"><code class="language-plaintext highlighter-rouge">negative-vectors</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/negative-vectors.jsonld">JSON-LD</a><br />Shared negative test vectors</td>
+      <td>Derive vectors/negative/negative-vectors.json from the smart-trust PR 129 certificates: one language-neutral file of inputs a conforming verifier must refuse, each with the step and reason it must stop at. The Kotlin suite, the Node smoke test and the Rust suite load the same file. Nothing is newly signed: each case changes a byte, a prefix, the clock or the trust list.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span> <span class="tg-tag tg-action" data-surface="action">github action</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-conformance-testing</code></td>
+      <td>1 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="release-packaging"></a><a href="release-packaging/"><code class="language-plaintext highlighter-rouge">release-packaging</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/release-packaging.jsonld">JSON-LD</a><br />Release packaging (dry run)</td>
+      <td>Assemble the two npm packages of the libraries, @litlfred/hcert-component (the jco-transpiled Rust component) and @litlfred/hcert-kotlin-js (the Kotlin/JS library), from their build outputs, each with a package.json that has the VERSION, no dependencies and no scripts; and check that VERSION, the single version source, is a semantic version that Cargo.toml, Cargo.lock, the Gradle build, CHANGELOG.md and every built package.json and POM agree with. The Maven dry run is the hcert-kotlin build’s publishDryRun task and the crate’s is cargo package; docs/RELEASING.md is the runbook an agent follows to publish.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span> <span class="tg-tag tg-action" data-surface="action">github action</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-library-architecture</code></td>
+      <td>1 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="test-plan"></a><a href="test-plan/"><code class="language-plaintext highlighter-rouge">test-plan</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/test-plan.jsonld">JSON-LD</a><br />Library conformance test plan</td>
+      <td>Write test/plans/hcert-library-conformance.test-plan.json (test-plan/v1) from the skills and the requirements’ success criteria: one case per skill, one assertion per criterion verified by test. The plan any implementation of the library, Kotlin or Rust, runs.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span> <span class="tg-tag tg-action" data-surface="action">github action</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-conformance-testing</code></td>
+      <td>1 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="test-systems"></a><a href="test-systems/"><code class="language-plaintext highlighter-rouge">test-systems</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/test-systems.jsonld">JSON-LD</a><br />Systems under test and their bindings</td>
+      <td>Write the bindings and uncovered lists of each test/systems/<id>.system.json (system/v1) from the tags in its tests: the requirement ids a Kotlin, Rust or TypeScript test's name starts with, or a script's "Verifies" sentence. Each assertion of a plan the system claims gets the tests that verify it, with the surface and target each runs on; each required assertion a declared target leaves unverified, and no `unbound` entry explains, is listed as uncovered.</id></td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span> <span class="tg-tag tg-action" data-surface="action">github action</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-conformance-testing</code></td>
+      <td>1 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="vhl-jwe-fixture"></a><a href="vhl-jwe-fixture/"><code class="language-plaintext highlighter-rouge">vhl-jwe-fixture</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/vhl-jwe-fixture.jsonld">JSON-LD</a><br />Independent JWE fixture</td>
+      <td>Make vectors/ihe-vhl/jwe-dir-a256gcm.json with node:crypto alone, so the library’s RFC 7516 dir / A256GCM decryption (with and without zip DEF) is checked against an implementation that is not the library. TEST ONLY: the key is in the file.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-conformance-testing</code></td>
+      <td>0 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+    <tr>
+      <td><a id="wit2kotlin"></a><a href="wit2kotlin/"><code class="language-plaintext highlighter-rouge">wit2kotlin</code></a> · <a href="https://litlfred.github.io/folio-assistant/smart-trust-tools/tools/wit2kotlin.jsonld">JSON-LD</a><br />Kotlin skeleton from the WIT contract</td>
+      <td>Generate the Kotlin declarations in tools/hcert-kotlin/hcert-api from api/wit by fixed mapping rules: records to data classes, variants to sealed interfaces, resources to AutoCloseable interfaces, result&lt;T, E&gt; to HcertResult; worlds are not generated, and no Kotlin name or KDoc mentions WIT.</td>
+      <td><span class="tg-tag tg-shell" data-surface="shell">cli</span> <span class="tg-tag tg-action" data-surface="action">github action</span></td>
+      <td><code class="language-plaintext highlighter-rouge">hcert-contract-maintenance</code></td>
+      <td>1 in / 1 out</td>
+      <td><a href="https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/cat-harness/qa-reports/index.json"><code class="language-plaintext highlighter-rouge">qa-reports</code></a></td>
+    </tr>
+  </tbody>
+</table></div>
+<script>
+(function(){
+  var bar=document.getElementById('tg-filter'); if(!bar) return;
+  var t=bar.nextElementSibling; while(t && !t.querySelector('table')) t=t.nextElementSibling; if(!t) return;
+  var rows=t.querySelectorAll('tbody tr'), out=document.getElementById('tg-shown');
+  bar.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return;
+    bar.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});
+    var s=b.getAttribute('data-surface'), n=0;
+    rows.forEach(function(r){ var ok=!s || !!r.querySelector('[data-surface="'+s+'"]'); r.hidden=!ok; if(ok) n++; });
+    if(out) out.textContent=String(n); });
+})();
+</script>
+
+
+          
+
+          
+            
+          
+        </main>
+        
+<hr>
+<footer>
+  
+
+  <p class="text-small mb-0">SMART Trust HCERT library tools — built with <a href="https://litlfred.github.io/folio-assistant/">folio-assistant</a>.</p><p class="text-small mb-0 fa-build-stamp">
+  deployed
+  <a href="https://github.com/litlfred/folio-assistant/actions"><code>dev</code></a></p>
+
+
+  
+</footer>
+
+      </div>
+    </div>
+    
+      
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+    
+  
+</body>
+</html>

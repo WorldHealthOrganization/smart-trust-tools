@@ -1,0 +1,78 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-phw-aliases",
+  "title": "smart-trust-phw FSH aliases",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "files",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-input-fsh-aliases-fsh",
+      "number": null,
+      "title": "input/fsh/Aliases.fsh",
+      "level": 1,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 108,
+      "summary": null,
+      "keywords": [],
+      "extract": "```text Alias: $LOINC = http://loinc.org Alias: $ICD11 = http://id.who.int/icd/release/11/mms Alias: $SCT = http://snomed.info/sct Alias: $GENDER = http://hl7.org/fhir/administrative-gender Alias: $pubStatus = http://hl7.org/fhir/publication-status Alias: $actorType = http://hl7.org/fhir/examplescenario-actor-type Alias: $DisclosureStatements = http://smart.who.int/trust-phw/CodeSystem/DisclosureStatements Alias:",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-phw-aliases/blocks/prose-s001-input-fsh-aliases-fsh"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 1,
+      "note": "one level"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 1 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-phw-aliases"
+  }
+}

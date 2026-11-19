@@ -1,0 +1,1155 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "ihe-iti-vhl-iti-yy5",
+  "title": "IHE VHL ITI-YY5 Retrieve Manifest",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "headings",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-input-pagecontent-iti-yy5-md",
+      "number": null,
+      "title": "input/pagecontent/ITI-YY5.md",
+      "level": 1,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 46,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "assign",
+          "heading": false
+        },
+        {
+          "term": "extension",
+          "heading": false
+        },
+        {
+          "term": "reqrequestvhldocsdescription",
+          "heading": false
+        }
+      ],
+      "extract": "{% assign linkvhlr = '<a href=\"ActorDefinition-VHLReceiver.html\">VHL Receiver</a>' %} {% assign linkvhls = '<a href=\"ActorDefinition-VHLSharer.html\">VHL Sharer</a>' %} {% assign reqRequestVHLDocs = site.data.Requirements-RequestVHLDocuments %} {% assign reqRequestVHLDocsTitle = reqRequestVHLDocs.extension | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.title\" | first %} {% assign",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s001-input-pagecontent-iti-yy5-md"
+      ]
+    },
+    {
+      "id": "s002-2-3-yy5-1-scope",
+      "number": null,
+      "title": "2:3.YY5.1 Scope",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 506,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "capability statement",
+          "heading": false
+        },
+        {
+          "term": "ssraa option",
+          "heading": false
+        },
+        {
+          "term": "documentreference option",
+          "heading": false
+        },
+        {
+          "term": "credential option",
+          "heading": false
+        },
+        {
+          "term": "verifiable credential",
+          "heading": false
+        },
+        {
+          "term": "http message",
+          "heading": false
+        },
+        {
+          "term": "fhir search",
+          "heading": false
+        },
+        {
+          "term": "retrieve manifest",
+          "heading": false
+        }
+      ],
+      "extract": "The Retrieve Manifest transaction enables a {{ linkvhlr }} to retrieve a manifest (searchset Bundle) of available health documents from a {{ linkvhls }} using a previously obtained and validated Verified Health Link (VHL). This transaction occurs after the {{ linkvhlr }} has received a VHL from a VHL Holder (via ITI-YY4 Provide VHL) and validated the VHL signature. FHIR Search Transaction: This transaction uses a",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s002-2-3-yy5-1-scope"
+      ]
+    },
+    {
+      "id": "s003-2-3-yy5-2-actor-roles",
+      "number": null,
+      "title": "2:3.YY5.2 Actor Roles",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 48,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "actor",
+          "heading": true
+        },
+        {
+          "term": "roles",
+          "heading": true
+        },
+        {
+          "term": "search request",
+          "heading": false
+        }
+      ],
+      "extract": "Actor; Role {{ linkvhlr }}; Initiates FHIR search request to retrieve document manifest using validated VHL as authorization {{ linkvhls }}; Responds to search request after authenticating and authorizing the VHL Receiver {: .grid}",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s003-2-3-yy5-2-actor-roles"
+      ]
+    },
+    {
+      "id": "s004-2-3-yy5-3-referenced-standards",
+      "number": null,
+      "title": "2:3.YY5.3 Referenced Standards",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 270,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "json web",
+          "heading": false
+        },
+        {
+          "term": "standards",
+          "heading": true
+        },
+        {
+          "term": "resource fhir",
+          "heading": false
+        },
+        {
+          "term": "backend services",
+          "heading": false
+        },
+        {
+          "term": "shl manifest",
+          "heading": false
+        },
+        {
+          "term": "ssraa option",
+          "heading": false
+        },
+        {
+          "term": "document sharing",
+          "heading": false
+        },
+        {
+          "term": "list resource",
+          "heading": false
+        }
+      ],
+      "extract": "Core Standards: RFC 5280: X.509 PKI Certificate and CRL Profile RFC 9110: HTTP Semantics RFC 9421: HTTP Message Signatures RFC 6234: SHA-256 Hash Function W3C VC Data Model v2: Verifiable Credentials Data Model v2 - for Verifiable Credential Option W3C Data Integrity: Verifiable Credential Data Integrity 1.0 - DataIntegrityProof for Verifiable Credential Option W3C Data Integrity ECDSA Cryptosuites: ecdsa-2019 FHIR",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s004-2-3-yy5-3-referenced-standards"
+      ]
+    },
+    {
+      "id": "s005-2-3-yy5-4-messages",
+      "number": null,
+      "title": "2:3.YY5.4 Messages",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 20,
+      "summary": null,
+      "keywords": [],
+      "extract": "<figure > <div style=\"width:35em; max-width:100%;\"> {%include ITI-YY5.svg%} </div> <p id=\"f2:3.YY5.4-1\" class=\"figureTitle\">Figure 2:3.YY5.4-1: Retrieve Manifest Interaction Diagram</p> </figure>",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s005-2-3-yy5-4-messages"
+      ]
+    },
+    {
+      "id": "s006-2-3-yy5-4-1-retrieve-manifest-request-message",
+      "number": null,
+      "title": "2:3.YY5.4.1 Retrieve Manifest Request Message",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 6,
+      "summary": null,
+      "keywords": [],
+      "extract": null,
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s006-2-3-yy5-4-1-retrieve-manifest-request-message"
+      ]
+    },
+    {
+      "id": "s007-2-3-yy5-4-1-1-trigger-events",
+      "number": null,
+      "title": "2:3.YY5.4.1.1 Trigger Events",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 46,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "trigger",
+          "heading": true
+        },
+        {
+          "term": "events",
+          "heading": true
+        },
+        {
+          "term": "reqrequestvhldocsdescription",
+          "heading": false
+        }
+      ],
+      "extract": "{{ reqRequestVHLDocsDescription.valueMarkdown }} A {{ linkvhlr }} initiates the Retrieve Manifest Request when: The {{ linkvhlr }} has received and validated a VHL containing a manifest URL The {{ linkvhlr }} needs to discover available documents before retrieving specific content",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s007-2-3-yy5-4-1-1-trigger-events"
+      ]
+    },
+    {
+      "id": "s008-2-3-yy5-4-1-2-message-semantics",
+      "number": null,
+      "title": "2:3.YY5.4.1.2 Message Semantics",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 323,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "search parameters",
+          "heading": false
+        },
+        {
+          "term": "fhir search",
+          "heading": false
+        },
+        {
+          "term": "manifest url",
+          "heading": false
+        },
+        {
+          "term": "type cardinality",
+          "heading": false
+        },
+        {
+          "term": "cardinality description",
+          "heading": false
+        },
+        {
+          "term": "patient",
+          "heading": false
+        },
+        {
+          "term": "token",
+          "heading": false
+        },
+        {
+          "term": "integer",
+          "heading": false
+        }
+      ],
+      "extract": "This transaction uses a standard FHIR search on the List resource. The request is sent to the manifest URL decoded from the VHL (from ITI-YY4). The manifest URL contains all necessary FHIR search parameters. Manifest URL Structure The {{ linkvhlr }} performs an HTTP POST to the _search endpoint with the manifest URL parameters from the VHL payload: Example Manifest URL from VHL:",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s008-2-3-yy5-4-1-2-message-semantics"
+      ]
+    },
+    {
+      "id": "s009-2-3-yy5-4-1-3-authentication-option-http-message",
+      "number": null,
+      "title": "2:3.YY5.4.1.3 Authentication Option - HTTP Message Signatures",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 236,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "http message",
+          "heading": true
+        },
+        {
+          "term": "message signatures",
+          "heading": true
+        },
+        {
+          "term": "signature components",
+          "heading": false
+        },
+        {
+          "term": "signed components",
+          "heading": false
+        },
+        {
+          "term": "cryptographic algorithm",
+          "heading": false
+        },
+        {
+          "term": "signature base",
+          "heading": false
+        }
+      ],
+      "extract": "Implementations MAY authenticate using HTTP Message Signatures per RFC 9421. HTTP Message Signatures provide cryptographic proof of the receiver's identity, request integrity, and non-repudiation. Request Structure: POST /List/_search HTTP/1.1 Host: vhl-sharer.example.org Content-Type: application/x-www-form-urlencoded Content-Length: 234 Content-Digest: sha-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s009-2-3-yy5-4-1-3-authentication-option-http-message"
+      ]
+    },
+    {
+      "id": "s010-2-3-yy5-4-1-4-authentication-option-oauth-with-s",
+      "number": null,
+      "title": "2:3.YY5.4.1.4 Authentication option - OAuth with SSRAA Option",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 587,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "ssraa option",
+          "heading": true
+        },
+        {
+          "term": "scalable registration",
+          "heading": false
+        },
+        {
+          "term": "access token",
+          "heading": false
+        },
+        {
+          "term": "jwt client",
+          "heading": false
+        },
+        {
+          "term": "client authentication",
+          "heading": false
+        },
+        {
+          "term": "client assertion",
+          "heading": false
+        },
+        {
+          "term": "ssraa discovery",
+          "heading": false
+        },
+        {
+          "term": "community policies",
+          "heading": false
+        }
+      ],
+      "extract": "Implementations that support the OAuth with SSRAA Option MAY use OAuth 2.0 access tokens for authentication instead of HTTP Message Signatures. This option provides interoperability with systems implementing the HL7 Security for Scalable Registration, Authentication, and Authorization IG (SSRAA). The following workflow description is informative only, and does not take precedence over underlying requirements from",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s010-2-3-yy5-4-1-4-authentication-option-oauth-with-s"
+      ]
+    },
+    {
+      "id": "s011-2-3-yy5-4-1-5-authentication-option-verifiable-c",
+      "number": null,
+      "title": "2:3.YY5.4.1.5 Authentication Option - Verifiable Credential Option",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 726,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "verifiable credential",
+          "heading": true
+        },
+        {
+          "term": "credential option",
+          "heading": true
+        },
+        {
+          "term": "cryptographic proof",
+          "heading": false
+        },
+        {
+          "term": "shl body",
+          "heading": false
+        },
+        {
+          "term": "post body",
+          "heading": false
+        },
+        {
+          "term": "linkvhlr identity",
+          "heading": false
+        },
+        {
+          "term": "body parameter",
+          "heading": false
+        },
+        {
+          "term": "embedded dataintegrityproof",
+          "heading": false
+        }
+      ],
+      "extract": "Implementations that support the Verifiable Credential Option MAY use a self-issued JSON-LD Verifiable Credential (LDP-VC) for authentication. In this option the {{ linkvhlr }} constructs a VC whose credentialSubject is the manifest decoded from the VHL (received as a QR code or as a Verifiable Credential per ITI-YY4), and whose embedded DataIntegrityProof is signed with the {{ linkvhlr }}'s key from the trust",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s011-2-3-yy5-4-1-5-authentication-option-verifiable-c"
+      ]
+    },
+    {
+      "id": "s012-2-3-yy5-4-1-6-expected-actions-vhl-receiver",
+      "number": null,
+      "title": "2:3.YY5.4.1.6 Expected Actions - VHL Receiver",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 492,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "search parameters",
+          "heading": false
+        },
+        {
+          "term": "base url",
+          "heading": false
+        },
+        {
+          "term": "access token",
+          "heading": false
+        },
+        {
+          "term": "manifest url",
+          "heading": false
+        },
+        {
+          "term": "fhir search",
+          "heading": false
+        },
+        {
+          "term": "request body",
+          "heading": false
+        },
+        {
+          "term": "private key",
+          "heading": false
+        },
+        {
+          "term": "payload fields",
+          "heading": false
+        }
+      ],
+      "extract": "The {{ linkvhlr }} SHALL: 1. Extract Manifest URL from VHL: Obtain manifest URL from VHL payload (ITI-YY4) URL contains all FHIR search parameters (_id, code, status, and the patient identifier via chained search as patient.identifier, plus optional _include) Parse URL to extract search parameters 2. Prepare Request Parameters: Construct request body with FHIR search parameters from URL Add SHL parameters: recipient",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s012-2-3-yy5-4-1-6-expected-actions-vhl-receiver"
+      ]
+    },
+    {
+      "id": "s013-2-3-yy5-4-1-7-expected-actions-vhl-sharer",
+      "number": null,
+      "title": "2:3.YY5.4.1.7 Expected Actions - VHL Sharer",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 790,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "token invalid",
+          "heading": false
+        },
+        {
+          "term": "verify token",
+          "heading": false
+        },
+        {
+          "term": "vhl sharer",
+          "heading": true
+        },
+        {
+          "term": "search parameters",
+          "heading": false
+        },
+        {
+          "term": "extract shl",
+          "heading": false
+        },
+        {
+          "term": "consent filters",
+          "heading": false
+        },
+        {
+          "term": "chained search",
+          "heading": false
+        },
+        {
+          "term": "fhir search",
+          "heading": false
+        }
+      ],
+      "extract": "Upon receiving Retrieve Manifest Request, the {{ linkvhls }} SHALL: 1. Parse Request: Extract FHIR search parameters from request body Extract SHL parameters (recipient, passcode, embeddedLengthMax) Identify authentication method used (HTTP signatures or OAuth token) 2. Authenticate Receiver: HTTP Message Signatures: Extract keyid from Signature-Input header Retrieve receiver's public key from trust list using keyid",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s013-2-3-yy5-4-1-7-expected-actions-vhl-sharer"
+      ]
+    },
+    {
+      "id": "s014-2-3-yy5-4-2-retrieve-manifest-response-message",
+      "number": null,
+      "title": "2:3.YY5.4.2 Retrieve Manifest Response Message",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 6,
+      "summary": null,
+      "keywords": [],
+      "extract": null,
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s014-2-3-yy5-4-2-retrieve-manifest-response-message"
+      ]
+    },
+    {
+      "id": "s015-2-3-yy5-4-2-1-trigger-events",
+      "number": null,
+      "title": "2:3.YY5.4.2.1 Trigger Events",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 29,
+      "summary": null,
+      "keywords": [],
+      "extract": "This message is sent when the {{ linkvhls }} has successfully authenticated the {{ linkvhlr }}, authorized the VHL, and retrieved the requested document manifest.",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s015-2-3-yy5-4-2-1-trigger-events"
+      ]
+    },
+    {
+      "id": "s016-2-3-yy5-4-2-2-message-semantics",
+      "number": null,
+      "title": "2:3.YY5.4.2.2 Message Semantics",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 577,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "message semantics",
+          "heading": true
+        },
+        {
+          "term": "mhd iti",
+          "heading": false
+        },
+        {
+          "term": "iti response",
+          "heading": false
+        },
+        {
+          "term": "documentreference resources",
+          "heading": false
+        },
+        {
+          "term": "case bundle",
+          "heading": false
+        },
+        {
+          "term": "referenced documentreference",
+          "heading": false
+        },
+        {
+          "term": "documentreference option",
+          "heading": false
+        },
+        {
+          "term": "binary retrieval",
+          "heading": false
+        }
+      ],
+      "extract": "Because the VHL manifest URL constructed at ITI-YY3 is a FHIR search on List using the search parameters required by the Document Responder in IHE MHD ITI-66 Find Document Lists, the Retrieve Manifest response is — at the FHIR level — an MHD ITI-66 response message: a FHIR searchset Bundle. The shape of the Bundle depends on whether the {{ linkvhls }} supports the Include DocumentReference Option AND the {{ linkvhlr",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s016-2-3-yy5-4-2-2-message-semantics"
+      ]
+    },
+    {
+      "id": "s017-2-3-yy5-4-2-3-expected-actions",
+      "number": null,
+      "title": "2:3.YY5.4.2.3 Expected Actions",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 133,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "documentreference resources",
+          "heading": false
+        },
+        {
+          "term": "decrypt",
+          "heading": false
+        },
+        {
+          "term": "bundle",
+          "heading": false
+        },
+        {
+          "term": "actions",
+          "heading": true
+        }
+      ],
+      "extract": "The {{ linkvhlr }} SHALL: Parse the Bundle and distinguish List vs. DocumentReference resources by search.mode. If the Bundle does NOT contain DocumentReference resources (Example A): for each List.entry[].item.reference, perform a FHIR read against the {{ linkvhls }} to obtain the DocumentReference metadata. For each DocumentReference, retrieve the binary by dereferencing content.attachment.url per [Retrieve",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s017-2-3-yy5-4-2-3-expected-actions"
+      ]
+    },
+    {
+      "id": "s018-2-3-yy5-4-2-4-document-content-retrieval",
+      "number": null,
+      "title": "2:3.YY5.4.2.4 Document Content Retrieval",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 233,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "mhd document",
+          "heading": false
+        },
+        {
+          "term": "retrieval",
+          "heading": true
+        },
+        {
+          "term": "encrypted",
+          "heading": false
+        },
+        {
+          "term": "binary",
+          "heading": false
+        },
+        {
+          "term": "http message",
+          "heading": false
+        },
+        {
+          "term": "message signatures",
+          "heading": false
+        }
+      ],
+      "extract": "The {{ linkvhls }} returns FHIR DocumentReference metadata as part of (or referenced from) the manifest Bundle. The actual document binary is retrieved separately by dereferencing DocumentReference.content.attachment.url. The binary retrieval SHALL conform to the IHE MHD [Retrieve Document [ITI-68]](https://profiles.ihe.net/ITI/MHD/ITI-68.html) transaction: Method: HTTP GET against",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s018-2-3-yy5-4-2-4-document-content-retrieval"
+      ]
+    },
+    {
+      "id": "s019-2-3-yy5-4-2-5-document-encryption",
+      "number": null,
+      "title": "2:3.YY5.4.2.5 Document Encryption",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 268,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "compact serialization",
+          "heading": false
+        },
+        {
+          "term": "jwe compact",
+          "heading": false
+        },
+        {
+          "term": "encryption",
+          "heading": true
+        },
+        {
+          "term": "protected header",
+          "heading": false
+        },
+        {
+          "term": "vhl payload",
+          "heading": false
+        },
+        {
+          "term": "generated",
+          "heading": false
+        },
+        {
+          "term": "encrypted",
+          "heading": false
+        },
+        {
+          "term": "document",
+          "heading": true
+        }
+      ],
+      "extract": "VHL document binaries are encrypted following the SMART Health Links — Encrypting and Decrypting Files convention. Algorithm: Serialization: JWE Compact Serialization per RFC 7516. Key management (alg) and content encryption (enc): selected per Cryptographic Algorithm Selection, following the SMART Health Links convention referenced above. Symmetric key: The 32-byte (256-bit) value carried as key in the VHL payload",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s019-2-3-yy5-4-2-5-document-encryption"
+      ]
+    },
+    {
+      "id": "s020-2-3-yy5-5-security-considerations",
+      "number": null,
+      "title": "2:3.YY5.5 Security Considerations",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 4,
+      "summary": null,
+      "keywords": [],
+      "extract": null,
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s020-2-3-yy5-5-security-considerations"
+      ]
+    },
+    {
+      "id": "s021-2-3-yy5-5-1-transport-security",
+      "number": null,
+      "title": "2:3.YY5.5.1 Transport Security",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 30,
+      "summary": null,
+      "keywords": [],
+      "extract": "Secure transport is required for all communications in this transaction. Implementations SHALL comply with the IHE ATNA Profile (ITI TF-1: Section 9) for transport security requirements",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s021-2-3-yy5-5-1-transport-security"
+      ]
+    },
+    {
+      "id": "s022-2-3-yy5-5-2-http-message-signatures",
+      "number": null,
+      "title": "2:3.YY5.5.2 HTTP Message Signatures",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 88,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "http message",
+          "heading": true
+        },
+        {
+          "term": "message signatures",
+          "heading": true
+        },
+        {
+          "term": "timestamp validation",
+          "heading": false
+        }
+      ],
+      "extract": "Implementations that support HTTP Message Signatures per RFC 9421: Signature SHALL include @method, @path, @authority, content-type, content-digest Content-Digest SHALL be SHA-256 or stronger Signature algorithm and key strength — see Cryptographic Algorithm Selection Private keys SHALL be stored securely (Hardware Security Module recommended) Public keys SHALL be obtained from trust network keyid SHALL uniquely",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s022-2-3-yy5-5-2-http-message-signatures"
+      ]
+    },
+    {
+      "id": "s023-2-3-yy5-5-3-oauth-with-ssraa-option",
+      "number": null,
+      "title": "2:3.YY5.5.3 OAuth with SSRAA Option",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 112,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "jwt client",
+          "heading": false
+        },
+        {
+          "term": "ssraa option",
+          "heading": true
+        },
+        {
+          "term": "access token",
+          "heading": false
+        },
+        {
+          "term": "oauth",
+          "heading": true
+        }
+      ],
+      "extract": "Implementations that support OAuth with SSRAA Option SHALL: Use OAuth 2.0 Backend Services (client_credentials grant) Use JWT client assertions (private_key_jwt) for client authentication Include appropriate FHIR scopes in access token Validate token signature, expiration, and scope Limit token lifetime (recommended: 1 hour maximum) Check JWT jti claim to prevent replay attacks Obtain receiver's public key from",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s023-2-3-yy5-5-3-oauth-with-ssraa-option"
+      ]
+    },
+    {
+      "id": "s024-2-3-yy5-5-4-vhl-authorization",
+      "number": null,
+      "title": "2:3.YY5.5.4 VHL Authorization",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 85,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "validate vhl",
+          "heading": false
+        },
+        {
+          "term": "hash",
+          "heading": false
+        },
+        {
+          "term": "authorization",
+          "heading": true
+        },
+        {
+          "term": "constant-time",
+          "heading": false
+        }
+      ],
+      "extract": "{{ linkvhls }} SHALL validate VHL before returning documents: Verify folder ID (_id parameter) corresponds to valid VHL Validate VHL signature (HCERT/CWT COSE signature from ITI-YY3) Check VHL expiration (either exp in CWT or VHL payload) Verify VHL not revoked (if revocation list maintained) Validate passcode if VHL requires it (P flag present): Compare against stored hash using constant-time comparison Use strong",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s024-2-3-yy5-5-4-vhl-authorization"
+      ]
+    },
+    {
+      "id": "s025-2-3-yy5-5-5-trust-network-validation",
+      "number": null,
+      "title": "2:3.YY5.5.5 Trust Network Validation",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 70,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "trust network",
+          "heading": true
+        },
+        {
+          "term": "client key",
+          "heading": false
+        },
+        {
+          "term": "trust list",
+          "heading": false
+        }
+      ],
+      "extract": "Both {{ linkvhlr }} and {{ linkvhls }} SHALL: Authenticate each other's participation in trust network Obtain public keys from trust list (ITI-YY2 Retrieve Trust List with DID) Validate certificates are not expired or revoked Use keyid (HTTP signatures) or the client key (OAuth JWT) to identify the client's key Reject requests from participants not in trust list (401 Unauthorized)",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s025-2-3-yy5-5-5-trust-network-validation"
+      ]
+    },
+    {
+      "id": "s026-2-3-yy5-5-6-audit-logging",
+      "number": null,
+      "title": "2:3.YY5.5.6 Audit Logging",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 59,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "logging",
+          "heading": true
+        },
+        {
+          "term": "audit",
+          "heading": true
+        },
+        {
+          "term": "keyid",
+          "heading": false
+        }
+      ],
+      "extract": "Both {{ linkvhlr }} and {{ linkvhls }} SHOULD log: All document access requests (successful and failed) Authentication method used (HTTP signatures, OAuth, or Verifiable Credential) Receiver identity (from keyid or OAuth token) VHL folder ID Authorization decisions (approved/denied) Timestamps IP addresses User identifiers (from recipient parameter)",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s026-2-3-yy5-5-6-audit-logging"
+      ]
+    },
+    {
+      "id": "s027-2-3-yy5-5-7-rate-limiting",
+      "number": null,
+      "title": "2:3.YY5.5.7 Rate Limiting",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 44,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "rate limiting",
+          "heading": true
+        },
+        {
+          "term": "address",
+          "heading": false
+        },
+        {
+          "term": "exceeded",
+          "heading": false
+        }
+      ],
+      "extract": "{{ linkvhls }} SHOULD implement rate limiting: Per receiver (identified by keyid or OAuth client_id) Per folder ID (to prevent brute force on VHL tokens) Per IP address Return 429 Too Many Requests when limits exceeded",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s027-2-3-yy5-5-7-rate-limiting"
+      ]
+    },
+    {
+      "id": "s028-2-3-yy5-5-8-passcode-security",
+      "number": null,
+      "title": "2:3.YY5.5.8 Passcode Security",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 42,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "passcode",
+          "heading": true
+        },
+        {
+          "term": "failed",
+          "heading": false
+        },
+        {
+          "term": "attempts",
+          "heading": false
+        }
+      ],
+      "extract": "When VHL is passcode-protected (P flag): Passcode SHALL be validated using constant-time comparison Failed passcode attempts SHOULD be rate limited Passcode SHOULD NOT be logged in audit trails Consider lockout after repeated failed attempts",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s028-2-3-yy5-5-8-passcode-security"
+      ]
+    },
+    {
+      "id": "s029-2-3-yy5-5-9-verifiable-credential-option",
+      "number": null,
+      "title": "2:3.YY5.5.9 Verifiable Credential Option",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 157,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "reject vcs",
+          "heading": false
+        },
+        {
+          "term": "vcs whose",
+          "heading": false
+        },
+        {
+          "term": "verifiable credential",
+          "heading": true
+        },
+        {
+          "term": "credential option",
+          "heading": true
+        },
+        {
+          "term": "url query",
+          "heading": false
+        }
+      ],
+      "extract": "Implementations that support the Verifiable Credential Option SHALL: Include a proof element of type DataIntegrityProof in the VC with proofPurpose = assertionMethod, a verificationMethod DID URL resolving to the {{ linkvhlr }}'s trust network key, and a proofValue computed over the VC document using the {{ linkvhlr }}'s private key per the W3C Data Integrity specification Verify proof.proofValue before trusting any",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy5/blocks/prose-s029-2-3-yy5-5-9-verifiable-credential-option"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "keywords": [
+    {
+      "term": "option http",
+      "heading": true
+    },
+    {
+      "term": "documentreference option",
+      "heading": false
+    },
+    {
+      "term": "oauth token",
+      "heading": false
+    },
+    {
+      "term": "vhl manifest",
+      "heading": false
+    },
+    {
+      "term": "vhl receiver",
+      "heading": true
+    },
+    {
+      "term": "fhir search",
+      "heading": false
+    },
+    {
+      "term": "search request",
+      "heading": false
+    },
+    {
+      "term": "authentication option",
+      "heading": true
+    },
+    {
+      "term": "linkvhlr key",
+      "heading": false
+    },
+    {
+      "term": "ssraa option",
+      "heading": true
+    },
+    {
+      "term": "manifest url",
+      "heading": false
+    },
+    {
+      "term": "search parameters",
+      "heading": false
+    }
+  ],
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 29,
+      "note": "4 levels"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 29 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/ihe-iti-vhl-iti-yy5"
+  }
+}

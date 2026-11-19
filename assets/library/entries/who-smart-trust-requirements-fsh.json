@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-requirements-fsh",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-requirements-fsh/blocks/prose-s001-input-fsh-requirements-requirements-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/fsh/requirements/requirements.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-fsh-requirements-requirements-fsh.md",
+      "narrative": null,
+      "content": "```text\n\nInstance:   RequestVDHC\nInstanceOf: SGRequirements\nUsage: #definition\n* name = \"Request VDHC\"\n* experimental = true\n* title = \"Request Verifiable Digital Health Certificate\"\n* status = $pubStatus#active\n* publisher = \"WHO\"\n* description = \"Request a Verifiable Digital Health Certificate from an Issuer\"\n* actor[+] = Canonical(Holder)\n\n\nInstance:   IssuerVDHC\nInstanceOf: SGRequirements\nUsage: #definition\n* name = \"Issue VDHC\"\n* experimental = true\n* title = \"Issue Verifiable Digital Health Certificate\"\n* status = $pubStatus#active\n* publisher = \"WHO\"\n* description = \"Issue a Verifiable",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "ihe-iti-vhl-volume-1",
+    "type": "document",
+    "title": "IHE ITI Verifiable Health Link (VHL), Volume 1",
+    "URL": "https://github.com/IHE/ITI.VHL/blob/master/input/pagecontent/volume-1.md"
+  },
+  {
+    "id": "ihe-iti-vhl-volume-1",
+    "type": "webpage",
+    "title": "IHE ITI Verifiable Health Link (VHL), Volume 1",
+    "publisher": "IHE International",
+    "URL": "https://profiles.ihe.net/ITI/VHL/volume-1.html",
+    "title-short": "VHL Vol. 1"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-data-exchange",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-data-exchange/blocks/prose-s001-data-models-and-exchange",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Data Models and Exchange",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-data-models-and-exchange.md",
+      "narrative": null,
+      "content": "## Data Models and Exchange\n\n{% include system-actors.md %}\n{% include transactions.md %}\n{% include sequence-diagrams.md %}\n{% include trust_domains.md %}\n{% include trust_network_gateway_architecture.md %}\n\n{% include concepts_did.md %}\n  {% include concepts_did_gdhcn.md %}\n  {% include concepts_did_v1.md %}\n\n{% include hcert_spec.md %}\n\n{% include qr_code_generation.md %}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

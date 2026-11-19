@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-phw-dvcmin-prequal",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-phw-dvcmin-prequal/blocks/prose-s001-input-fsh-models-dvcminprequal-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/fsh/models/DVCMinPreQual.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-fsh-models-dvcminprequal-fsh.md",
+      "narrative": null,
+      "content": "```text\nLogical: DVCMinPreQual\nParent:  DVCMin\nDescription: \"DVC payload minimized  for use within an HCERT Payload with the WHO PreQual Vaccine Database\"\n* ^abstract = false\n* vx only DVCMinVaccineDetailsPreQual\n```",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

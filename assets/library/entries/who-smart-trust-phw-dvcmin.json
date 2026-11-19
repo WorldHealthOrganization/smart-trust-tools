@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-phw-dvcmin",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-phw-dvcmin/blocks/prose-s001-input-fsh-models-dvcmin-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/fsh/models/DVCMin.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-fsh-models-dvcmin-fsh.md",
+      "narrative": null,
+      "content": "```text\nLogical:         DVCMin\nTitle:           \"DVC HCERT Payload\"\nDescription:     \"Minimal DVC payload for use within an HCERT Payload\"\n* ^status = #active\n* ^abstract = true\n* n 1..1 string \"Name\"\n  * ^code[+] = $ICVPCore#ICVP.A9.DE.1\n  * ^code[+] = $LOINC#87226-7 \"Legal name of patient - first and last\"\n* dob 1..1 date \"Date of birth\"\n  * ^code[+] = $ICVPCore#ICVP.A9.DE.2\n  * ^code[+] = $LOINC#21112-8 \"Birth date\"\n  * ^code[+] = $SCT#184099003 \"Date of birth (observable entity)\"\n* s 1..1 code \"Sex\"\n* s from $GENDER (extensible)\n  * ^code[+] = $ICVPCore#ICVP.A9.DE.3\n* nt 1..1 code \"Nation",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

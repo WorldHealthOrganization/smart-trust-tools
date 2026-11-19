@@ -1,0 +1,96 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-phw-health-link-payload",
+  "title": "HealthLinkPayload and VerifiableHealthLinkPayload logical models (FSH)",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "files",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-input-fsh-models-healthlinkpayload-fsh",
+      "number": null,
+      "title": "input/fsh/models/HealthLinkPayload.fsh",
+      "level": 1,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 257,
+      "summary": null,
+      "keywords": [],
+      "extract": "```text Logical: HealthLinkPayload Title: \"Health Link Payload (DRAFT)\" Description: \"Health Link Payload (DRAFT) A Health Link URI is generated from this payload according to the algorithm documented [here](https://build.fhir.org/ig/HL7/smart-health-cards-and-links/links-specification.html#smart-health-links-sharing-application-generates-a-smart-health-link-uri) \" //* ^url =",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-phw-health-link-payload/blocks/prose-s001-input-fsh-models-healthlinkpayload-fsh"
+      ]
+    },
+    {
+      "id": "s002-input-fsh-models-verifiablehealthlinkpayload-fsh",
+      "number": null,
+      "title": "input/fsh/models/VerifiableHealthLinkPayload.fsh",
+      "level": 1,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 77,
+      "summary": null,
+      "keywords": [],
+      "extract": "```text Logical: VerifiableHealthLinkPayload Parent: HealthLinkPayload Title: \"Verifiable Health Link Payload (DRAFT)\" Description: \"Verifiable Health Link Payload (DRAFT) This logical model constrains the Health Link Payload for a Verifiable Health Link \" Characteristics: #can-be-target //* ^url = \"https://profiles.ihe.net/ITI/VHL/StructureDefinition/VerifiableHealthLinkPayload\" * ^version = \"RC2\" * ^status =",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-phw-health-link-payload/blocks/prose-s002-input-fsh-models-verifiablehealthlinkpayload-fsh"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 2,
+      "note": "one level"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 2 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-phw-health-link-payload"
+  }
+}

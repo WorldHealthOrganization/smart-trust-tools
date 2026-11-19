@@ -1,0 +1,557 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "ihe-iti-vhl-iti-yy5",
+  "blocks": [
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s001-input-pagecontent-iti-yy5-md",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/pagecontent/ITI-YY5.md",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-pagecontent-iti-yy5-md.md",
+      "narrative": null,
+      "content": "{% assign linkvhlr = '<a href=\"ActorDefinition-VHLReceiver.html\">VHL Receiver</a>' %}\n{% assign linkvhls = '<a href=\"ActorDefinition-VHLSharer.html\">VHL Sharer</a>' %}\n\n\n{% assign reqRequestVHLDocs = site.data.Requirements-RequestVHLDocuments %}\n\n{% assign reqRequestVHLDocsTitle = reqRequestVHLDocs.extension  | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.title\" | first %}\n{% assign reqRequestVHLDocsDescription = reqRequestVHLDocs.extension  | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.description\" | first %}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s002-2-3-yy5-1-scope",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.1 Scope",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-2-3-yy5-1-scope.md",
+      "narrative": null,
+      "content": "### 2:3.YY5.1 Scope\n\nThe Retrieve Manifest transaction enables a {{ linkvhlr }} to retrieve a manifest (searchset Bundle) of available health documents from a {{ linkvhls }} using a previously obtained and validated Verified Health Link (VHL). \n\nThis transaction occurs after the {{ linkvhlr }} has received a VHL from a VHL Holder (via ITI-YY4 Provide VHL) and validated the VHL signature.\n\n**FHIR Search Transaction:** This transaction uses a standard FHIR search on the List resource, following the same pattern as MHD ITI-66 Find Document Lists. The manifest URL from the VHL payload contains all",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s003-2-3-yy5-2-actor-roles",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.2 Actor Roles",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-2-3-yy5-2-actor-roles.md",
+      "narrative": null,
+      "content": "### 2:3.YY5.2 Actor Roles\n\n| Actor | Role |\n|-------|------|\n| {{ linkvhlr }} | Initiates FHIR search request to retrieve document manifest using validated VHL as authorization |\n| {{ linkvhls }} | Responds to search request after authenticating and authorizing the VHL Receiver |\n{: .grid}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s004-2-3-yy5-3-referenced-standards",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.3 Referenced Standards",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-2-3-yy5-3-referenced-standards.md",
+      "narrative": null,
+      "content": "### 2:3.YY5.3 Referenced Standards\n\n**Core Standards:**\n- **RFC 5280**: X.509 PKI Certificate and CRL Profile\n- **RFC 9110**: HTTP Semantics\n- **RFC 9421**: HTTP Message Signatures\n- **RFC 6234**: SHA-256 Hash Function\n- **W3C VC Data Model v2**: [Verifiable Credentials Data Model v2](https://www.w3.org/TR/vc-data-model-2.0/) - for Verifiable Credential Option\n- **W3C Data Integrity**: [Verifiable Credential Data Integrity 1.0](https://www.w3.org/TR/vc-data-integrity/) - DataIntegrityProof for Verifiable Credential Option\n- **W3C Data Integrity ECDSA Cryptosuites**: [ecdsa-2019](https://www.w3",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s005-2-3-yy5-4-messages",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4 Messages",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s005-2-3-yy5-4-messages.md",
+      "narrative": null,
+      "content": "### 2:3.YY5.4 Messages\n\n<figure >\n  <div style=\"width:35em; max-width:100%;\">\n     {%include ITI-YY5.svg%}\n  </div>\n  <p id=\"f2:3.YY5.4-1\" class=\"figureTitle\">Figure 2:3.YY5.4-1: Retrieve Manifest Interaction Diagram</p>\n</figure>",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s006-2-3-yy5-4-1-retrieve-manifest-request-message",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.1 Retrieve Manifest Request Message",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s006-2-3-yy5-4-1-retrieve-manifest-request-message.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.4.1 Retrieve Manifest Request Message",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s007-2-3-yy5-4-1-1-trigger-events",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.1.1 Trigger Events",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s007-2-3-yy5-4-1-1-trigger-events.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.1.1 Trigger Events\n\n{{ reqRequestVHLDocsDescription.valueMarkdown }}\n\nA {{ linkvhlr }} initiates the Retrieve Manifest Request when:\n- The {{ linkvhlr }} has received and validated a VHL containing a manifest URL\n- The {{ linkvhlr }} needs to discover available documents before retrieving specific content",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s008-2-3-yy5-4-1-2-message-semantics",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.1.2 Message Semantics",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s008-2-3-yy5-4-1-2-message-semantics.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.1.2 Message Semantics\n\nThis transaction uses a standard FHIR search on the List resource. The request is sent to the manifest URL decoded from the VHL (from ITI-YY4). The manifest URL contains all necessary FHIR search parameters.\n\n**Manifest URL Structure**\n\nThe {{ linkvhlr }} performs an HTTP POST to the `_search` endpoint with the manifest URL parameters from the VHL payload:\n\n**Example Manifest URL from VHL:**\n```\nhttps://vhl-sharer.example.org/List?_id=abc123def456&code=folder&status=current&patient.identifier=urn:oid:2.16.840.1.113883.2.4.6.3|PASSPORT123&_include=List:ite",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s009-2-3-yy5-4-1-3-authentication-option-http-message",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.1.3 Authentication Option - HTTP Message Signatures",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s009-2-3-yy5-4-1-3-authentication-option-http-message.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.1.3 Authentication Option - HTTP Message Signatures\n\nImplementations MAY authenticate using **HTTP Message Signatures** per RFC 9421. HTTP Message Signatures provide cryptographic proof of the receiver's identity, request integrity, and non-repudiation.\n\n**Request Structure:**\n\n```http\nPOST /List/_search HTTP/1.1\nHost: vhl-sharer.example.org\nContent-Type: application/x-www-form-urlencoded\nContent-Length: 234\nContent-Digest: sha-256=X48E9qOokqqrvdts8nOJRJN3OWDUoyWxBf7kbu9DBPE=\nSignature-Input: sig1=(\"@method\" \"@path\" \"@authority\" \"content-type\" \"content-digest\");created=17356896",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s010-2-3-yy5-4-1-4-authentication-option-oauth-with-s",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.1.4 Authentication option - OAuth with SSRAA Option",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s010-2-3-yy5-4-1-4-authentication-option-oauth-with-s.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.1.4 Authentication option - OAuth with SSRAA Option\n\nImplementations that support the **OAuth with SSRAA Option** MAY use OAuth 2.0 access tokens for authentication instead of HTTP Message Signatures. This option provides interoperability with systems implementing the [HL7 Security for Scalable Registration, Authentication, and Authorization IG](http://hl7.org/fhir/us/udap-security/) (SSRAA). The following workflow description is informative only, and does not take precedence over underlying requirements from the HL7 Security for Scalable Registration, Authentication, and Autho",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s011-2-3-yy5-4-1-5-authentication-option-verifiable-c",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.1.5 Authentication Option - Verifiable Credential Option",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s011-2-3-yy5-4-1-5-authentication-option-verifiable-c.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.1.5 Authentication Option - Verifiable Credential Option\n\nImplementations that support the **Verifiable Credential Option** MAY use a self-issued JSON-LD Verifiable Credential (LDP-VC) for authentication. In this option the {{ linkvhlr }} constructs a VC whose `credentialSubject` is the manifest decoded from the VHL (received as a QR code or as a Verifiable Credential per [ITI-YY4](ITI-YY4.html)), and whose embedded **DataIntegrityProof** is signed with the {{ linkvhlr }}'s key from the trust network. The VC is sent directly as the HTTP POST body with `Content-Type: application",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s012-2-3-yy5-4-1-6-expected-actions-vhl-receiver",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.1.6 Expected Actions - VHL Receiver",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s012-2-3-yy5-4-1-6-expected-actions-vhl-receiver.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.1.6 Expected Actions - VHL Receiver\n\nThe {{ linkvhlr }} SHALL:\n\n1. **Extract Manifest URL from VHL**:\n   - Obtain manifest URL from VHL payload (ITI-YY4)\n   - URL contains all FHIR search parameters (_id, code, status, and the patient identifier via chained search as patient.identifier, plus optional _include)\n   - Parse URL to extract search parameters\n\n2. **Prepare Request Parameters**:\n   - Construct request body with FHIR search parameters from URL\n   - Add SHL parameters:\n     - recipient (required) - identifier of requesting organization/person\n     - passcode (if P flag",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s013-2-3-yy5-4-1-7-expected-actions-vhl-sharer",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.1.7 Expected Actions - VHL Sharer",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s013-2-3-yy5-4-1-7-expected-actions-vhl-sharer.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.1.7 Expected Actions - VHL Sharer\n\nUpon receiving Retrieve Manifest Request, the {{ linkvhls }} SHALL:\n\n1. **Parse Request**:\n   - Extract FHIR search parameters from request body\n   - Extract SHL parameters (recipient, passcode, embeddedLengthMax)\n   - Identify authentication method used (HTTP signatures or OAuth token)\n\n2. **Authenticate Receiver**:\n   - **HTTP Message Signatures**:\n     - Extract `keyid` from Signature-Input header\n     - Retrieve receiver's public key from trust list using `keyid`\n     - Reconstruct signature base from request components\n     - Verify signa",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s014-2-3-yy5-4-2-retrieve-manifest-response-message",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.2 Retrieve Manifest Response Message",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s014-2-3-yy5-4-2-retrieve-manifest-response-message.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.4.2 Retrieve Manifest Response Message",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s015-2-3-yy5-4-2-1-trigger-events",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.2.1 Trigger Events",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s015-2-3-yy5-4-2-1-trigger-events.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.2.1 Trigger Events\n\nThis message is sent when the {{ linkvhls }} has successfully authenticated the {{ linkvhlr }}, authorized the VHL, and retrieved the requested document manifest.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s016-2-3-yy5-4-2-2-message-semantics",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.2.2 Message Semantics",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s016-2-3-yy5-4-2-2-message-semantics.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.2.2 Message Semantics\n\nBecause the VHL manifest URL constructed at [ITI-YY3](ITI-YY3.html) is a FHIR search on `List` using the search parameters required by the Document Responder in [IHE MHD ITI-66 Find Document Lists](https://profiles.ihe.net/ITI/MHD/ITI-66.html), the Retrieve Manifest response is — at the FHIR level — an [MHD ITI-66 response message](https://profiles.ihe.net/ITI/MHD/ITI-66.html#23662-message-semantics): a FHIR `searchset` Bundle. The shape of the Bundle depends on whether the {{ linkvhls }} supports the **Include DocumentReference Option** AND the {{ linkvh",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s017-2-3-yy5-4-2-3-expected-actions",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.2.3 Expected Actions",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s017-2-3-yy5-4-2-3-expected-actions.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.2.3 Expected Actions\n\nThe {{ linkvhlr }} SHALL:\n- Parse the Bundle and distinguish List vs. DocumentReference resources by `search.mode`.\n- **If the Bundle does NOT contain DocumentReference resources** (Example A): for each `List.entry[].item.reference`, perform a FHIR read against the {{ linkvhls }} to obtain the DocumentReference metadata.\n- For each DocumentReference, retrieve the binary by dereferencing `content.attachment.url` per [Retrieve Document [ITI-68]](#23yy5424-document-content-retrieval), reusing the same authentication option chosen for this ITI-YY5 session.\n- D",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s018-2-3-yy5-4-2-4-document-content-retrieval",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.2.4 Document Content Retrieval",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s018-2-3-yy5-4-2-4-document-content-retrieval.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.2.4 Document Content Retrieval\n\nThe {{ linkvhls }} returns FHIR `DocumentReference` metadata as part of (or referenced from) the manifest Bundle. The actual document binary is retrieved separately by dereferencing `DocumentReference.content.attachment.url`.\n\nThe binary retrieval SHALL conform to the IHE MHD **[Retrieve Document [ITI-68]](https://profiles.ihe.net/ITI/MHD/ITI-68.html)** transaction:\n\n- **Method:** HTTP `GET` against `DocumentReference.content.attachment.url`.\n- **Transport:** Same ATNA secure channel used for ITI-YY5.\n- **Authentication:** The {{ linkvhlr }} SHAL",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s019-2-3-yy5-4-2-5-document-encryption",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.4.2.5 Document Encryption",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s019-2-3-yy5-4-2-5-document-encryption.md",
+      "narrative": null,
+      "content": "##### 2:3.YY5.4.2.5 Document Encryption\n\nVHL document binaries are encrypted following the [SMART Health Links — Encrypting and Decrypting Files](https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html#encrypting-and-decrypting-files) convention.\n\n**Algorithm:**\n- **Serialization:** JWE Compact Serialization per RFC 7516.\n- **Key management (`alg`) and content encryption (`enc`):** selected per [Cryptographic Algorithm Selection](volume-1.html#1xx53-cryptographic-algorithm-selection), following the SMART Health Links convention referenced above.\n- **Symmetric key:** The 3",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s020-2-3-yy5-5-security-considerations",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5 Security Considerations",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s020-2-3-yy5-5-security-considerations.md",
+      "narrative": null,
+      "content": "### 2:3.YY5.5 Security Considerations",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s021-2-3-yy5-5-1-transport-security",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5.1 Transport Security",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s021-2-3-yy5-5-1-transport-security.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.5.1 Transport Security\n\nSecure transport is required for all communications in this transaction. Implementations SHALL comply with the **IHE ATNA Profile** (ITI TF-1: Section 9) for transport security requirements",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s022-2-3-yy5-5-2-http-message-signatures",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5.2 HTTP Message Signatures",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s022-2-3-yy5-5-2-http-message-signatures.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.5.2 HTTP Message Signatures \nImplementations that support HTTP Message Signatures per RFC 9421:\n- Signature SHALL include `@method`, `@path`, `@authority`, `content-type`, `content-digest`\n- Content-Digest SHALL be SHA-256 or stronger\n- Signature algorithm and key strength — see [Cryptographic Algorithm Selection](volume-1.html#1xx53-cryptographic-algorithm-selection)\n- Private keys SHALL be stored securely (Hardware Security Module recommended)\n- Public keys SHALL be obtained from trust network\n- `keyid` SHALL uniquely identify receiver's public key in trust list\n- Timestamp vali",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s023-2-3-yy5-5-3-oauth-with-ssraa-option",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5.3 OAuth with SSRAA Option",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s023-2-3-yy5-5-3-oauth-with-ssraa-option.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.5.3 OAuth with SSRAA Option \nImplementations that support OAuth with SSRAA Option SHALL:\n- Use OAuth 2.0 Backend Services (client_credentials grant)\n- Use JWT client assertions (private_key_jwt) for client authentication\n- Include appropriate FHIR scopes in access token\n- Validate token signature, expiration, and scope\n- Limit token lifetime (recommended: 1 hour maximum)\n- Check JWT `jti` claim to prevent replay attacks\n- Obtain receiver's public key from trust list for JWT signature validation\n- The authorization server SHALL validate the JWT client assertion signature and verify",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s024-2-3-yy5-5-4-vhl-authorization",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5.4 VHL Authorization",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s024-2-3-yy5-5-4-vhl-authorization.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.5.4 VHL Authorization\n{{ linkvhls }} SHALL validate VHL before returning documents:\n- Verify folder ID (_id parameter) corresponds to valid VHL\n- Validate VHL signature (HCERT/CWT COSE signature from ITI-YY3)\n- Check VHL expiration (either exp in CWT or VHL payload)\n- Verify VHL not revoked (if revocation list maintained)\n- Validate passcode if VHL requires it (P flag present):\n  - Compare against stored hash using constant-time comparison\n  - Use strong hash function (bcrypt, Argon2, PBKDF2)\n- Confirm VHL scope authorizes requested documents",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s025-2-3-yy5-5-5-trust-network-validation",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5.5 Trust Network Validation",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s025-2-3-yy5-5-5-trust-network-validation.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.5.5 Trust Network Validation\nBoth {{ linkvhlr }} and {{ linkvhls }} SHALL:\n- Authenticate each other's participation in trust network\n- Obtain public keys from trust list (ITI-YY2 Retrieve Trust List with DID)\n- Validate certificates are not expired or revoked\n- Use `keyid` (HTTP signatures) or the client key (OAuth JWT) to identify the client's key\n- Reject requests from participants not in trust list (401 Unauthorized)",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s026-2-3-yy5-5-6-audit-logging",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5.6 Audit Logging",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s026-2-3-yy5-5-6-audit-logging.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.5.6 Audit Logging\nBoth {{ linkvhlr }} and {{ linkvhls }} SHOULD log:\n- All document access requests (successful and failed)\n- Authentication method used (HTTP signatures, OAuth, or Verifiable Credential)\n- Receiver identity (from keyid or OAuth token)\n- VHL folder ID\n- Authorization decisions (approved/denied)\n- Timestamps\n- IP addresses\n- User identifiers (from recipient parameter)",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s027-2-3-yy5-5-7-rate-limiting",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5.7 Rate Limiting",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s027-2-3-yy5-5-7-rate-limiting.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.5.7 Rate Limiting\n{{ linkvhls }} SHOULD implement rate limiting:\n- Per receiver (identified by keyid or OAuth client_id)\n- Per folder ID (to prevent brute force on VHL tokens)\n- Per IP address\n- Return 429 Too Many Requests when limits exceeded",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s028-2-3-yy5-5-8-passcode-security",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5.8 Passcode Security",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s028-2-3-yy5-5-8-passcode-security.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.5.8 Passcode Security\nWhen VHL is passcode-protected (P flag):\n- Passcode SHALL be validated using constant-time comparison\n- Failed passcode attempts SHOULD be rate limited\n- Passcode SHOULD NOT be logged in audit trails\n- Consider lockout after repeated failed attempts",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy5/blocks/prose-s029-2-3-yy5-5-9-verifiable-credential-option",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY5.5.9 Verifiable Credential Option",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s029-2-3-yy5-5-9-verifiable-credential-option.md",
+      "narrative": null,
+      "content": "#### 2:3.YY5.5.9 Verifiable Credential Option\nImplementations that support the Verifiable Credential Option SHALL:\n- Include a `proof` element of type `DataIntegrityProof` in the VC with `proofPurpose` = `assertionMethod`, a `verificationMethod` DID URL resolving to the {{ linkvhlr }}'s trust network key, and a `proofValue` computed over the VC document using the {{ linkvhlr }}'s private key per the W3C Data Integrity specification\n- Verify `proof.proofValue` before trusting any VC claim; reject the request if proof verification fails\n- Resolve `proof.verificationMethod` against the trust netw",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

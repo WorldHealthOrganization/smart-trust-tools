@@ -1,0 +1,38 @@
+{
+  "@context": {
+    "@base": "https://litlfred.github.io/folio/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "bibo": "http://purl.org/ontology/bibo/",
+    "fabio": "http://purl.org/spar/fabio/",
+    "dcterms:source": {
+      "@type": "@id"
+    },
+    "dcterms:hasVersion": {
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "references/ihe-iti-vhl-iti-yy5",
+      "@type": [
+        "fabio:Work",
+        "bibo:Document"
+      ],
+      "dcterms:title": "IHE VHL ITI-YY5 Retrieve Manifest",
+      "dcterms:identifier": "https://github.com/IHE/ITI.VHL/blob/master/input/pagecontent/ITI-YY5.md",
+      "dcterms:source": "library/ihe-iti-vhl-iti-yy5/manifest.jsonld",
+      "dcterms:hasVersion": "library/ihe-iti-vhl-iti-yy5"
+    },
+    {
+      "@id": "references/ihe-iti-vhl-iti-yy5",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "IHE VHL ITI-YY5 Retrieve Manifest",
+      "dcterms:publisher": "IHE International",
+      "dcterms:identifier": "https://profiles.ihe.net/ITI/VHL/ITI-YY5.html",
+      "dcterms:hasVersion": "library/ihe-iti-vhl-iti-yy5"
+    }
+  ]
+}

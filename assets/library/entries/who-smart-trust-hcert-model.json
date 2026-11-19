@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-hcert-model",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-hcert-model/blocks/prose-s001-input-fsh-models-hcert-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/fsh/models/hcert.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-fsh-models-hcert-fsh.md",
+      "narrative": null,
+      "content": "```text\n\nLogical:        HCert\nTitle:          \"Health Certificate\"\nDescription:    \"Logical Model for the HCERT\"\n\n//Description:    \"\"\"Logical Model for the HCERT\n//\n// The full data structure and encoding mechanisms for HCERT are defined here: [Electronic Health Certificate Specification](http://smart.who.int/trust/hcert_spec.html)\n//\n// An HCERT is claim -260 within the [CBOR Web Token (CWT) Claim](https://www.rfc-editor.org/rfc/rfc8392.html).\n//\n// Note for subclaims:\n// - subclaims 0 and above are reserved by WHO to be assigned, a new sub claim can be requested for by requesting to create",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

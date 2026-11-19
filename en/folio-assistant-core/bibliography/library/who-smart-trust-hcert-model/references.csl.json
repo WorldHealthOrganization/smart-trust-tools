@@ -1,0 +1,8 @@
+[
+  {
+    "id": "who-smart-trust-hcert-model",
+    "type": "document",
+    "title": "HCert logical model (FSH)",
+    "URL": "https://github.com/WorldHealthOrganization/smart-trust/blob/main/input/fsh/models/hcert.fsh"
+  }
+]

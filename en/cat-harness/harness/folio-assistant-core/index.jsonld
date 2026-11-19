@@ -1,0 +1,44 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/"
+  },
+  "@id": "https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/harness/folio-assistant-core/",
+  "url": "https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/harness/folio-assistant-core/",
+  "@type": "WebPage",
+  "name": "Folio Assistant Core on SMART Trust HCERT library tools",
+  "about": {
+    "@id": "https://litlfred.github.io/folio-assistant-core/",
+    "@type": "SoftwareSourceCode",
+    "identifier": "folio-assistant-core",
+    "name": "Folio Assistant Core",
+    "description": "What a folio IS — the content-object model, the block kinds, the adapters, and the `folio` graph typology itself.",
+    "version": "0.1.0",
+    "codeRepository": "https://github.com/litlfred/folio-assistant-core",
+    "isBasedOn": [
+      {
+        "@id": "https://litlfred.github.io/cat-harness/"
+      },
+      {
+        "identifier": "cat-harness-tools"
+      }
+    ],
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "pinnedCommit",
+      "value": "b699993ab043af4154c4f4c4e51c66224d0dbb9e"
+    },
+    "keywords": [
+      "document"
+    ]
+  },
+  "isPartOf": {
+    "@id": "https://worldhealthorganization.github.io/smart-trust-tools/",
+    "name": "SMART Trust HCERT library tools"
+  },
+  "significantLink": [
+    "https://litlfred.github.io/folio-assistant/folio-assistant-core/",
+    "https://github.com/litlfred/folio-assistant-core/tree/b699993ab043af4154c4f4c4e51c66224d0dbb9e",
+    "https://github.com/litlfred/folio-assistant-core/blob/b699993ab043af4154c4f4c4e51c66224d0dbb9e/README.md",
+    "https://github.com/litlfred/folio-assistant-core/blob/b699993ab043af4154c4f4c4e51c66224d0dbb9e/AGENTS.md"
+  ]
+}

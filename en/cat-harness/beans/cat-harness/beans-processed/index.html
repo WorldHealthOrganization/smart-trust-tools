@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="../../../../../assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="../../../../../assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  
+
+  
+
+  
+    <script src="../../../../../assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="../../../../../assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>cat-harness — beans by process | SMART Trust HCERT library tools</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="cat-harness — beans by process" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Requirements, API contract (WIT), wire format (CDDL), payload models and the Kotlin library for HCERT and Verifiable Health Links, derived from the WHO SMART Trust implementation guide and IHE ITI VHL." />
+<meta name="twitter:description" property="og:description" content="Requirements, API contract (WIT), wire format (CDDL), payload models and the Kotlin library for HCERT and Verifiable Health Links, derived from the WHO SMART Trust implementation guide and IHE ITI VHL." />
+<link rel="canonical" href="https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/beans/cat-harness/beans-processed/" />
+<meta property="og:url" content="https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/beans/cat-harness/beans-processed/" />
+<meta property="og:site_name" content="SMART Trust HCERT library tools" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="cat-harness — beans by process" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Requirements, API contract (WIT), wire format (CDDL), payload models and the Kotlin library for HCERT and Verifiable Health Links, derived from the WHO SMART Trust implementation guide and IHE ITI VHL.","headline":"cat-harness — beans by process","url":"https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/beans/cat-harness/beans-processed/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <script type="application/json" id="fa-site-scheme">{"scheme": "dark"}</script><!-- fa-first-paint:begin -->
+<script>(function(){var d=document.documentElement,s=null,c="dark";try{s=localStorage.getItem("fa-color-scheme")}catch(e){}if(s!=="light"&&s!=="dark"){s="light";try{if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)s="dark"}catch(e){}}try{var n=document.getElementById("fa-site-scheme");if(n)c=JSON.parse(n.textContent).scheme==="light"?"light":"dark"}catch(e){}d.setAttribute("data-fa-scheme",s);var j=window.jtd;if(s!==c&&j&&typeof j.setTheme==="function"){try{j.setTheme(s)}catch(e){}}})();</script>
+<style>html{background-color:#27262b}html[data-fa-scheme="light"]{background-color:#ffffff}</style>
+<!-- fa-first-paint:end --><meta name="fa-render-regions" content="1">
+<script>document.documentElement.setAttribute("data-fa-render","pending");</script><style>
+  .bpmn-figure {
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid rgba(128, 128, 128, 0.35);
+    border-radius: 6px;
+    margin: 1em 0 0.4em;
+  }
+  .bpmn-figure img {
+    display: block;
+    width: 100%;
+    min-width: 1200px;
+    max-width: none;
+  }
+  .bpmn-source {
+    margin-top: 0;
+    font-size: 0.75rem;
+  }
+</style><script type="application/json" id="fa-translation-meta">{
+  "lang": "en",
+  "translationStatus": "",
+  "translationSource": "",
+  "supportedLocales": ["ar","zh","en","fr","ru","es"],
+  "availableLocales": null,
+  "translationQa":{
+    "key": "page.translation",
+    "slug": "en-cat-harness-beans-cat-harness-beans-processed-index.html",
+    "src": "../../../../../assets/qa/en-cat-harness-beans-cat-harness-beans-processed-index.html/page.translation.json",
+    "index": "../../../../../assets/qa/en-cat-harness-beans-cat-harness-beans-processed-index.html/qa-index.json",
+    "list": "../../../../../assets/qa/translation-qa-pages.json"
+  },
+  "sweep":{
+    "absent": "smart-trust-tools publishes no translation QA sweep on this site",
+    "run": false,
+    "sweptAt": "",
+    "totalPages": 0,
+    "pagesWithTranslations": 0,
+    "complete": false
+  },
+  "statusSrc":"../../../../../assets/translation-status/index.json",
+  "reviewSrc":"../../../../../assets/translation-status/review.json"
+}</script><script type="application/json" id="fa-navbar-row" data-fa-row-src="harness-data"></script><script type="application/json" id="fa-site-links">{"kg":"https://litlfred.github.io/folio-assistant/smart-trust-tools/","jsonld":"https://litlfred.github.io/folio-assistant/smart-trust-tools/smart-trust-tools.jsonld","source":"https://github.com/WorldHealthOrganization/smart-trust-tools"}</script><meta name="fa-site-index-src" content="../../../../../assets/harness/site.json">
+<meta name="fa-todo-src" content="../../../../../assets/todos/index.json"><meta name="fa-todo-graph" content="../../../../../todos.jsonld"><meta name="fa-zoom-src" content="../../../../../assets/semantic-zoom.json"><meta name="fa-tiles" content="" data-fa-src="harness-data">
+<meta name="fa-glass-strip" content="[&quot;glass-todos&quot;,&quot;glass-settings&quot;]"><meta name="fa-baseurl" content="../../../../.."><meta name="fa-staging" content=""><meta name="fa-search-index" content="">
+
+<meta name="fa-beans-src" content="../../../../../assets/beans/index.json"><meta name="fa-processes-src" content="../../../../../subgraph/index.jsonld"><meta name="fa-build-src" content="../../../../../build.json"><link rel="stylesheet" href="../../../../../assets/css/navbar-row.css?v=263225e79ed9">
+<link rel="stylesheet" href="../../../../../assets/css/docs-ui.css?v=eb56f2150b3d"><link rel="stylesheet" href="../../../../../assets/css/narrow-viewport.css?v=173ef819dbf2"><link rel="stylesheet" href="../../../../../assets/css/themes.css?v=5c199f8420d3"><link rel="stylesheet" href="../../../../../assets/css/uml.css?v=e677f91cbf66"><link rel="stylesheet" href="../../../../../assets/css/avatars.css?v=9923b8bfedd1"><script type="application/json" id="fa-declared-kinds">["beans","code","code-list","docs","external-schema","fhir-logical-models","glossary","hcert-contract","hcert-generated-contract","hcert-test-vectors","library","memory","payload-models","processes","references","scenarios","schemas","skills","test-plan","tools","typologies","upstream-patches"]</script><script src="../../../../../assets/js/harness-data.js" defer></script><script src="../../../../../assets/js/kg-render.js" defer></script><script src="../../../../../assets/js/navbar-row.js?v=fb3cd5c0d28c" defer></script>
+<script src="../../../../../assets/js/docs-ui.js?v=2abe761c2b06" defer></script><script src="../../../../../assets/js/edit-links.js?v=7b072444cbb5" defer></script><script src="../../../../../assets/js/translation-review.js?v=1902d883e072" defer></script><script src="../../../../../assets/js/code-highlight.js?v=0f94772226c3" defer></script><style>
+  .folio-landing { position: relative; margin: 0 0 2rem; }
+
+  /* WHAT IS LEFT HERE, AND WHY IT IS SO LITTLE.
+     `landing.html` emits exactly one folio-landing class —
+     `folio-landing folio-landing--plain` — the no-stickies fallback, which
+     renders the description and no art. The art path moved to the sticky
+     board (`fa-sticky--backdrop` in docs-ui.css), which composites text into
+     the picture through a declared `textRegion` and a scrim.
+
+     So this block used to carry fourteen selectors of which ELEVEN matched
+     nothing: every rule reaching for `folio-landing__art`,
+     `folio-landing__text` or `folio-landing--no-region`. Measured before they
+     were cut — those three classes appear in no markup in this repository and
+     on none of the 331 published pages that were inlining the CSS for them.
+     CSS has no error for a selector that matches nothing, which is the same
+     silence that let `.fa-sticky--backdrop > .fa-sticky-art` ship wrong.
+
+     The reasoning did not go with them. The blend-direction argument for the
+     fade is now at `.fa-sticky--backdrop::before`, where a scrim replaces it;
+     the region, overflow and breakpoint-parity lessons were already
+     re-derived and better stated on `.fa-landing-sticky--fixed`. What is NOT
+     carried over is the `cqw` container-query sizing: the successor scales
+     through `--fa-text-scale` rather than container queries, so a note about
+     `container-type` not being its own query container would be advice about
+     a mechanism nothing here uses. Bean `alox`, issue #873. */
+  .folio-landing--plain {
+    position: static; width: auto; height: auto; color: inherit;
+  }
+  .folio-landing--plain p { font-size: inherit; font-weight: inherit; }
+</style><style id="fa-page-ground" data-instance="cat-harness">
+  /* Grumpy cyborg agents, the theme of cat-harness. */
+  :root { --fa-page-scrim: rgba(39, 38, 43, 0.85); --fa-text-scrim: rgba(39, 38, 43, 0.96); }
+  :root[data-fa-scheme="light"] { --fa-page-scrim: rgba(255, 255, 255, 0.85); --fa-text-scrim: rgba(255, 255, 255, 0.96); }
+  /* The root carries the art, so it covers the whole viewport however short
+     the page; the body is made see-through so the art is not painted over. */
+  html:root body { background-color: transparent; }
+  html body .main-content { background-color: var(--fa-text-scrim); border-radius: 6px; }
+  html:root {
+    background-image:
+      linear-gradient(var(--fa-page-scrim), var(--fa-page-scrim)),
+      url("../../../../../assets/img/harness/landing-grumpy-cyborg-agents-laptop.webp");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+  @media (max-width: 48rem) {
+    html:root {
+      background-image:
+        linear-gradient(var(--fa-page-scrim), var(--fa-page-scrim)),
+        url("../../../../../assets/img/harness/landing-grumpy-cyborg-agents-card.webp");
+    }
+  }
+  @media (max-width: 30rem) {
+    html:root {
+      background-image:
+        linear-gradient(var(--fa-page-scrim), var(--fa-page-scrim)),
+        url("../../../../../assets/img/harness/landing-grumpy-cyborg-agents-mobile.webp");
+    }
+  }
+  /* Print and forced colours get the plain page: art is decoration. */
+  @media print, (forced-colors: active) {
+    html:root { background-image: none; }
+  }
+</style>
+
+<link rel="stylesheet" href="../../../../../assets/css/navbar.css"><script src="../../../../../assets/navbar/rail-j29dkqi0u1.js" defer></script><script src="../../../../../assets/js/navbar.js" defer></script><link rel="stylesheet" href="../../../../../assets/page-layout.css" data-fa-page-layout><script src="../../../../../assets/page-layout.js" defer data-fa-page-layout></script><meta name="fa-pinned-data" content="../../../../.."></head>
+
+<body><script type="application/json" id="fa-rail" data-fa-root="https://litlfred.github.io/folio-assistant" data-fa-to-root="../../../../..">{"data":"rail-j29dkqi0u1","here":"/en/cat-harness/beans/cat-harness/beans-processed/","documentIndex":{"label":"On this page","icon":"§","items":[{"href":"#pb-table","label":"Beans in processes"},{"href":"#pb-unplaced-h","label":"Beans in no process"}],"collapsible":true}}</script><nav class="fa-nav" aria-label="folio-assistant" data-fa-rail="pending"><a href="../../../../../">SMART Trust HCERT library tools</a></nav>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header fa-site-bar fa-page-bar"><a class="fa-page-bar-home" href="../../../../../">SMART Trust HCERT library tools</a>
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search SMART Trust HCERT library tools" autocomplete="off">
+    <label for="search-input" class="search-label">
+      <span class="sr-only">Search SMART Trust HCERT library tools</span>
+      <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+    </label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+<span class="fa-page-bar-locale" data-fa-slot="locale"></span></div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <!--
+  Generated by scripts/state-visualizer.ts. Do not hand-edit: the next run
+  overwrites it, `state:visualizer:check` fails on the difference, and a
+  hand-edit here is a change nothing else in the tree knows about.
+-->
+<style>
+.sv-page a:not(.fa-workplan a) { color: inherit; text-decoration: underline; text-underline-offset: 0.15em; }
+.sv-page a:not(.fa-workplan a):hover { text-decoration-thickness: 2px; }
+.sv-sub { margin: 0 0 1.5rem; font-size: 0.9rem; opacity: 0.85; }
+.sv-h2 { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.02em;
+  text-transform: uppercase; margin: 2rem 0 0.7rem; }
+.sv-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.sv-list > li::before, .sv-counts > li::before { content: none; }
+.sv-item { border: 1px solid rgba(127,127,127,0.4); border-radius: 8px; padding: 0.8rem 1rem; }
+.sv-item.is-here { border-color: currentColor; }
+.sv-item h2, .sv-item h3 { font-size: 1rem; margin: 0 0 0.2rem; }
+.sv-item p { margin: 0; font-size: 0.85rem; }
+.sv-here { font-weight: 600; }
+.sv-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em;
+  font-weight: 600; margin-left: 0.5rem; }
+.sv-counts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.6rem 0 0; padding: 0; list-style: none; }
+.sv-count { border: 1px solid rgba(127,127,127,0.4); border-radius: 6px; padding: 0.4rem 0.7rem; min-width: 4.5rem; }
+.sv-count-v { display: block; font-size: 1.1rem; font-weight: 600; line-height: 1.25; }
+.sv-count-k { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
+.sv-page td { vertical-align: top; }
+</style>
+<div class="sv-page">
+<style>
+.pb-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.6rem; margin: 0 0 1rem; }
+.pb-filters label { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.8rem; font-weight: 600; }
+.pb-filters input, .pb-filters select { font: inherit; font-size: 0.95rem; padding: 0.35rem 0.45rem; min-width: 0; }
+.pb-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+.pb-chips li::before { content: none; }
+.pb-chip { border: 1px solid rgba(127,127,127,0.5); border-radius: 999px; padding: 0.05rem 0.6rem; font-size: 0.8rem; }
+.pb-chip.is-stalled { border-color: #b86a00; border-width: 2px; }
+.pb-chip.is-broken { border-color: #b3263e; border-width: 2px; border-style: dashed; }
+.pb-card { border: 1px solid rgba(127,127,127,0.4); border-radius: 8px; padding: 0.8rem 1rem; margin: 0 0 1rem; }
+.pb-card h2 { font-size: 1.05rem; margin: 0 0 0.2rem; }
+.pb-diagram { overflow-x: auto; background: #fff; border-radius: 6px; margin: 0.5rem 0; min-height: 4rem; }
+.pb-diagram svg { display: block; min-width: 56rem; max-width: none; height: auto; }
+.pb-diagram .pb-token .djs-visual > :first-child { stroke: #0d6e78 !important; stroke-width: 5px !important; }
+.pb-diagram .pb-token.pb-stalled .djs-visual > :first-child { stroke: #b86a00 !important; }
+.pb-diagram .pb-done .djs-visual > :first-child { stroke-dasharray: 6 4 !important; }
+.pb-mark { cursor: pointer; }
+.pb-mark text { font: 600 18px ui-monospace, monospace; fill: #fff; }
+.pb-table { overflow-x: auto; }
+.pb-table table { font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.pb-table button { all: unset; cursor: pointer; text-decoration: underline; }
+.pb-hist { list-style: none; padding: 0; margin: 0; }
+.pb-hist li::before { content: none; }
+.pb-hist li { margin: 0 0 0.4rem; font-size: 0.85rem; }
+.pb-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0.5rem 0; }
+.pb-steps button { font: inherit; font-size: 0.9rem; min-width: 2.75rem; min-height: 2.75rem; padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid rgba(127,127,127,0.6); background: transparent; color: inherit; cursor: pointer; }
+.pb-steps button:focus-visible, .pb-steps input:focus-visible { outline: 3px solid #0d6e78; outline-offset: 2px; }
+.pb-steps input[type=range] { flex: 1 1 12rem; min-height: 2.75rem; }
+.pb-now { border-left: 4px solid #0d6e78; padding: 0.4rem 0.8rem; margin: 0.5rem 0; }
+.pb-events { list-style: none; padding: 0; margin: 0.5rem 0 0; max-height: 18rem; overflow-y: auto; font-size: 0.85rem; }
+.pb-events li::before { content: none; }
+.pb-events li { padding: 0.2rem 0.4rem; border-radius: 4px; cursor: pointer; }
+.pb-events li[aria-current="step"] { outline: 2px solid #0d6e78; font-weight: 600; }
+.pb-diagram .pb-ended .djs-visual > :first-child { stroke: #555 !important; stroke-width: 4px !important; }
+.pb-list { list-style: none; padding: 0; margin: 0.5rem 0; }
+.pb-list li::before { content: none; }
+.pb-list li { border-top: 1px solid rgba(127,127,127,0.3); padding: 0.4rem 0; font-size: 0.9rem; }
+.pb-list details { margin: 0.2rem 0 0; }
+.pb-list details p, .pb-detail details p { white-space: pre-wrap; font-size: 0.85rem; margin: 0.3rem 0; }
+.pb-detail { border-left: 4px solid #0d6e78; }
+.pb-stores { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; border: 1px solid rgba(127,127,127,0.4); border-radius: 6px; margin: 0 0 1rem; padding: 0.4rem 0.8rem; }
+.pb-stores label { display: flex; align-items: center; gap: 0.3rem; min-height: 2.75rem; }
+.pb-stores input { width: 1.25rem; height: 1.25rem; }
+.pb-live { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; font-size: 0.9rem; margin: 0 0 0.8rem; }
+.pb-live input { width: 1.25rem; height: 1.25rem; }
+.pb-detail button { font: inherit; min-height: 2.75rem; padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid rgba(127,127,127,0.6); background: transparent; color: inherit; cursor: pointer; }
+</style>
+<h1 id="beans-processed">
+  
+  
+    <a href="#beans-processed" class="anchor-heading" aria-labelledby="beans-processed"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Beans by process: cat-harness
+  
+  
+</h1>
+    <p class="sv-sub"><a href="../">cat-harness's work plan</a> · <a href="../beans-processed/">beans by process</a></p><p class="sv-sub">BPMN workflow instances recorded in <code>cat-harness</code>'s work plan, joined with the beans they name. Ages are measured on 2026-11-19 (UTC, the day this page was built); an instance is <strong>stalled</strong> when it is running and has not moved for more than 7 days. A finished instance is marked where it ended. Beans that no instance names are listed under "Beans in no process"; <a href="../">the store page</a> has every bean. A running subprocess is followed on each instance's own page.</p><div data-pb="all" data-pb-stall="7" data-pb-up="../" data-pb-store="cat-harness"><p class="pb-live" id="pb-live" hidden><label><input type="checkbox" id="pb-live-on" checked> Refresh every 5 s from the local bean store</label> <span id="pb-live-state" role="status"></span></p><form class="pb-filters" onsubmit="return false"><label for="pb-q">Search<input id="pb-q" type="search" placeholder="bean, title, step, instance"></label><label for="pb-process">Process<select id="pb-process"><option value="">All processes</option></select></label><label for="pb-open">Beans<select id="pb-open"><option value="open" selected>Open</option><option value="closed">Closed</option><option value="">Open and closed</option></select></label><label for="pb-state">Instance<select id="pb-state"><option value="">Any</option><option value="running">Running</option><option value="finished">Finished</option><option value="stuck">Any stuck state</option></select></label><label for="pb-beanstatus">Bean status<select id="pb-beanstatus"><option value="">Any</option></select></label><label for="pb-stale">Not moved for<select id="pb-stale"><option value="">Any time</option><option value="7">More than 7 days</option><option value="30">More than 30 days</option><option value="60">More than 60 days</option></select></label></form><ul class="pb-chips" id="pb-chips"></ul><section class="pb-card pb-detail" id="pb-detail" tabindex="-1" aria-live="polite" hidden></section><p class="sv-sub">No BPMN instance is recorded in this store, so no bean sits at any step.</p><div id="pb-cards"></div>
+<h2 class="sv-h2" id="pb-table">
+  
+  
+    <a href="#pb-table" class="anchor-heading" aria-labelledby="pb-table"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Beans in processes
+  
+  
+</h2>
+    <div class="pb-table"><div class="table-wrapper"><table><thead><tr><th>bean</th><th><button type="button" data-pb-sort="process">process</button></th><th>step</th><th>instance</th><th><button type="button" data-pb-sort="lastMoved">last moved</button></th><th>stuck</th></tr></thead><tbody id="pb-tbody"></tbody></table></div></div>
+<h2 class="sv-h2" id="pb-unplaced-h">
+  
+  
+    <a href="#pb-unplaced-h" class="anchor-heading" aria-labelledby="pb-unplaced-h"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Beans in no process
+  
+  
+</h2>
+    <p class="sv-sub">Beans of this store that no workflow instance names, so no diagram shows them. The filters above apply.</p><ul class="pb-list" id="pb-unplaced"></ul></div>
+<script type="application/json" id="pb-rows">[]</script><script type="application/json" id="pb-unplaced-data">[{"id":"smart-trust-tools-oiep","title":"Open issues of the HCERT and VHL libraries","status":"todo","closed":false,"updatedAt":"2026-11-07T14:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oiep--open-issues-of-the-hcert-and-vhl-libraries.md","excerpt":"The open issues (OI-nn) this project has found in its sources and in its own libraries, one bean each. Each names the requirements it affects and the sources it concerns, and is tagged `upstream` when the fix belongs in a WHO or IHE repository, or `this-repository` when it belongs here. This epic is their place on the roadmap.\n\n## Done when\n\n- [ ] every child bean is completed or scrapped"},{"id":"smart-trust-tools-oi02","title":"OI-02: One payload per hcert, or several?","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi02--one-payload-per-hcert-or-several.md","excerpt":"QR Code Generation 2 and 4 say an HCERT carries exactly one payload and that -260 is a \"map whose single key is the subclaim\". HCERT Specification 3.2.7 says \"Several different types of health certificate MAY exist under the same claim\", and the HCert logical model makes every subclaim 0..1, so it does not rule out more than one. The verifier behaviour for several entries is not specified.\n\nUpstream has answered half of it (WHO af75be2, PR 129 merged): QR Code Generation 2 now says \"Carrying exactly one is an implementation choice, not a constraint of the container\", and the CWT payload logic…"},{"id":"smart-trust-tools-oi03","title":"OI-03: EKU certificate type for non-DCC payloads is undefined","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi03--eku-certificate-type-for-non-dcc-payloads-is-und.md","excerpt":"Appendix A.2 defines EKU OIDs for test, vaccinations and recovery, and QR Code Generation 11 step 7 says to check the EKU \"against the certificate type\". There is no mapping from subclaims 3, 4, 5, -6 or -7 to a certificate type. DVC (-6) is presumably \"vaccinations\". VHL (5) has no obvious type.\n\n## Resolution\n\nAdd a subclaim-to-certificate-type table, or use the GDHCN Key Usage value set.\n\n## Reported\n\nReported 2026-10-24 to WHO as point 1 of WorldHealthOrganization/smart-trust#138 (https://github.com/WorldHealthOrganization/smart-trust/issues/138).\n\n## Requirements affected\n\n- req:stt-ver-…"},{"id":"smart-trust-tools-oi04","title":"OI-04: Base45 reference points at an expired Internet-Draft","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi04--base45-reference-points-at-an-expired-internet-d.md","excerpt":"Both pages cite draft-faltstrom-base45. That draft was published as RFC 9285, which should be the reference.\n\n## Reported\n\nReported 2026-10-24 to WHO as point 2 of WorldHealthOrganization/smart-trust#138 (https://github.com/WorldHealthOrganization/smart-trust/issues/138).\n\n## Requirements affected\n\n- req:stt-b45-001\n\n## Sources\n\n- library/who-smart-trust-qr-code-generation/sections/s009-8-step-7-encode-as-base45\n- library/who-smart-trust-hcert-spec/sections/s018-4-2-2-qr-2d-barcode\n- external-schemas/ietf-draft-faltstrom-base45\n- external-schemas/ietf-rfc9285\n\n## Status 2026-11-01\n\nA fix for …"},{"id":"smart-trust-tools-oi05","title":"OI-05: CBOR reference RFC 7049 is obsoleted by RFC 8949","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi05--cbor-reference-rfc-7049-is-obsoleted-by-rfc-8949.md","excerpt":"Neither page says whether issuers should use deterministic encoding, or which rules. The reference script uses length-first canonical ordering (RFC 7049 section 3.9). For the integer and short text keys used here that gives the same order as RFC 8949 core deterministic encoding, but that is luck, not a rule.\n\n## Reported\n\nReported 2026-10-24 to WHO as point 3 of WorldHealthOrganization/smart-trust#138 (https://github.com/WorldHealthOrganization/smart-trust/issues/138).\n\n## Requirements affected\n\n- req:stt-cbr-001\n- req:stt-tst-002\n\n## Sources\n\n- library/who-smart-trust-qr-code-generation/sect…"},{"id":"smart-trust-tools-oi06","title":"OI-06: Subclaim 5 is called VHL in one place and SHL in another","status":"completed","closed":true,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi06--subclaim-5-is-called-vhl-in-one-place-and-shl-in.md","excerpt":"QR Code Generation 2.1 and the HCert logical model describe subclaim 5 as the URI of a Verifiable Health Link. HCERT Specification 3.2.7.1.5, which is the authoritative list, describes it as Smart Health Link (SHL) and links the SMART Health Links spec. The two define different URI schemes and payloads.\n\n## Resolution\n\nRaised as WorldHealthOrganization/smart-trust#130: 3.2.7.1.5 becomes Verifiable Health Link (IHE ITI VHL, SHL payload format), and the HCert model types key 5 as the trust-phw VerifiableHealthLinkPayload, carried as a CBOR map. The library follows that (STT-VHL-002).\n\n## Requir…"},{"id":"smart-trust-tools-oi07","title":"OI-07: iss is a string in the spec but a Coding in the logical model","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi07--iss-is-a-string-in-the-spec-but-a-coding-in-the.md","excerpt":"The CWTPayload logical model types claim 1 as Coding. HCERT 3.2.4 and RFC 8392 type it as a string.\n\n## Reported\n\nReported 2026-10-24 to WHO as point 4 of WorldHealthOrganization/smart-trust#138 (https://github.com/WorldHealthOrganization/smart-trust/issues/138).\n\n## Requirements affected\n\n- req:stt-cwt-005\n\n## Sources\n\n- library/who-smart-trust-hcert-spec/sections/s010-3-2-4-issuer\n- library/who-smart-trust-cwt-payload-model\n\n## Status 2026-11-01\n\nA fix for point 4 of smart-trust#138 is drafted in WorldHealthOrganization/smart-trust#139 (open, commit 04bb7a8). It is WHO's to review and merge…"},{"id":"smart-trust-tools-oi12","title":"OI-12: Base64 variant of kid in the DID trustlist is unspecified","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi12--base64-variant-of-kid-in-the-did-trustlist-is-un.md","excerpt":"The DID trustlist uses a \"base64 encoded key id\" as the verification method fragment and as JWK kid. It does not say whether that is standard or URL-safe base64, or whether padding is kept. Standard and URL-safe base64 differ on '+' and '/', and the PR example kid WHM+BYqqZiE= contains '+'.\n\n## Reported\n\nReported 2026-10-24 to WHO as point 5 of WorldHealthOrganization/smart-trust#138 (https://github.com/WorldHealthOrganization/smart-trust/issues/138).\n\n## Requirements affected\n\n- req:stt-kid-003\n- req:stt-tru-002\n\n## Sources\n\n- library/who-smart-trust-did-gdhcn/sections/s004-example-did-docum…"},{"id":"smart-trust-tools-oi13","title":"OI-13: Mapping between GDHCN participant codes (alpha-3) and iss (alpha-2)","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi13--mapping-between-gdhcn-participant-codes-alpha-3.md","excerpt":"Participant codes are ISO 3166-1 alpha-3, while iss and the X.509 C attribute use alpha-2. The test pair XXA/XX is user-assigned and not a formal ISO mapping. A verifier narrowing trust-list lookups by iss needs an authoritative mapping.\n\n## Reported\n\nReported 2026-10-24 to WHO as point 6 of WorldHealthOrganization/smart-trust#138 (https://github.com/WorldHealthOrganization/smart-trust/issues/138).\n\n## Requirements affected\n\n- req:stt-cwt-005\n\n## Sources\n\n- library/who-smart-trust-qr-code-generation/sections/s016-12-3-issuer\n- library/who-smart-trust-hcert-spec/sections/s010-3-2-4-issuer\n- re…"},{"id":"smart-trust-tools-oi17","title":"OI-17: The example issues an abstract logical model","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi17--the-example-issues-an-abstract-logical-model.md","excerpt":"In smart-trust-phw, DVCMin and DVCMinVaccineDetails are declared abstract (^abstract = true). Only DVCMinPreQual and DVCMinVaccineDetailsPreQual are concrete. The HCert logical model puts DVCMin at subclaim -6, and the PR 129 example issues a DVCMin with ICD-11 codes. So no concrete model exists for a non-PreQual DVC: either DVCMin should not be abstract, or a concrete ICD-11 profile is needed.\n\n## Reported\n\nReported 2026-10-24 to WHO as point 7 of WorldHealthOrganization/smart-trust#138 (https://github.com/WorldHealthOrganization/smart-trust/issues/138). The issue was filed on smart-trust; t…"},{"id":"smart-trust-tools-oi19","title":"OI-19: Upstream home for the CDDL and JSON-LD artefacts","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi19--upstream-home-for-the-cddl-and-json-ld-artefacts.md","excerpt":"The HCERT envelope CDDL (api/cddl/hcert.cddl) belongs in WorldHealthOrganization/smart-trust next to the HCERT Specification, which owns the wire format. The payload JSON-LD context, SHACL and CDDL belong with their logical models in smart-trust-phw, ideally generated by the IG build and published at the canonical URL. They are drafted here until upstream adopts them.\n\n## Reported\n\nReported 2026-10-24 to WHO as point 8 of WorldHealthOrganization/smart-trust#138 (https://github.com/WorldHealthOrganization/smart-trust/issues/138).\n\n## Requirements affected\n\n- req:stt-cbr-004\n- req:stt-pay-010\n\n…"},{"id":"smart-trust-tools-oi21","title":"OI-21: IHE ITI-YY3 puts a vhlink:/ string at HCERT key 5; ITI-YY4 reads an object","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi21--ihe-iti-yy3-puts-a-vhlink-string-at-hcert-key-5.md","excerpt":"ITI-YY3 step 5 base64url-encodes the minified payload JSON, prefixes it with vhlink:/ and puts that text at claim -260 key 5. ITI-YY4 step 8 and its example read key 5 as a decoded object. Text-in-CBOR also costs about a third of the QR: on the ITI-YY3 example the string form is ~609 HC1 characters against ~422 for a CBOR map.\n\n## Resolution\n\nPatch prepared for the IHE editors (upstream/ihe-iti-vhl/): for the HCERT carrier key 5 is the payload as a CBOR map; vhlink:/ stays the text form for URI carriers; receivers also accept the string. smart-trust#130 makes the same change on the WHO side.\n…"},{"id":"smart-trust-tools-oi22","title":"OI-22: IHE VHL examples break their own rules","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi22--ihe-vhl-examples-break-their-own-rules.md","excerpt":"The ITI-YY3 example JSON has \"extension\" but its base64url encodes \"extensions\". The ITI-YY4 example key is 44 characters and decodes to 33 bytes (\"this is a secret key used for enc\"), against the 43-character, 32-byte rule stated beside it.\n\n## Resolution\n\nFixed in the IHE patch in upstream/ihe-iti-vhl/.\n\n## Requirements affected\n\n- req:stt-vhl-001\n\n## Sources\n\n- library/ihe-iti-vhl-iti-yy3/sections/s010-2-3-yy3-4-1-3-expected-actions\n- library/ihe-iti-vhl-iti-yy4\n\n## Status 2026-11-01\n\nNo change upstream: IHE/ITI.VHL main is still 4820147 (2026-06-14), and the July update, IHE/ITI.VHL#48, i…"},{"id":"smart-trust-tools-oi23","title":"OI-23: trust-phw Health Link payload types exp and v as strings and requires type","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi23--trust-phw-health-link-payload-types-exp-and-v-as.md","excerpt":"HealthLinkPayload types exp and v as string where SMART Health Links and IHE VHL use numbers, and VerifiableHealthLinkPayload makes type 1..1, a field neither SHL nor IHE has.\n\n## Resolution\n\nRaised as WorldHealthOrganization/smart-trust-phw#17: exp integer64, v integer, VHL type 0..1 (absent inside an HCERT).\n\n## Requirements affected\n\n- req:stt-vhl-001\n\n## Sources\n\n- library/who-smart-trust-phw-health-link-payload\n- external-schemas/hl7-smart-health-links\n- library/ihe-iti-vhl-iti-yy3/sections/s010-2-3-yy3-4-1-3-expected-actions\n\n## Status 2026-11-01\n\nNo change upstream: smart-trust-phw mai…"},{"id":"smart-trust-tools-oi24","title":"OI-24: IHE VHL leaves JWE alg/enc non-normative","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi24--ihe-vhl-leaves-jwe-alg-enc-non-normative.md","excerpt":"Document encryption names dir / A256GCM only in an example and defers to \"Cryptographic Algorithm Selection\", which mandates nothing for encryption (its only baseline is RS256 for signatures). Two conformant implementations need not interoperate. SMART Health Links, which the section cites, fixes dir / A256GCM.\n\n## Resolution\n\nThe library implements dir / A256GCM only and refuses anything else (STT-VHL-007).\n\n## Reported\n\nReported 2026-10-24 to IHE as point 1 of a comment on IHE/ITI.VHL#48, the July 2026 update PR (https://github.com/IHE/ITI.VHL/pull/48#issuecomment-6385626316). That PR does …"},{"id":"smart-trust-tools-oi25","title":"OI-25: Manifest URL is List? in one place and List/_search? in another","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi25--manifest-url-is-list-in-one-place-and-list-searc.md","excerpt":"ITI-YY3 builds the manifest URL as .../List/_search?...; ITI-YY5 shows .../List?... and says the receiver POSTs the parameters to _search. The library accepts both and always POSTs to \u003cbase>/List/_search (STT-VHL-005).\n\n## Reported\n\nReported 2026-10-24 to IHE as point 2 of a comment on IHE/ITI.VHL#48, the July 2026 update PR (https://github.com/IHE/ITI.VHL/pull/48#issuecomment-6385626316). That PR does not yet address it.\n\n## Requirements affected\n\n- req:stt-vhl-005\n\n## Sources\n\n- library/ihe-iti-vhl-iti-yy3/sections/s010-2-3-yy3-4-1-3-expected-actions\n- library/ihe-iti-vhl-iti-yy5/sections/s…"},{"id":"smart-trust-tools-oi26","title":"OI-26: IHE's Content-Digest example is not RFC 9530 syntax","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi26--ihe-s-content-digest-example-is-not-rfc-9530-syn.md","excerpt":"The ITI-YY5 example sends \"Content-Digest: sha-256=X48E...=\", but RFC 9530 makes the value a Structured Field byte sequence, \"sha-256=:X48E...=:\". A sharer verifying strictly rejects the example form. The library emits RFC 9530 syntax (STT-VHL-008).\n\n## Reported\n\nReported 2026-10-24 to IHE as point 3 of a comment on IHE/ITI.VHL#48, the July 2026 update PR (https://github.com/IHE/ITI.VHL/pull/48#issuecomment-6385626316). That PR does not yet address it.\n\n## Requirements affected\n\n- req:stt-vhl-008\n\n## Sources\n\n- library/ihe-iti-vhl-iti-yy5/sections/s009-2-3-yy5-4-1-3-authentication-option-http…"},{"id":"smart-trust-tools-oi27","title":"OI-27: No signed manifest in IHE VHL or SMART Health Links","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi27--no-signed-manifest-in-ihe-vhl-or-smart-health-li.md","excerpt":"The journeys ask to \"verify DVC and signed VHL manifests against the DEV trust list\". Neither specification signs the manifest: the VHL link is signed (the HCERT), and the manifest's integrity rests on mutual TLS and receiver authentication. Either the journey wording changes, or a signed-manifest option is proposed upstream.\n\n## Reported\n\nReported 2026-10-24 to IHE as point 4 of a comment on IHE/ITI.VHL#48, the July 2026 update PR (https://github.com/IHE/ITI.VHL/pull/48#issuecomment-6385626316). That PR does not yet address it.\n\n## Requirements affected\n\n- req:stt-vhl-006\n\n## Sources\n\n- libr…"},{"id":"smart-trust-tools-oi28","title":"OI-28: How a receiver's keyid, and a DID trust list entry, map to keys","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi28--how-a-receiver-s-keyid-and-a-did-trust-list-entr.md","excerpt":"ITI-YY5 says keyid is \"used to locate key in trust list\" but not how; and ITI-YY2's DID trust list is not tied to the COSE kid (8-byte SHA-256 of the DSC) that ITI-YY4 uses to find the VHL signer.\n\n## Reported\n\nReported 2026-10-24 to IHE as point 5 of a comment on IHE/ITI.VHL#48, the July 2026 update PR (https://github.com/IHE/ITI.VHL/pull/48#issuecomment-6385626316). That PR does not yet address it.\n\n## Requirements affected\n\n- req:stt-vhl-008\n\n## Sources\n\n- library/ihe-iti-vhl-iti-yy5/sections/s009-2-3-yy5-4-1-3-authentication-option-http-message\n- library/ihe-iti-vhl-volume-1\n\n## Status 20…"},{"id":"smart-trust-tools-oi29","title":"OI-29: $generate-vhl sends the passcode in a GET query string","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi29--generate-vhl-sends-the-passcode-in-a-get-query-s.md","excerpt":"ITI-YY3's $generate-vhl is a GET with passcode as a query parameter, so the passcode lands in server and proxy logs. Host concern, not the library's; noted for the policy track.\n\n## Reported\n\nReported 2026-10-24 to IHE as point 6 of a comment on IHE/ITI.VHL#48, the July 2026 update PR (https://github.com/IHE/ITI.VHL/pull/48#issuecomment-6385626316). That PR does not yet address it.\n\n## Requirements affected\n\n- req:stt-vhl-005\n\n## Sources\n\n- library/ihe-iti-vhl-iti-yy3/sections/s010-2-3-yy3-4-1-3-expected-actions\n\n## Status 2026-11-01\n\nNo change upstream: IHE/ITI.VHL main is still 4820147 (202…"},{"id":"smart-trust-tools-oi30","title":"OI-30: smart-trust states two different licences","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi30--smart-trust-states-two-different-licences.md","excerpt":"WorldHealthOrganization/smart-trust's LICENSE file says Creative Commons Attribution-NonCommercial-ShareAlike 3.0 IGO; its own input/pagecontent/license.md says Creative Commons Attribution 3.0 IGO. The library entries under library/who-smart-trust-* record the LICENSE file's terms and this contradiction.\n\n## Resolution\n\nWHO to state one licence. Found 2026-10-20 while ingesting the sources into library/.\n\n## Status 2026-11-01\n\nUnchanged on smart-trust main 48e8800: LICENSE still says CC BY-NC-SA 3.0 IGO and input/pagecontent/license.md still says CC BY 3.0 IGO.\n\n## Done when\n\n- [ ] the upstr…"},{"id":"smart-trust-tools-oi33","title":"OI-33: WHO-ITB track data is not held as vectors","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi33--who-itb-track-data-not-held.md","excerpt":"The who-itb-agreement test plan (test/plans/who-itb-agreement.test-plan.json, STT-TST-009) compares each library with the WHO Interoperability Test Bed on its three HCERT tracks. It cannot run in CI yet, for three reasons.\n\n1. WHO-ITB (commit 883291d) carries no licence file, so its test-data QR images and the gdhcn-helper's responses cannot be copied here.\n2. The images must be decoded to HC1 text once. The libraries do not read images (STT-QR-005), and no QR reader is pinned here.\n3. The track data is signed by GDHCN DEV participants, so verifying it needs the DEV trust list DID documents. …"},{"id":"smart-trust-tools-oi34","title":"OI-34: The DEV trust list DIDs name a different host from the guide","status":"completed","closed":true,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi34--dev-trust-list-did-host-differs-from-the-guide.md","excerpt":"QR Code Generation 12.6 and the DEV endpoints (input/fsh/instances/endpoints-DEV.fsh, WHO af75be2) give XXR's trust list as did:web:tng-cdn.who.int:v2:trustlist:-:XXR:DSC, \"resolvable at https://tng-cdn-dev.who.int/v2/trustlist/-/XXR/DSC/did.json\". Under the did:web method a DID resolves at the host it names, so did:web:tng-cdn.who.int:... resolves at https://tng-cdn.who.int/..., the production host, not tng-cdn-dev. The document actually served from tng-cdn-dev (retrieved 2026-10-22, vectors/smart-trust-af75be2/XXR-DSC-did.json) gives its own id as did:web:tng-cdn-dev.who.int:v2:trustlist:-:…"},{"id":"smart-trust-tools-oi35","title":"OI-35: The trust list signer departs from JOSE and does not publish its contexts","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi35--trust-list-signer-departs-from-jose-and-publishes-no-contexts.md","excerpt":"Verifying the GDHCN DID trust list proofs (STT-TRU-006) meant reproducing what WHO's signer, tng-key-distribution 021a9d2 with ld-signatures-java 1.11.0, actually does. In three places that differs from the open standards the proofs name:\n\n1. **The JWS signature is DER, not r||s.** JsonWebSignature2020 proofs carry a detached ES256 JWS, and RFC 7518 3.4 makes an ES256 signature the 64-byte r||s; the signer uses the JCA's DER output as is. Standard JOSE verifiers refuse it.\n2. **The canonical form depends on contexts the documents do not pin.** URDNA2015 runs over JSON-LD expanded with context…"},{"id":"smart-trust-tools-oi36","title":"OI-36: DVCMin.s is bound to the administrative-gender CodeSystem, not a ValueSet","status":"todo","closed":false,"updatedAt":"2026-11-01T10:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi36--dvcmin-sex-bound-to-a-codesystem.md","excerpt":"The HL7 FHIR Validator, now run on the logical models before main publishes (tools/fhir-validate), reports one error in the upstream DVCMin model: \"The valueSet reference http://hl7.org/fhir/administrative-gender on element DVCMin.s points to something that is not a value set (CodeSystem)\". The cause is smart-trust-phw's Aliases.fsh: $GENDER names the CodeSystem, which is right for the ICVP.Core ConceptMap but wrong for the bindings DVCMin.s and DVC.sex.\n\nThe derived payload models carry the same URL, as a CDDL comment and as the SHACL annotation lmx:valueSet on DVCMin.s. The binding is exten…"},{"id":"smart-trust-tools-oi08","title":"OI-08: Logical model link in hcert_spec uses a different case","status":"completed","closed":true,"updatedAt":"2026-10-24T14:54:54Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi08--logical-model-link-in-hcert-spec-uses-a-differen.md","excerpt":"hcert_spec.md links StructureDefinition-hcert.html. The resource id is HCert, so the page is StructureDefinition-HCert.html, which is the link QR Code Generation 2.1 uses. On case-sensitive hosting the lowercase link breaks.\n\n## Resolution\n\nFixed upstream: on smart-trust main at 422b043 (2026-10-23), both links in hcert_spec.md read StructureDefinition-HCert.html. Recorded as not needing a report in WorldHealthOrganization/smart-trust#138.\n\n## Requirements affected\n\n- req:stt-sel-001\n\n## Sources\n\n- library/who-smart-trust-hcert-spec/sections/s007-3-2-1-cwt-structure-overview\n- library/who-sma…"},{"id":"smart-trust-tools-oi15","title":"OI-15: Asynchronous crypto and I/O across the WIT boundary","status":"completed","closed":true,"updatedAt":"2026-10-24T14:32:28Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi15--asynchronous-crypto-and-i-o-across-the-wit-bound.md","excerpt":"WASI 0.2 component calls are synchronous. WebCrypto (the natural crypto backend for Kotlin/JS on Node and browsers) is promise-based, as are remote KMS signers and HTTP fetches. The design avoids async callbacks into the host: signing is two-phase and trust lists are loaded by the host. The Rust component verifies with in-WASM RustCrypto, so verify stays synchronous. Kotlin/JS must either use Node's synchronous `crypto` module (Node only) or expose a Promise-returning verify, which would diverge from the jco surface. Decide before implementation; revisit when WASI 0.3 async is stable.\n\n## Req…"},{"id":"smart-trust-tools-oi37","title":"OI-37: hcert-core has no browser target","status":"completed","closed":true,"updatedAt":"2026-10-24T14:32:28Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi37--hcert-core-has-no-browser-target.md","excerpt":"hcert-core's Kotlin/JS target is `nodejs()` only: `Platform.js.kt` imports `node:crypto` and `node:zlib`, and ArchitectureTest allows only those modules plus `node:buffer`. So the Kotlin library does not run in a browser, and there is no wasmJs target.\n\nlitlfred/smart-trust-demo needs one for the web target of its app (docs/proposals/app-platform.md, constraint 4 and step 3 of the recommendation). Until then the demo's web journeys use the Rust/wasm library (tools/hcert-rust), which already runs in a browser with WebCrypto keys.\n\nThe browser's platform APIs are asynchronous: WebCrypto `subtle…"},{"id":"smart-trust-tools-oi20","title":"OI-20: CDDL validator deviations (cddl-rs / pycddl)","status":"completed","closed":true,"updatedAt":"2026-10-24T14:25:43Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi20--cddl-validator-deviations-cddl-rs-pycddl.md","excerpt":"The only Python CDDL validator, pycddl (wrapping the Rust cddl crate), deviates from RFC 8610 in four ways found here: .cbor inside arrays is applied to the wrong items; .regexp is not implicitly anchored; escaped regex classes such as \\s are treated as literals; and map closure is not enforced across group-choice alternatives. The CDDL files stay spec-correct, and tools/check-models/check_models.py works around the first three. The schema avoids relying on the fourth. Cross-check with a second validator (e.g. cddlc) before upstreaming.\n\n## Requirements affected\n\n- req:stt-cbr-004\n\n## Sources…"},{"id":"smart-trust-tools-oi38","title":"OI-38: Rust tests for the assertions hcert-rust leaves uncovered","status":"completed","closed":true,"updatedAt":"2026-10-24T14:22:16Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi38--rust-tests-for-the-uncovered-assertions.md","excerpt":"test/systems/hcert-rust.system.json (smart-trust-tools#32) lists 42 required assertions that no test verifies on at least one of the system's targets: 8 on native only, 12 on wasm32 only, 22 on both. Many are tested in substance already, under a test whose name does not start with the requirement id, so the generator cannot bind it. The rest need a test.\n\nFor each assertion: tag the existing test (rename it, as the systems README says, `stt_xxx_nnn_...` in Rust, `STT-XXX-nnn ...` in tools/conformance-ts), or write the test. A gap that should stay open goes in the system's `unbound` with its r…"},{"id":"smart-trust-tools-oi09","title":"OI-09: DVC subclaim -6 is in the development range","status":"completed","closed":true,"updatedAt":"2026-10-24T14:07:28Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi09--dvc-subclaim-6-is-in-the-development-range.md","excerpt":"The number \"is not guaranteed to be stable\". The library must not bake -6 into its wire format, and has to be able to move DVC to a WHO-assigned number without a breaking API change.\n\n## Requirements affected\n\n- req:stt-sel-003\n\n## Sources\n\n- library/who-smart-trust-qr-code-generation/sections/s003-2-step-1-select-the-payload-type\n\n## Done when\n\n- [x] fixed in this repository\n\n## Notes\n\n- 2026-10-24: claimed by Claude, session https://claude.ai/code/session_01PeeabG4WKeuCzLfTEqH3Yz (smart-trust-tools bean drain). The issuer and the payload decoder already take the number from the registry; th…"},{"id":"smart-trust-tools-oi16","title":"OI-16: WIT type-system limits","status":"completed","closed":true,"updatedAt":"2026-10-24T14:03:22Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi16--wit-type-system-limits.md","excerpt":"WIT has no recursive types, so generic CBOR crosses as encoded bytes and only DVCMin and VHL are typed records. s64 becomes bigint in JavaScript, so it is used only for NumericDate, and subclaim numbers are s32. result\u003cT, E> is thrown as ComponentError by jco, so APIs whose failures are expected (verify) return a variant instead.\n\n## Requirements affected\n\n- req:stt-gen-010\n\n## Sources\n\n- external-schemas/bytecodealliance-wit\n\n## Done when\n\n- [x] fixed in this repository\n\n## Closed\n\n2026-10-24, Claude (https://claude.ai/code/session_01PeeabG4WKeuCzLfTEqH3Yz): the design takes each limit, and …"},{"id":"smart-trust-tools-oi18","title":"OI-18: Sex binding in DVCMin points at a CodeSystem, not a ValueSet","status":"scrapped","closed":true,"updatedAt":"2026-10-24T14:03:22Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi18--sex-binding-in-dvcmin-points-at-a-codesystem-not.md","excerpt":"DVCMin.s is bound (extensible) to $GENDER, which smart-trust-phw aliases to http://hl7.org/fhir/administrative-gender, the CodeSystem URL. A binding must reference a ValueSet: http://hl7.org/fhir/ValueSet/administrative-gender.\n\n## Requirements affected\n\n- req:stt-pay-010\n\n## Sources\n\n- library/who-smart-trust-phw-dvcmin\n- library/who-smart-trust-phw-aliases\n\n## Done when\n\n- [ ] the upstream source is corrected, or the requirement no longer depends on it\n\n## Scrapped\n\n2026-10-24, Claude (https://claude.ai/code/session_01PeeabG4WKeuCzLfTEqH3Yz): a duplicate of OI-36, which records the same bin…"},{"id":"smart-trust-tools-oi32","title":"OI-32: Requirements no test verifies yet","status":"completed","closed":true,"updatedAt":"2026-10-24T14:03:22Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi32--requirements-no-test-verifies-yet.md","excerpt":"87 of the 94 requirements are verified by a test named after them (the tests the skills' tested-by names; the traceability matrix's \"Not verified by a test\" filter lists the rest). One of the other 7 has its own work: STT-TST-009 (agreement with the WHO-ITB, bean OI-33). STT-TST-010, the coverage floor, is enforced in CI by :hcert-core:jvmTestCoverageCheck (Kotlin) and tools/hcert-rust/coverage.sh (Rust), which the skill's tested-by names. The remaining 6 are verified by review; the Kotlin gaps and the Rust group are closed. Every requirement now carries success criteria; the test plans in te…"},{"id":"smart-trust-tools-oi14","title":"OI-14: Package coordinates and licence for the libraries","status":"completed","closed":true,"updatedAt":"2026-10-23T09:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi14--package-coordinates-and-licence-for-the-librarie.md","excerpt":"Maven group / Kotlin package root and crate names are placeholders. The natural reverse-DNS root, int.who, cannot be used because `int` is a reserved Java keyword. The licence has not been chosen.\n\n## Resolution\n\nThe owner's decisions of 2026-10-23. Licence: Apache-2.0 (LICENSE at the root, the official apache.org text, copied into the crate, the npm packages and every jar). Coordinates: they follow the repository's GitHub org, from smart-trust-tools.json's \"repository\": Maven group io.github.\u003corg>, npm scope @\u003corg>, crate \u003corg>-hcert (library hcert); today io.github.litlfred, @litlfred, litl…"},{"id":"smart-trust-tools-oi01","title":"OI-01: Reference script output is not reproducible byte for byte","status":"completed","closed":true,"updatedAt":"2026-10-22T00:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi01--reference-script-output-is-not-reproducible-byte.md","excerpt":"QR Code Generation 12 and 13 say the script \"regenerates the example above byte for byte\". It does not. The DSC is signed by the SCA, and the COSE_Sign1 by the DSC, using randomized ECDSA, so every run produces a different DSC, a different kid and different HC1 strings. Running the script at PR head 50bcb25 twice produced kids ZfzK2Csfpsk= and 2sMkNOHFctA=, against WHM+BYqqZiE= in the PR, and different HC1 strings on every run. The committed artefacts are internally consistent: both committed HC1 strings verify against the committed DSC and the kid matches. The sizes in 12.5 are not stable ei…"},{"id":"smart-trust-tools-oi10","title":"OI-10: Deployed section anchors and preview paths need checking","status":"completed","closed":true,"updatedAt":"2026-10-22T00:00:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi10--deployed-section-anchors-and-preview-paths-need.md","excerpt":"The library entries ingested from PR 129 (QR Code Generation, Changes, Data Exchange, the reference script) pin the PR branch and its preview build, because the page is not yet merged or deployed. Once PR 129 is merged, re-ingest them from main at the merge commit, so their sections carry the published URL and anchors, and check those links resolve.\n\n## Resolution\n\nPR 129 merged as WHO af75be2. QR Code Generation, Change Log and Data Exchange are re-ingested from main at that commit, with HCERT Specification and the CWT payload model, which changed on main since e277cce; their sections carry …"},{"id":"smart-trust-tools-oi31","title":"OI-31: The instance audit ignores the actors a downstream declares","status":"completed","closed":true,"updatedAt":"2026-10-21T07:30:00Z","source":"https://github.com/WorldHealthOrganization/smart-trust-tools/blob/cat/smart-trust-tools/beans/beans/defs/smart-trust-tools-oi31--a-downstream-cannot-declare-the-actors-its-requi.md","excerpt":"The requirements name their actors by the IHE ITI VHL names first: VHL Sharer (53 requirements), VHL Receiver (36), Trust Anchor (2), plus this project's own implementer (25). scenarios/actors/ declares them, together with VHL Holder and smart-trust's Trust Network Participant, the external actor that holds the signing keys. Each actor names its IHE and smart-trust ActorDefinition in meta.definedBy, and both actor files are library entries (ihe-iti-vhl-actors, who-smart-trust-actors).\n\n`kg:audit --instance .` read actors only from the platform's registry (cat-harness scenarios/actors), never …"}]</script><script>
+(function () {
+  var root = document.querySelector("[data-pb]");
+  if (!root) return;
+  var ROWS = JSON.parse(document.getElementById("pb-rows").textContent);
+  var MODE = root.getAttribute("data-pb");
+  var STALL = +root.getAttribute("data-pb-stall");
+  var UP = root.getAttribute("data-pb-up");
+  var seg = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+  // On the combined page a row carries its own store's page as "up".
+  var upOf = function (r) { return (r && r.up) || UP; };
+  var beanHref = function (id, r) { return seg.test(id) ? upOf(r) + "bean-processed/" + id + "/" : null; };
+  var procHref = function (id, r) { return seg.test(id) ? upOf(r) + "beans-processed/" + id + "/" : null; };
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var stalled = function (r) { return !r.finished && r.ageDays != null && r.ageDays > STALL; };
+  var cache = {};
+  function fetchSvg(href) {
+    if (!cache[href]) {
+      var url = new URL(href, document.baseURI);
+      cache[href] = fetch(url).then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); }).then(function (t) { return { text: t, url: url }; });
+    }
+    return cache[href];
+  }
+  // Draws the diagram into host and marks steps: marks = { node: { rows: [...], done: bool } }.
+  function draw(host, href, marks, onMark) {
+    fetchSvg(href).then(function (got) {
+      var svg = new DOMParser().parseFromString(got.text, "image/svg+xml").documentElement;
+      if (!svg || svg.nodeName.toLowerCase() !== "svg") return;
+      svg.querySelectorAll("script").forEach(function (s) { s.remove(); });
+      svg.querySelectorAll("a").forEach(function (a) {
+        ["href", "xlink:href"].forEach(function (k) { var h = a.getAttribute(k); if (h) a.setAttribute(k, new URL(h, got.url).href); });
+      });
+      svg = document.importNode(svg, true);
+      host.replaceChildren(svg);
+      Object.keys(marks).forEach(function (node) {
+        var m = marks[node];
+        var g = svg.querySelector('g.djs-element[data-element-id="' + CSS.escape(node) + '"]');
+        if (!g) return;
+        var fin = m.fin || [];
+        if (!m.rows.length && !fin.length) { g.classList.add("pb-done"); return; }
+        var late = m.rows.some(stalled);
+        g.classList.add(m.rows.length ? "pb-token" : "pb-ended");
+        if (late) g.classList.add("pb-stalled");
+        var bb = g.getBBox(), t = g.transform.baseVal.consolidate();
+        var tx = t ? t.matrix.e : 0, ty = t ? t.matrix.f : 0;
+        var label = m.rows.length ? m.rows.length + (late ? " stalled" : "") : fin.length + " finished";
+        var w = 24 + label.length * 11, x = tx + bb.x + bb.width - w / 2, y = ty + bb.y - 30;
+        var ns = "http://www.w3.org/2000/svg";
+        var mk = document.createElementNS(ns, "g");
+        mk.setAttribute("class", "pb-mark"); mk.setAttribute("tabindex", "0"); mk.setAttribute("role", "button");
+        var title = document.createElementNS(ns, "title");
+        title.textContent = m.rows.concat(fin).map(function (r) { return r.beans.map(function (b) { return b.id + " \u2014 " + (b.title || "bean not in this store"); }).join("\n"); }).join("\n");
+        var rect = document.createElementNS(ns, "rect");
+        rect.setAttribute("x", x); rect.setAttribute("y", y); rect.setAttribute("rx", 13); rect.setAttribute("width", w); rect.setAttribute("height", 26);
+        rect.setAttribute("fill", !m.rows.length ? "#555" : late ? "#b86a00" : "#0d6e78");
+        var text = document.createElementNS(ns, "text");
+        text.setAttribute("x", x + 12); text.setAttribute("y", y + 19); text.textContent = label;
+        mk.append(title, rect, text);
+        if (onMark) {
+          mk.setAttribute("aria-label", label + " at " + node + ": open the beans");
+          mk.addEventListener("click", function () { onMark(node, m); });
+          mk.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onMark(node, m); } });
+        }
+        svg.append(mk);
+      });
+      // A badge sits above its step; on a step at the top of the drawing it
+      // was cut off by the viewBox (owner, 2026-11-03). Grow the viewBox to hold it.
+      try {
+        var vb = svg.viewBox.baseVal, all = svg.getBBox();
+        if (vb && vb.width) {
+          var x0 = Math.min(vb.x, all.x - 4), y0 = Math.min(vb.y, all.y - 4);
+          var x1 = Math.max(vb.x + vb.width, all.x + all.width + 4), y1 = Math.max(vb.y + vb.height, all.y + all.height + 4);
+          svg.setAttribute("viewBox", [x0, y0, x1 - x0, y1 - y0].join(" "));
+          svg.removeAttribute("height");
+        }
+      } catch (e) { /* a drawing without a viewBox keeps its own size */ }
+    }).catch(function () { host.textContent = "The drawing could not be loaded; the steps are listed in the table."; });
+  }
+  function lazy(host, fn) {
+    if (!("IntersectionObserver" in window)) return fn();
+    var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); fn(); } }, { rootMargin: "300px" });
+    io.observe(host);
+  }
+  function beanCell(r) {
+    return r.beans.map(function (b) {
+      var h = beanHref(b.id, r);
+      return (h ? '<a href="' + esc(h) + '"><code>' + esc(b.id) + "</code></a> " : "<code>" + esc(b.id) + "</code> ") +
+        (b.found ? esc(b.title) + ' <span class="pb-chip">' + esc(b.status) + "</span>" + (b.source ? ' <a href="' + esc(b.source) + '">source</a>' : "") : '<span class="pb-chip is-broken">not in this store</span>');
+    }).join("<br>") || "none named";
+  }
+  function stuckCell(r) {
+    return r.stuck.map(function (k) { return '<span class="pb-chip ' + (k === "enabled-not-taken" ? "is-stalled" : "is-broken") + '">' + esc(k) + "</span>"; }).join(" ") || "none found";
+  }
+  function stepCell(r) {
+    return r.tokens.map(function (t) {
+      return r.processPage ? '<a href="' + esc(r.processPage) + '#steps"><code>' + esc(t) + "</code></a>" : "<code>" + esc(t) + "</code>";
+    }).join(", ") || "no step";
+  }
+  function procLinks(r) {
+    return (r.processPage ? ' \u00B7 <a href="' + esc(r.processPage) + '">process page</a>' : "") +
+      (r.sourceHref ? ' \u00B7 <a href="' + esc(r.sourceHref) + '">BPMN source</a>' : "");
+  }
+  function procName(proc, r) {
+    var ph = procHref(proc, r);
+    return ph ? '<a href="' + esc(ph) + '"><code>' + esc(proc) + "</code></a>" : "<code>" + esc(proc) + "</code>";
+  }
+  var isOpen = function (b) { return !b.closed; };
+  var openMatch = function (sel, b) { return !sel || (sel === "closed" ? !!b.closed : isOpen(b)); };
+  // One bean, readable where it is shown: status, links, and its body behind a disclosure.
+  function beanDetail(b, extra, r) {
+    // A bean in a process has a page; one in no process has none, so it is not linked to one.
+    var h = b.href ? b.href : b.found !== undefined ? beanHref(b.id, r) : null;
+    var st = (r && r.store) || b.store;
+    return "<li>" + (st ? '<span class="pb-chip">' + esc(st) + "</span> " : "") + (h ? '<a href="' + esc(h) + '"><code>' + esc(b.id) + "</code></a> " : "<code>" + esc(b.id) + "</code> ") +
+      (b.found === false ? '<span class="pb-chip is-broken">not in this store</span>' : esc(b.title) + ' <span class="pb-chip">' + esc(b.status) + "</span>") +
+      (b.updatedAt ? " \u00B7 updated " + esc(String(b.updatedAt).slice(0, 10)) : "") +
+      (b.source ? ' \u00B7 <a href="' + esc(b.source) + '">source</a>' : "") + (extra || "") +
+      (b.excerpt ? "<details><summary>Read the bean</summary><p>" + esc(b.excerpt) + "</p></details>" : "") + "</li>";
+  }
+  function moved(r) { return r.lastMoved ? esc(r.lastMoved.slice(0, 10)) + " (" + r.ageDays + " days)" : "unknown"; }
+
+  if (MODE === "index") {
+    var FI = { q: $("pb-q"), beans: $("pb-open") };
+    var ALL = JSON.parse(document.getElementById("pb-unplaced-data").textContent);
+    var renderIndex = function () {
+      var q = FI.q.value.trim().toLowerCase();
+      var shown = ALL.filter(function (b) { return openMatch(FI.beans.value, b) && (!q || (b.id + " " + b.title).toLowerCase().indexOf(q) >= 0); });
+      $("pb-chips").innerHTML = '<li class="pb-chip">' + shown.length + " of " + ALL.length + " beans</li>" +
+        '<li class="pb-chip">' + ALL.filter(isOpen).length + " open</li>" +
+        '<li class="pb-chip">' + ALL.filter(function (b) { return b.closed; }).length + " closed</li>";
+      $("pb-index").innerHTML = shown.map(function (b) { return beanDetail(b); }).join("") || "<li>No bean matches these filters.</li>";
+    };
+    Object.keys(FI).forEach(function (k) { FI[k].addEventListener("input", renderIndex); });
+    renderIndex();
+    return;
+  }
+  if (MODE === "all") {
+    var F = { q: $("pb-q"), process: $("pb-process"), state: $("pb-state"), bean: $("pb-beanstatus"), stale: $("pb-stale"), beans: $("pb-open") };
+    // The combined page's store tick boxes (owner, 2026-11-03): every store on by default.
+    var storeBoxes = [].slice.call(document.querySelectorAll("[data-pb-store-box]"));
+    // "Include the stores it depends on" (owner, 2026-11-03: "needs dependencies"):
+    // the ticked stores, widened by their needs, and theirs, all the way down.
+    var needsEl = document.getElementById("pb-needs");
+    var NEEDS = needsEl ? JSON.parse(needsEl.textContent) : {};
+    var depsBox = $("pb-deps");
+    var storeOn = function (name) {
+      if (!storeBoxes.length || !name) return true;
+      var on = storeBoxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; });
+      if (depsBox && depsBox.checked) {
+        for (var i = 0; i < on.length; i++) (NEEDS[on[i]] || []).forEach(function (n) { if (on.indexOf(n) < 0) on.push(n); });
+      }
+      return on.indexOf(name) >= 0;
+    };
+    var unplacedEl = document.getElementById("pb-unplaced-data");
+    var UNPLACED = unplacedEl ? JSON.parse(unplacedEl.textContent) : null;
+    var detail = $("pb-detail");
+    // A badge opens the beans at its step: read them, open their pages, or narrow the table.
+    var openDetail = function (node, m) {
+      var rs = m.rows.concat(m.fin || []);
+      detail.innerHTML = "<h2>At <code>" + esc(node) + "</code>: " + rs.length + " instance(s)</h2>" +
+        '<ul class="pb-list">' + rs.map(function (r) {
+          var extra = " \u00B7 " + (r.href ? '<a href="' + esc(r.href) + '">' + esc(r.instance) + "</a>" : esc(r.instance)) +
+            " \u00B7 " + (r.finished ? "finished" : "running") + " \u00B7 last moved " + moved(r) + " " + stuckCell(r);
+          return r.beans.map(function (b) { return beanDetail(b, extra, r); }).join("");
+        }).join("") + "</ul>" +
+        '<p><button type="button" id="pb-narrow">Show only these in the table</button> <button type="button" id="pb-close">Close</button></p>';
+      detail.hidden = false;
+      detail.focus();
+      $("pb-narrow").addEventListener("click", function () { F.q.value = node; render(); $("pb-table").scrollIntoView(); });
+      $("pb-close").addEventListener("click", function () { detail.hidden = true; });
+    };
+    var sortKey = "lastMoved", sortDir = 1;
+    var match = function (r) {
+      var q = F.q.value.trim().toLowerCase();
+      var hay = [r.instance, r.process, r.tokens.join(" ")].concat(r.beans.map(function (b) { return b.id + " " + (b.title || ""); })).join(" ").toLowerCase();
+      var st = F.stale.value === "" ? 0 : +F.stale.value;
+      return (!q || hay.indexOf(q) >= 0) &&
+        (!F.process.value || r.process === F.process.value) &&
+        (!F.state.value || (F.state.value === "running" ? !r.finished : F.state.value === "finished" ? r.finished : r.stuck.length > 0)) &&
+        (!F.bean.value || r.beans.some(function (b) { return (b.found ? b.status : "not in this store") === F.bean.value; })) &&
+        r.beans.some(function (b) { return openMatch(F.beans.value, b); }) && storeOn(r.store) &&
+        (!st || (!r.finished && (r.ageDays == null || r.ageDays > st)));
+    };
+    var render = function () {
+      var rows = ROWS.filter(match);
+      var procs = [];
+      rows.forEach(function (r) { if (procs.indexOf(r.process) < 0) procs.push(r.process); });
+      $("pb-chips").innerHTML =
+        '<li class="pb-chip">' + rows.length + " of " + ROWS.length + " instances</li>" +
+        '<li class="pb-chip">' + procs.length + " processes</li>" +
+        '<li class="pb-chip is-stalled">' + rows.filter(stalled).length + " stalled: not moved in " + STALL + "+ days</li>" +
+        '<li class="pb-chip is-broken">' + rows.filter(function (r) { return r.stuck.indexOf("bean-closed") >= 0; }).length + " running on a closed bean</li>" +
+        '<li class="pb-chip is-broken">' + rows.filter(function (r) { return r.stuck.indexOf("bean-missing") >= 0; }).length + " bean not in this store</li>";
+      var cards = $("pb-cards");
+      cards.replaceChildren();
+      procs.forEach(function (proc) {
+        var its = rows.filter(function (r) { return r.process === proc; });
+        var marks = {};
+        its.forEach(function (r) {
+          if (!r.finished) r.tokens.forEach(function (t) { (marks[t] = marks[t] || { rows: [], fin: [] }).rows.push(r); });
+          else r.endedAt.forEach(function (t) { (marks[t] = marks[t] || { rows: [], fin: [] }).fin.push(r); });
+        });
+        var missing = [];
+        its.forEach(function (r) { r.missingNodes.forEach(function (n) { if (missing.indexOf(n) < 0) missing.push(n); }); });
+        var withDrawing = its.filter(function (r) { return r.drawing; })[0];
+        var card = document.createElement("section");
+        card.className = "pb-card";
+        card.innerHTML = "<h2>" + procName(proc, its[0]) + '</h2><p class="sv-sub"><code>' + esc(its[0].source) + "</code>" + procLinks(its[0]) + " \u00B7 " +
+          its.filter(function (r) { return !r.finished; }).length + " running, " + its.filter(function (r) { return r.finished; }).length +
+          " finished. A badge counts the beans at a step (running, stalled, or finished there); select it to read them.</p>" +
+          (withDrawing ? '<div class="pb-diagram"><p class="sv-sub">The drawing loads when this card scrolls into view.</p></div>' : '<p class="sv-sub">No drawing of this process is published, so the positions are in the table only.</p>') +
+          (missing.length ? '<p class="sv-sub"><strong>node-missing</strong>: a token sits on ' + missing.map(function (n) { return "<code>" + esc(n) + "</code>"; }).join(", ") + ", which the current diagram does not have.</p>" : "");
+        cards.append(card);
+        if (withDrawing) {
+          var host = card.querySelector(".pb-diagram");
+          lazy(host, function () { draw(host, withDrawing.drawing, marks, openDetail); });
+        }
+      });
+      rows.sort(function (a, b) { return String(a[sortKey] == null ? "" : a[sortKey]).localeCompare(String(b[sortKey] == null ? "" : b[sortKey])) * sortDir; });
+      $("pb-tbody").innerHTML = rows.map(function (r) {
+        return "<tr><td>" + beanCell(r) + "</td><td>" + (r.store ? '<span class="pb-chip">' + esc(r.store) + "</span> " : "") + procName(r.process, r) + "</td><td>" + stepCell(r) + "</td><td>" +
+          (r.href ? '<a href="' + esc(r.href) + '">' + esc(r.instance) + "</a>" : esc(r.instance)) + " \u00B7 " + (r.finished ? "finished" : "running") +
+          "</td><td>" + moved(r) + "</td><td>" + stuckCell(r) + "</td></tr>";
+      }).join("") || '<tr><td colspan="6">No instance matches these filters.</td></tr>';
+      if (UNPLACED) {
+        var q = F.q.value.trim().toLowerCase();
+        var un = UNPLACED.filter(function (b) {
+          return openMatch(F.beans.value, b) && storeOn(b.store) && (!F.bean.value || b.status === F.bean.value) && (!q || (b.id + " " + b.title).toLowerCase().indexOf(q) >= 0);
+        });
+        $("pb-unplaced").innerHTML = un.map(function (b) { return beanDetail(b); }).join("") || "<li>No bean outside a process matches these filters.</li>";
+        $("pb-chips").insertAdjacentHTML("beforeend", '<li class="pb-chip">' + un.length + " of " + UNPLACED.length + " beans in no process</li>");
+      }
+    };
+    Object.keys(F).forEach(function (k) { F[k].addEventListener("input", render); });
+    storeBoxes.forEach(function (b) { b.addEventListener("change", render); });
+    if (depsBox) depsBox.addEventListener("change", render);
+    document.querySelectorAll("[data-pb-sort]").forEach(function (b) {
+      b.addEventListener("click", function () { var k = b.getAttribute("data-pb-sort"); sortDir = sortKey === k ? -sortDir : 1; sortKey = k; render(); });
+    });
+    render();
+
+    // The 5-second refresh (owner, 2026-11-03): only on a page served from this
+    // machine, from the local store server's read-only route. The page keeps the
+    // drawings and links it was built with; only the positions and beans move.
+    var LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+    if (LOCAL && $("pb-live")) {
+      $("pb-live").hidden = false;
+      var STORE = root.getAttribute("data-pb-store"), PROC = root.getAttribute("data-pb-process");
+      var liveBox = $("pb-live-on"), liveState = $("pb-live-state");
+      var bases = [location.origin, "http://localhost:8080"], base = null, lastSig = "", timer = null;
+      var merge = function (fresh) {
+        var byInst = {}, byProc = {}, src = {};
+        ROWS.forEach(function (r) {
+          byInst[r.instance] = r;
+          if (r.drawing && !byProc[r.process]) byProc[r.process] = r;
+          r.beans.forEach(function (b) { if (b.source) src[b.id] = b.source; });
+        });
+        (UNPLACED || []).forEach(function (b) { if (b.source) src[b.id] = b.source; });
+        var keepSrc = function (b) { if (src[b.id] && !b.source) b.source = src[b.id]; return b; };
+        ROWS = fresh.rows.filter(function (r) { return !PROC || r.process === PROC; }).map(function (r) {
+          var mine = byInst[r.instance], like = mine || byProc[r.process] || {};
+          ["drawing", "processPage", "sourceHref"].forEach(function (k) { if (like[k]) r[k] = like[k]; });
+          if (mine && mine.href) r.href = mine.href;
+          r.beans.forEach(keepSrc);
+          return r;
+        });
+        if (UNPLACED) UNPLACED = fresh.unplaced.map(keepSrc);
+      };
+      var tick = function () {
+        var tryAt = base ? [base] : bases;
+        (function attempt(i) {
+          if (i >= tryAt.length) { base = null; liveState.textContent = "Live updates off: no local store server answered; showing the page as built."; return; }
+          fetch(tryAt[i] + "/api/work-plan/beans-processed", { cache: "no-store" })
+            .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+            .then(function (x) {
+              base = tryAt[i];
+              if (!x.ok) { liveState.textContent = "Live: the local store could not be read (" + (x.j.error || "no reason given") + "); showing the last answer."; return; }
+              if (x.j.store !== STORE) { liveState.textContent = "Live: the local server holds " + x.j.store + "'s work plan, not " + STORE + "'s."; return; }
+              liveState.textContent = "Live \u00B7 " + x.j.tool + " \u00B7 checked " + String(x.j.at).slice(11, 19) + " UTC";
+              var sig = JSON.stringify([x.j.rows, x.j.unplaced]);
+              if (sig === lastSig) return;
+              lastSig = sig;
+              merge(x.j);
+              render();
+            })
+            .catch(function () { attempt(i + 1); });
+        })(0);
+      };
+      var start = function () { if (!timer) { tick(); timer = setInterval(tick, 5000); } };
+      var stop = function () { if (timer) { clearInterval(timer); timer = null; } liveState.textContent = "Live updates paused."; };
+      liveBox.addEventListener("change", function () { if (liveBox.checked) start(); else stop(); });
+      start();
+    }
+  } else {
+    var show = function () {
+      var id = root.getAttribute("data-pb-bean");
+      var its = ROWS.filter(function (r) { return r.beans.some(function (b) { return b.id === id; }); });
+      var b = its.length ? its[0].beans.filter(function (x) { return x.id === id; })[0] : null;
+      var out = $("pb-one");
+      out.innerHTML = (b ? '<section class="pb-card"><h2><code>' + esc(id) + "</code></h2><p>" + (b.found ? esc(b.title) + ' <span class="pb-chip">' + esc(b.status) + "</span> \u00B7 updated " + esc((b.updatedAt || "").slice(0, 10)) + (b.source ? ' \u00B7 <a href="' + esc(b.source) + '">source</a>' : "") : '<span class="pb-chip is-broken">not in this store</span>') +
+        '</p><p class="sv-sub">Named by ' + its.length + " workflow instance(s). Solid outline: where the token is; dashed: steps already in the history.</p></section>" : "") +
+        its.map(function (r, i) {
+          return '<section class="pb-card"><h2>' + procName(r.process, r) + "</h2><p>" + (r.href ? '<a href="' + esc(r.href) + '">' + esc(r.instance) + "</a>" : esc(r.instance)) +
+            " \u00B7 " + (r.finished ? "finished" : "running") + " \u00B7 token at " + stepCell(r) + " \u00B7 last moved " + moved(r) + procLinks(r) + "</p><p>" + stuckCell(r) + "</p>" +
+            (r.drawing ? '<div class="pb-diagram" id="pb-d' + i + '"></div>' : '<p class="sv-sub">No drawing of this process is published.</p>') +
+            (r.missingNodes.length ? '<p class="sv-sub"><strong>node-missing</strong>: ' + r.missingNodes.map(function (n) { return "<code>" + esc(n) + "</code>"; }).join(", ") + " is not in the current diagram.</p>" : "") +
+            "</section>";
+        }).join("");
+      its.forEach(function (r, i) {
+        if (!r.drawing) return;
+        var marks = {};
+        r.done.forEach(function (n) { marks[n] = { rows: [] }; });
+        if (!r.finished) r.tokens.forEach(function (n) { marks[n] = { rows: [r] }; });
+        else r.endedAt.forEach(function (n) { marks[n] = { rows: [], fin: [r] }; });
+        var host = $("pb-d" + i);
+        lazy(host, function () { draw(host, r.drawing, marks); });
+      });
+    };
+    show();
+
+    // The history stepper (owner, 2026-11-03): every event, the process the bean
+    // was in at that moment drawn with its step, and keyboard and button controls.
+    var histEl = document.getElementById("pb-history");
+    var H = histEl ? JSON.parse(histEl.textContent) : null;
+    if (H && H.events && H.events.length) {
+      var EV = H.events, at = EV.length - 1, timer = null;
+      var list = $("pb-events"), now = $("pb-now"), range = $("pb-at"), label = $("pb-at-label"), dia = $("pb-hist-diagram");
+      var playBtn = document.querySelector('[data-pb-go="play"]');
+      list.innerHTML = EV.map(function (e, i) {
+        return '<li data-i="' + i + '"><time>' + esc(e.at.slice(0, 16).replace("T", " ")) + "</time> \u00B7 " + esc(e.kind) + " \u00B7 " + esc(e.what) + "</li>";
+      }).join("");
+      // The steps an instance had reached BY event i: what the diagram dashes as done.
+      var reached = function (i, inst) {
+        var seen = [];
+        for (var k = 0; k < i; k++) if (EV[k].instance === inst && EV[k].node && seen.indexOf(EV[k].node) < 0) seen.push(EV[k].node);
+        return seen;
+      };
+      // The latest step event at or before i: the process the bean is in at that moment.
+      var stepAt = function (i) { for (var k = i; k >= 0; k--) if (EV[k].kind === "step-reached") return k; return -1; };
+      var drawn = null;
+      var go = function (i) {
+        at = Math.max(0, Math.min(EV.length - 1, i));
+        var e = EV[at];
+        range.value = at;
+        label.textContent = "event " + (at + 1) + " of " + EV.length;
+        now.innerHTML = "<strong>" + esc(e.kind) + "</strong> \u00B7 " + esc(e.at.replace("T", " ").replace(/\.\d+/, "")) + " \u00B7 by " + esc(e.by) +
+          "<br>" + esc(e.what) + (e.instance ? '<br><span class="sv-sub">instance <code>' + esc(e.instance) + "</code>" + (e.node ? " at <code>" + esc(e.node) + "</code>" : "") + "</span>" : "");
+        list.querySelectorAll("li").forEach(function (li) {
+          if (+li.getAttribute("data-i") === at) { li.setAttribute("aria-current", "step"); li.scrollIntoView({ block: "nearest" }); }
+          else li.removeAttribute("aria-current");
+        });
+        var k = stepAt(at);
+        if (k < 0) { dia.hidden = true; drawn = null; return; }
+        var s = EV[k], proc = s.what.split(":")[0], href = H.drawings[proc];
+        if (!href) { dia.hidden = false; dia.textContent = "No drawing of " + proc + " is published."; drawn = null; return; }
+        var marks = {};
+        reached(k, s.instance).forEach(function (n) { marks[n] = { rows: [] }; });
+        marks[s.node] = { rows: [{ beans: [{ id: root.getAttribute("data-pb-bean"), title: s.what }], finished: false }] };
+        var key = href + "|" + k;
+        if (drawn === key) return;
+        drawn = key;
+        dia.hidden = false;
+        draw(dia, href, marks);
+      };
+      var stop = function () { if (timer) { clearInterval(timer); timer = null; } playBtn.setAttribute("aria-pressed", "false"); playBtn.textContent = "\u25B6 Play"; };
+      var play = function () {
+        if (timer) return stop();
+        if (at >= EV.length - 1) go(0);
+        playBtn.setAttribute("aria-pressed", "true"); playBtn.textContent = "\u23F8 Pause";
+        timer = setInterval(function () { if (at >= EV.length - 1) stop(); else go(at + 1); }, 1200);
+      };
+      var act = { first: function () { stop(); go(0); }, prev: function () { stop(); go(at - 1); }, next: function () { stop(); go(at + 1); }, last: function () { stop(); go(EV.length - 1); }, play: play };
+      document.querySelectorAll("[data-pb-go]").forEach(function (b) { b.addEventListener("click", function () { act[b.getAttribute("data-pb-go")](); }); });
+      range.addEventListener("input", function () { stop(); go(+range.value); });
+      list.addEventListener("click", function (ev) { var li = ev.target.closest("li[data-i]"); if (li) { stop(); go(+li.getAttribute("data-i")); } });
+      document.addEventListener("keydown", function (ev) {
+        var t = ev.target, tag = t && t.tagName;
+        // A form control keeps its own keys: the slider steps itself (and fires its own input event).
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (t && t.isContentEditable)) return;
+        if (ev.altKey || ev.ctrlKey || ev.metaKey) return;
+        var k = ev.key;
+        if (k === "ArrowRight") act.next();
+        else if (k === "ArrowLeft") act.prev();
+        else if (k === "Home") act.first();
+        else if (k === "End") act.last();
+        else if (k === " " && (tag !== "BUTTON")) act.play();
+        else return;
+        ev.preventDefault();
+      });
+      go(at);
+    }
+  }
+})();
+</script>
+</div>
+
+          
+
+          
+            
+          
+        </main>
+        
+<hr>
+<footer>
+  
+
+  <p class="text-small mb-0">SMART Trust HCERT library tools — built with <a href="https://litlfred.github.io/folio-assistant/">folio-assistant</a>.</p><p class="text-small mb-0 fa-build-stamp">
+  deployed
+  <a href="https://github.com/litlfred/folio-assistant/actions"><code>dev</code></a></p>
+
+
+  
+</footer>
+
+      </div>
+    </div>
+    
+      
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+    
+  
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-cwt-payload-model",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-cwt-payload-model/blocks/prose-s001-input-fsh-models-cwt-payload-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/fsh/models/cwt_payload.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-fsh-models-cwt-payload-fsh.md",
+      "narrative": null,
+      "content": "```text\n\nLogical:       CWTPayload\nTitle:\t       \"CBOR Web Token (CWT) Payload (Common)\"\nDescription:   \"Logical Model for CBOR Web Token (CWT) Payload Logical Modelin CWT Payload https://www.iana.org/assignments/cwt/cwt.xhtml \"\n\n\n* ^url = \"http://smart.who.int/trust/StructureDefinition/CWTPayload\"\n* ^status = #active\n\n* 1 0..1 Coding \"Issuer Code (iss)\" \"Issuer\"\n* 4 0..1 dateTime \"Expiration Date Time(exp)\" \"Expiration Time\"\n* 6 0..1 dateTime \"Issued At (iat)\" \"Issued At\"\n// HCERT spec 3.2.7 allows several types of health certificate under this claim\n* -260 1..* HCert \"Health Certificate\" \"HC",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

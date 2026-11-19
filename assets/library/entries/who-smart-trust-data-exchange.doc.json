@@ -1,0 +1,105 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-data-exchange",
+  "title": "Data Exchange",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "headings",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-data-models-and-exchange",
+      "number": null,
+      "title": "Data Models and Exchange",
+      "level": 2,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 45,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "concepts",
+          "heading": false
+        },
+        {
+          "term": "models",
+          "heading": true
+        },
+        {
+          "term": "exchange",
+          "heading": true
+        }
+      ],
+      "extract": "{% include system-actors.md %} {% include transactions.md %} {% include sequence-diagrams.md %} {% include trust_domains.md %} {% include trust_network_gateway_architecture.md %} {% include concepts_did.md %} {% include concepts_did_gdhcn.md %} {% include concepts_did_v1.md %} {% include hcert_spec.md %} {% include qr_code_generation.md %}",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-data-exchange/blocks/prose-s001-data-models-and-exchange"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "keywords": [
+    {
+      "term": "concepts",
+      "heading": false
+    },
+    {
+      "term": "architecture",
+      "heading": false
+    },
+    {
+      "term": "spec",
+      "heading": false
+    }
+  ],
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 1,
+      "note": "one level"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 1 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-data-exchange"
+  }
+}

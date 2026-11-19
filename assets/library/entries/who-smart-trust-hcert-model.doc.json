@@ -1,0 +1,78 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-hcert-model",
+  "title": "HCert logical model (FSH)",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "files",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-input-fsh-models-hcert-fsh",
+      "number": null,
+      "title": "input/fsh/models/hcert.fsh",
+      "level": 1,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 226,
+      "summary": null,
+      "keywords": [],
+      "extract": "```text Logical: HCert Title: \"Health Certificate\" Description: \"Logical Model for the HCERT\" //Description: \"\"\"Logical Model for the HCERT // // The full data structure and encoding mechanisms for HCERT are defined here: [Electronic Health Certificate Specification](http://smart.who.int/trust/hcert_spec.html) // // An HCERT is claim -260 within the [CBOR Web Token (CWT)",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-hcert-model/blocks/prose-s001-input-fsh-models-hcert-fsh"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 1,
+      "note": "one level"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 1 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-hcert-model"
+  }
+}

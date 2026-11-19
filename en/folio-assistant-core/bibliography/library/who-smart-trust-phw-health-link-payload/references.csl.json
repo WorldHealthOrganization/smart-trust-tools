@@ -1,0 +1,8 @@
+[
+  {
+    "id": "who-smart-trust-phw-health-link-payload",
+    "type": "document",
+    "title": "HealthLinkPayload and VerifiableHealthLinkPayload logical models (FSH)",
+    "URL": "https://github.com/WorldHealthOrganization/smart-trust-phw/blob/main/input/fsh/models/HealthLinkPayload.fsh"
+  }
+]

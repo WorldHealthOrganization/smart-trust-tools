@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-actors",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-actors/blocks/prose-s001-actors-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "actors.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-actors-fsh.md",
+      "narrative": null,
+      "content": "```text\nInstance: TrustNetworkAnchor\nInstanceOf: $SGActor\nUsage: #definition\n* name = \"Trust Network Anchor\"\n* title = \"Trust Network Anchor\"\n* description = \"Trust Anchor which receives and distributes PKI-material within a Trust Network\"\n* status = $pubStatus#active\n* experimental = true\n* publisher = \"WHO\"\n* type = $actorType#system\n\nInstance: TrustNetworkParticipant\nInstanceOf: $SGActor\nUsage: #definition\n* name = \"Trust Network Participant\"\n* title = \"Trust Network Participant\"\n* description = \"Trust Network Participant which publishes and or receives PKI-material within a Trust Network\"",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

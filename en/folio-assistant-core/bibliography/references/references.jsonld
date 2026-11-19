@@ -1,0 +1,228 @@
+{
+  "@context": {
+    "@base": "https://litlfred.github.io/folio/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "bibo": "http://purl.org/ontology/bibo/",
+    "fabio": "http://purl.org/spar/fabio/",
+    "dcterms:source": {
+      "@type": "@id"
+    },
+    "dcterms:hasVersion": {
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "references/who-smart-trust-changes",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "Change Log",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/changes.html",
+      "dcterms:hasVersion": "library/who-smart-trust-changes"
+    },
+    {
+      "@id": "references/who-smart-trust-data-exchange",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "Data Exchange",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/data_exchange.html",
+      "dcterms:hasVersion": "library/who-smart-trust-data-exchange"
+    },
+    {
+      "@id": "references/who-ddcc-ig",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "DDCC Implementation Guide",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/ddcc/"
+    },
+    {
+      "@id": "references/who-trust-phw-dvc-vaccines-vs",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "DVC - Vaccines value set (trust-phw)",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "http://smart.who.int/trust-phw/ValueSet-DVCVaccines.html"
+    },
+    {
+      "@id": "references/who-smart-trust-endpoints",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "Endpoints",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/endpoints.html",
+      "dcterms:hasVersion": "library/who-smart-trust-endpoints"
+    },
+    {
+      "@id": "references/who-trust-gdhcn-key-usage-vs",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "GDHCN Key Usage value set",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/ValueSet-KeyUsage.html"
+    },
+    {
+      "@id": "references/who-trust-gdhcn-participants-vs",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "GDHCN Participants value set",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/ValueSet-Participants.html"
+    },
+    {
+      "@id": "references/who-trust-gdhcn-trust-domain-vs",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "GDHCN Trust Domain value set",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/ValueSet-Domains.html"
+    },
+    {
+      "@id": "references/who-smart-trust-did-gdhcn",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "GDHCN Trustlists (DID)",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/concepts_did_gdhcn.html",
+      "dcterms:hasVersion": "library/who-smart-trust-did-gdhcn"
+    },
+    {
+      "@id": "references/who-smart-trust-hcert-spec",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "HCERT Specification",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/hcert_spec.html",
+      "dcterms:hasVersion": "library/who-smart-trust-hcert-spec"
+    },
+    {
+      "@id": "references/who-icvp-ig",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "ICVP Implementation Guide",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/icvp"
+    },
+    {
+      "@id": "references/ihe-iti-vhl-volume-1",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "IHE ITI Verifiable Health Link (VHL), Volume 1",
+      "dcterms:publisher": "IHE International",
+      "dcterms:identifier": "https://profiles.ihe.net/ITI/VHL/volume-1.html",
+      "dcterms:hasVersion": "library/ihe-iti-vhl-volume-1"
+    },
+    {
+      "@id": "references/ihe-iti-vhl-iti-yy3",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "IHE VHL ITI-YY3 Generate VHL",
+      "dcterms:publisher": "IHE International",
+      "dcterms:identifier": "https://profiles.ihe.net/ITI/VHL/ITI-YY3.html",
+      "dcterms:hasVersion": "library/ihe-iti-vhl-iti-yy3"
+    },
+    {
+      "@id": "references/ihe-iti-vhl-iti-yy4",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "IHE VHL ITI-YY4 Provide VHL",
+      "dcterms:publisher": "IHE International",
+      "dcterms:identifier": "https://profiles.ihe.net/ITI/VHL/ITI-YY4.html",
+      "dcterms:hasVersion": "library/ihe-iti-vhl-iti-yy4"
+    },
+    {
+      "@id": "references/ihe-iti-vhl-iti-yy5",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "IHE VHL ITI-YY5 Retrieve Manifest",
+      "dcterms:publisher": "IHE International",
+      "dcterms:identifier": "https://profiles.ihe.net/ITI/VHL/ITI-YY5.html",
+      "dcterms:hasVersion": "library/ihe-iti-vhl-iti-yy5"
+    },
+    {
+      "@id": "references/who-ph4h-medication-treatment-line-min",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "MedicationTreatmentLineMin logical model (ph4h)",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "http://smart.who.int/ph4h/StructureDefinition-MedicationTreatmentLineMin.html"
+    },
+    {
+      "@id": "references/who-smart-trust-qr-code-generation",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "QR Code Generation",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/qr_code_generation.html",
+      "dcterms:hasVersion": "library/who-smart-trust-qr-code-generation"
+    },
+    {
+      "@id": "references/who-smart-trust-reference-implementation",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "Reference Implementations",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/reference_implementation.html",
+      "dcterms:hasVersion": "library/who-smart-trust-reference-implementation"
+    },
+    {
+      "@id": "references/who-smart-trust-trust-domains",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "Trust Domains",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/trust_domains.html",
+      "dcterms:hasVersion": "library/who-smart-trust-trust-domains"
+    },
+    {
+      "@id": "references/who-itb",
+      "@type": [
+        "fabio:Work",
+        "bibo:Document"
+      ],
+      "dcterms:title": "WHO-ITB: Interoperability Test Bed with HCERT validation (GDHCN Trust Network)",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://github.com/WorldHealthOrganization/WHO-ITB/tree/883291d51e206719c1417cf95393a5cd8b20dc4b"
+    }
+  ]
+}

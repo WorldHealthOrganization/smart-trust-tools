@@ -1,0 +1,38 @@
+{
+  "@context": {
+    "@base": "https://litlfred.github.io/folio/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "bibo": "http://purl.org/ontology/bibo/",
+    "fabio": "http://purl.org/spar/fabio/",
+    "dcterms:source": {
+      "@type": "@id"
+    },
+    "dcterms:hasVersion": {
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "references/who-smart-trust-trust-domains",
+      "@type": [
+        "fabio:Work",
+        "bibo:Document"
+      ],
+      "dcterms:title": "Trust Domains",
+      "dcterms:identifier": "https://github.com/WorldHealthOrganization/smart-trust/blob/main/input/pagecontent/trust_domains.md",
+      "dcterms:source": "library/who-smart-trust-trust-domains/manifest.jsonld",
+      "dcterms:hasVersion": "library/who-smart-trust-trust-domains"
+    },
+    {
+      "@id": "references/who-smart-trust-trust-domains",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "Trust Domains",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/trust_domains.html",
+      "dcterms:hasVersion": "library/who-smart-trust-trust-domains"
+    }
+  ]
+}

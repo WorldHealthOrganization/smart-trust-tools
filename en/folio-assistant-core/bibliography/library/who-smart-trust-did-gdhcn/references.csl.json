@@ -1,0 +1,16 @@
+[
+  {
+    "id": "who-smart-trust-did-gdhcn",
+    "type": "document",
+    "title": "GDHCN Trustlists (DID)",
+    "URL": "https://github.com/WorldHealthOrganization/smart-trust/blob/main/input/pagecontent/concepts_did_gdhcn.md"
+  },
+  {
+    "id": "who-smart-trust-did-gdhcn",
+    "type": "webpage",
+    "title": "GDHCN Trustlists (DID)",
+    "publisher": "World Health Organization",
+    "URL": "https://smart.who.int/trust/concepts_did_gdhcn.html",
+    "title-short": "DID"
+  }
+]

@@ -1,0 +1,728 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "ihe-iti-vhl-volume-1",
+  "blocks": [
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s001-input-pagecontent-volume-1-md",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/pagecontent/volume-1.md",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-pagecontent-volume-1-md.md",
+      "narrative": null,
+      "content": "{% assign linkta = '<a href=\"ActorDefinition-TrustAnchor.html\">Trust Anchor</a>' %}\n{% assign linkvhlh = '<a href=\"ActorDefinition-VHLHolder.html\">VHL Holder</a>' %}\n{% assign linkvhls = '<a href=\"ActorDefinition-VHLSharer.html\">VHL Sharer</a>' %}\n{% assign linkvhlr = '<a href=\"ActorDefinition-VHLReceiver.html\">VHL Receiver</a>' %}\n{% assign linksubmitpki = '<a href=\"ITI-YY1.html\">Submit PKI Material with DID</a>' %}\n{% assign linkretrievepki = '<a href=\"ITI-YY2.html\">Retrieve Trust List with DID</a>' %}\n{% assign linkgeneratevhl = '<a href=\"ITI-YY3.html\">Generate VHL</a>' %}\n{% assign linkpro",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s002-1-xx-1-actors-transactions-and-content-modules",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.1 Actors, Transactions, and Content Modules",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-1-xx-1-actors-transactions-and-content-modules.md",
+      "narrative": null,
+      "content": "## 1:XX.1 Actors, Transactions, and Content Modules\n\nThis section defines the actors, transactions, and/or content modules in this profile. Further information about actor and transaction definitions can be found in the IHE Technical Frameworks General Introduction [Appendix A: Actors](https://profiles.ihe.net/GeneralIntro/ch-A.html) and [Appendix B: Transactions](https://profiles.ihe.net/GeneralIntro/ch-B.html).\n\n<ul>\n  <li>\n    Actors\n\t{% include actordefinition-list.liquid site=site %}\n  </li>\n  <li>\n    Transactions\n    <ul>\n\t\t<li> {{ linksubmitpki }}</li>\n\t\t<li> {{ linkretrievepki }}</li>",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s003-1-xx-1-1-actors",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.1.1 Actors",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-1-xx-1-1-actors.md",
+      "narrative": null,
+      "content": "### 1:XX.1.1 Actors\nThe actors in this profile are described in more detail in the sections below.\n\n{% assign canonicals = site.data.canonicals | where: 'type' , 'ActorDefinition' %}\n{% for canonical in canonicals %}\n   {% assign stub = canonical.type | append: \"-\" | append: canonical.id %}\n   {% assign actordefinition = site.data[stub] %}\n   {% include actordefinition-short-summary.liquid actordefinition=actordefinition site=site %}\n{% endfor %}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s004-1-xx-1-2-transaction-descriptions",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.1.2 Transaction Descriptions",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-1-xx-1-2-transaction-descriptions.md",
+      "narrative": null,
+      "content": "### 1:XX.1.2 Transaction Descriptions\n\nThe transactions in this profile are summarized in the sections below.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s005-1-xx-1-2-1-submit-pki-material-with-did-iti-yy1",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.1.2.1 Submit PKI Material with DID [ITI-YY1]",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s005-1-xx-1-2-1-submit-pki-material-with-did-iti-yy1.md",
+      "narrative": null,
+      "content": "#### 1:XX.1.2.1 Submit PKI Material with DID [ITI-YY1]\n\nThis transaction is used by a {{ linkvhlr }} or {{ linkvhls }} to submit PKI material to a {{ linkta }} using Decentralized Identifiers (DIDs). The submitted material is formatted as DID Documents containing public keys and associated metadata for validation and inclusion in the Trust List.\n\n**Transaction Optionality:**\n\nThis transaction is:\n- **REQUIRED (R)** for Trust Anchor actors\n- **OPTIONAL (O)** for VHL Sharer and VHL Receiver actors\n\n\n**Alternative Implementations:**\n\nActors that do not implement this transaction SHALL establish t",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s006-1-xx-1-2-2-retrieve-trust-list-with-did-iti-yy2",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.1.2.2 Retrieve Trust List with DID [ITI-YY2]",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s006-1-xx-1-2-2-retrieve-trust-list-with-did-iti-yy2.md",
+      "narrative": null,
+      "content": "#### 1:XX.1.2.2 Retrieve Trust List with DID [ITI-YY2]\n\nThis transaction is used by a {{ linkvhlr }} or {{ linkvhls }} to retrieve a Trust List from a {{ linkta }} containing DID Documents with PKI material. The retrieved DID Documents include public keys and metadata necessary for verifying digital signatures and establishing trust relationships. Received key material should be distinguished by the participating jurisdiction, use case context, and key usage.\n\n**Transaction Optionality:**\n\nThis transaction is:\n- **REQUIRED (R)** for Trust Anchor actors\n- **OPTIONAL (O)** for VHL Sharer and VHL",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s007-1-xx-1-2-3-generate-vhl-iti-yy3",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.1.2.3 Generate VHL [ITI-YY3]",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s007-1-xx-1-2-3-generate-vhl-iti-yy3.md",
+      "narrative": null,
+      "content": "#### 1:XX.1.2.3 Generate VHL [ITI-YY3]\n\nThis transaction is used by a {{ linkvhlh }} to request that a {{ linkvhls }} generate a QR code containing a VHL. The QR code is encoded as an HCERT/CWT structure.\n\nA {{ linkvhls }} MAY:\n- Record consent of the individual\n- Create audit trail of VHL creation\n- Set passcode protection (P flag) with secure hash storage\n- Set expiration time for time-limited access\n- Set long-term flag (L) for ongoing access\n\nFor more details see the detailed [transaction description](ITI-YY3.html)\n\nThis transaction is captured as the following requirements:\n- [Initiate VH",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s008-1-xx-1-2-4-provide-vhl-iti-yy4",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.1.2.4 Provide VHL [ITI-YY4]",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s008-1-xx-1-2-4-provide-vhl-iti-yy4.md",
+      "narrative": null,
+      "content": "#### 1:XX.1.2.4 Provide VHL [ITI-YY4]\n\nThis transaction is initiated by a {{ linkvhlh }} to transmit a VHL to a {{ linkvhlr }} by displaying or providing a QR code for scanning. \n\n**QR Code Transmission:**\n\nThe {{ linkvhlh }} presents the VHL by:\n- Displaying the QR code on their device screen for the {{ linkvhlr }} to scan, OR\n- Providing a printed QR code generated during ITI-YY3\n\nThe {{ linkvhlr }} scans the QR code using a camera-equipped device and processes the HCERT-encoded VHL through a 9-step decoding process:\n\nFor more details see the detailed [transaction description](ITI-YY4.html)",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s009-1-xx-1-2-5-retrieve-manifest-iti-yy5",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.1.2.5 Retrieve Manifest [ITI-YY5]",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s009-1-xx-1-2-5-retrieve-manifest-iti-yy5.md",
+      "narrative": null,
+      "content": "#### 1:XX.1.2.5 Retrieve Manifest [ITI-YY5]\n\nThis transaction is initiated by a {{ linkvhlr }} to retrieve a document manifest from a {{ linkvhls }} using a previously validated VHL as authorization. The transaction uses standard FHIR search on the List resource, following the same pattern as MHD ITI-66 Find Document Lists.\n\n**Response:**\n\nThe {{ linkvhls }} returns a FHIR Bundle of type \"searchset\" containing:\n- **List resource** with search.mode=\"match\" - references available documents\n- **DocumentReference resources** with search.mode=\"include\" (if Include DocumentReference Option supported",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s010-1-xx-2-actor-options",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.2  Actor Options",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s010-1-xx-2-actor-options.md",
+      "narrative": null,
+      "content": "## 1:XX.2  Actor Options\n\nOptions that may be selected for each actor in this implementation guide are listed in Table XX.2-1 below. Dependencies between options when applicable are specified in notes.\n\n<p id =\"tXX.2-1\" class=\"tableTitle\">Table XX.2-1: Actor Options</p>\n\n| Actor          | Option Name                          |\n|----------------|--------------------------------------|\n| {{ linkvhlr }} | Sign Manifest Request                |\n| ^              | Include DocumentReference            |\n| ^              | Verify Document Signature            |\n| ^              | OAuth with SSRAA",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s011-1-xx-2-1-sign-manifest-request-option-vhl-receiv",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.2.1 Sign Manifest Request Option (VHL Receiver)",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s011-1-xx-2-1-sign-manifest-request-option-vhl-receiv.md",
+      "narrative": null,
+      "content": "### 1:XX.2.1 Sign Manifest Request Option (VHL Receiver)\n\nThe Sign Manifest Request Option enables the {{ linkvhlr }} to digitally sign manifest requests sent to the {{ linkvhls }} and enables the {{ linkvhls }} to verify digital signatures on manifest requests from the {{ linkvhlr }}.\n\nThis option provides:\n- Mutual authentication between VHL Receiver and VHL Sharer\n- Non-repudiation of manifest requests\n- Protection against request forgery\n- Enhanced audit trail\n\n**Complementary Option:** This option is designed to work with the Sign Manifest Request Option (VHL Sharer). If a {{ linkvhlr }}",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s012-1-xx-2-2-include-documentreference-option-vhl-sh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.2.2 Include DocumentReference Option (VHL Sharer)",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s012-1-xx-2-2-include-documentreference-option-vhl-sh.md",
+      "narrative": null,
+      "content": "### 1:XX.2.2 Include DocumentReference Option (VHL Sharer)\n\nThe Include DocumentReference Option enables the {{ linkvhls }} to process the `_include=List:item` parameter in manifest requests and return DocumentReference resources along with the List resource in a single response.\n\n**Benefits:**\n- Reduces network round trips for VHL Receiver\n- Improves performance for document discovery\n- Simplifies workflow for retrieving document metadata\n\n**Implementation Note:** When generating VHLs in ITI-YY3, VHL Sharers supporting this option SHOULD include `_include=List:item` in the manifest URL. VHL S",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s013-1-xx-2-3-verify-document-signature-option-vhl-re",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.2.3 Verify Document Signature Option (VHL Receiver)",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s013-1-xx-2-3-verify-document-signature-option-vhl-re.md",
+      "narrative": null,
+      "content": "### 1:XX.2.3 Verify Document Signature Option (VHL Receiver)\n\nIn this option the {{ linkvhlr }}, after receipt of a digitally signed document from a {{ linkvhls }}, shall verify the digital signature using previously retrieved PKI material. This key material may or may not be distributed under the same trust network under which the VHL was distributed. This key material may or may not be the same key material that was used to verify the VHL.\n\nSee cross-profile considerations for a discussion of the relationship of this option to the IHE Document Signature profile.\n\nThis option is captured in t",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s014-1-xx-2-4-oauth-with-ssraa-option",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.2.4 OAuth with SSRAA Option",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s014-1-xx-2-4-oauth-with-ssraa-option.md",
+      "narrative": null,
+      "content": "### 1:XX.2.4 OAuth with SSRAA Option\n\nThe OAuth with SSRAA Option enables the {{ linkvhlr }} and {{ linkvhls }} to use OAuth 2.0 access tokens for authentication during the ITI-YY5 Retrieve Manifest transaction, as an alternative to HTTP Message Signatures. This option provides interoperability with systems implementing the [HL7 Security for Scalable Registration, Authentication, and Authorization IG](http://hl7.org/fhir/us/udap-security/) (SSRAA).\n\n\n**Complementary Option:** Both the {{ linkvhlr }} and {{ linkvhls }} SHALL support this option for OAuth-based authentication to be used. If only",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s015-1-xx-2-5-verifiable-credential-option",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.2.5 Verifiable Credential Option",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s015-1-xx-2-5-verifiable-credential-option.md",
+      "narrative": null,
+      "content": "### 1:XX.2.5 Verifiable Credential Option\n\nThe Verifiable Credential Option enables the {{ linkvhlr }} to self-issue a JSON-LD Verifiable Credential (LDP-VC) per the [W3C Verifiable Credentials Data Model v2](https://www.w3.org/TR/vc-data-model-2.0/) when sending a manifest request in the ITI-YY5 Retrieve Manifest transaction. The VC's `credentialSubject` is the manifest decoded from the QR code, and the VC contains an embedded **DataIntegrityProof** signed with the {{ linkvhlr }}'s key from the trust network.\n\nThis option provides:\n- Authentication of the {{ linkvhlr }} to the {{ linkvhls }}",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s016-1-xx-2-6-vc-enveloped-vhl-option-vhl-sharer",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.2.6 VC Enveloped VHL Option (VHL Sharer)",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s016-1-xx-2-6-vc-enveloped-vhl-option-vhl-sharer.md",
+      "narrative": null,
+      "content": "### 1:XX.2.6 VC Enveloped VHL Option (VHL Sharer)\n\nThe VC Enveloped VHL Option enables the {{ linkvhls }} to return the VHL as a signed W3C Verifiable Credential (`application/vc+ld+json`) instead of a QR code in the ITI-YY3 Generate VHL transaction. The VC is subsequently transmitted to the {{ linkvhlr }} via ITI-YY4 Provide VHL as an alternative carrier to the HCERT/CWT QR code.\n\nThis option provides:\n- An alternative carrier for the VHL payload, suitable for machine-to-machine transfer and asynchronous delivery where QR presentation is impractical\n- A JSON-LD representation compatible with",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s017-1-xx-3-required-actor-groupings",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.3 Required Actor Groupings",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s017-1-xx-3-required-actor-groupings.md",
+      "narrative": null,
+      "content": "## 1:XX.3 Required Actor Groupings\n\nThe following actor groupings are required for secure operations within the VHL trust network:\n\n<p id =\"tXX.3-1\" class=\"tableTitle\">Table XX.3-1: VHL Profile - Required Actor Groupings</p>\n\n| VHL Actor | Grouping Condition | Actor(s) to be grouped with | Reference |\n|-----------|--------------------|-----------------------------|-----------|\n| {{ linkvhlr }} | Required for ITI-YY5 | ITI ATNA / Secure Node or Secure Application | ITI TF-1: 9.1 |\n| {{ linkvhls }} | Required for ITI-YY5 | ITI ATNA / Secure Node or Secure Application | ITI TF-1: 9.1 |\n| {{ linkv",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s018-1-xx-4-overview",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.4 Overview",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s018-1-xx-4-overview.md",
+      "narrative": null,
+      "content": "## 1:XX.4 Overview\n\nThis section shows how the transactions/content modules of the profile are combined to address the use cases.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s019-1-xx-4-1-concepts",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.4.1 Concepts",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s019-1-xx-4-1-concepts.md",
+      "narrative": null,
+      "content": "### 1:XX.4.1 Concepts\n\nA **Verifiable Health Link (VHL)** is a mechanism that enables individuals to share access to health documents in a secure, auditable, and configurable manner. Sharing options may include **limited-time access**, **PIN-protected retrieval**, or **ongoing access** to a longitudinal dataset that may evolve over time. VHLs can be rendered as QR codes or downloaded to a user’s device, supporting patient-mediated data sharing and enhancing interoperability across healthcare systems.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s020-1-xx-4-2-use-cases",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.4.2 Use Cases",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s020-1-xx-4-2-use-cases.md",
+      "narrative": null,
+      "content": "#### 1:XX.4.2 Use Cases\n\n<style>.usecase-purpose img { max-width: 100%; height: auto; }</style>",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s021-1-xx-4-2-1-use-case-1-who-global-digital-health-",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.4.2.1 Use Case \\#1: WHO Global Digital Health Certification Network",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s021-1-xx-4-2-1-use-case-1-who-global-digital-health-.md",
+      "narrative": null,
+      "content": "#### 1:XX.4.2.1 Use Case \\#1: WHO Global Digital Health Certification Network\n\n{% assign UseCaseGDHCN = site.data.ExampleScenario-UseCaseGDHCN %}\n\n<div class=\"usecase-purpose\">{{ UseCaseGDHCN.purpose | markdownify }}</div>\n\nThis use case has the following business requirements:\n- [Establish Trust](Requirements-EstablishTrust.html)\n- [Initiate Submit PKI Material Request](Requirements-InitiateSubmitPKIMaterialRequest.html)\n- [Initiate Retrieve Trust List Request](Requirements-InitiateRetrieveTrustListRequest.html)",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s022-1-xx-4-2-1-1-hajj-pilgrimage-use-case-descriptio",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.4.2.1.1 Hajj Pilgrimage Use Case Description",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s022-1-xx-4-2-1-1-hajj-pilgrimage-use-case-descriptio.md",
+      "narrative": null,
+      "content": "##### 1:XX.4.2.1.1 Hajj Pilgrimage Use Case Description\n{% assign useCaseHajjPilgrimage = site.data.ExampleScenario-UseCaseHajjPilgrimage %}\n\n<div class=\"usecase-purpose\">{{ useCaseHajjPilgrimage.purpose | markdownify }}</div>\n\nThis use case has the following business requirement:\n- [Establish Trust](Requirements-EstablishTrust.html)\n- [Create Secure Channel](Requirements-CreateSecureChannel.html)",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s023-1-xx-4-2-1-2-pan-american-highway-for-health-use",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.4.2.1.2 Pan-American Highway for Health Use Case Description",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s023-1-xx-4-2-1-2-pan-american-highway-for-health-use.md",
+      "narrative": null,
+      "content": "##### 1:XX.4.2.1.2 Pan-American Highway for Health Use Case Description\n\n{% assign UseCasePH4H = site.data.ExampleScenario-UseCasePH4H %}\n\n<div class=\"usecase-purpose\">{{ UseCasePH4H.purpose | markdownify }}</div>\n\nThis use case has the following business requirement:\n- [Establish Trust](Requirements-EstablishTrust.html)",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s024-1-xx-4-2-2-use-case-2-eu-vaccination-card",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.4.2.2 Use Case #2: EU Vaccination Card",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s024-1-xx-4-2-2-use-case-2-eu-vaccination-card.md",
+      "narrative": null,
+      "content": "#### 1:XX.4.2.2 Use Case #2: EU Vaccination Card\n\n{% assign UseCaseEVAC = site.data.ExampleScenario-UseCaseEVAC %}\n\n<div class=\"usecase-purpose\">{{ UseCaseEVAC.purpose | markdownify }}</div>\n\nThis use case has the following business requirement:\n- [Record Access To Health Data](Requirements-RecordAccessToHealthData.html)",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s025-1-xx-4-2-3-use-case-3-us-trusted-exchange-framew",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.4.2.3 Use Case \\#3: US Trusted Exchange Framework and Common Agreement (TEFCA)",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s025-1-xx-4-2-3-use-case-3-us-trusted-exchange-framew.md",
+      "narrative": null,
+      "content": "#### 1:XX.4.2.3 Use Case \\#3: US Trusted Exchange Framework and Common Agreement (TEFCA)\n\n{% assign UseCaseTEFCA = site.data.ExampleScenario-UseCaseTEFCA %}\n\n<div class=\"usecase-purpose\">{{ UseCaseTEFCA.purpose | markdownify }}</div>\n\nThis use case has the following business requirements:\n- [Establish Trust](Requirements-EstablishTrust.html)\n- [Create Secure Channel](Requirements-CreateSecureChannel.html)\n- [Request VHL Documents](Requirements-RequestVHLDocuments.html)\n\n<a name = \"security-considerations\"></a>",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s026-1-xx-5-security-considerations",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.5 Security Considerations",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s026-1-xx-5-security-considerations.md",
+      "narrative": null,
+      "content": "## 1:XX.5 Security Considerations\n\nVHL is a building block that is meant to be used together with added security measures, otherwise it is not suitable for exchange in environments where security and provenance cannot be reliably established by other means.\n\nKey security considerations include:",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s027-1-xx-5-1-trust-network-security",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.5.1 Trust Network Security",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s027-1-xx-5-1-trust-network-security.md",
+      "narrative": null,
+      "content": "### 1:XX.5.1 Trust Network Security\n\n- All participants ({{ linkvhlr }}, {{ linkvhls }}) SHALL establish trust via the {{ linkta }}. ITI-YY1 (Submit PKI Material) and ITI-YY2 (Retrieve Trust List) transactions MAY be used to support this trust establishment.\n- PKI material SHALL be validated before use in signature verification or secure channel establishment.\n- Certificates and keys should be regularly updated and revocation status checked.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s028-1-xx-5-2-secure-channel-requirements",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.5.2 Secure Channel Requirements",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s028-1-xx-5-2-secure-channel-requirements.md",
+      "narrative": null,
+      "content": "### 1:XX.5.2 Secure Channel Requirements\n\n- ITI-YY5 (Retrieve Manifest) SHALL be conducted over a secure channel as defined by ATNA Authenticate Node [ITI-19].\n- Both {{ linkvhlr }} and {{ linkvhls }} SHALL present credentials validated against the {{ linkta }}.\n- Mutual authentication is required for all document retrieval operations.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s029-1-xx-5-3-cryptographic-algorithm-selection",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.5.3 Cryptographic Algorithm Selection",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s029-1-xx-5-3-cryptographic-algorithm-selection.md",
+      "narrative": null,
+      "content": "### 1:XX.5.3 Cryptographic Algorithm Selection\n\nThe transactions in this profile (ITI-YY1 through ITI-YY5) rely on cryptographic primitives for digital signatures, message authentication, and content encryption. This IG does not mandate a single algorithm suite for deployment. Implementers select algorithms consistent with the underlying specifications — for example, RFC 9421 (HTTP Message Signatures), RFC 7515/7516/7518 (JWS/JWE/JWA), RFC 8152 (COSE), W3C Data Integrity (Verifiable Credentials), the HL7 SSRAA IG (OAuth with SSRAA Option), and the WHO SMART Trust specification (HCERT). The pre",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s030-1-xx-5-4-vhl-integrity-and-authorization",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.5.4 VHL Integrity and Authorization",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s030-1-xx-5-4-vhl-integrity-and-authorization.md",
+      "narrative": null,
+      "content": "### 1:XX.5.4 VHL Integrity and Authorization\n\n- VHL signatures SHALL be verified before trusting VHL content.\n- VHL expiration timestamps should be enforced.\n- Passcodes (if used) should be communicated out-of-band and validated server-side.\n- VHL Sharers should implement rate limiting and account lockout for failed passcode attempts.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s031-1-xx-5-5-audit-requirements",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.5.5 Audit Requirements",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s031-1-xx-5-5-audit-requirements.md",
+      "narrative": null,
+      "content": "### 1:XX.5.5 Audit Requirements\n\n- The European Health Data Space (EHDS) requires detailed audit information on data access.\n- Provisions 8f) and 12a) outline requirements for auditability of data access.\n- VHL Sharers and VHL Receivers should record audit events documenting:\n  - VHL generation requests\n  - VHL provision events\n  - Document retrieval attempts\n  - Authentication/authorization failures",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s032-1-xx-5-6-privacy-considerations",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.5.6 Privacy Considerations",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s032-1-xx-5-6-privacy-considerations.md",
+      "narrative": null,
+      "content": "### 1:XX.5.6 Privacy Considerations\n\n- VHL payloads do not contain PHI - only references to documents.\n- Actual health data is transmitted over secure channels (ITI-YY5).\n- Consent may be recorded during VHL generation (Record Consent option).\n- VHL Holders retain the right to revoke access where supported.\n\n<a name=\"other-grouping\"> </a>",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s033-1-xx-6-cross-profile-considerations",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.6 Cross-Profile Considerations",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s033-1-xx-6-cross-profile-considerations.md",
+      "narrative": null,
+      "content": "## 1:XX.6 Cross-Profile Considerations\n\nThis section is informative, not normative. It is intended to put this profile in context with other profiles. Any required groupings should have already been described above.\n\n<a name=\"atna-cross-profile\"> </a>",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s034-1-xx-6-1-atna-audit-trail-and-node-authenticatio",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.6.1 ATNA - Audit Trail and Node Authentication",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s034-1-xx-6-1-atna-audit-trail-and-node-authenticatio.md",
+      "narrative": null,
+      "content": "### 1:XX.6.1 ATNA - Audit Trail and Node Authentication\n\nThe {{ linkvhlr }} and {{ linkvhls }} SHALL be grouped with ATNA Secure Node or Secure Application actors to support the secure channel requirements of ITI-YY5. This grouping ensures:\n- Mutual authentication via X.509 certificates or other ATNA-supported mechanisms\n- Secure channel establishment per ATNA Authenticate Node [ITI-19]\n- Audit logging capabilities for security events\n\n<a name=\"pcf-cross-profile\"> </a>",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s035-1-xx-6-2-pcf-privacy-consent-on-fhir",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.6.2 PCF - Privacy Consent on FHIR",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s035-1-xx-6-2-pcf-privacy-consent-on-fhir.md",
+      "narrative": null,
+      "content": "### 1:XX.6.2 PCF - Privacy Consent on FHIR\n\nThe [IHE Privacy Consent on FHIR (PCF)](https://profiles.ihe.net/ITI/PCF/) profile is the recommended companion for capturing, storing, and enforcing patient consent alongside VHL. When the {{ linkvhls }} implements the Record Consent option, it acts as a Consent Recorder and initiates Access Consent [ITI-108] transactions to record consent declarations by the {{ linkvhlh }}.\n\nRecommended groupings:\n\n- **{{ linkvhlh }} (or the Holder's client app)** MAY be grouped with a PCF **Consent Creator** so that the Holder authors a `Consent` resource when gen",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s036-1-xx-6-3-mhd-mobile-health-document-sharing",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.6.3 MHD - Mobile Health Document Sharing",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s036-1-xx-6-3-mhd-mobile-health-document-sharing.md",
+      "narrative": null,
+      "content": "### 1:XX.6.3 MHD - Mobile Health Document Sharing\n\nITI-YY5 (Retrieve Manifest) reuses the FHIR search machinery of [MHD ITI-66 Find Document Lists](https://profiles.ihe.net/ITI/MHD/ITI-66.html): the VHL manifest URL constructed at ITI-YY3 is a FHIR `List` search using the parameters the Document Responder is required to support per ITI-66, and the ITI-YY5 response is an ITI-66 `searchset` Bundle. Binary retrieval is delegated to [MHD ITI-68 Retrieve Document](https://profiles.ihe.net/ITI/MHD/ITI-68.html) per the required grouping in [Section XX.3 Required Actor Groupings](#required-groupings).",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s037-1-xx-6-4-mcsd-mobile-care-services-discovery",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.6.4 mCSD - Mobile Care Services Discovery",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s037-1-xx-6-4-mcsd-mobile-care-services-discovery.md",
+      "narrative": null,
+      "content": "### 1:XX.6.4 mCSD - Mobile Care Services Discovery\n\nThe {{ linkta }} may store DID (Decentralized Identifier) as endpoints for Jurisdictions. The mCSD Profile supports querying for Endpoint(s) for Organizations.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-volume-1/blocks/prose-s038-1-xx-6-5-dsg-dsgj-document-digital-signature",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1:XX.6.5 DSG/DSGj - Document Digital Signature",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s038-1-xx-6-5-dsg-dsgj-document-digital-signature.md",
+      "narrative": null,
+      "content": "### 1:XX.6.5 DSG/DSGj - Document Digital Signature\n\nThe Verify Document Signature option enables {{ linkvhlr }} to verify digital signatures on retrieved documents. This may use:\n- DSG (Document Digital Signature) profile for XML-based documents\n- DSGj (JSON Document Signature) profile for JSON-based documents\n\nThe key material used for document signature verification may or may not be the same as the key material used to verify the VHL itself, and may or may not be distributed under the same trust network.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

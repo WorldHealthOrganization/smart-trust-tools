@@ -1,0 +1,538 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-hcert-spec",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s001-electronic-health-certificate-specification",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Electronic Health Certificate Specification",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-electronic-health-certificate-specification.md",
+      "narrative": null,
+      "content": "### Electronic Health Certificate Specification\n\nVersion 1.1.1, 2024-02-27\n\n\nThis specification, originally developed by the European Union (EU), is based on the [EU Digital Covid Certificate (EU DCC)](https://github.com/ehn-dcc-development/eu-dcc-hcert-spec/blob/66cca0b9c59a9299ad57d767c180bbf8cf5aa5f1/hcert_spec.md) project by the European eHealth network. The specification is now under the maintenance of the WHO from January 1, 2024. The WHO oversees all updates and modifications to HCERT claims. GDHCN Participants may propose additional claims or modifications through the WHO’s GDHCN Secre",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s002-1-introduction",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "1. Introduction",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-1-introduction.md",
+      "narrative": null,
+      "content": "#### 1. Introduction\n\nThis document specifies a generic data structure and encoding mechanisms for electronic health certificates. It also specifies a transport encoding mechanism in a machine-readable optical format (QR), which can be displayed on the screen of a mobile device or printed on a piece of paper.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s003-2-terminology",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2. Terminology",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-2-terminology.md",
+      "narrative": null,
+      "content": "#### 2. Terminology\n\nOrganisations adopting this specification for issuing health certificates are called Issuers and organisations accepting health certificates as proof of health status are called Verifiers. Together, these are called Participants. Some aspects in this document must be coordinated between the Participants, such as the management of a namespace and the distribution of cryptographic keys. It is assumed that a party, hereafter referred to as the Secretariat, carries out these tasks. The health certificate container format (HCERT) of this specification is generic, but in this co",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s004-3-electronic-health-certificate-container-format",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3. Electronic Health Certificate Container Format",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-3-electronic-health-certificate-container-format.md",
+      "narrative": null,
+      "content": "#### 3. Electronic Health Certificate Container Format\n\nThe Electronic Health Certificate Container Format (HCERT) is designed to provide a uniform and standardised vehicle for health certificates from different Issuers. The aim is to harmonise how these health certificates are represented, encoded and signed with the goal of facilitating interoperability.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s005-3-1-structure-of-the-payload",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3.1 Structure of the Payload",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s005-3-1-structure-of-the-payload.md",
+      "narrative": null,
+      "content": "##### 3.1 Structure of the Payload\n\nThe payload is structured and encoded as a CBOR with a COSE digital signature. This is commonly known as a \"CBOR Web Token\" (CWT), and is defined in [RFC 8392](https://tools.ietf.org/html/rfc8392). The payload, as defined below, is transported in a `hcert` claim.\n\nThe integrity and authenticity of origin of payload data MUST be verifiable by the Verifier. To provide this mechanism, the issuer MUST sign the CWT using an asymmetric electronic signature scheme as defined in the COSE specification ([RFC 8152](https://tools.ietf.org/html/rfc8152)).",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s006-3-2-cwt-claims",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3.2 CWT Claims",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s006-3-2-cwt-claims.md",
+      "narrative": null,
+      "content": "##### 3.2 CWT Claims",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s007-3-2-1-cwt-structure-overview",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3.2.1 CWT Structure Overview",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s007-3-2-1-cwt-structure-overview.md",
+      "narrative": null,
+      "content": "###### 3.2.1 CWT Structure Overview\n\n- Protected Header\n  - Signature Algorithm (`alg`, label 1)\n  - Key Identifier (`kid`, label 4)\n- Payload\n  - Issuer (`iss`, claim key 1, optional, ISO 3166-1 alpha-2 of issuer)\n  - Issued At (`iat`, claim key 6)\n  - Expiration Time (`exp`, claim key 4)\n  - Health Certificate (`hcert`, claim key -260, see section [3.2.7](hcert_spec.html#327-health-certificate-claim) for subclaim details )\n- Signature\n\nThe Signature is required to be sent in the CWT and MUST accompany the payload for validation.\n\nThe logical model can be found specified [here](StructureDefin",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s008-3-2-2-signature-algorithm",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3.2.2 Signature Algorithm",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s008-3-2-2-signature-algorithm.md",
+      "narrative": null,
+      "content": "###### 3.2.2 Signature Algorithm\n\nThe Signature Algorithm (`alg`) parameter indicates what algorithm is used for creating the signature. It must meet or exceed current SOG-IT guidelines.\n\nOne primary and one secondary algorithm is defined. The secondary algorithm should only be used if the primary algorithm is not acceptable within the rules and regulations imposed on the implementer.\n\nHowever, it is essential and of utmost importance for the security of the system that all implementations incorporate the secondary algorithm. For this reason, both the primary and the secondary algorithm MUST b",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s009-3-2-3-key-identifier",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3.2.3 Key Identifier",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s009-3-2-3-key-identifier.md",
+      "narrative": null,
+      "content": "###### 3.2.3 Key Identifier\n\nThe Key Identifier (`kid`) claim is used by Verifiers for selecting the correct public key from a list of keys pertaining to the Issuer (`iss`) Claim. Several keys may be used in parallel by an Issuer for administrative reasons and when performing key rollovers. The Key Identifier is not a security-critical field. For this reason, it MAY also be placed in an unprotected header if required. Verifiers MUST accept both options.  If both options are present, the Key Identifier in the protected header MUST be used.\n\nDue to the shortening of the identifier (for space-pre",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s010-3-2-4-issuer",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3.2.4 Issuer",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s010-3-2-4-issuer.md",
+      "narrative": null,
+      "content": "###### 3.2.4 Issuer\n\nThe Issuer (`iss`) claim is a string value that MAY optionally hold the ISO 3166-1 alpha-2 Country Code of the entity issuing the health certificate. This claim can be used by a Verifier to identify which set of DSCs to use for validation. The Claim Key 1 is used to identify this claim.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s011-3-2-5-expiration-time",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3.2.5 Expiration Time",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s011-3-2-5-expiration-time.md",
+      "narrative": null,
+      "content": "###### 3.2.5 Expiration Time\n\nThe Expiration Time (`exp`) claim SHALL hold a timestamp in the integer NumericDate format (as specified in [RFC 8392](https://tools.ietf.org/html/rfc8392) section 2) indicating for how long this particular signature over the Payload SHALL be considered valid, after which a Verifier MUST reject the Payload as expired. The purpose of the expiry parameter is to force a limit of the validity period of the health certificate. The Claim Key 4 is used to identify this claim.\n\nThe Expiration Time MUST not exceed the validity period of the DSC.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s012-3-2-6-issued-at",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3.2.6 Issued At",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s012-3-2-6-issued-at.md",
+      "narrative": null,
+      "content": "###### 3.2.6 Issued At\n\nThe Issued At (`iat`) claim SHALL hold a timestamp in the integer NumericDate format (as specified in [RFC 8392](https://tools.ietf.org/html/rfc8392) section 2) indicating the time when the health certificate was created. \n\nThe Issued At field MUST not predate the validity period of the DSC.\n\nVerifiers MAY apply additional policies with the purpose of restricting the validity of the health certificate based on the time of issue. The Claim Key 6 is used to identify this claim.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s013-3-2-7-health-certificate-claim",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "3.2.7 Health Certificate Claim",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s013-3-2-7-health-certificate-claim.md",
+      "narrative": null,
+      "content": "###### 3.2.7 Health Certificate Claim\n\nThe Health Certificate (`hcert`) claim is a JSON ([RFC 7159](https://tools.ietf.org/html/rfc7159)) object containing the health status information. The actual wire format of HCERT is content neutral. Several different types of health certificate MAY exist under the same claim, of which the European DCC is one.\n\nNote here that the JSON is purely for schema purposes. The wire format is CBOR as defined in ([RFC 7049](https://tools.ietf.org/html/rfc7049)). Application developers may not actually ever decode or encode to and from the JSON format, but use the i",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s014-4-transport-encodings",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "4 Transport Encodings",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s014-4-transport-encodings.md",
+      "narrative": null,
+      "content": "#### 4 Transport Encodings",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s015-4-1-raw",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "4.1 Raw",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s015-4-1-raw.md",
+      "narrative": null,
+      "content": "##### 4.1 Raw\n\nFor arbitrary data interfaces the HCERT container and its payloads may be transferred as-is, utilising any underlying, 8 bit safe, reliable data transport. These interfaces MAY include NFC, Bluetooth or transfer over an application layer protocol, for example transfer of an HCERT from the Issuer to a holder’s mobile device.\n\nIf the transfer of the HCERT from the Issuer to the holder is based on a presentation-only interface (e.g., SMS, e-mail), the Raw transport encoding is obviously not applicable.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s016-4-2-barcode",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "4.2 Barcode",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s016-4-2-barcode.md",
+      "narrative": null,
+      "content": "##### 4.2 Barcode",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s017-4-2-1-payload-cwt-compression",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "4.2.1 Payload (CWT) Compression",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s017-4-2-1-payload-cwt-compression.md",
+      "narrative": null,
+      "content": "###### 4.2.1 Payload (CWT) Compression\n\nTo lower size and to improve speed and reliability in the reading process of the HCERT, the CWT SHALL be compressed using ZLIB ([RFC 1950](https://tools.ietf.org/html/rfc1950)) and the Deflate compression mechanism in the format defined in ([RFC 1951](https://tools.ietf.org/html/rfc1951)).",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s018-4-2-2-qr-2d-barcode",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "4.2.2 QR 2D Barcode",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s018-4-2-2-qr-2d-barcode.md",
+      "narrative": null,
+      "content": "###### 4.2.2 QR 2D Barcode\n\nIn order to better handle legacy equipment designed to operate on ASCII payloads, the compressed CWT is encoded as ASCII using [Base45](https://datatracker.ietf.org/doc/draft-faltstrom-base45) before being encoded into a 2D barcode.\n\nThe QR format as defined in (ISO/IEC 18004:2015) SHALL be used for 2D barcode generation. An error correction rate of ‘Q’ (around 25%) is RECOMMENDED.  The Alphanumeric (Mode 2/QR Code symbols 0010) MUST be used in conjunction with Base45. \n\nIn order for Verifiers to be able to detect the type of data encoded and to select the proper de",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s019-5-trusted-list-format-dsc-list",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "5 Trusted List Format (DSC list)",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s019-5-trusted-list-format-dsc-list.md",
+      "narrative": null,
+      "content": "#### 5 Trusted List Format (DSC list)\n\nEach Participating country is REQUIRED to provide a list of one or more Signing Certificate Authorities (SCAs) and a list of all valid Document Signing Certificates (DSCs), and keep these lists current.\n\nFor the list of SCA certificates, each certificate:\n\n- MUST contain a valid Country attribute in the subject DN that matches the country of issuance.\n- MUST contain DN that is unique within the specified country.\n- MUST contain a unique Subject Key Identifier (SKI) according to ([RFC5280](https://tools.ietf.org/html/rfc5280)).\n\nIn addition, for the list o",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s020-5-1-simplified-sca-dsc",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "5.1 Simplified SCA/DSC",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s020-5-1-simplified-sca-dsc.md",
+      "narrative": null,
+      "content": "##### 5.1 Simplified SCA/DSC\n\nAs of this version of the specifications, countries should NOT assume that any Certificate Revocation List (CRL) information is used; or that the Private Key Usage Period is verified by implementers.\n\nInstead, the primary validity mechanism is the presence of the certificate on the most recent version of that certificate list.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s021-5-2-icao-emrtd-pki-and-trust-centers",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "5.2 ICAO eMRTD PKI and Trust Centers",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s021-5-2-icao-emrtd-pki-and-trust-centers.md",
+      "narrative": null,
+      "content": "##### 5.2 ICAO eMRTD PKI and Trust Centers\n\nGDHCN Participants can use a separate SCA (as per the WHO advice)(#ref) - but may also submit their existing eMRT SCA and/or DSC certificates; and may even choose to procure these from (commercial) trust centers - and submit these. However, any DSC certificate must always be signed by the SCA submitted by that country.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s022-6-security-considerations",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "6. Security Considerations",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s022-6-security-considerations.md",
+      "narrative": null,
+      "content": "#### 6. Security Considerations\n\nWhen designing a scheme using this specification, several important security aspects must be considered. These cannot preemptively be accounted for in this specification but must be identified, analysed and monitored by the Participants.\n\nAs input to the continuous analysis and monitoring of risks, the following topics SHOULD be taken into account:",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s023-6-1-hcert-signature-validity-time",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "6.1 HCERT Signature Validity Time",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s023-6-1-hcert-signature-validity-time.md",
+      "narrative": null,
+      "content": "##### 6.1 HCERT Signature Validity Time\n\nIt is anticipated that health certificates can not be reliably revoked once issued, especially not if this specification would be used on a global scale. Publishing of revocation information containing identifiers may also create privacy concerns, as this information is per definition Personally Identifiable Information (PII). For these reasons, this specification requires the Issuer of HCERTs to limit the validity period of the signature by specifying a signature expiry time. This requires the holder of a health certificate to renew it at periodic inte",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s024-6-2-key-management",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "6.2 Key Management",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s024-6-2-key-management.md",
+      "narrative": null,
+      "content": "##### 6.2 Key Management\n\nThis specification relies heavily on strong cryptographic mechanisms to secure data integrity and data origin authentication. Maintaining the confidentiality of the private keys is therefore of utmost importance.\n\nThe confidentiality of cryptographic keys can be compromised in a number of different ways, for instance:\n\n- The key generation process may be flawed, resulting in weak keys.\n- The keys may be exposed by human error.\n- The keys may be stolen by external or internal perpetrators.\n- The keys may be calculated using cryptanalysis.\n\nTo mitigate against the risks",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s025-6-3-input-data-validation",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "6.3 Input Data Validation",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s025-6-3-input-data-validation.md",
+      "narrative": null,
+      "content": "##### 6.3 Input Data Validation\n\nThis specification may be used in a way that implies receiving data from untrusted sources into systems that may be of mission-critical nature. To minimise the risks associated with this attack vector, all input fields MUST be properly validated by data types, lengths and contents. The Issuer Signature SHALL also be verified before any processing of the contents of the HCERT takes place. However, the validation of the Issuer Signature implies parsing the Protected Issuer Header first, in which a potential attacker may attempt to inject carefully crafted informa",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s026-appendix-a-trust-management",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Appendix A - Trust Management",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s026-appendix-a-trust-management.md",
+      "narrative": null,
+      "content": "### Appendix A - Trust Management\n\nThe HCERT signature verification process necessitates the use of a public key. GDHCN Participants, or institutions within these participants, are responsible for providing these public keys. Ultimately, every Verifier needs to have a list of all public keys it is willing to trust (as the public key is not part of the HCERT). \n\nEach participant is ultimately responsible for compiling their own master list and making that available to the other Participants. The aid of GDHCN's Secretariat for coordinating operational and practical matters is available. \n\nThe \"G",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s027-a-1-the-key-identifier-kid-s",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "A.1 The Key Identifier (`kid`s)",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s027-a-1-the-key-identifier-kid-s.md",
+      "narrative": null,
+      "content": "#### A.1 The Key Identifier (`kid`s)\n\nThe Key Identifier (`kid`) is calculated when constructing the list of trusted public keys from DSC certificates and consists of a truncated (first 8 bytes) SHA-256 fingerprint of the DSC encoded in DER (raw) format.\n\nNote that Verifiers do not need to calculate the `kid` based on the DSC certificate and can directly match the Key Identifier in issued health certificates with the `kid` on the trusted list.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-hcert-spec/blocks/prose-s028-a-2-extended-key-usage-identifiers",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "A.2 Extended Key Usage Identifiers",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s028-a-2-extended-key-usage-identifiers.md",
+      "narrative": null,
+      "content": "#### A.2 Extended Key Usage Identifiers\n\nThe document signing certificate MAY contain Extended Key Usage extension fields; these being:\n\n* OID 1.3.6.1.4.1.1847.2021.1.1 --  valid for test\n* OID 1.3.6.1.4.1.1847.2021.1.2  -- valid for vaccinations\n* OID 1.3.6.1.4.1.1847.2021.1.3  -- valid for recovery\n\nThe DSC may contain an extended key usage extension with *zero or more* key usage policy identifiers that constrain the types of HCERTs this certificate is allowed to verify. If one or more are present, the verifiers SHALL verify the key usage against the stored HCERT. \n\nIn absence of any key usa",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

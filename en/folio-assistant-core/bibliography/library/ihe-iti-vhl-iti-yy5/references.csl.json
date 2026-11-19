@@ -1,0 +1,16 @@
+[
+  {
+    "id": "ihe-iti-vhl-iti-yy5",
+    "type": "document",
+    "title": "IHE VHL ITI-YY5 Retrieve Manifest",
+    "URL": "https://github.com/IHE/ITI.VHL/blob/master/input/pagecontent/ITI-YY5.md"
+  },
+  {
+    "id": "ihe-iti-vhl-iti-yy5",
+    "type": "webpage",
+    "title": "IHE VHL ITI-YY5 Retrieve Manifest",
+    "publisher": "IHE International",
+    "URL": "https://profiles.ihe.net/ITI/VHL/ITI-YY5.html",
+    "title-short": "ITI-YY5"
+  }
+]

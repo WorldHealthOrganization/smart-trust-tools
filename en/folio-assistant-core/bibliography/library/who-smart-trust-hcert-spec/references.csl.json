@@ -1,0 +1,16 @@
+[
+  {
+    "id": "who-smart-trust-hcert-spec",
+    "type": "document",
+    "title": "HCERT Specification",
+    "URL": "https://github.com/WorldHealthOrganization/smart-trust/blob/main/input/pagecontent/hcert_spec.md"
+  },
+  {
+    "id": "who-smart-trust-hcert-spec",
+    "type": "webpage",
+    "title": "HCERT Specification",
+    "publisher": "World Health Organization",
+    "URL": "https://smart.who.int/trust/hcert_spec.html",
+    "title-short": "HCERT"
+  }
+]

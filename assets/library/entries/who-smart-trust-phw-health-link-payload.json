@@ -1,0 +1,44 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-phw-health-link-payload",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-phw-health-link-payload/blocks/prose-s001-input-fsh-models-healthlinkpayload-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/fsh/models/HealthLinkPayload.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-fsh-models-healthlinkpayload-fsh.md",
+      "narrative": null,
+      "content": "```text\nLogical: \tHealthLinkPayload\nTitle: \t\t\"Health Link Payload (DRAFT)\"\nDescription:\t\"Health Link Payload (DRAFT)\n\nA Health Link URI is generated from this payload according to the algorithm documented [here](https://build.fhir.org/ig/HL7/smart-health-cards-and-links/links-specification.html#smart-health-links-sharing-application-generates-a-smart-health-link-uri)\n\n\n\"\n//* ^url = \"http://hl7.org/fhir/uv/smart-health-cards-and-links/StructureDefinition/HealthLinkPayload\"\n* ^version = \"RC2\"\n* ^status = #active\n*  url 1..1 string \"url\" \"Manifest URL for this Health Link\"\n*  key 1..1 string \"Dec",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-phw-health-link-payload/blocks/prose-s002-input-fsh-models-verifiablehealthlinkpayload-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/fsh/models/VerifiableHealthLinkPayload.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-input-fsh-models-verifiablehealthlinkpayload-fsh.md",
+      "narrative": null,
+      "content": "```text\nLogical: \tVerifiableHealthLinkPayload\nParent: \tHealthLinkPayload\nTitle: \t\t\"Verifiable Health Link Payload (DRAFT)\"\nDescription:\t\"Verifiable Health Link Payload (DRAFT)\n\nThis logical model constrains the Health Link Payload for a Verifiable Health Link\n\"\nCharacteristics: #can-be-target\n//* ^url = \"https://profiles.ihe.net/ITI/VHL/StructureDefinition/VerifiableHealthLinkPayload\"\n* ^version = \"RC2\"\n* ^status = #active\n* type 1..1\n* type from HL_TYPE (preferred)\n/* obeys is-a-verifiable-health-link\n\n\nInvariant: is-a-verifiable-health-link\nDescription: \"The Health Link type is is a verifiab",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

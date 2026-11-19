@@ -1,0 +1,38 @@
+{
+  "@context": {
+    "@base": "https://litlfred.github.io/folio/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "bibo": "http://purl.org/ontology/bibo/",
+    "fabio": "http://purl.org/spar/fabio/",
+    "dcterms:source": {
+      "@type": "@id"
+    },
+    "dcterms:hasVersion": {
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "references/who-smart-trust-changes",
+      "@type": [
+        "fabio:Work",
+        "bibo:Document"
+      ],
+      "dcterms:title": "Change Log",
+      "dcterms:identifier": "https://github.com/WorldHealthOrganization/smart-trust/blob/main/input/pagecontent/changes.md",
+      "dcterms:source": "library/who-smart-trust-changes/manifest.jsonld",
+      "dcterms:hasVersion": "library/who-smart-trust-changes"
+    },
+    {
+      "@id": "references/who-smart-trust-changes",
+      "@type": [
+        "fabio:Work",
+        "bibo:Webpage"
+      ],
+      "dcterms:title": "Change Log",
+      "dcterms:publisher": "World Health Organization",
+      "dcterms:identifier": "https://smart.who.int/trust/changes.html",
+      "dcterms:hasVersion": "library/who-smart-trust-changes"
+    }
+  ]
+}

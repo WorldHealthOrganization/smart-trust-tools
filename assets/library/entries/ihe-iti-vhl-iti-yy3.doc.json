@@ -1,0 +1,750 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "ihe-iti-vhl-iti-yy3",
+  "title": "IHE VHL ITI-YY3 Generate VHL",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "headings",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-input-pagecontent-iti-yy3-md",
+      "number": null,
+      "title": "input/pagecontent/ITI-YY3.md",
+      "level": 1,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 36,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "assign",
+          "heading": false
+        },
+        {
+          "term": "site",
+          "heading": false
+        },
+        {
+          "term": "reqgeneratevhlrequest",
+          "heading": false
+        }
+      ],
+      "extract": "{% assign linkvhlh = '<a href=\"ActorDefinition-VHLHolder.html\">VHL Holder</a>' %} {% assign linkvhls = '<a href=\"ActorDefinition-VHLSharer.html\">VHL Sharer</a>' %} {% assign linkvhlr = '<a href=\"ActorDefinition-VHLReceiver.html\">VHL Receiver</a>' %} {% assign reqGenerateVHLRequest = site.data.Requirements-InitiateVHLGenerationRequest %} {% assign reqGenerateVHLResponse =",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s001-input-pagecontent-iti-yy3-md"
+      ]
+    },
+    {
+      "id": "s002-2-3-yy3-1-scope",
+      "number": null,
+      "title": "2:3.YY3.1 Scope",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 247,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "extension",
+          "heading": false
+        },
+        {
+          "term": "downstream",
+          "heading": false
+        },
+        {
+          "term": "reqgeneratevhlrequest",
+          "heading": false
+        },
+        {
+          "term": "assign",
+          "heading": false
+        },
+        {
+          "term": "caller",
+          "heading": false
+        },
+        {
+          "term": "reqgeneratevhlresponse",
+          "heading": false
+        },
+        {
+          "term": "url",
+          "heading": false
+        }
+      ],
+      "extract": "{% assign reqGenerateVHLRequestTitle = reqGenerateVHLRequest.extension | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.title\" | first %} {% assign reqGenerateVHLResponseTitle = reqGenerateVHLResponse.extension | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.title\" | first %} {% assign reqGenerateVHLRequestDescription =",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s002-2-3-yy3-1-scope"
+      ]
+    },
+    {
+      "id": "s003-2-3-yy3-2-actor-roles",
+      "number": null,
+      "title": "2:3.YY3.2 Actor Roles",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 29,
+      "summary": null,
+      "keywords": [],
+      "extract": "Actor; Role {{ linkvhlh}}; {{ reqGenerateVHLRequestTitle.valueString }} {{ linkvhls }}; {{ reqGenerateVHLResponseTitle.valueString }} {: .grid}",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s003-2-3-yy3-2-actor-roles"
+      ]
+    },
+    {
+      "id": "s004-2-3-yy3-3-referenced-standards",
+      "number": null,
+      "title": "2:3.YY3.3 Referenced Standards",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 120,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "json web",
+          "heading": false
+        },
+        {
+          "term": "data integrity",
+          "heading": false
+        },
+        {
+          "term": "w3c data",
+          "heading": false
+        },
+        {
+          "term": "smart health",
+          "heading": false
+        },
+        {
+          "term": "health links",
+          "heading": false
+        }
+      ],
+      "extract": "SMART Health Links Specification: SMART Health Links and SMART Health Cards RFC 4648: Base64url Encoding RFC 7515: JSON Web Signature (JWS) ISO/IEC 18004:2015: QR Code specification FHIR R4: HL7 FHIR Release 4 OAuth with SSRAA (Optional): RFC 7519: JSON Web Token (JWT) HL7 Security for Scalable Registration, Authentication, and Authorization IG: SSRAA — used by the VHL Receiver to perform UDAP Discovery and Dynamic",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s004-2-3-yy3-3-referenced-standards"
+      ]
+    },
+    {
+      "id": "s005-2-3-yy3-4-messages",
+      "number": null,
+      "title": "2:3.YY3.4 Messages",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 22,
+      "summary": null,
+      "keywords": [],
+      "extract": "<figure > <div style=\"width:35em; max-width:100%;\"> {%include ITI-YY3.svg%} </div> <p id=\"figure-2:3.YY3.4-1\" class=\"figureTitle\">Figure 2:3.YY3.4-1: Generate VHL Interaction Diagram</p> </figure> <br clear=\"all\">",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s005-2-3-yy3-4-messages"
+      ]
+    },
+    {
+      "id": "s006-2-3-yy3-4-1-generate-vhl-request-message",
+      "number": null,
+      "title": "2:3.YY3.4.1 Generate VHL Request Message",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 37,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "message",
+          "heading": true
+        },
+        {
+          "term": "generate",
+          "heading": true
+        },
+        {
+          "term": "operation",
+          "heading": false
+        }
+      ],
+      "extract": "This message is implemented as an HTTP GET operation from the client app used by the Holder to the VHL Sharer using the FHIR $generate-vhl operation described in 2:3.YY3.4.1.2 Message Semantics.",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s006-2-3-yy3-4-1-generate-vhl-request-message"
+      ]
+    },
+    {
+      "id": "s007-2-3-yy3-4-1-1-trigger-events",
+      "number": null,
+      "title": "2:3.YY3.4.1.1 Trigger Events",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 12,
+      "summary": null,
+      "keywords": [],
+      "extract": "{{ reqGenerateVHLRequestDescription.valueMarkdown}} {% include requirements-list-statements.liquid site=site req=reqGenerateVHLRequest %}",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s007-2-3-yy3-4-1-1-trigger-events"
+      ]
+    },
+    {
+      "id": "s008-2-3-yy3-4-1-2-message-semantics",
+      "number": null,
+      "title": "2:3.YY3.4.1.2 Message Semantics",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 425,
+      "summary": null,
+      "keywords": [],
+      "extract": "The Generate VHL message is a FHIR operation request as defined in FHIR (<http://hl7.org/fhir/operations.html>) with the $generate-vhl operation definition. Given that the parameters are not complex types, the HTTP GET operation shall be used as defined in FHIR (<http://hl7.org/fhir/operations.html#request>). The name of the operation is $generate-vhl, and it is applied to FHIR Patient Resource type. The URL for",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s008-2-3-yy3-4-1-2-message-semantics"
+      ]
+    },
+    {
+      "id": "s009-2-3-yy3-4-1-2-1-output-carrier-options",
+      "number": null,
+      "title": "2:3.YY3.4.1.2.1 Output Carrier Options",
+      "level": 6,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 308,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "carrier",
+          "heading": true
+        },
+        {
+          "term": "output",
+          "heading": true
+        },
+        {
+          "term": "enveloped vhl",
+          "heading": false
+        },
+        {
+          "term": "vhl option",
+          "heading": false
+        },
+        {
+          "term": "vhl payload",
+          "heading": false
+        },
+        {
+          "term": "same vhl",
+          "heading": false
+        },
+        {
+          "term": "expected actions",
+          "heading": false
+        },
+        {
+          "term": "populated",
+          "heading": false
+        }
+      ],
+      "extract": "The format request parameter selects one of two carriers for the returned VHL. Both carriers convey the same VHL payload (manifest URL, decryption key, flags, label, expiration, optional extension); they differ only in encoding, signature format, and the trust chain used for verification. On a successful response, exactly one of the response output parameters qrcode or verifiableCredential (see 2:3.YY3.4.2.2 Message",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s009-2-3-yy3-4-1-2-1-output-carrier-options"
+      ]
+    },
+    {
+      "id": "s010-2-3-yy3-4-1-3-expected-actions",
+      "number": null,
+      "title": "2:3.YY3.4.1.3 Expected Actions",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 1135,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "payload construction",
+          "heading": false
+        },
+        {
+          "term": "vhl payload",
+          "heading": false
+        },
+        {
+          "term": "linkvhls supports",
+          "heading": false
+        },
+        {
+          "term": "manifest url",
+          "heading": false
+        },
+        {
+          "term": "document encryption",
+          "heading": false
+        },
+        {
+          "term": "document binaries",
+          "heading": false
+        },
+        {
+          "term": "steps above",
+          "heading": false
+        },
+        {
+          "term": "encryption key",
+          "heading": false
+        }
+      ],
+      "extract": "{{ reqGenerateVHLResponseDescription.valueMarkdown }} {% include requirements-list-statements.liquid req=reqGenerateVHLResponse site=site %} Based on the requested format, the {{ linkvhls }} generates the VHL as either a QR code (HCERT/CWT-encoded per the WHO SMART Trust HCERT specification, with the VHL payload embedded at claim key 5) or a Verifiable Credential (JSON-LD per the W3C VC Data Model v2, with the VHL",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s010-2-3-yy3-4-1-3-expected-actions"
+      ]
+    },
+    {
+      "id": "s011-2-3-yy3-4-2-generate-vhl-response-message",
+      "number": null,
+      "title": "2:3.YY3.4.2  Generate VHL Response Message",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 27,
+      "summary": null,
+      "keywords": [],
+      "extract": "The {{ linkvhls }} returns failure, or generates and returns a QR code containing the VHL encoded as an HCERT/CWT structure.",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s011-2-3-yy3-4-2-generate-vhl-response-message"
+      ]
+    },
+    {
+      "id": "s012-2-3-yy3-4-2-1-trigger-events",
+      "number": null,
+      "title": "2:3.YY3.4.2.1 Trigger Events",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 20,
+      "summary": null,
+      "keywords": [],
+      "extract": "This message shall be sent when a request initiated by the {{linkvhlh}} has been processed successfully.",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s012-2-3-yy3-4-2-1-trigger-events"
+      ]
+    },
+    {
+      "id": "s013-2-3-yy3-4-2-2-message-semantics",
+      "number": null,
+      "title": "2:3.YY3.4.2.2  Message Semantics",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 240,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "response message",
+          "heading": false
+        },
+        {
+          "term": "output",
+          "heading": false
+        },
+        {
+          "term": "enveloped vhl",
+          "heading": false
+        },
+        {
+          "term": "hcert claim",
+          "heading": false
+        },
+        {
+          "term": "claim key",
+          "heading": false
+        },
+        {
+          "term": "vhl payload",
+          "heading": false
+        }
+      ],
+      "extract": "See ITI TF-2: Appendix Z.6 for more details on response format handling. The response message is a FHIR operation response (<http://hl7.org/fhir/operations.html#response>). On Failure, the response message is an HTTP status code of 4xx or 5xx indicates an error, and an OperationOutcome Resource shall be returned with details. Success Response: The response SHALL include exactly one of the following output",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s013-2-3-yy3-4-2-2-message-semantics"
+      ]
+    },
+    {
+      "id": "s014-2-3-yy3-4-2-3-expected-actions",
+      "number": null,
+      "title": "2:3.YY3.4.2.3 Expected Actions",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 95,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "vhl receivers",
+          "heading": false
+        },
+        {
+          "term": "vhl holder",
+          "heading": false
+        },
+        {
+          "term": "passcode",
+          "heading": false
+        }
+      ],
+      "extract": "The VHL Holder SHALL: Display or print the QR code for scanning by VHL Receivers Cache the encryption key securely (extracted from VHL payload) for future document decryption If a passcode was provided during generation: Securely store the plaintext passcode separately from the QR code Provide the passcode to authorized VHL Receivers for manifest retrieval (ITI-YY5) Use secure transmission methods when sharing the",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s014-2-3-yy3-4-2-3-expected-actions"
+      ]
+    },
+    {
+      "id": "s015-2-3-yy3-5-security-considerations",
+      "number": null,
+      "title": "2:3.YY3.5 Security Considerations",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 4,
+      "summary": null,
+      "keywords": [],
+      "extract": null,
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s015-2-3-yy3-5-security-considerations"
+      ]
+    },
+    {
+      "id": "s016-2-3-yy3-5-1-encryption-key-security",
+      "number": null,
+      "title": "2:3.YY3.5.1 Encryption Key Security",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 73,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "encryption key",
+          "heading": true
+        },
+        {
+          "term": "kept",
+          "heading": false
+        },
+        {
+          "term": "random",
+          "heading": false
+        }
+      ],
+      "extract": "The 32-byte encryption key SHALL be generated using a cryptographically secure random number generator The key is embedded in the VHL payload within the QR code and SHALL be kept confidential Loss of the key means loss of access to encrypted documents The encryption key is not directly visible in the QR code as it is embedded within the signed and compressed HCERT structure",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s016-2-3-yy3-5-1-encryption-key-security"
+      ]
+    },
+    {
+      "id": "s017-2-3-yy3-5-2-qr-code-security",
+      "number": null,
+      "title": "2:3.YY3.5.2 QR Code Security",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 61,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "codes",
+          "heading": false
+        },
+        {
+          "term": "consider",
+          "heading": false
+        },
+        {
+          "term": "copied",
+          "heading": false
+        }
+      ],
+      "extract": "QR codes contain the complete VHL including the encryption key QR codes can be photographed or copied - use time-limited expiration QR codes SHALL be encoded as HCERT with digital signatures for authenticity Display QR codes in controlled environments when possible Consider short expiration times (minutes to hours) for high-security scenarios",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s017-2-3-yy3-5-2-qr-code-security"
+      ]
+    },
+    {
+      "id": "s018-2-3-yy3-5-3-passcode-security",
+      "number": null,
+      "title": "2:3.YY3.5.3 Passcode Security",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 98,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "plaintext passcode",
+          "heading": false
+        },
+        {
+          "term": "vhl sharer",
+          "heading": false
+        },
+        {
+          "term": "stored",
+          "heading": false
+        }
+      ],
+      "extract": "If a passcode is provided, it SHALL be securely hashed before storage using industry-standard algorithms (bcrypt, Argon2, PBKDF2) The plaintext passcode SHALL NOT be included in the VHL URL or QR code The plaintext passcode SHALL NOT be stored by the VHL Sharer The VHL Holder SHOULD securely store the plaintext passcode for sharing with authorized VHL Receivers During ITI-YY5 Retrieve Manifest, the VHL Receiver",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s018-2-3-yy3-5-3-passcode-security"
+      ]
+    },
+    {
+      "id": "s019-2-3-yy3-5-4-manifest-url-construction",
+      "number": null,
+      "title": "2:3.YY3.5.4 Manifest URL Construction",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 45,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "manifest url",
+          "heading": true
+        },
+        {
+          "term": "construction",
+          "heading": true
+        },
+        {
+          "term": "mandatory",
+          "heading": false
+        }
+      ],
+      "extract": "The manifest URL SHALL include all mandatory FHIR search parameters The _include parameter SHOULD only be included if the VHL Sharer supports the Include DocumentReference Option This ensures VHL Receivers can successfully retrieve the manifest using ITI-YY5",
+      "extractCut": false,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s019-2-3-yy3-5-4-manifest-url-construction"
+      ]
+    },
+    {
+      "id": "s020-2-3-yy3-5-5-oauth-with-ssraa-option-fhir-base-ur",
+      "number": null,
+      "title": "2:3.YY3.5.5 OAuth with SSRAA Option — FHIR Base URL Extension",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 141,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "base url",
+          "heading": true
+        },
+        {
+          "term": "ssraa option",
+          "heading": true
+        },
+        {
+          "term": "fhir base",
+          "heading": true
+        },
+        {
+          "term": "udap discovery",
+          "heading": false
+        }
+      ],
+      "extract": "When the {{ linkvhls }} supports the OAuth with SSRAA Option, it SHALL include extension.fhirBaseUrl in the VHL payload: The fhirBaseUrl value SHALL be the canonical FHIR base URL of the {{ linkvhls }} (e.g., https://vhl-sharer.example.org) This URL is used by the {{ linkvhlr }} to perform UDAP Discovery ({fhirBaseUrl}/.well-known/udap) and, if not already registered, Dynamic Client Registration with the {{ linkvhls",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s020-2-3-yy3-5-5-oauth-with-ssraa-option-fhir-base-ur"
+      ]
+    },
+    {
+      "id": "s021-2-3-yy3-5-6-vc-enveloped-vhl-option",
+      "number": null,
+      "title": "2:3.YY3.5.6 VC Enveloped VHL Option",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 83,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "vhl",
+          "heading": true
+        },
+        {
+          "term": "enveloped",
+          "heading": true
+        },
+        {
+          "term": "equivalent",
+          "heading": false
+        }
+      ],
+      "extract": "The VC's DataIntegrityProof SHALL chain to a trust anchor in the trust list (same framework used for HCERT/CWT verification). The VC expirationDate SHOULD be consistent with the VHL payload exp; the VHL Receiver SHALL reject the VHL if either has passed. Confidentiality considerations are equivalent to the QR form: the VC carries the key and MUST be treated as sensitive. VHL Sharers MAY issue single-use VCs; short",
+      "extractCut": true,
+      "blocks": [
+        "library/ihe-iti-vhl-iti-yy3/blocks/prose-s021-2-3-yy3-5-6-vc-enveloped-vhl-option"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "keywords": [
+    {
+      "term": "vhl url",
+      "heading": false
+    },
+    {
+      "term": "vhl payload",
+      "heading": false
+    },
+    {
+      "term": "vhl option",
+      "heading": true
+    },
+    {
+      "term": "enveloped vhl",
+      "heading": true
+    },
+    {
+      "term": "vhl carrier",
+      "heading": false
+    },
+    {
+      "term": "vhl sharer",
+      "heading": false
+    },
+    {
+      "term": "generate vhl",
+      "heading": true
+    },
+    {
+      "term": "vhl receiver",
+      "heading": false
+    },
+    {
+      "term": "same vhl",
+      "heading": false
+    },
+    {
+      "term": "vhl holder",
+      "heading": false
+    },
+    {
+      "term": "authorized vhl",
+      "heading": false
+    },
+    {
+      "term": "manifest url",
+      "heading": true
+    }
+  ],
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 21,
+      "note": "5 levels"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 21 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/ihe-iti-vhl-iti-yy3"
+  }
+}

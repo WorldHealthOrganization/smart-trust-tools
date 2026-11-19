@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script data-folio-saved-scheme>(function(){var d=document.documentElement,s=null,c="dark";try{s=localStorage.getItem("fa-color-scheme")}catch(e){}if(s!=="light"&&s!=="dark"){s="light";try{if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)s="dark"}catch(e){}}try{var n=document.getElementById("fa-site-scheme");if(n)c=JSON.parse(n.textContent).scheme==="light"?"light":"dark"}catch(e){}d.setAttribute("data-fa-scheme",s);var j=window.jtd;if(s!==c&&j&&typeof j.setTheme==="function"){try{j.setTheme(s)}catch(e){}}})();</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HCERT Wire and Payload Models</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=JetBrains+Mono:wght@400;600&family=Public+Sans:wght@400;550;650;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="../assets/css/navbar.css"><script src="../assets/navbar/rail-j29dkqi0u1.js" defer></script><script src="../assets/js/navbar.js" defer></script><script src="../assets/navbar/row-2acuhncsmbg.js" defer></script><link rel="stylesheet" href="../assets/css/navbar-row.css"><script src="../assets/js/navbar-row.js" defer></script><meta name="fa-search-exclude" content="true"><script src="../assets/js/vendor/lunr.min.js" defer></script><script src="../assets/js/just-the-docs.js" defer></script><link rel="stylesheet" href="../assets/page-layout.css" data-fa-page-layout><script src="../assets/page-layout.js" defer data-fa-page-layout></script><meta name="fa-platform-base" content="https://litlfred.github.io/folio-assistant" data-fa-platform-ui><link rel="stylesheet" href="../assets/css/docs-ui.css" data-fa-platform-ui><script src="../assets/js/docs-ui.js" defer data-fa-platform-ui></script><meta name="fa-pinned-data" content=".."></head>
+<body><script type="application/json" id="fa-navbar-row" data-fa-root=".." data-fa-row-src="row-2acuhncsmbg"></script><script type="application/json" id="fa-rail" data-fa-root="https://litlfred.github.io/folio-assistant" data-fa-to-root="..">{"data":"rail-j29dkqi0u1","here":"/viewers/models.html"}</script><nav class="fa-nav" aria-label="folio-assistant" data-fa-rail="pending"><a href="../">SMART Trust HCERT library tools</a></nav><div id="main-header" class="main-header fa-site-bar fa-page-bar"><a class="fa-page-bar-home" href="../">SMART Trust HCERT library tools</a><div class="search" role="search"><div class="search-input-wrap"><input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search this site" autocomplete="off"><label for="search-input" class="search-label"><span class="sr-only">Search this site</span></label></div><div id="search-results" class="search-results"></div></div><span class="fa-page-bar-locale" data-fa-slot="locale"></span></div>
+<header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>SMART Trust Tools</a><nav class="nav" aria-label="Viewers"><a href="index.html">Overview</a><a href="explorer.html">Graph explorer</a><a href="trace.html">Traceability</a><a href="requirements.html">Requirements</a><a href="api.html">API (WIT)</a><a href="api/typedoc/index.html">API reference (TS)</a><a href="kotlin.html">Kotlin API</a><a href="models.html" aria-current="page">Wire &amp; payload models</a><a href="kinds.html">Node kinds</a></nav></div></header>
+
+<main class="page">
+  <section class="section prose">
+    <span class="eyebrow">Wire format and payload models</span>
+    <h1>Wire &amp; payload models</h1>
+    <p>The CBOR wire format is specified in CDDL (IETF RFC 8610). Payload models are derived mechanically from the
+    WHO SMART FHIR logical models into a JSON-LD context, SHACL shapes and CDDL rules. Every example below is the
+    Hepatitis B birth-dose certificate from smart-trust PR 129, which CI validates against all of these.</p>
+    <div class="chips">
+      <a class="chip" href="#cddl">CDDL</a><a class="chip" href="#example">CBOR example</a>
+      <a class="chip" href="#jsonld">JSON-LD</a><a class="chip" href="#shacl">SHACL shapes</a>
+      <a class="chip" href="explorer.html#grp-grp--models-logical">Logical models in the graph</a>
+      <a class="chip" href="explorer.html#grp-grp--models-payload">Payload models in the graph</a>
+    </div>
+  </section>
+
+  <section class="section" id="cddl">
+    <div class="section-head"><h2>CDDL: HCERT envelope</h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/api/cddl/hcert.cddl">api/cddl/hcert.cddl</a></div>
+    <pre><code><span class="tok-comment">; HCERT wire format (CBOR), RFC 8610 CDDL.</span>
+<span class="tok-comment">;</span>
+<span class="tok-comment">; Sources (WHO SMART Trust IG):</span>
+<span class="tok-comment">;   hcert_spec.md 3.2 CWT Claims, 4.2 Barcode          (deployed)</span>
+<span class="tok-comment">;   qr_code_generation.md 4-9 Steps 3-8                (PR 129)</span>
+<span class="tok-comment">;   RFC 9052 COSE_Sign1, RFC 8392 CWT</span>
+<span class="tok-comment">;</span>
+<span class="tok-comment">; Payload rules (dvc-min, ...) are generated from the FHIR logical models</span>
+<span class="tok-comment">; into models/generated/&lt;ig&gt;.cddl. CDDL has no import mechanism, so this file</span>
+<span class="tok-comment">; is concatenated with them for validation (tools/check-models/check_models.py).</span>
+<span class="tok-comment">;</span>
+<span class="tok-comment">; Draft for upstreaming: the envelope belongs in WorldHealthOrganization/</span>
+<span class="tok-comment">; smart-trust and the payload rules with their logical models (<a href="explorer.html#OI-19">OI-19</a>).</span>
+
+<span class="tok-comment">; Steps 5-8 output, before ZLIB/Base45. Issuers MUST tag. [<a href="explorer.html#STT-COS-001">STT-COS-001</a>]</span>
+<span class="tok-name" id="cddl-hc1-cose">hc1-cose</span> = #6.18(cose-sign1)
+
+<span class="tok-name" id="cddl-cose-sign1">cose-sign1</span> = [
+  protected: bstr <span class="tok-key">.cbor</span> protected-header,
+  unprotected: unprotected-header,
+  payload: bstr <span class="tok-key">.cbor</span> cwt-claims,
+  signature: bstr,
+]
+
+<span class="tok-comment">; alg and kid in the protected header. [<a href="explorer.html#STT-COS-003">STT-COS-003</a>]</span>
+<span class="tok-name" id="cddl-protected-header">protected-header</span> = {
+  1 =&gt; cose-alg,
+  ? 4 =&gt; kid,
+}
+
+<span class="tok-comment">; kid MAY appear here instead; the protected one wins. [<a href="explorer.html#STT-COS-003">STT-COS-003</a>]</span>
+<span class="tok-name" id="cddl-unprotected-header">unprotected-header</span> = {
+  ? 4 =&gt; kid,
+}
+
+<span class="tok-name" id="cddl-cose-alg">cose-alg</span> = es256 / ps256
+<span class="tok-name" id="cddl-es256">es256</span> = -7    <span class="tok-comment">; primary   [<a href="explorer.html#STT-COS-002">STT-COS-002</a>]</span>
+<span class="tok-name" id="cddl-ps256">ps256</span> = -37   <span class="tok-comment">; secondary [<a href="explorer.html#STT-COS-002">STT-COS-002</a>]</span>
+
+<span class="tok-comment">; First 8 bytes of SHA-256 over the DER DSC. [<a href="explorer.html#STT-KID-001">STT-KID-001</a>]</span>
+<span class="tok-name" id="cddl-kid">kid</span> = bstr <span class="tok-key">.size</span> 8
+
+<span class="tok-comment">; ES256 signatures are fixed-width r||s. [<a href="explorer.html#STT-COS-005">STT-COS-005</a>]</span>
+<span class="tok-name" id="cddl-es256-signature">es256-signature</span> = bstr <span class="tok-key">.size</span> 64
+
+<span class="tok-comment">; CWT claim set. [<a href="explorer.html#STT-CWT-001">STT-CWT-001</a>]</span>
+<span class="tok-name" id="cddl-cwt-claims">cwt-claims</span> = {
+  ? 1 =&gt; tstr,             <span class="tok-comment">; iss, alpha-2 when a country [<a href="explorer.html#STT-CWT-005">STT-CWT-005</a>]</span>
+  6 =&gt; numeric-date,       <span class="tok-comment">; iat [<a href="explorer.html#STT-CWT-002">STT-CWT-002</a>]</span>
+  4 =&gt; numeric-date,       <span class="tok-comment">; exp, mandatory [<a href="explorer.html#STT-CWT-003">STT-CWT-003</a>]</span>
+  -260 =&gt; hcert,
+}
+
+<span class="tok-comment">; HCERT requires integer NumericDate (RFC 8392 would also allow float).</span>
+<span class="tok-name" id="cddl-numeric-date">numeric-date</span> = int
+
+<span class="tok-comment">; Issuance: exactly one subclaim entry, so hcert is a choice of</span>
+<span class="tok-comment">; single-entry maps. [<a href="explorer.html#STT-SEL-004">STT-SEL-004</a>] (<a href="explorer.html#OI-02">OI-02</a>)</span>
+<span class="tok-comment">; Subclaim registry (QR Code Generation 2.1). [<a href="explorer.html#STT-SEL-001">STT-SEL-001</a>]</span>
+<span class="tok-comment">; Adding a subclaim means adding an alternative here.</span>
+<span class="tok-name" id="cddl-hcert">hcert</span> = hcert-dcc / hcert-ddcc-vs / hcert-ddcc-tr / hcert-vhl / hcert-dvc / hcert-mtl
+
+<span class="tok-name" id="cddl-hcert-dcc">hcert-dcc</span> = { 1 =&gt; any }               <span class="tok-comment">; HCertDCC (EU DCC core data set)</span>
+<span class="tok-name" id="cddl-hcert-ddcc-vs">hcert-ddcc-vs</span> = { 3 =&gt; any }           <span class="tok-comment">; DDCCCoreDataSetVS (proposed)</span>
+<span class="tok-name" id="cddl-hcert-ddcc-tr">hcert-ddcc-tr</span> = { 4 =&gt; any }           <span class="tok-comment">; DDCCCoreDataSetTR (proposed)</span>
+<span class="tok-name" id="cddl-hcert-vhl">hcert-vhl</span> = { 5 =&gt; vhl-payload / vhl-uri } <span class="tok-comment">; Verifiable Health Link [<a href="explorer.html#STT-VHL-002">STT-VHL-002</a>]</span>
+<span class="tok-name" id="cddl-hcert-dvc">hcert-dvc</span> = { -6 =&gt; dvc-min }          <span class="tok-comment">; DVCMin, development range (<a href="explorer.html#OI-09">OI-09</a>, <a href="explorer.html#OI-17">OI-17</a>)</span>
+<span class="tok-name" id="cddl-hcert-mtl">hcert-mtl</span> = { -7 =&gt; any }              <span class="tok-comment">; MedicationTreatmentLineMin, development range</span>
+
+<span class="tok-comment">; The SMART Health Links payload format that IHE VHL reuses, as a CBOR map:</span>
+<span class="tok-comment">; the primary form at key 5. [<a href="explorer.html#STT-VHL-001">STT-VHL-001</a>, <a href="explorer.html#STT-VHL-002">STT-VHL-002</a>] (<a href="explorer.html#OI-21">OI-21</a>, <a href="explorer.html#OI-23">OI-23</a>)</span>
+<span class="tok-name" id="cddl-vhl-payload">vhl-payload</span> = {
+  url: tstr,               <span class="tok-comment">; https manifest URL (a FHIR List search)</span>
+  key: tstr <span class="tok-key">.size</span> 43,      <span class="tok-comment">; 32 random bytes, base64url</span>
+  ? exp: int,              <span class="tok-comment">; epoch seconds</span>
+  ? flag: tstr <span class="tok-key">.regexp</span> <span class="tok-str">&quot;L?P?&quot;</span>,
+  ? label: tstr <span class="tok-key">.size</span> (0..80),
+  ? v: int,
+  ? extension: { ? fhirBaseUrl: tstr, * tstr =&gt; any },
+}
+
+<span class="tok-comment">; IHE ITI-YY3&#x27;s text form, still accepted on decode. [<a href="explorer.html#STT-VHL-003">STT-VHL-003</a>]</span>
+<span class="tok-name" id="cddl-vhl-uri">vhl-uri</span> = tstr <span class="tok-key">.regexp</span> <span class="tok-str">&quot;vhlink:/[A-Za-z0-9_-]+&quot;</span>
+
+<span class="tok-comment">; Context identifier and Base45 text (step 8). [<a href="explorer.html#STT-HC1-001">STT-HC1-001</a>, <a href="explorer.html#STT-B45-001">STT-B45-001</a>]</span>
+<span class="tok-name" id="cddl-hc1-string">hc1-string</span> = tstr <span class="tok-key">.regexp</span> <span class="tok-str">&quot;HC1:[0-9A-Z $%*+./:-]+&quot;</span>
+</code></pre>
+    <div class="section-head"><h2>CDDL: payload rules, generated from the logical models</h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/models/generated/trust-phw.cddl">models/generated/trust-phw.cddl</a></div>
+    <pre><code><span class="tok-comment">; Generated by tools/lm-derive/lm_derive.py from FHIR logical models. Do not edit.</span>
+<span class="tok-comment">; Wire (CBOR) encoding of the payload logical models. Element names are</span>
+<span class="tok-comment">; the logical-model element names; primitive types carry the FHIR R5</span>
+<span class="tok-comment">; regex (RFC 8610 .regexp: XSD regex, implicitly anchored).</span>
+
+<span class="tok-comment">; http://smart.who.int/trust-phw/StructureDefinition/DVCMin (abstract)</span>
+<span class="tok-name" id="cddl-dvc-min">dvc-min</span> = {
+  n: fhir-string,
+  dob: fhir-date,
+  s: fhir-code,  <span class="tok-comment">; binding extensible http://hl7.org/fhir/administrative-gender</span>
+  nt: fhir-code,  <span class="tok-comment">; binding extensible http://hl7.org/fhir/ValueSet/iso3166-1-3</span>
+  ? id: fhir-string,
+  ? dt: fhir-code,  <span class="tok-comment">; binding extensible http://terminology.hl7.org/ValueSet/v2-0203</span>
+  ? gn: fhir-string,
+  vx: dvc-min-vaccine-details,
+  v: fhir-string
+}
+
+<span class="tok-comment">; http://smart.who.int/trust-phw/StructureDefinition/DVCMinPreQual</span>
+<span class="tok-name" id="cddl-dvc-min-pre-qual">dvc-min-pre-qual</span> = {
+  n: fhir-string,
+  dob: fhir-date,
+  s: fhir-code,  <span class="tok-comment">; binding extensible http://hl7.org/fhir/administrative-gender</span>
+  nt: fhir-code,  <span class="tok-comment">; binding extensible http://hl7.org/fhir/ValueSet/iso3166-1-3</span>
+  ? id: fhir-string,
+  ? dt: fhir-code,  <span class="tok-comment">; binding extensible http://terminology.hl7.org/ValueSet/v2-0203</span>
+  ? gn: fhir-string,
+  vx: dvc-min-vaccine-details-pre-qual,
+  v: fhir-string
+}
+
+<span class="tok-comment">; http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails (abstract)</span>
+<span class="tok-name" id="cddl-dvc-min-vaccine-details">dvc-min-vaccine-details</span> = {
+  vp: fhir-code,
+  dv: fhir-date,
+  bo: fhir-string,
+  (is: fhir-id, ? cn: fhir-string // ? is: fhir-id, cn: fhir-string)  <span class="tok-comment">; must-have-issuer-or-clinician-name</span>
+}
+
+<span class="tok-comment">; http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetailsPreQual</span>
+<span class="tok-name" id="cddl-dvc-min-vaccine-details-pre-qual">dvc-min-vaccine-details-pre-qual</span> = {
+  vp: fhir-code,  <span class="tok-comment">; binding required http://smart.who.int/pcmt-vaxprequal/ValueSet/PreQualProductIds</span>
+  dv: fhir-date,
+  bo: fhir-string,
+  (is: fhir-id, ? cn: fhir-string // ? is: fhir-id, cn: fhir-string)  <span class="tok-comment">; must-have-issuer-or-clinician-name</span>
+}
+
+<span class="tok-comment">; FHIR R5 primitive types (hl7.fhir.r5.core#5.0.0)</span>
+<span class="tok-name" id="cddl-fhir-code">fhir-code</span> = tstr <span class="tok-key">.regexp</span> <span class="tok-str">&quot;[^\\s]+( [^\\s]+)*&quot;</span>
+<span class="tok-name" id="cddl-fhir-date">fhir-date</span> = tstr <span class="tok-key">.regexp</span> <span class="tok-str">&quot;([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?&quot;</span>
+<span class="tok-name" id="cddl-fhir-id">fhir-id</span> = tstr <span class="tok-key">.regexp</span> <span class="tok-str">&quot;[A-Za-z0-9\\-\\.]{1,64}&quot;</span>
+<span class="tok-name" id="cddl-fhir-string">fhir-string</span> = tstr <span class="tok-key">.regexp</span> <span class="tok-str">&quot;[\\s\\S]+&quot;</span>
+</code></pre>
+  </section>
+
+  <section class="section" id="example">
+    <div class="section-head"><h2>CBOR example in diagnostic notation</h2>
+      <a class="chip" href="https://cbor.me/?bytes=d2844da20126044858733e058aaa6621a058d2a401625858041a6c9caa88061a6abb7708390103a125a7616e764368616e7468616c6120534f5556414e4e414c41544861736666656d616c65617665312e302e3062676e714d616c6920534f5556414e4e414c415448626e74634c414f627678a562626f6e484550422d323032362d3039313462636e7444722050696d6368616e6f6b2057415454414e416264766a323032362d30392d3238626973781b6f72672d7878612d70726f76696e6369616c2d686f73706974616c62767066584d3956333863646f626a323032362d30392d3238584022a304f4c01aaf065393d86a7a7336cc98d58619031bb8e20179be244b2d4be8f2cbd62d4598d7c562848402496dd40f46cd0d060a5745da54d0a3ee75571f7f">Open the COSE bytes in cbor.me ↗</a></div>
+    <p class="small muted">HC1 string (427 characters), then the COSE_Sign1 with each embedded layer decoded
+      (&lt;&lt; &gt;&gt; marks a byte string holding CBOR).</p>
+    <pre><code>HC1:NCFOXN%TSMAHN-HWM4/GR3.M: AQSSGAH9M91RIHF4NZKC7TFSTYUIBRR34Q-MPD ND%ERJC/HJI+8H-BI+8F.9HJ8 4GFDJ38KLUKAQC419%EEGJB/.D4-9MJCVPLW1KD0K9JAF/BT3EQ*9%NH7$K MI..3EEWVPMD+K$F91EF+:L*.9G%8M+8CNNE1J $47LPNV4YW8490-LN258VUUZX2LV34G8-:V4SI5SPDDK2XEPS5OH6CN5MZUCRQPK50F2TK1AVU%J6WLITK22VE TUVI13M9LREHOPJPQJVFKWOBY5PRALTIHR6L47CX53OVK682Y7IKUQK3.$AP.CE.CG%DAWCD8SSCH3ME6OHG5MNRH.8LTOT06Q/.F4KL4-GSP66G1%WR/+BG2M6ARB84I*2-J5-7J$*0XFSLLD</code></pre>
+    <pre><code>18([
+  &lt;&lt; {
+  1: -7,
+  4: h&#x27;58733e058aaa6621&#x27;
+} &gt;&gt;,
+  frozendict({}),
+  &lt;&lt; CWT claims, below &gt;&gt;,
+  h&#x27;22a304f4c01aaf065393d86a7a7336cc98d58619031bb8e20179be244b2d4be8f2cbd62d4598d7c562848402496dd40f46cd0d060a5745da54d0a3ee75571f7f&#x27;
+])</code></pre>
+    <pre><code>/ CWT claims /
+{
+  1: &quot;XX&quot;,
+  4: 1822206600,
+  6: 1790670600,
+  -260: {
+    -6: {
+      &quot;n&quot;: &quot;Chanthala SOUVANNALATH&quot;,
+      &quot;s&quot;: &quot;female&quot;,
+      &quot;v&quot;: &quot;1.0.0&quot;,
+      &quot;gn&quot;: &quot;Mali SOUVANNALATH&quot;,
+      &quot;nt&quot;: &quot;LAO&quot;,
+      &quot;vx&quot;: {
+        &quot;bo&quot;: &quot;HEPB-2026-0914&quot;,
+        &quot;cn&quot;: &quot;Dr Pimchanok WATTANA&quot;,
+        &quot;dv&quot;: &quot;2026-09-28&quot;,
+        &quot;is&quot;: &quot;org-xxa-provincial-hospital&quot;,
+        &quot;vp&quot;: &quot;XM9V38&quot;
+      },
+      &quot;dob&quot;: &quot;2026-09-28&quot;
+    }
+  }
+}</code></pre>
+  </section>
+
+  <section class="section" id="jsonld">
+    <div class="section-head"><h2>JSON-LD: the payload as linked data</h2>
+      <a class="chip" href="https://json-ld.org/playground/#startTab=tab-nquads&amp;json-ld=%7B%22%40context%22%3A%20%7B%22%40version%22%3A%201.1%2C%20%22xsd%22%3A%20%22http%3A//www.w3.org/2001/XMLSchema%23%22%2C%20%22DVCMin%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%22%7D%2C%20%22DVCMinPreQual%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMinPreQual%22%7D%2C%20%22DVCMinVaccineDetails%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails%22%7D%2C%20%22DVCMinVaccineDetailsPreQual%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetailsPreQual%22%7D%2C%20%22n%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%23n%22%7D%2C%20%22dob%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%23dob%22%7D%2C%20%22s%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%23s%22%7D%2C%20%22nt%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%23nt%22%7D%2C%20%22id%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%23id%22%7D%2C%20%22dt%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%23dt%22%7D%2C%20%22gn%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%23gn%22%7D%2C%20%22vx%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%23vx%22%2C%20%22%40context%22%3A%20%7B%22vp%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails%23vp%22%7D%2C%20%22dv%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails%23dv%22%7D%2C%20%22cn%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails%23cn%22%7D%2C%20%22is%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails%23is%22%7D%2C%20%22bo%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails%23bo%22%7D%7D%7D%2C%20%22v%22%3A%20%7B%22%40id%22%3A%20%22http%3A//smart.who.int/trust-phw/StructureDefinition/DVCMin%23v%22%7D%7D%2C%20%22%40type%22%3A%20%22DVCMin%22%2C%20%22n%22%3A%20%22Chanthala%20SOUVANNALATH%22%2C%20%22s%22%3A%20%22female%22%2C%20%22v%22%3A%20%221.0.0%22%2C%20%22gn%22%3A%20%22Mali%20SOUVANNALATH%22%2C%20%22nt%22%3A%20%22LAO%22%2C%20%22vx%22%3A%20%7B%22bo%22%3A%20%22HEPB-2026-0914%22%2C%20%22cn%22%3A%20%22Dr%20Pimchanok%20WATTANA%22%2C%20%22dv%22%3A%20%222026-09-28%22%2C%20%22is%22%3A%20%22org-xxa-provincial-hospital%22%2C%20%22vp%22%3A%20%22XM9V38%22%7D%2C%20%22dob%22%3A%20%222026-09-28%22%7D">Open in JSON-LD Playground ↗</a></div>
+    <p class="small muted">Adding the generated context and a type to the payload's JSON view turns it into RDF.
+      Each short element name expands to <code>&lt;StructureDefinition URL&gt;#&lt;element&gt;</code>.</p>
+    <pre><code>{
+  &quot;@context&quot;: &quot;trust-phw.context.jsonld&quot;,
+  &quot;@type&quot;: &quot;DVCMin&quot;,
+  &quot;n&quot;: &quot;Chanthala SOUVANNALATH&quot;,
+  &quot;s&quot;: &quot;female&quot;,
+  &quot;v&quot;: &quot;1.0.0&quot;,
+  &quot;gn&quot;: &quot;Mali SOUVANNALATH&quot;,
+  &quot;nt&quot;: &quot;LAO&quot;,
+  &quot;vx&quot;: {
+    &quot;bo&quot;: &quot;HEPB-2026-0914&quot;,
+    &quot;cn&quot;: &quot;Dr Pimchanok WATTANA&quot;,
+    &quot;dv&quot;: &quot;2026-09-28&quot;,
+    &quot;is&quot;: &quot;org-xxa-provincial-hospital&quot;,
+    &quot;vp&quot;: &quot;XM9V38&quot;
+  },
+  &quot;dob&quot;: &quot;2026-09-28&quot;
+}</code></pre>
+    <h3>Resulting triples (N-Triples)</h3>
+    <pre><code>_:N144525d3c95c4cb098dd2cc6ad81d739 &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#bo&gt; &quot;HEPB-2026-0914&quot; .
+_:N144525d3c95c4cb098dd2cc6ad81d739 &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#cn&gt; &quot;Dr Pimchanok WATTANA&quot; .
+_:N144525d3c95c4cb098dd2cc6ad81d739 &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#dv&gt; &quot;2026-09-28&quot; .
+_:N144525d3c95c4cb098dd2cc6ad81d739 &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#is&gt; &quot;org-xxa-provincial-hospital&quot; .
+_:N144525d3c95c4cb098dd2cc6ad81d739 &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#vp&gt; &quot;XM9V38&quot; .
+_:N5fc0f187a93a44b0a4ccf793382d7e3e &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#dob&gt; &quot;2026-09-28&quot; .
+_:N5fc0f187a93a44b0a4ccf793382d7e3e &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#gn&gt; &quot;Mali SOUVANNALATH&quot; .
+_:N5fc0f187a93a44b0a4ccf793382d7e3e &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#n&gt; &quot;Chanthala SOUVANNALATH&quot; .
+_:N5fc0f187a93a44b0a4ccf793382d7e3e &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#nt&gt; &quot;LAO&quot; .
+_:N5fc0f187a93a44b0a4ccf793382d7e3e &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#s&gt; &quot;female&quot; .
+_:N5fc0f187a93a44b0a4ccf793382d7e3e &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#v&gt; &quot;1.0.0&quot; .
+_:N5fc0f187a93a44b0a4ccf793382d7e3e &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#vx&gt; _:N144525d3c95c4cb098dd2cc6ad81d739 .
+_:N5fc0f187a93a44b0a4ccf793382d7e3e &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://smart.who.int/trust-phw/StructureDefinition/DVCMin&gt; .</code></pre>
+    <details><summary class="small">Generated context (<a href="https://github.com/litlfred/smart-trust-tools/blob/main/models/generated/trust-phw.context.jsonld">trust-phw.context.jsonld</a>)</summary>
+      <pre><code>{
+  &quot;@context&quot;: {
+    &quot;@version&quot;: 1.1,
+    &quot;xsd&quot;: &quot;http://www.w3.org/2001/XMLSchema#&quot;,
+    &quot;DVCMin&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin&quot;
+    },
+    &quot;DVCMinPreQual&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMinPreQual&quot;
+    },
+    &quot;DVCMinVaccineDetails&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails&quot;
+    },
+    &quot;DVCMinVaccineDetailsPreQual&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetailsPreQual&quot;
+    },
+    &quot;n&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#n&quot;
+    },
+    &quot;dob&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#dob&quot;
+    },
+    &quot;s&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#s&quot;
+    },
+    &quot;nt&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#nt&quot;
+    },
+    &quot;id&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#id&quot;
+    },
+    &quot;dt&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#dt&quot;
+    },
+    &quot;gn&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#gn&quot;
+    },
+    &quot;vx&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#vx&quot;,
+      &quot;@context&quot;: {
+        &quot;vp&quot;: {
+          &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#vp&quot;
+        },
+        &quot;dv&quot;: {
+          &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#dv&quot;
+        },
+        &quot;cn&quot;: {
+          &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#cn&quot;
+        },
+        &quot;is&quot;: {
+          &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#is&quot;
+        },
+        &quot;bo&quot;: {
+          &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMinVaccineDetails#bo&quot;
+        }
+      }
+    },
+    &quot;v&quot;: {
+      &quot;@id&quot;: &quot;http://smart.who.int/trust-phw/StructureDefinition/DVCMin#v&quot;
+    }
+  }
+}</code></pre></details>
+  </section>
+
+  <section class="section" id="shacl">
+    <div class="section-head"><h2>SHACL shapes</h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/models/generated/trust-phw.shacl.ttl">trust-phw.shacl.ttl</a></div>
+    <p class="small muted">Cardinality and FHIR primitive patterns are enforced; bindings are recorded (the PreQual
+      value set has no published expansion); concept codes come from each element's <code>ElementDefinition.code</code>.
+      To render or edit these shapes in a dedicated tool, load the TTL into
+      <a href="https://shacl-play.sparna.fr/play/">SHACL Play!</a>.</p>
+    <div class="section" id="shape-DVCMin"><div class="section-head"><h3>DVC HCERT Payload</h3><span class="small muted">abstract · <a href="http://smart.who.int/trust-phw/StructureDefinition-DVCMin.html">logical model</a></span></div><div class="table-wrap"><table><thead><tr><th>Element</th><th>Card.</th><th>Type</th><th>Meaning</th><th>Binding</th><th>Concept codes</th></tr></thead><tbody><tr><td><code>n</code></td><td class="num">1..1</td><td><code>string</code></td><td class="small">Name</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/87226-7">87226-7</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.1">ICVP.A9.DE.1</a></td></tr><tr><td><code>s</code></td><td class="num">1..1</td><td><code>code</code></td><td class="small">Sex</td><td class="small">extensible <a href="http://hl7.org/fhir/administrative-gender">administrative-gender</a></td><td><a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.3">ICVP.A9.DE.3</a></td></tr><tr><td><code>v</code></td><td class="num">1..1</td><td><code>string</code></td><td class="small">Version</td><td class="small"></td><td><a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.D5.DE.27">ICVP.D5.DE.27</a></td></tr><tr><td><code>gn</code></td><td class="num">0..1</td><td><code>string</code></td><td class="small">Parent or Guardian Name</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/79183-0">79183-0</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.10">ICVP.A9.DE.10</a> <a class="chip" href="http://snomed.info/id/394619001">394619001</a></td></tr><tr><td><code>nt</code></td><td class="num">1..1</td><td><code>code</code></td><td class="small">Nationality</td><td class="small">extensible <a href="http://hl7.org/fhir/ValueSet/iso3166-1-3">iso3166-1-3</a></td><td><a class="chip" href="http://loinc.org/rdf/69433-1">69433-1</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.8">ICVP.A9.DE.8</a> <a class="chip" href="http://snomed.info/id/223369002">223369002</a></td></tr><tr><td><code>vx</code></td><td class="num">1..1</td><td><a href="#shape-DVCMinVaccineDetails">DVCMinVaccineDetails</a></td><td class="small">Vaccine Details</td><td class="small"></td><td></td></tr><tr><td><code>dob</code></td><td class="num">1..1</td><td><code>date</code></td><td class="small">Date of birth</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/21112-8">21112-8</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.2">ICVP.A9.DE.2</a> <a class="chip" href="http://snomed.info/id/184099003">184099003</a></td></tr><tr><td><code>dt</code></td><td class="num">0..1</td><td><code>code</code></td><td class="small">National ID Document Type</td><td class="small">extensible <a href="http://terminology.hl7.org/ValueSet/v2-0203">v2-0203</a></td><td></td></tr><tr><td><code>id</code></td><td class="num">0..1</td><td><code>string</code></td><td class="small">National Identification Document</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/76435-7">76435-7</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.9">ICVP.A9.DE.9</a> <a class="chip" href="http://snomed.info/id/900000000000474003">900000000000474003</a></td></tr></tbody></table></div></div><div class="section" id="shape-DVCMinPreQual"><div class="section-head"><h3>DVCMinPreQual</h3><span class="small muted">concrete · <a href="http://smart.who.int/trust-phw/StructureDefinition-DVCMinPreQual.html">logical model</a></span></div><div class="table-wrap"><table><thead><tr><th>Element</th><th>Card.</th><th>Type</th><th>Meaning</th><th>Binding</th><th>Concept codes</th></tr></thead><tbody><tr><td><code>n</code></td><td class="num">1..1</td><td><code>string</code></td><td class="small">Name</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/87226-7">87226-7</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.1">ICVP.A9.DE.1</a></td></tr><tr><td><code>s</code></td><td class="num">1..1</td><td><code>code</code></td><td class="small">Sex</td><td class="small">extensible <a href="http://hl7.org/fhir/administrative-gender">administrative-gender</a></td><td><a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.3">ICVP.A9.DE.3</a></td></tr><tr><td><code>v</code></td><td class="num">1..1</td><td><code>string</code></td><td class="small">Version</td><td class="small"></td><td><a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.D5.DE.27">ICVP.D5.DE.27</a></td></tr><tr><td><code>gn</code></td><td class="num">0..1</td><td><code>string</code></td><td class="small">Parent or Guardian Name</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/79183-0">79183-0</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.10">ICVP.A9.DE.10</a> <a class="chip" href="http://snomed.info/id/394619001">394619001</a></td></tr><tr><td><code>nt</code></td><td class="num">1..1</td><td><code>code</code></td><td class="small">Nationality</td><td class="small">extensible <a href="http://hl7.org/fhir/ValueSet/iso3166-1-3">iso3166-1-3</a></td><td><a class="chip" href="http://loinc.org/rdf/69433-1">69433-1</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.8">ICVP.A9.DE.8</a> <a class="chip" href="http://snomed.info/id/223369002">223369002</a></td></tr><tr><td><code>vx</code></td><td class="num">1..1</td><td><a href="#shape-DVCMinVaccineDetailsPreQual">DVCMinVaccineDetailsPreQual</a></td><td class="small">Vaccine Details</td><td class="small"></td><td></td></tr><tr><td><code>dob</code></td><td class="num">1..1</td><td><code>date</code></td><td class="small">Date of birth</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/21112-8">21112-8</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.2">ICVP.A9.DE.2</a> <a class="chip" href="http://snomed.info/id/184099003">184099003</a></td></tr><tr><td><code>dt</code></td><td class="num">0..1</td><td><code>code</code></td><td class="small">National ID Document Type</td><td class="small">extensible <a href="http://terminology.hl7.org/ValueSet/v2-0203">v2-0203</a></td><td></td></tr><tr><td><code>id</code></td><td class="num">0..1</td><td><code>string</code></td><td class="small">National Identification Document</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/76435-7">76435-7</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.A9.DE.9">ICVP.A9.DE.9</a> <a class="chip" href="http://snomed.info/id/900000000000474003">900000000000474003</a></td></tr></tbody></table></div></div><div class="section" id="shape-DVCMinVaccineDetails"><div class="section-head"><h3>DVC HCert Vaccine Details (Minimal)</h3><span class="small muted">abstract · <a href="http://smart.who.int/trust-phw/StructureDefinition-DVCMinVaccineDetails.html">logical model</a></span></div><div class="table-wrap"><table><thead><tr><th>Element</th><th>Card.</th><th>Type</th><th>Meaning</th><th>Binding</th><th>Concept codes</th></tr></thead><tbody><tr><td><code>bo</code></td><td class="num">1..1</td><td><code>string</code></td><td class="small">Batch No</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/30959-1">30959-1</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.17">ICVP.C5.DE.17</a></td></tr><tr><td><code>cn</code></td><td class="num">0..1</td><td><code>string</code></td><td class="small">Name of supervising clinician</td><td class="small"></td><td><a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.14">ICVP.C5.DE.14</a></td></tr><tr><td><code>dv</code></td><td class="num">1..1</td><td><code>date</code></td><td class="small">Date of vaccination</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/30952-6">30952-6</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.13">ICVP.C5.DE.13</a></td></tr><tr><td><code>is</code></td><td class="num">0..1</td><td><code>id</code></td><td class="small">Certificate issuer id (referenced organization)</td><td class="small"></td><td><a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.15">ICVP.C5.DE.15</a></td></tr><tr><td><code>vp</code></td><td class="num">1..1</td><td><code>code</code></td><td class="small">Vaccine Product ID</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/39236-5">39236-5</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.11">ICVP.C5.DE.11</a> <a class="chip" href="http://snomed.info/id/787859002">787859002</a></td></tr></tbody></table></div><p class="small muted">Invariant: must-have-issuer-or-clinician-name: Either issuer or clinicianName must be present</p></div><div class="section" id="shape-DVCMinVaccineDetailsPreQual"><div class="section-head"><h3>DVC HCERT Payload for PreQual DB</h3><span class="small muted">concrete · <a href="http://smart.who.int/trust-phw/StructureDefinition-DVCMinVaccineDetailsPreQual.html">logical model</a></span></div><div class="table-wrap"><table><thead><tr><th>Element</th><th>Card.</th><th>Type</th><th>Meaning</th><th>Binding</th><th>Concept codes</th></tr></thead><tbody><tr><td><code>bo</code></td><td class="num">1..1</td><td><code>string</code></td><td class="small">Batch No</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/30959-1">30959-1</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.17">ICVP.C5.DE.17</a></td></tr><tr><td><code>cn</code></td><td class="num">0..1</td><td><code>string</code></td><td class="small">Name of supervising clinician</td><td class="small"></td><td><a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.14">ICVP.C5.DE.14</a></td></tr><tr><td><code>dv</code></td><td class="num">1..1</td><td><code>date</code></td><td class="small">Date of vaccination</td><td class="small"></td><td><a class="chip" href="http://loinc.org/rdf/30952-6">30952-6</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.13">ICVP.C5.DE.13</a></td></tr><tr><td><code>is</code></td><td class="num">0..1</td><td><code>id</code></td><td class="small">Certificate issuer id (referenced organization)</td><td class="small"></td><td><a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.15">ICVP.C5.DE.15</a></td></tr><tr><td><code>vp</code></td><td class="num">1..1</td><td><code>code</code></td><td class="small">Vaccine Product ID</td><td class="small">required <a href="http://smart.who.int/pcmt-vaxprequal/ValueSet/PreQualProductIds">PreQualProductIds</a></td><td><a class="chip" href="http://loinc.org/rdf/39236-5">39236-5</a> <a class="chip" href="http://smart.who.int/trust-phw/CodeSystem/ICVP.Core#ICVP.C5.DE.11">ICVP.C5.DE.11</a> <a class="chip" href="http://snomed.info/id/787859002">787859002</a></td></tr></tbody></table></div><p class="small muted">Invariant: must-have-issuer-or-clinician-name: Either issuer or clinicianName must be present</p></div>
+  </section>
+</main></body>
+</html>

@@ -1,0 +1,78 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-requirements-fsh",
+  "title": "smart-trust FHIR Requirements (FSH)",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "files",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-input-fsh-requirements-requirements-fsh",
+      "number": null,
+      "title": "input/fsh/requirements/requirements.fsh",
+      "level": 1,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 1889,
+      "summary": null,
+      "keywords": [],
+      "extract": "```text Instance: RequestVDHC InstanceOf: SGRequirements Usage: #definition * name = \"Request VDHC\" * experimental = true * title = \"Request Verifiable Digital Health Certificate\" * status = $pubStatus#active * publisher = \"WHO\" * description = \"Request a Verifiable Digital Health Certificate from an Issuer\" * actor[+] = Canonical(Holder) Instance: IssuerVDHC InstanceOf: SGRequirements Usage: #definition * name =",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-requirements-fsh/blocks/prose-s001-input-fsh-requirements-requirements-fsh"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 1,
+      "note": "one level"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 1 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-requirements-fsh"
+  }
+}

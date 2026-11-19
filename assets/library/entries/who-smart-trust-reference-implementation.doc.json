@@ -1,0 +1,266 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-reference-implementation",
+  "title": "Reference Implementations",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "headings",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-trust-registry-network",
+      "number": null,
+      "title": "Trust Registry Network",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 249,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "management infrastructure",
+          "heading": false
+        },
+        {
+          "term": "regi-trust",
+          "heading": false
+        },
+        {
+          "term": "trusted digital",
+          "heading": false
+        },
+        {
+          "term": "digital services",
+          "heading": false
+        },
+        {
+          "term": "trust management",
+          "heading": false
+        },
+        {
+          "term": "networks",
+          "heading": false
+        },
+        {
+          "term": "ecosystems",
+          "heading": false
+        },
+        {
+          "term": "governance",
+          "heading": false
+        }
+      ],
+      "extract": "The Digital TRUST Infrastructure for Discovery and Validation (Regi-TRUST) is a DNS-based decentralized trust management infrastructure that bridges the gap between different certificate ecosystems and enables trust interoperability. Regi-TRUST's \"network of networks\" model allows ecosystems of trusted digital services operated by various stakeholders to securely publish service endpoints collated with their",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-reference-implementation/blocks/prose-s001-trust-registry-network"
+      ]
+    },
+    {
+      "id": "s002-proof-of-concept",
+      "number": null,
+      "title": "Proof of Concept",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 62,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "concept",
+          "heading": true
+        },
+        {
+          "term": "proof",
+          "heading": true
+        },
+        {
+          "term": "covid certificate",
+          "heading": false
+        }
+      ],
+      "extract": "The original proof of concept that took place at the Linux Foundation involved 1) COVID certificate services applying to join the network 2) the discovery of COVID certificate services on the network and 3) the verification of COVID certificates using the network. For more detail on execution of this proof of concept and results, please follow this link.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-reference-implementation/blocks/prose-s002-proof-of-concept"
+      ]
+    },
+    {
+      "id": "s003-implementation-toolkit-and-technical-specificati",
+      "number": null,
+      "title": "Implementation Toolkit and Technical Specification",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 68,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "technical",
+          "heading": true
+        },
+        {
+          "term": "implementation",
+          "heading": true
+        },
+        {
+          "term": "functional",
+          "heading": false
+        }
+      ],
+      "extract": "The UNDP project intends to develop and provide an implementation toolkit including an open source reference implementation for the specification, a governance and policy guideline for Regi-TRUST implementers, and technical and functional specifications. Full technical specifications, implementation guides, and more are forthcoming. Public Review Draft of the Technical and Functional Specification Github Repository",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-reference-implementation/blocks/prose-s003-implementation-toolkit-and-technical-specificati"
+      ]
+    },
+    {
+      "id": "s004-trust-network-gateway",
+      "number": null,
+      "title": "Trust Network Gateway",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 179,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "network gateway",
+          "heading": true
+        },
+        {
+          "term": "trust network",
+          "heading": true
+        },
+        {
+          "term": "european union",
+          "heading": false
+        },
+        {
+          "term": "digital covid",
+          "heading": false
+        },
+        {
+          "term": "implementation",
+          "heading": false
+        },
+        {
+          "term": "certificates",
+          "heading": false
+        }
+      ],
+      "extract": "The Trust Network Gateway is an open source implementation of a centralized trust network solution available to potential implementers intending to create a local or regional network. This implementation is derived from the European Union Digital COVID Certificate Gateway (EUDCCG), which has been deployed in an operational setting within the European Union. In addition to the core functionality of the EUDCCG, the",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-reference-implementation/blocks/prose-s004-trust-network-gateway"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "keywords": [
+    {
+      "term": "covid certificates",
+      "heading": false
+    },
+    {
+      "term": "digital covid",
+      "heading": false
+    },
+    {
+      "term": "network gateway",
+      "heading": true
+    },
+    {
+      "term": "trust network",
+      "heading": true
+    },
+    {
+      "term": "digital services",
+      "heading": false
+    },
+    {
+      "term": "regi-trust",
+      "heading": false
+    },
+    {
+      "term": "linux foundation",
+      "heading": false
+    },
+    {
+      "term": "trusted digital",
+      "heading": false
+    },
+    {
+      "term": "open source",
+      "heading": false
+    },
+    {
+      "term": "european union",
+      "heading": false
+    },
+    {
+      "term": "governance",
+      "heading": false
+    },
+    {
+      "term": "management infrastructure",
+      "heading": false
+    }
+  ],
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 4,
+      "note": "2 levels"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 4 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-reference-implementation"
+  }
+}

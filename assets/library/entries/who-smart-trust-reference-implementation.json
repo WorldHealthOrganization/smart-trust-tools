@@ -1,0 +1,82 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-reference-implementation",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-reference-implementation/blocks/prose-s001-trust-registry-network",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Trust Registry Network",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-trust-registry-network.md",
+      "narrative": null,
+      "content": "### Trust Registry Network\n\nThe Digital TRUST Infrastructure for Discovery and Validation (Regi-TRUST) is a DNS-based decentralized trust management infrastructure that bridges the gap between different certificate ecosystems and enables trust interoperability. Regi-TRUST's \"network of networks\" model allows ecosystems of trusted digital services operated by various stakeholders to securely publish service endpoints collated with their independent governance policies and with support for root of trust architectures to allow interoperable verifications. Implementers of Regi-TRUST can leverage t",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-reference-implementation/blocks/prose-s002-proof-of-concept",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Proof of Concept",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-proof-of-concept.md",
+      "narrative": null,
+      "content": "#### Proof of Concept\n\nThe original proof of concept that took place at the Linux Foundation involved 1) COVID certificate services applying to join the network 2) the discovery of COVID certificate services on the network and 3) the verification of COVID certificates using the network. For more detail on execution of this proof of concept and results, [please follow this link.](https://www.lfph.io/2022/04/19/lfph-completes-the-proof-of-concept-of-its-gccn-trust-registry-network/)",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-reference-implementation/blocks/prose-s003-implementation-toolkit-and-technical-specificati",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Implementation Toolkit and Technical Specification",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-implementation-toolkit-and-technical-specificati.md",
+      "narrative": null,
+      "content": "#### Implementation Toolkit and Technical Specification\n\nThe UNDP project intends to develop and provide an implementation toolkit including an open source reference implementation for the specification, a governance and policy guideline for Regi-TRUST implementers, and technical and functional specifications. Full technical specifications, implementation guides, and more are forthcoming.\n\n-\t[Public Review Draft of the Technical and Functional Specification](https://docs.google.com/document/d/1MOmhbPsVhGEULUeBhUdieYzpi6VzdPZedCAHb5aHEE0)\n-\t[Github Repository](https://github.com/undp/Regi-TRUST",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-reference-implementation/blocks/prose-s004-trust-network-gateway",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Trust Network Gateway",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-trust-network-gateway.md",
+      "narrative": null,
+      "content": "### Trust Network Gateway\n\nThe Trust Network Gateway is an open source implementation of a centralized trust network solution available to potential implementers intending to create a local or regional network. This implementation is derived from the [European Union Digital COVID Certificate Gateway (EUDCCG)](https://github.com/ehn-dcc-development/eu-dcc-overview), which has been deployed in an operational setting within the European Union.\n\nIn addition to the core functionality of the EUDCCG, the Trust Network Gateway implementation also supports:\n-\tFederation and peer exchange of information",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

@@ -1,0 +1,712 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-qr-code-generation",
+  "title": "QR Code Generation",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "headings",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-generating-a-qr-code",
+      "number": null,
+      "title": "Generating a QR Code",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 113,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "generating",
+          "heading": true
+        },
+        {
+          "term": "hcert specification",
+          "heading": false
+        },
+        {
+          "term": "code",
+          "heading": true
+        }
+      ],
+      "extract": "This page is a step-by-step, implementer-facing walkthrough of how a signed health certificate becomes a QR code on a piece of paper or a phone screen, and how a verifier turns that QR code back into trustworthy data. The container, the signature and the transport encoding are the same for every GDHCN trust domain, and are specified normatively in the HCERT Specification. What changes from one use case to the next",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s001-generating-a-qr-code"
+      ]
+    },
+    {
+      "id": "s002-1-the-pipeline-at-a-glance",
+      "number": null,
+      "title": "1. The pipeline at a glance",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 109,
+      "summary": null,
+      "keywords": [],
+      "extract": "Step 1 Select payload type DVC, for this walkthrough Step 2 Assemble payload { \"n\": ..., \"dob\": ..., \"vx\": {...} } Step 3 Wrap in CWT claim set { 1: iss, 6: iat, 4: exp, -260: { -6: payload } } Step 4 Serialise as CBOR binary Step 5 Sign as COSE_Sign1 (ES256) binary, tag 18 Step 6 Compress with ZLIB/Deflate binary Step 7 Encode as Base45 ASCII Step 8 Prefix context identifier \"HC1:\" + ASCII Step 9 Render QR",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s002-1-the-pipeline-at-a-glance"
+      ]
+    },
+    {
+      "id": "s003-2-step-1-select-the-payload-type",
+      "number": null,
+      "title": "2. Step 1 — Select the payload type",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 213,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "payload",
+          "heading": true
+        },
+        {
+          "term": "trust domains",
+          "heading": false
+        },
+        {
+          "term": "step",
+          "heading": true
+        },
+        {
+          "term": "subclaims",
+          "heading": false
+        },
+        {
+          "term": "select",
+          "heading": true
+        },
+        {
+          "term": "logical model",
+          "heading": false
+        }
+      ],
+      "extract": "A payload is identified by a subclaim inside the hcert claim (-260). The subclaims, and the logical model each one carries, are enumerated in the HCert logical model; section 3.2.7.1 of the HCERT Specification is authoritative for which are assigned. The registered trust domains are listed in the GDHCN Trust Domain value set and described under Trust Domains. Two things are worth knowing before picking a number.",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s003-2-step-1-select-the-payload-type"
+      ]
+    },
+    {
+      "id": "s004-3-step-2-assemble-the-payload",
+      "number": null,
+      "title": "3. Step 2 — Assemble the payload",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 215,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "vaccine",
+          "heading": false
+        },
+        {
+          "term": "product",
+          "heading": false
+        },
+        {
+          "term": "administered",
+          "heading": false
+        },
+        {
+          "term": "prequal",
+          "heading": false
+        },
+        {
+          "term": "payload",
+          "heading": true
+        }
+      ],
+      "extract": "Populate the logical model for the payload type you selected. For a DVC that is DVCMinPreQual, whose vaccine details are DVCMinVaccineDetailsPreQual. Follow those definitions for the element list, cardinalities and bindings rather than any copy of them. DVCMinPreQual is the concrete model: its parent DVCMin is abstract, as is DVCMinVaccineDetails, so neither can be instantiated directly. The element names are two",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s004-3-step-2-assemble-the-payload"
+      ]
+    },
+    {
+      "id": "s005-4-step-3-build-the-cwt-claim-set",
+      "number": null,
+      "title": "4. Step 3 — Build the CWT claim set",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 109,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "cwt claim",
+          "heading": true
+        },
+        {
+          "term": "validity period",
+          "heading": false
+        },
+        {
+          "term": "build",
+          "heading": true
+        }
+      ],
+      "extract": "Place the payload under its subclaim, inside the hcert claim, inside a CWT claim set — see that model for the claim keys and types, and section 3.2 of the specification for their normative definitions. exp deserves attention because it is the only revocation mechanism this specification offers: certificates cannot be reliably revoked once issued, so the validity period must be chosen to bound the damage from a",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s005-4-step-3-build-the-cwt-claim-set"
+      ]
+    },
+    {
+      "id": "s006-5-step-4-serialise-as-cbor",
+      "number": null,
+      "title": "5. Step 4 — Serialise as CBOR",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 61,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "cbor",
+          "heading": true
+        },
+        {
+          "term": "serialise",
+          "heading": true
+        },
+        {
+          "term": "step",
+          "heading": true
+        }
+      ],
+      "extract": "Encode the claim set as CBOR (RFC 7049). The JSON shown on this page and in the logical models is schema notation only — the wire format is CBOR, and an implementation need never produce the JSON form at all. Strings SHOULD be NFC-normalised. Decoders SHOULD be permissive about input that is not.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s006-5-step-4-serialise-as-cbor"
+      ]
+    },
+    {
+      "id": "s007-6-step-5-sign-as-a-cose-sign1",
+      "number": null,
+      "title": "6. Step 5 — Sign as a COSE_Sign1",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 229,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "sign",
+          "heading": true
+        },
+        {
+          "term": "cose",
+          "heading": true
+        },
+        {
+          "term": "der encoding",
+          "heading": false
+        },
+        {
+          "term": "bytes",
+          "heading": false
+        },
+        {
+          "term": "secondary",
+          "heading": false
+        }
+      ],
+      "extract": "Wrap the CBOR payload in a single-signer COSE structure (RFC 8152), CBOR tag 18, with alg (label 1) and kid (label 4) in the protected header. ES256 is the primary algorithm (alg -7) and PS256 the secondary (-37). Both MUST be implemented even though only one signs any given certificate; the secondary exists so that a break in the primary does not strand the whole network. kid MAY instead sit in the unprotected",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s007-6-step-5-sign-as-a-cose-sign1"
+      ]
+    },
+    {
+      "id": "s008-7-step-6-compress",
+      "number": null,
+      "title": "7. Step 6 — Compress",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 29,
+      "summary": null,
+      "keywords": [],
+      "extract": "Compress the COSE structure with ZLIB (RFC 1950) using Deflate (RFC 1951). Compression comes after signing, so the verifier decompresses before it verifies.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s008-7-step-6-compress"
+      ]
+    },
+    {
+      "id": "s009-8-step-7-encode-as-base45",
+      "number": null,
+      "title": "8. Step 7 — Encode as Base45",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 38,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "encode",
+          "heading": true
+        },
+        {
+          "term": "base",
+          "heading": true
+        },
+        {
+          "term": "character",
+          "heading": false
+        }
+      ],
+      "extract": "Encode the compressed bytes with Base45. Base45 exists for one reason: its 45-character alphabet is exactly the QR Alphanumeric character set, which stores data far more densely than byte mode.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s009-8-step-7-encode-as-base45"
+      ]
+    },
+    {
+      "id": "s010-9-step-8-prefix-the-context-identifier",
+      "number": null,
+      "title": "9. Step 8 — Prefix the context identifier",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 45,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "prefix",
+          "heading": true
+        },
+        {
+          "term": "identifier",
+          "heading": true
+        },
+        {
+          "term": "context",
+          "heading": true
+        }
+      ],
+      "extract": "Prefix the Base45 string with HC1:. Verifiers use this to recognise what they have scanned and which decoding scheme to apply. A future backwards-incompatible revision will use a new identifier, incrementing through [1-9] and then [A-Z].",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s010-9-step-8-prefix-the-context-identifier"
+      ]
+    },
+    {
+      "id": "s011-10-step-9-render-the-qr-code",
+      "number": null,
+      "title": "10. Step 9 — Render the QR code",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 103,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "rendered",
+          "heading": false
+        },
+        {
+          "term": "code",
+          "heading": true
+        },
+        {
+          "term": "step",
+          "heading": true
+        }
+      ],
+      "extract": "Property; Requirement Symbology; QR Code, ISO/IEC 18004:2015 — SHALL Encoding mode; Alphanumeric (Mode 2, symbols 0010) — MUST, in conjunction with Base45 Error correction; Level Q, approximately 25% — RECOMMENDED Rendered size; 35 mm to 60 mm diagonal — RECOMMENDED If you are printing below 300 dpi, make sure each module is rendered as an exact square. Non-proportional scaling turns modules into rectangles and is a",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s011-10-step-9-render-the-qr-code"
+      ]
+    },
+    {
+      "id": "s012-11-verifying-the-same-steps-upwards",
+      "number": null,
+      "title": "11. Verifying: the same steps upwards",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 188,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "verifying",
+          "heading": true
+        },
+        {
+          "term": "protected header",
+          "heading": false
+        },
+        {
+          "term": "key usage",
+          "heading": false
+        },
+        {
+          "term": "steps",
+          "heading": true
+        },
+        {
+          "term": "check",
+          "heading": false
+        }
+      ],
+      "extract": "1. Confirm the HC1: prefix and strip it. 2. Base45-decode, then ZLIB-decompress. 3. Parse the COSE_Sign1 and read alg and kid from the protected header. 4. Validate the input before trusting it. Parsing the protected header necessarily happens before signature verification, which makes it an attack surface; check types and lengths defensively. See section 6.3. 5. Look the kid up on the trust list, retrieving every",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s012-11-verifying-the-same-steps-upwards"
+      ]
+    },
+    {
+      "id": "s013-12-worked-example-a-newborn-birth-dose-dvc",
+      "number": null,
+      "title": "12. Worked example — a newborn birth dose DVC",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 10,
+      "summary": null,
+      "keywords": [],
+      "extract": null,
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s013-12-worked-example-a-newborn-birth-dose-dvc"
+      ]
+    },
+    {
+      "id": "s014-12-1-scenario",
+      "number": null,
+      "title": "12.1 Scenario",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 191,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "scenario",
+          "heading": true
+        },
+        {
+          "term": "newborn",
+          "heading": false
+        },
+        {
+          "term": "schedule",
+          "heading": false
+        },
+        {
+          "term": "paper",
+          "heading": false
+        },
+        {
+          "term": "country",
+          "heading": false
+        }
+      ],
+      "extract": "A family from the Lao People's Democratic Republic is visiting relatives abroad when the mother delivers. The newborn receives the routine birth-dose vaccinations of the host country's national childhood immunization schedule before discharge. The clinic records the doses and issues a signed certificate; the family has one shared phone between them, so the clinic prints a paper card with the QR code and offers",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s014-12-1-scenario"
+      ]
+    },
+    {
+      "id": "s015-12-2-host-country-schedule",
+      "number": null,
+      "title": "12.2 Host-country schedule",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 77,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "schedule",
+          "heading": true
+        },
+        {
+          "term": "birth",
+          "heading": false
+        },
+        {
+          "term": "hours",
+          "heading": false
+        }
+      ],
+      "extract": "Thailand's Expanded Programme on Immunization gives two vaccines at birth: **BCG as soon as possible after birth, and the first dose of hepatitis B vaccine within 24 hours of birth**. The DTP-HepB and OPV series begin later, at 2, 4 and 6 months. A birth visit in Thailand therefore produces exactly the two certificates modelled here. Implementers should confirm the current schedule against the national authority",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s015-12-2-host-country-schedule"
+      ]
+    },
+    {
+      "id": "s016-12-3-issuer",
+      "number": null,
+      "title": "12.3 Issuer",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 130,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "gdhcn dev",
+          "heading": false
+        },
+        {
+          "term": "dev trust",
+          "heading": false
+        },
+        {
+          "term": "attribute",
+          "heading": false
+        },
+        {
+          "term": "onboarded",
+          "heading": false
+        }
+      ],
+      "extract": "The example is issued by GDHCN DEV participant XXR, not by any Member State. GDHCN participant codes are ISO 3166-1 alpha-3, while the CWT iss claim and the X.509 country attribute take the alpha-2 form — here XR, matching the C=XR attribute of the Document Signing Certificate subject. Signing uses a key whose public key is onboarded to the GDHCN DEV trust network, so the example verifies against the DEV trust list.",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s016-12-3-issuer"
+      ]
+    },
+    {
+      "id": "s017-12-4-the-payload",
+      "number": null,
+      "title": "12.4 The payload",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 117,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "prequal product",
+          "heading": false
+        },
+        {
+          "term": "bcg",
+          "heading": false
+        },
+        {
+          "term": "hepatitis",
+          "heading": false
+        }
+      ],
+      "extract": "Hepatitis B birth dose, hcert subclaim -6, shown in JSON notation. vp carries the PreQual product identifier of the product actually administered: { \"n\": \"Chanthala SOUVANNALATH\", \"dob\": \"2026-10-21\", \"s\": \"female\", \"nt\": \"LAO\", \"gn\": \"Mali SOUVANNALATH\", \"vx\": { \"vp\": \"a3K3X000006MiiXUAS\", \"dv\": \"2026-10-21\", \"cn\": \"Dr Pimchanok WATTANA\", \"is\": \"org-xxr-provincial-hospital\", \"bo\": \"HEPB-2026-0914\" }, \"v\": \"1.0.0\" }",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s017-12-4-the-payload"
+      ]
+    },
+    {
+      "id": "s018-12-5-size-at-each-stage",
+      "number": null,
+      "title": "12.5 Size at each stage",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 113,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "size",
+          "heading": true
+        },
+        {
+          "term": "bytes",
+          "heading": false
+        },
+        {
+          "term": "cryptography",
+          "heading": false
+        }
+      ],
+      "extract": "For the hepatitis B certificate: Stage; Size CWT claim set, CBOR; 222 bytes COSE_Sign1, signed; 307 bytes ZLIB/Deflate compressed; 293 bytes Base45 + HC1: prefix; 444 characters QR symbol; Version 16, error correction Q, Alphanumeric mode The signature and its headers account for 85 of the 307 bytes — on payloads this small, the cryptography costs more than the clinical data. This is why the minimal models use",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s018-12-5-size-at-each-stage"
+      ]
+    },
+    {
+      "id": "s019-12-6-the-certificates",
+      "number": null,
+      "title": "12.6 The certificates",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 174,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "signing certificate",
+          "heading": false
+        },
+        {
+          "term": "trust list",
+          "heading": false
+        },
+        {
+          "term": "endpoints",
+          "heading": false
+        },
+        {
+          "term": "dev",
+          "heading": false
+        }
+      ],
+      "extract": "Hepatitis B birth dose: <div style=\"display:block\"> <img src=\"dvc-qr-example-hepb1-XXR.png\" alt=\"DVC QR code, Hepatitis B birth dose, GDHCN DEV participant XXR\" width=\"300\" /> </div> HC1:NCFOXN%TSMAHN-HHPC*8W$BM70GZW8WI47X5JU9V21HJI.OR.6J:X90$TZIPAN9I6TSQLMN2SRPOK62YU%E6SOEGW2Z0W/TO+4W3R3ZP3XQ7KUHMQQTOE2QERM2ZGA2:UG%UBPISWUO FFPEUCAQZ4K%I7YV4SVO*I1R5LK90DQK7E$BESW6846OVQICMKR6PK96M53A5/41B$P6",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-qr-code-generation/blocks/prose-s019-12-6-the-certificates"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "keywords": [
+    {
+      "term": "hepatitis vaccine",
+      "heading": false
+    },
+    {
+      "term": "hepatitis birth",
+      "heading": false
+    },
+    {
+      "term": "cbor payload",
+      "heading": false
+    },
+    {
+      "term": "birth dose",
+      "heading": true
+    },
+    {
+      "term": "birth visit",
+      "heading": false
+    },
+    {
+      "term": "cwt claim",
+      "heading": true
+    },
+    {
+      "term": "logical model",
+      "heading": false
+    },
+    {
+      "term": "signing certificate",
+      "heading": false
+    },
+    {
+      "term": "gdhcn dev",
+      "heading": false
+    },
+    {
+      "term": "prequal product",
+      "heading": false
+    },
+    {
+      "term": "gdhcn trust",
+      "heading": false
+    },
+    {
+      "term": "health certificate",
+      "heading": false
+    }
+  ],
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 19,
+      "note": "3 levels"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 19 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-qr-code-generation"
+  }
+}

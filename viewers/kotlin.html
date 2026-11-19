@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script data-folio-saved-scheme>(function(){var d=document.documentElement,s=null,c="dark";try{s=localStorage.getItem("fa-color-scheme")}catch(e){}if(s!=="light"&&s!=="dark"){s="light";try{if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)s="dark"}catch(e){}}try{var n=document.getElementById("fa-site-scheme");if(n)c=JSON.parse(n.textContent).scheme==="light"?"light":"dark"}catch(e){}d.setAttribute("data-fa-scheme",s);var j=window.jtd;if(s!==c&&j&&typeof j.setTheme==="function"){try{j.setTheme(s)}catch(e){}}})();</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kotlin API</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=JetBrains+Mono:wght@400;600&family=Public+Sans:wght@400;550;650;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="../assets/css/navbar.css"><script src="../assets/navbar/rail-j29dkqi0u1.js" defer></script><script src="../assets/js/navbar.js" defer></script><script src="../assets/navbar/row-2acuhncsmbg.js" defer></script><link rel="stylesheet" href="../assets/css/navbar-row.css"><script src="../assets/js/navbar-row.js" defer></script><meta name="fa-search-exclude" content="true"><script src="../assets/js/vendor/lunr.min.js" defer></script><script src="../assets/js/just-the-docs.js" defer></script><link rel="stylesheet" href="../assets/page-layout.css" data-fa-page-layout><script src="../assets/page-layout.js" defer data-fa-page-layout></script><meta name="fa-platform-base" content="https://litlfred.github.io/folio-assistant" data-fa-platform-ui><link rel="stylesheet" href="../assets/css/docs-ui.css" data-fa-platform-ui><script src="../assets/js/docs-ui.js" defer data-fa-platform-ui></script><meta name="fa-pinned-data" content=".."></head>
+<body><script type="application/json" id="fa-navbar-row" data-fa-root=".." data-fa-row-src="row-2acuhncsmbg"></script><script type="application/json" id="fa-rail" data-fa-root="https://litlfred.github.io/folio-assistant" data-fa-to-root="..">{"data":"rail-j29dkqi0u1","here":"/viewers/kotlin.html"}</script><nav class="fa-nav" aria-label="folio-assistant" data-fa-rail="pending"><a href="../">SMART Trust HCERT library tools</a></nav><div id="main-header" class="main-header fa-site-bar fa-page-bar"><a class="fa-page-bar-home" href="../">SMART Trust HCERT library tools</a><div class="search" role="search"><div class="search-input-wrap"><input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search this site" autocomplete="off"><label for="search-input" class="search-label"><span class="sr-only">Search this site</span></label></div><div id="search-results" class="search-results"></div></div><span class="fa-page-bar-locale" data-fa-slot="locale"></span></div>
+<header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>SMART Trust Tools</a><nav class="nav" aria-label="Viewers"><a href="index.html">Overview</a><a href="explorer.html">Graph explorer</a><a href="trace.html">Traceability</a><a href="requirements.html">Requirements</a><a href="api.html">API (WIT)</a><a href="api/typedoc/index.html">API reference (TS)</a><a href="kotlin.html" aria-current="page">Kotlin API</a><a href="models.html">Wire &amp; payload models</a><a href="kinds.html">Node kinds</a></nav></div></header>
+
+<main class="page">
+  <section class="section prose">
+    <span class="eyebrow">Kotlin Multiplatform · generated from the WIT contract</span>
+    <h1>Kotlin API</h1>
+    <p>Declarations only, with no behaviour, implemented by <code>hcert-core</code>. <code>tools/wit2kotlin/wit2kotlin.py</code> generates them from
+    <a href="api.html">the contract</a>, so the Kotlin and Rust libraries cannot drift apart, but the Kotlin API names no WIT: records become
+    data classes, variants sealed interfaces, resources <code>AutoCloseable</code> interfaces, and a call that can fail returns
+    <code>HcertResult&lt;T, E&gt;</code>. Each exported interface becomes a Kotlin interface the library implements, for example
+    <code>Codec</code> or <code>Verifier</code>; imported ones (<code>Signer</code>, <code>Terminology</code>) are implemented by the host
+    application. The entry point is <code>object Hcert</code>: <code>Hcert.verifier</code>, <code>Hcert.issuer</code> and so on.</p>
+    <p>The module targets the JVM (Java 11+), which Android uses as-is, and Node.js through Kotlin/JS IR with generated TypeScript
+    declarations. Regenerate with <code>python3 tools/wit2kotlin/wit2kotlin.py</code>; CI fails if the API is out of date with the contract.</p>
+  </section>
+  <section class="section"><h2>Files</h2><ul class="small"><li><a href="#kt-file-HcertResult"><code>HcertResult.kt</code></a> <span class="muted small">HcertResult</span></li><li><a href="#kt-file-codec-Codec"><code>codec/Codec.kt</code></a> <span class="muted small">CodecError, Codec</span></li><li><a href="#kt-file-cose-Cose"><code>cose/Cose.kt</code></a> <span class="muted small">CoseError, Sign1, Base64Alphabet, Cose</span></li><li><a href="#kt-file-dvc-Dvc"><code>dvc/Dvc.kt</code></a> <span class="muted small">DvcMinVaccineDetails, DvcMin, Dvc</span></li><li><a href="#kt-file-issuer-Issuer"><code>issuer/Issuer.kt</code></a> <span class="muted small">Validity, IssueRequest, IssueError, IssuedHcert, PendingSignature, Issuer</span></li><li><a href="#kt-file-payloads-Payloads"><code>payloads/Payloads.kt</code></a> <span class="muted small">RawPayload, Payload</span></li><li><a href="#kt-file-subclaims-Subclaims"><code>subclaims/Subclaims.kt</code></a> <span class="muted small">PayloadKind, Registry, Subclaims</span></li><li><a href="#kt-file-trust-Trust"><code>trust/Trust.kt</code></a> <span class="muted small">TrustError, TrustedDsc, TrustStore, Trust</span></li><li><a href="#kt-file-types-Types"><code>types/Types.kt</code></a> <span class="muted small">CoseAlgorithm, Kid, NumericDate, CborBytes, Subclaim, DecodeLimits, Severity, ValidationIssue …</span></li><li><a href="#kt-file-verifier-Verifier"><code>verifier/Verifier.kt</code></a> <span class="muted small">VerifierOptions, HcertEntry, VerifiedHcert, VerificationFailure, VerificationResult, UnverifiedEntry, UnverifiedHcert, Verifier</span></li><li><a href="#kt-file-vhl-Vhl"><code>vhl/Vhl.kt</code></a> <span class="muted small">VhlPayload, VhlError, ManifestRequest, ManifestDocument, Decrypted, SignatureRequest, SignatureBase, Vhl</span></li></ul></section>
+  <section class="section" id="kt-file-HcertResult"><div class="section-head"><h2><code>HcertResult.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/HcertResult.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py. Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * The outcome of a call that can fail in an expected way: the value, or an</span>
+<span class="tok-comment"> * error saying which step failed and why.</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Expected failures are values, not exceptions [<a href="explorer.html#STT-VER-008">STT-VER-008</a>], so the JVM and</span>
+<span class="tok-comment"> * Android API returns this instead of throwing. Kotlin&#x27;s own `Result` cannot</span>
+<span class="tok-comment"> * carry a typed error, hence this type. The Kotlin/JS facade may throw, to keep</span>
+<span class="tok-comment"> * one TypeScript surface [<a href="explorer.html#STT-GEN-011">STT-GEN-011</a>].</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">sealed</span> <span class="tok-key">interface</span> <span class="tok-name" id="kt-HcertResult">HcertResult</span>&lt;out T, out E&gt; {
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Ok">Ok</span>&lt;out T&gt;(<span class="tok-key">val</span> value: T) : HcertResult&lt;T, Nothing&gt;
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Err">Err</span>&lt;out E&gt;(<span class="tok-key">val</span> error: E) : HcertResult&lt;Nothing, E&gt;
+}
+
+<span class="tok-key">inline</span> <span class="tok-key">fun</span> &lt;T, E, R&gt; HcertResult&lt;T, E&gt;.fold(onOk: (T) -&gt; R, onErr: (E) -&gt; R): R = <span class="tok-key">when</span> (this) {
+    <span class="tok-key">is</span> HcertResult.Ok -&gt; onOk(value)
+    <span class="tok-key">is</span> HcertResult.Err -&gt; onErr(error)
+}
+
+<span class="tok-key">fun</span> &lt;T, E&gt; HcertResult&lt;T, E&gt;.getOrNull(): T? = (this <span class="tok-key">as</span>? HcertResult.Ok)?.value
+</code></pre></section><section class="section" id="kt-file-codec-Codec"><div class="section-head"><h2><code>codec/Codec.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/codec/Codec.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/codec.wit (interface codec). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.codec
+
+<span class="tok-key">import</span> who.smart.trust.HcertResult
+<span class="tok-key">import</span> who.smart.trust.types.CborBytes
+<span class="tok-key">import</span> who.smart.trust.types.DecodeLimits
+
+<span class="tok-key">sealed</span> <span class="tok-key">interface</span> <span class="tok-name" id="kt-CodecError">CodecError</span> {
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Character outside the alphabet, dangling character or overflow.</span>
+<span class="tok-comment">     * [<a href="explorer.html#STT-B45-002">STT-B45-002</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Base45Invalid">Base45Invalid</span>(<span class="tok-key">val</span> value: String) : CodecError
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-InflateFailed">InflateFailed</span>(<span class="tok-key">val</span> value: String) : CodecError
+
+<span class="tok-comment">    /** A decode-limits bound was hit. [<a href="explorer.html#STT-CBR-003">STT-CBR-003</a>, <a href="explorer.html#STT-ZIP-002">STT-ZIP-002</a>] */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-LimitExceeded">LimitExceeded</span>(<span class="tok-key">val</span> value: String) : CodecError
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-CborMalformed">CborMalformed</span>(<span class="tok-key">val</span> value: String) : CodecError
+
+<span class="tok-comment">    /** No `HC[1-9A-Z]:` context identifier. [<a href="explorer.html#STT-HC1-001">STT-HC1-001</a>] */</span>
+    <span class="tok-key">data</span> <span class="tok-key">object</span> <span class="tok-name" id="kt-BadPrefix">BadPrefix</span> : CodecError
+
+<span class="tok-comment">    /** A well-formed context identifier other than HC1, e.g. &quot;HC2&quot;. */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-UnsupportedContextVersion">UnsupportedContextVersion</span>(<span class="tok-key">val</span> value: String) : CodecError
+}
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Steps 4, 6, 7, 8: CBOR, ZLIB, Base45 and the HC1 context identifier.</span>
+<span class="tok-comment"> * Pure functions: no crypto, no I/O, no clock.</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Implemented by the library.</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-Codec">Codec</span> {
+<span class="tok-comment">    /** RFC 9285 Base45. [<a href="explorer.html#STT-B45-001">STT-B45-001</a>] */</span>
+    <span class="tok-key">fun</span> base45Encode(<span class="tok-key">data</span>: ByteArray): String
+
+    <span class="tok-key">fun</span> base45Decode(text: String): HcertResult&lt;ByteArray, CodecError&gt;
+
+<span class="tok-comment">    /** ZLIB (RFC 1950) wrapping DEFLATE (RFC 1951). [<a href="explorer.html#STT-ZIP-001">STT-ZIP-001</a>] */</span>
+    <span class="tok-key">fun</span> zlibCompress(<span class="tok-key">data</span>: ByteArray, level: Int): ByteArray
+
+    <span class="tok-key">fun</span> zlibInflate(<span class="tok-key">data</span>: ByteArray, maxOut: Int): HcertResult&lt;ByteArray, CodecError&gt;
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Returns the context identifier version character (e.g. &quot;1&quot;) and</span>
+<span class="tok-comment">     * the remainder after the colon. [<a href="explorer.html#STT-HC1-001">STT-HC1-001</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> detectContext(text: String): HcertResult&lt;Pair&lt;String, String&gt;, CodecError&gt;
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Steps 6 to 8: COSE bytes to &quot;HC1:...&quot; string. The result uses only</span>
+<span class="tok-comment">     * QR Alphanumeric characters. [<a href="explorer.html#STT-QR-001">STT-QR-001</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> toHc1(cose: ByteArray): String
+
+<span class="tok-comment">    /** Steps 8 to 6 reversed: &quot;HC1:...&quot; string to COSE bytes. */</span>
+    <span class="tok-key">fun</span> fromHc1(text: String, limits: DecodeLimits): HcertResult&lt;ByteArray, CodecError&gt;
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Re-encode CBOR using RFC 8949 core deterministic encoding.</span>
+<span class="tok-comment">     * [<a href="explorer.html#STT-CBR-001">STT-CBR-001</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> cborDeterministic(cbor: CborBytes, limits: DecodeLimits): HcertResult&lt;CborBytes, CodecError&gt;
+}
+</code></pre></section><section class="section" id="kt-file-cose-Cose"><div class="section-head"><h2><code>cose/Cose.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/cose/Cose.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/cose.wit (interface cose). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.cose
+
+<span class="tok-key">import</span> who.smart.trust.HcertResult
+<span class="tok-key">import</span> who.smart.trust.types.CoseAlgorithm
+<span class="tok-key">import</span> who.smart.trust.types.DecodeLimits
+<span class="tok-key">import</span> who.smart.trust.types.Kid
+
+<span class="tok-key">sealed</span> <span class="tok-key">interface</span> <span class="tok-name" id="kt-CoseError">CoseError</span> {
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Malformed">Malformed</span>(<span class="tok-key">val</span> value: String) : CoseError
+
+<span class="tok-comment">    /** Protected header failed type/length checks. [<a href="explorer.html#STT-VER-003">STT-VER-003</a>] */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-HeaderInvalid">HeaderInvalid</span>(<span class="tok-key">val</span> value: String) : CoseError
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-UnsupportedAlgorithm">UnsupportedAlgorithm</span>(<span class="tok-key">val</span> value: Int) : CoseError
+
+<span class="tok-comment">    /** ES256 signature not exactly 64 bytes, or bad DER. [<a href="explorer.html#STT-COS-005">STT-COS-005</a>] */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-BadSignatureFormat">BadSignatureFormat</span>(<span class="tok-key">val</span> value: String) : CoseError
+
+    <span class="tok-key">data</span> <span class="tok-key">object</span> <span class="tok-name" id="kt-SignatureInvalid">SignatureInvalid</span> : CoseError
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-BadCertificate">BadCertificate</span>(<span class="tok-key">val</span> value: String) : CoseError
+}
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * A parsed COSE_Sign1. `protected` is kept as received so the</span>
+<span class="tok-comment"> * Sig_structure is rebuilt from the original bytes. [<a href="explorer.html#STT-COS-004">STT-COS-004</a>]</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Sign1">Sign1</span>(
+    <span class="tok-key">val</span> protected: ByteArray,
+    <span class="tok-key">val</span> payload: ByteArray,
+    <span class="tok-key">val</span> signature: ByteArray,
+    <span class="tok-key">val</span> alg: CoseAlgorithm? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * The protected kid if present, else the unprotected kid.</span>
+<span class="tok-comment">     * [<a href="explorer.html#STT-COS-003">STT-COS-003</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> kid: Kid? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> kidInProtected: Boolean,
+<span class="tok-comment">    /** Whether the input carried CBOR tag 18. [<a href="explorer.html#STT-COS-001">STT-COS-001</a>] */</span>
+    <span class="tok-key">val</span> tagged: Boolean,
+)
+
+<span class="tok-key">enum</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Base64Alphabet">Base64Alphabet</span> {
+    STANDARD,
+    URL_SAFE,
+}
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Step 5: COSE_Sign1, key identifiers and signature formats.</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Implemented by the library.</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-Cose">Cose</span> {
+<span class="tok-comment">    /** First 8 bytes of SHA-256 over the DER-encoded DSC. [<a href="explorer.html#STT-KID-001">STT-KID-001</a>] */</span>
+    <span class="tok-key">fun</span> kidFromDsc(dscDer: ByteArray): Kid
+
+<span class="tok-comment">    /** [<a href="explorer.html#STT-KID-003">STT-KID-003</a>] */</span>
+    <span class="tok-key">fun</span> kidToBase64(k: Kid, alphabet: Base64Alphabet): String
+
+    <span class="tok-key">fun</span> kidFromBase64(text: String): HcertResult&lt;Kid, CoseError&gt;
+
+    <span class="tok-key">fun</span> parseSign1(bytes: ByteArray, limits: DecodeLimits): HcertResult&lt;Sign1, CoseError&gt;
+
+<span class="tok-comment">    /** CBOR of [&quot;Signature1&quot;, protected, h&#x27;&#x27;, payload]. */</span>
+    <span class="tok-key">fun</span> sigStructure(protected: ByteArray, payload: ByteArray): ByteArray
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Verify a parsed COSE_Sign1 against one DSC. Low level: does not</span>
+<span class="tok-comment">     * check EKU, time or trust. [<a href="explorer.html#STT-COS-002">STT-COS-002</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> verifySign1(s: Sign1, dscDer: ByteArray): HcertResult&lt;Unit, CoseError&gt;
+
+<span class="tok-comment">    /** ASN.1 DER ECDSA-Sig-Value &lt;-&gt; fixed-width r||s. [<a href="explorer.html#STT-COS-005">STT-COS-005</a>] */</span>
+    <span class="tok-key">fun</span> ecdsaDerToRaw(der: ByteArray): HcertResult&lt;ByteArray, CoseError&gt;
+
+    <span class="tok-key">fun</span> ecdsaRawToDer(raw: ByteArray): HcertResult&lt;ByteArray, CoseError&gt;
+}
+</code></pre></section><section class="section" id="kt-file-dvc-Dvc"><div class="section-head"><h2><code>dvc/Dvc.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/dvc/Dvc.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/payload.wit (interface dvc). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.dvc
+
+<span class="tok-key">import</span> who.smart.trust.HcertResult
+<span class="tok-key">import</span> who.smart.trust.types.CborBytes
+<span class="tok-key">import</span> who.smart.trust.types.DecodeLimits
+<span class="tok-key">import</span> who.smart.trust.types.ValidationIssue
+
+<span class="tok-comment">/** DVCMinVaccineDetails. [<a href="explorer.html#STT-PAY-002">STT-PAY-002</a>] */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-DvcMinVaccineDetails">DvcMinVaccineDetails</span>(
+<span class="tok-comment">    /** Vaccine product identifier. */</span>
+    <span class="tok-key">val</span> vp: String,
+<span class="tok-comment">    /** Date of vaccination (FHIR date). */</span>
+    <span class="tok-key">val</span> dv: String,
+<span class="tok-comment">    /** Supervising clinician. */</span>
+    <span class="tok-key">val</span> cn: String? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** Issuing organization identifier. */</span>
+    <span class="tok-key">val</span> `<span class="tok-key">is</span>`: String? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** Batch or lot number. */</span>
+    <span class="tok-key">val</span> bo: String,
+)
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * DVCMin. vx is 1..1: one immunization event per certificate.</span>
+<span class="tok-comment"> * [<a href="explorer.html#STT-PAY-001">STT-PAY-001</a>, <a href="explorer.html#STT-PAY-003">STT-PAY-003</a>, <a href="explorer.html#STT-PAY-005">STT-PAY-005</a>]</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-DvcMin">DvcMin</span>(
+    <span class="tok-key">val</span> n: String,
+    <span class="tok-key">val</span> dob: String,
+    <span class="tok-key">val</span> s: String,
+<span class="tok-comment">    /** ISO 3166-1 alpha-3. [<a href="explorer.html#STT-PAY-007">STT-PAY-007</a>] */</span>
+    <span class="tok-key">val</span> nt: String,
+    <span class="tok-key">val</span> id: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> dt: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> gn: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> vx: DvcMinVaccineDetails,
+    <span class="tok-key">val</span> v: String,
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Elements this version does not know, kept as CBOR map entries</span>
+<span class="tok-comment">     * (key, encoded value). [<a href="explorer.html#STT-PAY-008">STT-PAY-008</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> extensions: List&lt;Pair&lt;String, CborBytes&gt;&gt;,
+)
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Step 2: the DVCMin payload (trust-phw DVCMin). [<a href="explorer.html#STT-PAY-010">STT-PAY-010</a>]</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Implemented by the library.</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-Dvc">Dvc</span> {
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Cardinality, invariant (must-have-issuer-or-clinician-name) and nt</span>
+<span class="tok-comment">     * checks. [<a href="explorer.html#STT-PAY-004">STT-PAY-004</a>, <a href="explorer.html#STT-PAY-007">STT-PAY-007</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> validate(p: DvcMin): List&lt;ValidationIssue&gt;
+
+    <span class="tok-key">fun</span> toCbor(p: DvcMin): CborBytes
+
+    <span class="tok-key">fun</span> fromCbor(cbor: CborBytes, limits: DecodeLimits): HcertResult&lt;DvcMin, List&lt;ValidationIssue&gt;&gt;
+}
+</code></pre></section><section class="section" id="kt-file-issuer-Issuer"><div class="section-head"><h2><code>issuer/Issuer.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/issuer/Issuer.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/pipeline.wit (interface issuer). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.issuer
+
+<span class="tok-key">import</span> who.smart.trust.HcertResult
+<span class="tok-key">import</span> who.smart.trust.payloads.Payload
+<span class="tok-key">import</span> who.smart.trust.subclaims.Registry
+<span class="tok-key">import</span> who.smart.trust.types.CoseAlgorithm
+<span class="tok-key">import</span> who.smart.trust.types.Kid
+<span class="tok-key">import</span> who.smart.trust.types.NumericDate
+<span class="tok-key">import</span> who.smart.trust.types.ValidationIssue
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Validity">Validity</span>(
+    <span class="tok-key">val</span> iat: NumericDate,
+<span class="tok-comment">    /** Mandatory: exp is the only revocation mechanism. [<a href="explorer.html#STT-CWT-003">STT-CWT-003</a>] */</span>
+    <span class="tok-key">val</span> exp: NumericDate,
+)
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-IssueRequest">IssueRequest</span>(
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * One or more payloads, each under its own subclaim in the hcert</span>
+<span class="tok-comment">     * claim, in subclaim-key order on the wire. [<a href="explorer.html#STT-SEL-004">STT-SEL-004</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> payloads: List&lt;Payload&gt;,
+<span class="tok-comment">    /** CWT iss, alpha-2. [<a href="explorer.html#STT-CWT-005">STT-CWT-005</a>] */</span>
+    <span class="tok-key">val</span> iss: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> validity: Validity,
+<span class="tok-comment">    /** DSC whose key will sign; kid is derived from it. [<a href="explorer.html#STT-KID-001">STT-KID-001</a>] */</span>
+    <span class="tok-key">val</span> dscDer: ByteArray,
+    <span class="tok-key">val</span> alg: CoseAlgorithm,
+<span class="tok-comment">    /** Refuse negative subclaims unless true. [<a href="explorer.html#STT-SEL-003">STT-SEL-003</a>] */</span>
+    <span class="tok-key">val</span> allowDevelopmentSubclaims: Boolean,
+)
+
+<span class="tok-key">sealed</span> <span class="tok-key">interface</span> <span class="tok-name" id="kt-IssueError">IssueError</span> {
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-PayloadInvalid">PayloadInvalid</span>(<span class="tok-key">val</span> value: List&lt;ValidationIssue&gt;) : IssueError
+
+<span class="tok-comment">    /** The request carries no payload. */</span>
+    <span class="tok-key">data</span> <span class="tok-key">object</span> <span class="tok-name" id="kt-NoPayload">NoPayload</span> : IssueError
+
+<span class="tok-comment">    /** Two payloads map to the same subclaim. [<a href="explorer.html#STT-SEL-004">STT-SEL-004</a>] */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-DuplicateSubclaim">DuplicateSubclaim</span>(<span class="tok-key">val</span> value: Int) : IssueError
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-DevelopmentSubclaimNotAllowed">DevelopmentSubclaimNotAllowed</span>(<span class="tok-key">val</span> value: Int) : IssueError
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-UnknownSubclaim">UnknownSubclaim</span>(<span class="tok-key">val</span> value: Int) : IssueError
+
+<span class="tok-comment">    /** iat before or exp after the DSC validity. [<a href="explorer.html#STT-CWT-004">STT-CWT-004</a>] */</span>
+    <span class="tok-key">data</span> <span class="tok-key">object</span> <span class="tok-name" id="kt-ValidityOutsideDsc">ValidityOutsideDsc</span> : IssueError
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-BadCertificate">BadCertificate</span>(<span class="tok-key">val</span> value: String) : IssueError
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-BadSignatureFormat">BadSignatureFormat</span>(<span class="tok-key">val</span> value: String) : IssueError
+}
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-IssuedHcert">IssuedHcert</span>(
+<span class="tok-comment">    /** QR-ready: QR Alphanumeric characters only. [<a href="explorer.html#STT-QR-001">STT-QR-001</a>] */</span>
+    <span class="tok-key">val</span> hc1: String,
+<span class="tok-comment">    /** Raw COSE_Sign1 for 8-bit-safe transports. [<a href="explorer.html#STT-GEN-009">STT-GEN-009</a>] */</span>
+    <span class="tok-key">val</span> cose: ByteArray,
+)
+
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-PendingSignature">PendingSignature</span> : AutoCloseable {
+<span class="tok-comment">    /** Bytes to sign (CBOR Sig_structure). [<a href="explorer.html#STT-COS-004">STT-COS-004</a>] */</span>
+    <span class="tok-key">fun</span> toBeSigned(): ByteArray
+
+    <span class="tok-key">fun</span> algorithm(): CoseAlgorithm
+
+    <span class="tok-key">fun</span> kid(): Kid
+}
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * End-to-end issuance (steps 3 to 8).</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Signing is two-phase so that any key holder can sign without the core</span>
+<span class="tok-comment"> * calling back into the host: prepare() returns the Sig_structure bytes,</span>
+<span class="tok-comment"> * the caller signs them with an HSM, KMS, Android Keystore or WebCrypto,</span>
+<span class="tok-comment"> * and finish() assembles the certificate. [<a href="explorer.html#STT-ISS-004">STT-ISS-004</a>, <a href="explorer.html#STT-COS-006">STT-COS-006</a>]</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Implemented by the library.</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-Issuer">Issuer</span> {
+<span class="tok-comment">    /** Phase 1: validate, build CWT, CBOR and protected header. */</span>
+    <span class="tok-key">fun</span> prepare(req: IssueRequest, reg: Registry): HcertResult&lt;PendingSignature, IssueError&gt;
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Phase 2: attach the signature. ES256 accepts r||s or DER and always</span>
+<span class="tok-comment">     * emits r||s. [<a href="explorer.html#STT-COS-005">STT-COS-005</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> finish(pending: PendingSignature, signature: ByteArray): HcertResult&lt;IssuedHcert, IssueError&gt;
+}
+</code></pre></section><section class="section" id="kt-file-payloads-Payloads"><div class="section-head"><h2><code>payloads/Payloads.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/payloads/Payloads.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/payload.wit (interface payloads). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.payloads
+
+<span class="tok-key">import</span> who.smart.trust.dvc.DvcMin
+<span class="tok-key">import</span> who.smart.trust.types.CborBytes
+<span class="tok-key">import</span> who.smart.trust.vhl.VhlPayload
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-RawPayload">RawPayload</span>(
+    <span class="tok-key">val</span> subclaim: Int,
+    <span class="tok-key">val</span> cbor: CborBytes,
+)
+
+<span class="tok-key">sealed</span> <span class="tok-key">interface</span> <span class="tok-name" id="kt-Payload">Payload</span> {
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-DvcMin">DvcMin</span>(<span class="tok-key">val</span> value: who.smart.trust.dvc.DvcMin) : Payload
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Vhl">Vhl</span>(<span class="tok-key">val</span> value: VhlPayload) : Payload
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Raw">Raw</span>(<span class="tok-key">val</span> value: RawPayload) : Payload
+}
+</code></pre></section><section class="section" id="kt-file-subclaims-Subclaims"><div class="section-head"><h2><code>subclaims/Subclaims.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/subclaims/Subclaims.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/payload.wit (interface subclaims). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.subclaims
+
+<span class="tok-key">import</span> who.smart.trust.types.Subclaim
+
+<span class="tok-comment">/** Payload kinds that have a typed codec. Others travel as raw CBOR. */</span>
+<span class="tok-key">enum</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-PayloadKind">PayloadKind</span> {
+    DVC_MIN,
+    VHL,
+}
+
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-Registry">Registry</span> : AutoCloseable {
+    <span class="tok-key">fun</span> lookup(key: Int): Subclaim?
+
+    <span class="tok-key">fun</span> register(s: Subclaim)
+
+    <span class="tok-key">fun</span> all(): List&lt;Subclaim&gt;
+
+<span class="tok-comment">    /** Which subclaim number carries the given payload kind. */</span>
+    <span class="tok-key">fun</span> subclaimFor(kind: PayloadKind): Int?
+
+    <span class="tok-key">fun</span> setSubclaimFor(kind: PayloadKind, key: Int)
+}
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Subclaim registry. Its defaults are the WHO-listed subclaims; the</span>
+<span class="tok-comment"> * subclaim a payload type is issued under is configuration, so DVC can</span>
+<span class="tok-comment"> * move from -6 to an assigned number without an API break.</span>
+<span class="tok-comment"> * [<a href="explorer.html#STT-SEL-001">STT-SEL-001</a>, <a href="explorer.html#STT-SEL-002">STT-SEL-002</a>, <a href="explorer.html#STT-SEL-003">STT-SEL-003</a>]</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Implemented by the library.</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-Subclaims">Subclaims</span> {
+<span class="tok-comment">    /** Starts with the IG defaults: 1, 3, 4, 5, -6, -7; VHL is 5. [<a href="explorer.html#STT-SEL-001">STT-SEL-001</a>] */</span>
+    <span class="tok-key">fun</span> newRegistry(): Registry
+}
+</code></pre></section><section class="section" id="kt-file-trust-Trust"><div class="section-head"><h2><code>trust/Trust.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/trust/Trust.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/trust.wit (interface trust). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.trust
+
+<span class="tok-key">import</span> who.smart.trust.HcertResult
+<span class="tok-key">import</span> who.smart.trust.types.Kid
+<span class="tok-key">import</span> who.smart.trust.types.NumericDate
+
+<span class="tok-key">sealed</span> <span class="tok-key">interface</span> <span class="tok-name" id="kt-TrustError">TrustError</span> {
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Parse">Parse</span>(<span class="tok-key">val</span> value: String) : TrustError
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * A DID document names a trust domain the loaded GDHCN Trust Domain</span>
+<span class="tok-comment">     * code system does not hold. [<a href="explorer.html#STT-SEL-006">STT-SEL-006</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-UnknownTrustDomain">UnknownTrustDomain</span>(<span class="tok-key">val</span> value: String) : TrustError
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * A DID document&#x27;s proof does not verify, or the document is not</span>
+<span class="tok-comment">     * one the proof profile models. [<a href="explorer.html#STT-TRU-006">STT-TRU-006</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-ProofInvalid">ProofInvalid</span>(<span class="tok-key">val</span> value: String) : TrustError
+}
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-TrustedDsc">TrustedDsc</span>(
+    <span class="tok-key">val</span> der: ByteArray,
+    <span class="tok-key">val</span> kid: Kid,
+    <span class="tok-key">val</span> country: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> notBefore: NumericDate,
+    <span class="tok-key">val</span> notAfter: NumericDate,
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Extended Key Usage OIDs; empty means valid for any type.</span>
+<span class="tok-comment">     * [<a href="explorer.html#STT-VER-004">STT-VER-004</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> extendedKeyUsages: List&lt;String&gt;,
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Trust domain and participant, when the DSC came from a DID</span>
+<span class="tok-comment">     * trustlist document.</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> domain: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> participant: String? = <span class="tok-key">null</span>,
+)
+
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-TrustStore">TrustStore</span> : AutoCloseable {
+<span class="tok-comment">    /** Each add-* returns the number of DSCs added. [<a href="explorer.html#STT-TRU-005">STT-TRU-005</a>] */</span>
+    <span class="tok-key">fun</span> addPem(pem: String): HcertResult&lt;Int, TrustError&gt;
+
+    <span class="tok-key">fun</span> addDer(der: ByteArray): HcertResult&lt;Int, TrustError&gt;
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * A GDHCN DID trustlist v2 document, embedded or reference</span>
+<span class="tok-comment">     * variant. [<a href="explorer.html#STT-TRU-002">STT-TRU-002</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> addDidDocument(json: String): HcertResult&lt;Int, TrustError&gt;
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Same, but only after the document&#x27;s proof verifies against</span>
+<span class="tok-comment">     * `signer`, the did:web document of the proof&#x27;s verificationMethod,</span>
+<span class="tok-comment">     * which the host fetched; on any failure nothing is added.</span>
+<span class="tok-comment">     * [<a href="explorer.html#STT-TRU-006">STT-TRU-006</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> addVerifiedDidDocument(json: String, signer: String): HcertResult&lt;Int, TrustError&gt;
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * The trust domains a DID document may name, read from a GDHCN</span>
+<span class="tok-comment">     * Trust Domain CodeSystem (FHIR JSON) the host fetched. Data, not</span>
+<span class="tok-comment">     * an enum: once loaded, a DID document naming another domain is</span>
+<span class="tok-comment">     * refused whole; before, any domain is kept as given. Loading</span>
+<span class="tok-comment">     * again replaces the set. Returns the number of codes.</span>
+<span class="tok-comment">     * [<a href="explorer.html#STT-SEL-006">STT-SEL-006</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> loadTrustDomains(codesystemJson: String): HcertResult&lt;Int, TrustError&gt;
+
+<span class="tok-comment">    /** The loaded trust domain codes; empty when none are loaded. */</span>
+    <span class="tok-key">fun</span> trustDomains(): List&lt;String&gt;
+
+<span class="tok-comment">    /** Every DSC with this kid (kids are not unique). [<a href="explorer.html#STT-KID-002">STT-KID-002</a>] */</span>
+    <span class="tok-key">fun</span> candidates(k: Kid): List&lt;TrustedDsc&gt;
+
+    <span class="tok-key">fun</span> size(): Int
+
+    <span class="tok-key">fun</span> clear()
+}
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Trust material. The host fetches it (GDHCN DID trustlist, pinned PEM)</span>
+<span class="tok-comment"> * and fills the store, so the core never does network I/O and stays</span>
+<span class="tok-comment"> * synchronous. [<a href="explorer.html#STT-TRU-001">STT-TRU-001</a>, <a href="explorer.html#STT-GEN-012">STT-GEN-012</a>]</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Implemented by the library.</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-Trust">Trust</span> {
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Verify a GDHCN trust list DID document&#x27;s JsonWebSignature2020 proof,</span>
+<span class="tok-comment">     * as the TNG key distribution service makes it: URDNA2015 over the</span>
+<span class="tok-comment">     * document and the proof options with pinned contexts, a detached</span>
+<span class="tok-comment">     * b64:false ES256 JWS whose signature may be DER or r||s. `signer` is</span>
+<span class="tok-comment">     * the did:web document of the proof&#x27;s verificationMethod. Fails closed</span>
+<span class="tok-comment">     * on any term the profile does not model. [<a href="explorer.html#STT-TRU-006">STT-TRU-006</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> verifyDidProof(document: String, signer: String): HcertResult&lt;Unit, TrustError&gt;
+
+<span class="tok-comment">    /** Creates a new [TrustStore]. */</span>
+    <span class="tok-key">fun</span> newTrustStore(): TrustStore
+}
+</code></pre></section><section class="section" id="kt-file-types-Types"><div class="section-head"><h2><code>types/Types.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/types/Types.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/types.wit (interface types). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.types
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * COSE algorithm. es256 = -7 (primary), ps256 = -37 (secondary).</span>
+<span class="tok-comment"> * Both MUST be implemented. [<a href="explorer.html#STT-COS-002">STT-COS-002</a>]</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">enum</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-CoseAlgorithm">CoseAlgorithm</span> {
+    ES256,
+    PS256,
+}
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * 8-byte key identifier: first 8 bytes of SHA-256 over the DER DSC.</span>
+<span class="tok-comment"> * [<a href="explorer.html#STT-KID-001">STT-KID-001</a>]</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">typealias</span> <span class="tok-name" id="kt-Kid">Kid</span> = ByteArray
+
+<span class="tok-comment">/** CWT NumericDate: integer seconds since the Unix epoch. [<a href="explorer.html#STT-CWT-002">STT-CWT-002</a>] */</span>
+<span class="tok-key">typealias</span> <span class="tok-name" id="kt-NumericDate">NumericDate</span> = Long
+
+<span class="tok-comment">/** Encoded CBOR data item. */</span>
+<span class="tok-key">typealias</span> <span class="tok-name" id="kt-CborBytes">CborBytes</span> = ByteArray
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * An hcert subclaim number and what it carries. Negative numbers are</span>
+<span class="tok-comment"> * the development range. [<a href="explorer.html#STT-SEL-001">STT-SEL-001</a>, <a href="explorer.html#STT-SEL-003">STT-SEL-003</a>]</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Subclaim">Subclaim</span>(
+    <span class="tok-key">val</span> key: Int,
+    <span class="tok-key">val</span> title: String,
+<span class="tok-comment">    /** Canonical URL of the FHIR logical model, when there is one. */</span>
+    <span class="tok-key">val</span> logicalModel: String? = <span class="tok-key">null</span>,
+)
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Bounds applied while decoding untrusted input. [STT-CBR-003,</span>
+<span class="tok-comment"> * STT-ZIP-002]</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-DecodeLimits">DecodeLimits</span>(
+    <span class="tok-key">val</span> maxInputChars: Int,
+    <span class="tok-key">val</span> maxInflatedBytes: Int,
+    <span class="tok-key">val</span> maxDepth: Int,
+    <span class="tok-key">val</span> maxItems: Int,
+    <span class="tok-key">val</span> maxStringBytes: Int,
+)
+
+<span class="tok-key">enum</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Severity">Severity</span> {
+    BLOCKING,
+    WARNING,
+    INFORMATION,
+}
+
+<span class="tok-comment">/** One payload validation finding. `path` names the element. */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-ValidationIssue">ValidationIssue</span>(
+    <span class="tok-key">val</span> path: String,
+    <span class="tok-key">val</span> code: String,
+    <span class="tok-key">val</span> message: String,
+    <span class="tok-key">val</span> severity: Severity,
+)
+
+<span class="tok-comment">/** Verification steps, in the order they run. [<a href="explorer.html#STT-VER-001">STT-VER-001</a>] */</span>
+<span class="tok-key">enum</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Step">Step</span> {
+    PREFIX,
+    BASE45,
+    INFLATE,
+    COSE,
+    HEADER,
+    TRUST_LOOKUP,
+    SIGNATURE,
+    KEY_USAGE,
+    CWT,
+    TIME,
+    HCERT,
+    PAYLOAD,
+}
+
+<span class="tok-comment">/** Why verification stopped. [<a href="explorer.html#STT-VER-008">STT-VER-008</a>] */</span>
+<span class="tok-key">enum</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-FailureReason">FailureReason</span> {
+    BAD_PREFIX,
+    UNSUPPORTED_CONTEXT_VERSION,
+    BASE45_INVALID,
+    INFLATE_FAILED,
+    LIMIT_EXCEEDED,
+    COSE_MALFORMED,
+    HEADER_INVALID,
+    UNSUPPORTED_ALGORITHM,
+    KID_NOT_FOUND,
+    SIGNATURE_INVALID,
+    KEY_USAGE_MISMATCH,
+    EXPIRED,
+    NOT_YET_VALID,
+    HCERT_MISSING,
+    MULTIPLE_SUBCLAIMS,
+    PAYLOAD_INVALID,
+}
+
+<span class="tok-comment">/** A non-fatal observation made while verifying. */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Diagnostic">Diagnostic</span>(
+    <span class="tok-key">val</span> step: Step,
+    <span class="tok-key">val</span> severity: Severity,
+    <span class="tok-key">val</span> message: String,
+)
+</code></pre></section><section class="section" id="kt-file-verifier-Verifier"><div class="section-head"><h2><code>verifier/Verifier.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/verifier/Verifier.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/pipeline.wit (interface verifier). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.verifier
+
+<span class="tok-key">import</span> who.smart.trust.HcertResult
+<span class="tok-key">import</span> who.smart.trust.payloads.Payload
+<span class="tok-key">import</span> who.smart.trust.subclaims.Registry
+<span class="tok-key">import</span> who.smart.trust.trust.TrustStore
+<span class="tok-key">import</span> who.smart.trust.trust.TrustedDsc
+<span class="tok-key">import</span> who.smart.trust.types.CborBytes
+<span class="tok-key">import</span> who.smart.trust.types.DecodeLimits
+<span class="tok-key">import</span> who.smart.trust.types.Diagnostic
+<span class="tok-key">import</span> who.smart.trust.types.FailureReason
+<span class="tok-key">import</span> who.smart.trust.types.Kid
+<span class="tok-key">import</span> who.smart.trust.types.NumericDate
+<span class="tok-key">import</span> who.smart.trust.types.Step
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-VerifierOptions">VerifierOptions</span>(
+    <span class="tok-key">val</span> limits: DecodeLimits,
+    <span class="tok-key">val</span> clockSkewSeconds: Int,
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Refuse an hcert claim with more entries than this</span>
+<span class="tok-comment">     * (multiple-subclaims): a deployment&#x27;s strict profile. None: any</span>
+<span class="tok-comment">     * number. [<a href="explorer.html#STT-SEL-004">STT-SEL-004</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> maxPayloads: Int? = <span class="tok-key">null</span>,
+)
+
+<span class="tok-comment">/** One entry of the hcert claim. [<a href="explorer.html#STT-SEL-004">STT-SEL-004</a>] */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-HcertEntry">HcertEntry</span>(
+    <span class="tok-key">val</span> subclaim: Int,
+<span class="tok-comment">    /** Raw CBOR for a subclaim the registry does not know. [<a href="explorer.html#STT-SEL-002">STT-SEL-002</a>] */</span>
+    <span class="tok-key">val</span> payload: Payload,
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * False when the DSC&#x27;s EKU does not permit this entry&#x27;s</span>
+<span class="tok-comment">     * certificate type; the entry is returned, marked, and a</span>
+<span class="tok-comment">     * diagnostic says so. [<a href="explorer.html#STT-VER-004">STT-VER-004</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> keyUsageAuthorised: Boolean,
+)
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-VerifiedHcert">VerifiedHcert</span>(
+    <span class="tok-key">val</span> iss: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> iat: NumericDate,
+    <span class="tok-key">val</span> exp: NumericDate,
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * The valid entries, in subclaim-key order. An entry whose payload</span>
+<span class="tok-comment">     * fails its model check is left out and reported as a diagnostic;</span>
+<span class="tok-comment">     * verification fails at payload only when none is left, and at</span>
+<span class="tok-comment">     * key-usage only when no entry is authorised. [<a href="explorer.html#STT-SEL-004">STT-SEL-004</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> entries: List&lt;HcertEntry&gt;,
+<span class="tok-comment">    /** The DSC that verified the signature. */</span>
+    <span class="tok-key">val</span> dsc: TrustedDsc,
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Unknown CWT claims, as (encoded key, encoded value).</span>
+<span class="tok-comment">     * [<a href="explorer.html#STT-CWT-006">STT-CWT-006</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> otherClaims: List&lt;Pair&lt;CborBytes, CborBytes&gt;&gt;,
+    <span class="tok-key">val</span> diagnostics: List&lt;Diagnostic&gt;,
+)
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-VerificationFailure">VerificationFailure</span>(
+    <span class="tok-key">val</span> step: Step,
+    <span class="tok-key">val</span> reason: FailureReason,
+    <span class="tok-key">val</span> detail: String,
+    <span class="tok-key">val</span> diagnostics: List&lt;Diagnostic&gt;,
+)
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Payload content is only reachable through `verified`.</span>
+<span class="tok-comment"> * [<a href="explorer.html#STT-VER-002">STT-VER-002</a>, <a href="explorer.html#STT-VER-008">STT-VER-008</a>]</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">sealed</span> <span class="tok-key">interface</span> <span class="tok-name" id="kt-VerificationResult">VerificationResult</span> {
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Verified">Verified</span>(<span class="tok-key">val</span> value: VerifiedHcert) : VerificationResult
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Failed">Failed</span>(<span class="tok-key">val</span> value: VerificationFailure) : VerificationResult
+}
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Decoded, NOT verified: no trust lookup, no signature check. For</span>
+<span class="tok-comment"> * display and triage where verification is impossible (an offline</span>
+<span class="tok-comment"> * household visit, journey J2); never a basis for trust. [<a href="explorer.html#STT-VER-011">STT-VER-011</a>]</span>
+<span class="tok-comment"> * One entry of an unverified hcert claim.</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-UnverifiedEntry">UnverifiedEntry</span>(
+    <span class="tok-key">val</span> subclaim: Int,
+<span class="tok-comment">    /** The payload, when it decoded and met its model. */</span>
+    <span class="tok-key">val</span> payload: Payload? = <span class="tok-key">null</span>,
+)
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-UnverifiedHcert">UnverifiedHcert</span>(
+    <span class="tok-key">val</span> kid: Kid? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> iss: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> iat: NumericDate? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> exp: NumericDate? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** Every entry of the hcert claim, in subclaim-key order. */</span>
+    <span class="tok-key">val</span> entries: List&lt;UnverifiedEntry&gt;,
+    <span class="tok-key">val</span> diagnostics: List&lt;Diagnostic&gt;,
+)
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Verification (QR Code Generation section 11): the steps in STT-VER-001</span>
+<span class="tok-comment"> * order, each fixed by the IG rather than a policy switch. The hcert claim</span>
+<span class="tok-comment"> * may carry several entries (HCERT 3.2.7) [<a href="explorer.html#STT-SEL-004">STT-SEL-004</a>]; trust-list presence</span>
+<span class="tok-comment"> * is the DSC validity check [<a href="explorer.html#STT-VER-006">STT-VER-006</a>]; EKU is checked against each</span>
+<span class="tok-comment"> * entry&#x27;s certificate type [<a href="explorer.html#STT-VER-004">STT-VER-004</a>].</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Implemented by the library.</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-Verifier">Verifier</span> {
+<span class="tok-comment">    /** `now` is passed in: no ambient clock. [<a href="explorer.html#STT-VER-005">STT-VER-005</a>] */</span>
+    <span class="tok-key">fun</span> verify(hc1: String, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult
+
+<span class="tok-comment">    /** Same, for raw COSE_Sign1 bytes. [<a href="explorer.html#STT-GEN-009">STT-GEN-009</a>] */</span>
+    <span class="tok-key">fun</span> verifyCose(cose: ByteArray, store: TrustStore, reg: Registry, now: NumericDate, options: VerifierOptions): VerificationResult
+
+<span class="tok-comment">    /** [<a href="explorer.html#STT-VER-011">STT-VER-011</a>] */</span>
+    <span class="tok-key">fun</span> readUnverified(hc1: String, reg: Registry, limits: DecodeLimits): HcertResult&lt;UnverifiedHcert, VerificationFailure&gt;
+}
+</code></pre></section><section class="section" id="kt-file-vhl-Vhl"><div class="section-head"><h2><code>vhl/Vhl.kt</code></h2><a class="small" href="https://github.com/litlfred/smart-trust-tools/blob/main/tools/hcert-kotlin/hcert-api/src/commonMain/kotlin/who/smart/trust/vhl/Vhl.kt">source</a></div><pre><code><span class="tok-comment">// GENERATED by tools/wit2kotlin/wit2kotlin.py from api/wit/vhl.wit (interface vhl). Do not edit.</span>
+<span class="tok-key">package</span> who.smart.trust.vhl
+
+<span class="tok-key">import</span> who.smart.trust.HcertResult
+<span class="tok-key">import</span> who.smart.trust.types.NumericDate
+<span class="tok-key">import</span> who.smart.trust.types.ValidationIssue
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * The SMART Health Links payload format that IHE VHL reuses. At HCERT</span>
+<span class="tok-comment"> * claim -260 key 5 it is a CBOR map with these text keys</span>
+<span class="tok-comment"> * (fhir-base-url is extension.fhirBaseUrl). [<a href="explorer.html#STT-VHL-001">STT-VHL-001</a>, <a href="explorer.html#STT-VHL-002">STT-VHL-002</a>]</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-VhlPayload">VhlPayload</span>(
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Manifest URL: a FHIR List search with _id, code, status and</span>
+<span class="tok-comment">     * patient.identifier.</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> url: String,
+<span class="tok-comment">    /** 32 random bytes, 43 base64url characters. */</span>
+    <span class="tok-key">val</span> key: String,
+<span class="tok-comment">    /** Expiry, epoch seconds. */</span>
+    <span class="tok-key">val</span> exp: Long? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** L and/or P, in alphabetical order. */</span>
+    <span class="tok-key">val</span> flag: String? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** At most 80 characters. */</span>
+    <span class="tok-key">val</span> label: String? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** Protocol version; 1 when absent. */</span>
+    <span class="tok-key">val</span> v: Int? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** extension.fhirBaseUrl, for the OAuth with SSRAA option. */</span>
+    <span class="tok-key">val</span> fhirBaseUrl: String? = <span class="tok-key">null</span>,
+)
+
+<span class="tok-key">sealed</span> <span class="tok-key">interface</span> <span class="tok-name" id="kt-VhlError">VhlError</span> {
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Invalid">Invalid</span>(<span class="tok-key">val</span> value: List&lt;ValidationIssue&gt;) : VhlError
+
+<span class="tok-comment">    /** Not of the form vhlink:/&lt;base64url JSON&gt;. */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-NotAVhlink">NotAVhlink</span>(<span class="tok-key">val</span> value: String) : VhlError
+
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Manifest">Manifest</span>(<span class="tok-key">val</span> value: String) : VhlError
+
+<span class="tok-comment">    /** Wrong key, a bad tag, or a malformed JWE. */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-DecryptFailed">DecryptFailed</span>(<span class="tok-key">val</span> value: String) : VhlError
+
+<span class="tok-comment">    /** A JWE alg or enc other than dir / A256GCM. [<a href="explorer.html#STT-VHL-007">STT-VHL-007</a>] */</span>
+    <span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Unsupported">Unsupported</span>(<span class="tok-key">val</span> value: String) : VhlError
+}
+
+<span class="tok-comment">/** The ITI-YY5 Retrieve Manifest request for the host to POST. */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-ManifestRequest">ManifestRequest</span>(
+<span class="tok-comment">    /** &lt;base&gt;/List/_search */</span>
+    <span class="tok-key">val</span> url: String,
+<span class="tok-comment">    /** application/x-www-form-urlencoded */</span>
+    <span class="tok-key">val</span> contentType: String,
+    <span class="tok-key">val</span> body: String,
+)
+
+<span class="tok-comment">/** One document listed by the manifest. */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-ManifestDocument">ManifestDocument</span>(
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * DocumentReference.content.attachment.url, when the DocumentReference</span>
+<span class="tok-comment">     * was included; the host GETs it (ITI-68).</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">val</span> url: String? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** List.entry.item.reference, when it was not; the host reads it first. */</span>
+    <span class="tok-key">val</span> reference: String? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** The decrypted content type (attachment.contentType). */</span>
+    <span class="tok-key">val</span> contentType: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> title: String? = <span class="tok-key">null</span>,
+)
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-Decrypted">Decrypted</span>(
+<span class="tok-comment">    /** The JWE cty header, when present. */</span>
+    <span class="tok-key">val</span> contentType: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> content: ByteArray,
+)
+
+<span class="tok-comment">/** What the receiver signs for the HTTP Message Signatures option. */</span>
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-SignatureRequest">SignatureRequest</span>(
+    <span class="tok-key">val</span> method: String,
+    <span class="tok-key">val</span> authority: String,
+    <span class="tok-key">val</span> path: String,
+    <span class="tok-key">val</span> contentType: String? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> body: ByteArray? = <span class="tok-key">null</span>,
+    <span class="tok-key">val</span> keyid: String,
+<span class="tok-comment">    /** e.g. ecdsa-p256-sha256 */</span>
+    <span class="tok-key">val</span> alg: String,
+    <span class="tok-key">val</span> created: NumericDate,
+)
+
+<span class="tok-key">data</span> <span class="tok-key">class</span> <span class="tok-name" id="kt-SignatureBase">SignatureBase</span>(
+<span class="tok-comment">    /** RFC 9530 Content-Digest header value, when there is a body. */</span>
+    <span class="tok-key">val</span> contentDigest: String? = <span class="tok-key">null</span>,
+<span class="tok-comment">    /** Signature-Input header value. */</span>
+    <span class="tok-key">val</span> signatureInput: String,
+<span class="tok-comment">    /** The RFC 9421 signature base: the bytes the host signs. */</span>
+    <span class="tok-key">val</span> base: ByteArray,
+)
+
+<span class="tok-comment">/**</span>
+<span class="tok-comment"> * Verifiable Health Links, as the IHE ITI VHL profile specifies them, with</span>
+<span class="tok-comment"> * the SMART Health Links payload format. Pure functions: the host does the</span>
+<span class="tok-comment"> * HTTP (ITI-YY5 manifest search, ITI-68 document GETs) over mutual TLS, holds</span>
+<span class="tok-comment"> * the receiver&#x27;s signing key and logs audit events. [<a href="explorer.html#STT-VHL-010">STT-VHL-010</a>]</span>
+<span class="tok-comment"> *</span>
+<span class="tok-comment"> * Implemented by the library.</span>
+<span class="tok-comment"> */</span>
+<span class="tok-key">interface</span> <span class="tok-name" id="kt-Vhl">Vhl</span> {
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * Every rule of the payload format; with `now`, an expired link too.</span>
+<span class="tok-comment">     * [<a href="explorer.html#STT-VHL-001">STT-VHL-001</a>, <a href="explorer.html#STT-VHL-009">STT-VHL-009</a>]</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> validate(p: VhlPayload, now: NumericDate?): List&lt;ValidationIssue&gt;
+
+<span class="tok-comment">    /** [<a href="explorer.html#STT-VHL-003">STT-VHL-003</a>] */</span>
+    <span class="tok-key">fun</span> toVhlink(p: VhlPayload): String
+
+    <span class="tok-key">fun</span> fromVhlink(text: String): HcertResult&lt;VhlPayload, VhlError&gt;
+
+<span class="tok-comment">    /** A new key from the platform&#x27;s secure random generator. [<a href="explorer.html#STT-VHL-004">STT-VHL-004</a>] */</span>
+    <span class="tok-key">fun</span> newKey(): String
+
+<span class="tok-comment">    /** [<a href="explorer.html#STT-VHL-005">STT-VHL-005</a>] */</span>
+    <span class="tok-key">fun</span> buildManifestRequest(p: VhlPayload, recipient: String, passcode: String?, embeddedLengthMax: Int?): HcertResult&lt;ManifestRequest, VhlError&gt;
+
+<span class="tok-comment">    /** The ITI-YY5 searchset Bundle. [<a href="explorer.html#STT-VHL-006">STT-VHL-006</a>] */</span>
+    <span class="tok-key">fun</span> parseManifest(bundleJson: String): HcertResult&lt;List&lt;ManifestDocument&gt;, VhlError&gt;
+
+<span class="tok-comment">    /** JWE Compact, dir / A256GCM, the payload key. [<a href="explorer.html#STT-VHL-007">STT-VHL-007</a>] */</span>
+    <span class="tok-key">fun</span> encrypt(content: ByteArray, contentType: String, key: String): HcertResult&lt;String, VhlError&gt;
+
+    <span class="tok-key">fun</span> decrypt(jwe: String, key: String): HcertResult&lt;Decrypted, VhlError&gt;
+
+<span class="tok-comment">    /** [<a href="explorer.html#STT-VHL-008">STT-VHL-008</a>] */</span>
+    <span class="tok-key">fun</span> buildSignatureBase(r: SignatureRequest): SignatureBase
+
+<span class="tok-comment">    /**</span>
+<span class="tok-comment">     * The Signature header value. An ecdsa-p256-sha256 DER signature is</span>
+<span class="tok-comment">     * converted to r||s.</span>
+<span class="tok-comment">     */</span>
+    <span class="tok-key">fun</span> signatureHeader(signature: ByteArray, alg: String): HcertResult&lt;String, VhlError&gt;
+}
+</code></pre></section>
+</main></body>
+</html>

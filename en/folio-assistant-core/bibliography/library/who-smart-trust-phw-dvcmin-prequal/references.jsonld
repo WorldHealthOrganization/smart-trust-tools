@@ -1,0 +1,27 @@
+{
+  "@context": {
+    "@base": "https://litlfred.github.io/folio/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "bibo": "http://purl.org/ontology/bibo/",
+    "fabio": "http://purl.org/spar/fabio/",
+    "dcterms:source": {
+      "@type": "@id"
+    },
+    "dcterms:hasVersion": {
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "references/who-smart-trust-phw-dvcmin-prequal",
+      "@type": [
+        "fabio:Work",
+        "bibo:Document"
+      ],
+      "dcterms:title": "DVCMinPreQual profile (FSH)",
+      "dcterms:identifier": "https://github.com/WorldHealthOrganization/smart-trust-phw/blob/main/input/fsh/models/DVCMinPreQual.fsh",
+      "dcterms:source": "library/who-smart-trust-phw-dvcmin-prequal/manifest.jsonld",
+      "dcterms:hasVersion": "library/who-smart-trust-phw-dvcmin-prequal"
+    }
+  ]
+}

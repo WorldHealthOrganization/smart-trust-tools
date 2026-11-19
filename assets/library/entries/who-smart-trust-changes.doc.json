@@ -1,0 +1,551 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-changes",
+  "title": "Change Log",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "headings",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-changes",
+      "number": null,
+      "title": "Changes",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 13,
+      "summary": null,
+      "keywords": [],
+      "extract": "This provides a list of changes to the SMART Trust IG.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s001-changes"
+      ]
+    },
+    {
+      "id": "s002-2024-01-29-v1-0-0-first-stable-release",
+      "number": null,
+      "title": "2024-01-29 v1.0.0 - First stable release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 11,
+      "summary": null,
+      "keywords": [],
+      "extract": "First stable release",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s002-2024-01-29-v1-0-0-first-stable-release"
+      ]
+    },
+    {
+      "id": "s003-2024-02-01-v1-1-0",
+      "number": null,
+      "title": "2024-02-01 v1.1.0",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 7,
+      "summary": null,
+      "keywords": [],
+      "extract": "Hcert specifications added",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s003-2024-02-01-v1-1-0"
+      ]
+    },
+    {
+      "id": "s004-2024-02-21-v1-1-1",
+      "number": null,
+      "title": "2024-02-21 v1.1.1",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 7,
+      "summary": null,
+      "keywords": [],
+      "extract": "video tutorials added",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s004-2024-02-21-v1-1-1"
+      ]
+    },
+    {
+      "id": "s005-2024-03-22-v1-1-2-release",
+      "number": null,
+      "title": "2024-03-22 v1.1.2 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 46,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "added",
+          "heading": false
+        },
+        {
+          "term": "release",
+          "heading": true
+        },
+        {
+          "term": "dashboard",
+          "heading": false
+        }
+      ],
+      "extract": "HCert Logical Model and specification updated with subclaim details and notes Rapid assessment template for proposing new trust domains added Content Profiles include details about Trust Domain FAQ page added Link to country participation dashboard added",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s005-2024-03-22-v1-1-2-release"
+      ]
+    },
+    {
+      "id": "s006-2024-10-28-v1-1-4-release",
+      "number": null,
+      "title": "2024-10-28 v1.1.4 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 32,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "updated",
+          "heading": false
+        },
+        {
+          "term": "release",
+          "heading": true
+        },
+        {
+          "term": "onboarding",
+          "heading": false
+        }
+      ],
+      "extract": "HCert Logical Model updated with subclaim for DVC Onboarding Checklist updated Onboarding process revised to remove Transitive processes Latest country participation status updated",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s006-2024-10-28-v1-1-4-release"
+      ]
+    },
+    {
+      "id": "s007-2024-12-19-v1-1-5-release",
+      "number": null,
+      "title": "2024-12-19 v1.1.5 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 9,
+      "summary": null,
+      "keywords": [],
+      "extract": "Onboarding Checklist updated",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s007-2024-12-19-v1-1-5-release"
+      ]
+    },
+    {
+      "id": "s008-2025-04-02-v1-2-0-release",
+      "number": null,
+      "title": "2025-04-02 v1.2.0 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 71,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "prod environments",
+          "heading": false
+        },
+        {
+          "term": "added",
+          "heading": false
+        },
+        {
+          "term": "trustlist",
+          "heading": false
+        }
+      ],
+      "extract": "Upgraded to FHIR 5.0.0 IPS Pilgrimage trust domain added PH4H Letters of Application added (English and Spanish) DAK API Documentation Hub added TNG Endpoints page added covering DEV, UAT, and PROD environments Participant ValueSets for DEV, UAT, and PROD environments introduced with automated nightly generation DID Trustlist v2 added (multiple DID files per key type); DID Trustlist v1 deprecated",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s008-2025-04-02-v1-2-0-release"
+      ]
+    },
+    {
+      "id": "s009-2025-10-27-v1-3-0-release",
+      "number": null,
+      "title": "2025-10-27 v1.3.0 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 28,
+      "summary": null,
+      "keywords": [],
+      "extract": "Trust Network Gateway additional context JSON-LD file added DID context extension links updated to reference FHIR specifications Participant lists updated",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s009-2025-10-27-v1-3-0-release"
+      ]
+    },
+    {
+      "id": "s010-2026-02-11-v1-4-0-release",
+      "number": null,
+      "title": "2026-02-11 v1.4.0 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 32,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "instructions",
+          "heading": false
+        },
+        {
+          "term": "release",
+          "heading": true
+        },
+        {
+          "term": "updated",
+          "heading": false
+        }
+      ],
+      "extract": "Onboarding Checklist updated with detailed curl command validation instructions Windows-specific curl instructions added (OpenSSL-based build required) IOM country mapping added Participant lists updated",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s010-2026-02-11-v1-4-0-release"
+      ]
+    },
+    {
+      "id": "s011-2026-04-27-v1-5-0-release",
+      "number": null,
+      "title": "2026-04-27 v1.5.0 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 47,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "english",
+          "heading": false
+        },
+        {
+          "term": "release",
+          "heading": true
+        },
+        {
+          "term": "added",
+          "heading": false
+        }
+      ],
+      "extract": "C.L.38.2023 (Global Digital Health Certification Network) circular letter references added to Overview (Arabic, Chinese, English, French, Russian) Trust Network Gateway Letters of Application added for all languages (English, Arabic, French, Mandarin, Russian, Spanish) and PH4H Updated Participant onboarding list",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s011-2026-04-27-v1-5-0-release"
+      ]
+    },
+    {
+      "id": "s012-2026-07-23-v1-6-0-release",
+      "number": null,
+      "title": "2026-07-23 v1.6.0 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 55,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "participant generation",
+          "heading": false
+        },
+        {
+          "term": "updates",
+          "heading": false
+        },
+        {
+          "term": "fixed",
+          "heading": false
+        }
+      ],
+      "extract": "Nightly participant generation fixes: Fixed GitHub API rate limiting in the nightly participant generation workflow Fixed missing Participants CodeSystem updates Additional updates: Clarified that the HCERT CWT must include the signature for validation Updated FSH model definitions for cardinality on CWT, and HCERT configuration",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s012-2026-07-23-v1-6-0-release"
+      ]
+    },
+    {
+      "id": "s013-2026-07-29-v1-7-0-release",
+      "number": null,
+      "title": "2026-07-29 v1.7.0 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 36,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "participant generation",
+          "heading": false
+        },
+        {
+          "term": "fixed",
+          "heading": false
+        },
+        {
+          "term": "release",
+          "heading": true
+        }
+      ],
+      "extract": "Nightly participant generation fixes: Fixed GitHub API rate limiting in the nightly participant generation workflow Fixed missing Participants Added MedicationOverviewMin as a new payload type in HCERT",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s013-2026-07-29-v1-7-0-release"
+      ]
+    },
+    {
+      "id": "s014-2026-08-27-v1-7-1-release",
+      "number": null,
+      "title": "2026-08-27 v1.7.1 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 11,
+      "summary": null,
+      "keywords": [],
+      "extract": "updated GDHCN Participants onboarding status",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s014-2026-08-27-v1-7-1-release"
+      ]
+    },
+    {
+      "id": "s015-2026-09-03-v1-7-2-release",
+      "number": null,
+      "title": "2026-09-03 v1.7.2 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 13,
+      "summary": null,
+      "keywords": [],
+      "extract": "updated GDHCN Administrative and Operational Framework letter",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s015-2026-09-03-v1-7-2-release"
+      ]
+    },
+    {
+      "id": "s016-2026-10-01-v1-7-3-release",
+      "number": null,
+      "title": "2026-10-01 v1.7.3 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 38,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "gdhcn administrative",
+          "heading": false
+        },
+        {
+          "term": "updated gdhcn",
+          "heading": false
+        },
+        {
+          "term": "operational framework",
+          "heading": false
+        }
+      ],
+      "extract": "Added GDHCN Administrative and Operational Framework as a top-level menu item next to Home Updated GDHCN Administrative and Operational Framework document Updated GDHCN Participants onboarding status Participant lists updated",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s016-2026-10-01-v1-7-3-release"
+      ]
+    },
+    {
+      "id": "s017-2026-10-09-v1-7-4-release",
+      "number": null,
+      "title": "2026-10-09 v1.7.4 - release",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 13,
+      "summary": null,
+      "keywords": [],
+      "extract": "Updated GDHCN Administrative and Operational Framework document",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s017-2026-10-09-v1-7-4-release"
+      ]
+    },
+    {
+      "id": "s018-v1-7-5",
+      "number": null,
+      "title": "v1.7.5",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 89,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "logical model",
+          "heading": false
+        },
+        {
+          "term": "worked",
+          "heading": false
+        },
+        {
+          "term": "dvc",
+          "heading": false
+        }
+      ],
+      "extract": "QR Code Generation page added, with step-by-step HCERT encoding, signing and decoding instructions, worked through with a DVC payload Worked DVC example added, covering a newborn birth-dose certificate issued by GDHCN DEV participant XXR and signed with a key onboarded to the DEV trust network, using WHO PreQual product identifiers CWT Payload logical model updated to allow more than one health certificate under the",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-changes/blocks/prose-s018-v1-7-5"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "keywords": [
+    {
+      "term": "page added",
+      "heading": false
+    },
+    {
+      "term": "application added",
+      "heading": false
+    },
+    {
+      "term": "participant generation",
+      "heading": false
+    },
+    {
+      "term": "model updated",
+      "heading": false
+    },
+    {
+      "term": "checklist updated",
+      "heading": false
+    },
+    {
+      "term": "updated gdhcn",
+      "heading": false
+    },
+    {
+      "term": "lists updated",
+      "heading": false
+    },
+    {
+      "term": "release hcert",
+      "heading": false
+    },
+    {
+      "term": "onboarding checklist",
+      "heading": false
+    },
+    {
+      "term": "hcert logical",
+      "heading": false
+    },
+    {
+      "term": "generation fixes",
+      "heading": false
+    },
+    {
+      "term": "generation workflow",
+      "heading": false
+    }
+  ],
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 18,
+      "note": "one level"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 18 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-changes"
+  }
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "id": "who-smart-trust-cwt-payload-model",
+    "type": "document",
+    "title": "CWTPayload logical model (FSH)",
+    "URL": "https://github.com/WorldHealthOrganization/smart-trust/blob/main/input/fsh/models/cwt_payload.fsh"
+  }
+]

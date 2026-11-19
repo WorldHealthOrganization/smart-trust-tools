@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "ihe-iti-vhl-actors",
+  "blocks": [
+    {
+      "id": "library/ihe-iti-vhl-actors/blocks/prose-s001-actors-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "actors.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-actors-fsh.md",
+      "narrative": null,
+      "content": "```text\nInstance: TrustAnchor\nInstanceOf: ActorDefinition\nUsage: #definition\n* name = \"TrustAnchor\"\n* title = \"Trust Anchor\"\n* description = \"An authorized organization in the trust framework that manages and distributes PKI material—such as public key certificates and revocation lists—to participants in the network. It ensures that this material is trustworthy and available, enabling VHL Sharers and VHL Receivers to verify digital signatures and authenticate the origin of shared data.\"\n* status = $pubStatus#active\n* publisher = \"IHE\"\n* type = $actorType#system\n* capabilities[+] = Canonical(IH",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

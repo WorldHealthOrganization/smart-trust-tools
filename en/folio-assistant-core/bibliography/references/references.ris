@@ -1,0 +1,139 @@
+TY  - ELEC
+ID  - who-smart-trust-changes
+TI  - Change Log
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/changes.html
+ER  - 
+
+TY  - ELEC
+ID  - who-smart-trust-data-exchange
+TI  - Data Exchange
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/data_exchange.html
+ER  - 
+
+TY  - ELEC
+ID  - who-ddcc-ig
+TI  - DDCC Implementation Guide
+PB  - World Health Organization
+UR  - https://smart.who.int/ddcc/
+ER  - 
+
+TY  - ELEC
+ID  - who-trust-phw-dvc-vaccines-vs
+TI  - DVC - Vaccines value set (trust-phw)
+PB  - World Health Organization
+UR  - http://smart.who.int/trust-phw/ValueSet-DVCVaccines.html
+ER  - 
+
+TY  - ELEC
+ID  - who-smart-trust-endpoints
+TI  - Endpoints
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/endpoints.html
+ER  - 
+
+TY  - ELEC
+ID  - who-trust-gdhcn-key-usage-vs
+TI  - GDHCN Key Usage value set
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/ValueSet-KeyUsage.html
+ER  - 
+
+TY  - ELEC
+ID  - who-trust-gdhcn-participants-vs
+TI  - GDHCN Participants value set
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/ValueSet-Participants.html
+ER  - 
+
+TY  - ELEC
+ID  - who-trust-gdhcn-trust-domain-vs
+TI  - GDHCN Trust Domain value set
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/ValueSet-Domains.html
+ER  - 
+
+TY  - ELEC
+ID  - who-smart-trust-did-gdhcn
+TI  - GDHCN Trustlists (DID)
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/concepts_did_gdhcn.html
+ER  - 
+
+TY  - ELEC
+ID  - who-smart-trust-hcert-spec
+TI  - HCERT Specification
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/hcert_spec.html
+ER  - 
+
+TY  - ELEC
+ID  - who-icvp-ig
+TI  - ICVP Implementation Guide
+PB  - World Health Organization
+UR  - https://smart.who.int/icvp
+ER  - 
+
+TY  - ELEC
+ID  - ihe-iti-vhl-volume-1
+TI  - IHE ITI Verifiable Health Link (VHL), Volume 1
+PB  - IHE International
+UR  - https://profiles.ihe.net/ITI/VHL/volume-1.html
+ER  - 
+
+TY  - ELEC
+ID  - ihe-iti-vhl-iti-yy3
+TI  - IHE VHL ITI-YY3 Generate VHL
+PB  - IHE International
+UR  - https://profiles.ihe.net/ITI/VHL/ITI-YY3.html
+ER  - 
+
+TY  - ELEC
+ID  - ihe-iti-vhl-iti-yy4
+TI  - IHE VHL ITI-YY4 Provide VHL
+PB  - IHE International
+UR  - https://profiles.ihe.net/ITI/VHL/ITI-YY4.html
+ER  - 
+
+TY  - ELEC
+ID  - ihe-iti-vhl-iti-yy5
+TI  - IHE VHL ITI-YY5 Retrieve Manifest
+PB  - IHE International
+UR  - https://profiles.ihe.net/ITI/VHL/ITI-YY5.html
+ER  - 
+
+TY  - ELEC
+ID  - who-ph4h-medication-treatment-line-min
+TI  - MedicationTreatmentLineMin logical model (ph4h)
+PB  - World Health Organization
+UR  - http://smart.who.int/ph4h/StructureDefinition-MedicationTreatmentLineMin.html
+ER  - 
+
+TY  - ELEC
+ID  - who-smart-trust-qr-code-generation
+TI  - QR Code Generation
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/qr_code_generation.html
+ER  - 
+
+TY  - ELEC
+ID  - who-smart-trust-reference-implementation
+TI  - Reference Implementations
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/reference_implementation.html
+ER  - 
+
+TY  - ELEC
+ID  - who-smart-trust-trust-domains
+TI  - Trust Domains
+PB  - World Health Organization
+UR  - https://smart.who.int/trust/trust_domains.html
+ER  - 
+
+TY  - GEN
+ID  - who-itb
+TI  - WHO-ITB: Interoperability Test Bed with HCERT validation (GDHCN Trust Network)
+PB  - World Health Organization
+UR  - https://github.com/WorldHealthOrganization/WHO-ITB/tree/883291d51e206719c1417cf95393a5cd8b20dc4b
+ER  - 

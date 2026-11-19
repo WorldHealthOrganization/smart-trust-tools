@@ -1,0 +1,269 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-endpoints",
+  "title": "who-smart-trust-endpoints",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "headings",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-endpoints",
+      "number": null,
+      "title": "Endpoints",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 16,
+      "summary": null,
+      "keywords": [],
+      "extract": "The following describes the active services and endpoints for the GDHCN Trust Network Gateway.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-endpoints/blocks/prose-s001-endpoints"
+      ]
+    },
+    {
+      "id": "s002-operational-metadata",
+      "number": null,
+      "title": "Operational Metadata",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 3,
+      "summary": null,
+      "keywords": [],
+      "extract": null,
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-endpoints/blocks/prose-s002-operational-metadata"
+      ]
+    },
+    {
+      "id": "s003-trust-domains",
+      "number": null,
+      "title": "Trust Domains",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 18,
+      "summary": null,
+      "keywords": [],
+      "extract": "The list of active trust domains is maintained in the GDHCN Trust Domain Value Set.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-endpoints/blocks/prose-s003-trust-domains"
+      ]
+    },
+    {
+      "id": "s004-key-usage-codes",
+      "number": null,
+      "title": "Key Usage Codes",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 19,
+      "summary": null,
+      "keywords": [],
+      "extract": "The list of key usage codes is maintained in the GDHCN Key Usage Value Set.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-endpoints/blocks/prose-s004-key-usage-codes"
+      ]
+    },
+    {
+      "id": "s005-participants",
+      "number": null,
+      "title": "Participants",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 17,
+      "summary": null,
+      "keywords": [],
+      "extract": "The list of onboarded Trust Network Participants is availabe in the GDHCN Participants Value Set.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-endpoints/blocks/prose-s005-participants"
+      ]
+    },
+    {
+      "id": "s006-trustlist-distribution-endpoints",
+      "number": null,
+      "title": "Trustlist Distribution Endpoints",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 77,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "endpoints",
+          "heading": true
+        },
+        {
+          "term": "distribution",
+          "heading": true
+        },
+        {
+          "term": "trustlist",
+          "heading": true
+        }
+      ],
+      "extract": "THe following are the endpoints for the GDHCN DID Trust List for each of development (DEV), user-acceptence testing (UAT) and production (PROD) **environment*s: Environment; Variant; URL DEV; Embedded; https://tng-cdn-dev.who.int/v2/trustlist/did.json DEV; Reference; https://tng-cdn-dev.who.int/v2/trustlist-ref/did.json UAT; Embedded; https://tng-cdn-uat.who.int/v2/trustlist/did.json UAT; Reference;",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-endpoints/blocks/prose-s006-trustlist-distribution-endpoints"
+      ]
+    },
+    {
+      "id": "s007-trust-network-gateway",
+      "number": null,
+      "title": "Trust Network Gateway",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 47,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "network gateway",
+          "heading": true
+        },
+        {
+          "term": "trust network",
+          "heading": true
+        },
+        {
+          "term": "prod",
+          "heading": false
+        }
+      ],
+      "extract": "THe following are the endpoints for the Trust Network Gateway for each of development (DEV), user-acceptence testing (UAT) and production (PROD) **environment*s: Environment; URL PROD; https://tng.who.int UAT; https://tng-uat.who.int DEV; https://tng-dev.who.int",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-endpoints/blocks/prose-s007-trust-network-gateway"
+      ]
+    },
+    {
+      "id": "s008-status-monitoring-dashboards",
+      "number": null,
+      "title": "Status Monitoring Dashboards",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 99,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "prod country",
+          "heading": false
+        },
+        {
+          "term": "uat country",
+          "heading": false
+        },
+        {
+          "term": "dev country",
+          "heading": false
+        }
+      ],
+      "extract": "The following dashboards reflect the realtime status of key materials for each of development (DEV), user-acceptence testing (UAT) and production (PROD) **environment*s: Environment; Dashboard DEV; Country certificate expiry DEV; Country Onboarding Status DEV; Country Queries DEV; Gateway Availability Dashboard UAT; Country certificate expiry UAT; Country Queries UAT; Gateway Availability Dashboard PROD; Country",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-endpoints/blocks/prose-s008-status-monitoring-dashboards"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "keywords": [
+    {
+      "term": "prod country",
+      "heading": false
+    },
+    {
+      "term": "uat country",
+      "heading": false
+    },
+    {
+      "term": "dev country",
+      "heading": false
+    },
+    {
+      "term": "user-acceptence testing",
+      "heading": false
+    },
+    {
+      "term": "environment",
+      "heading": false
+    },
+    {
+      "term": "network gateway",
+      "heading": true
+    }
+  ],
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 8,
+      "note": "3 levels"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 8 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-endpoints"
+  }
+}

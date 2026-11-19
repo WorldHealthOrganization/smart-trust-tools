@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="../../../../../assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="../../../../../assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  
+
+  
+
+  
+    <script src="../../../../../assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="../../../../../assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>External schemas — SMART Trust HCERT library tools | SMART Trust HCERT library tools</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="External schemas — SMART Trust HCERT library tools" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The specifications SMART Trust HCERT library tools declares in its own external-schema directory: the edition of each, what would move if one bumped, and the terms it branches on." />
+<meta name="twitter:description" property="og:description" content="The specifications SMART Trust HCERT library tools declares in its own external-schema directory: the edition of each, what would move if one bumped, and the terms it branches on." />
+<link rel="canonical" href="https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/external-schemas/instance/smart-trust-tools/" />
+<meta property="og:url" content="https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/external-schemas/instance/smart-trust-tools/" />
+<meta property="og:site_name" content="SMART Trust HCERT library tools" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="External schemas — SMART Trust HCERT library tools" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"The specifications SMART Trust HCERT library tools declares in its own external-schema directory: the edition of each, what would move if one bumped, and the terms it branches on.","headline":"External schemas — SMART Trust HCERT library tools","url":"https://worldhealthorganization.github.io/smart-trust-tools/en/cat-harness/external-schemas/instance/smart-trust-tools/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <script type="application/json" id="fa-site-scheme">{"scheme": "dark"}</script><!-- fa-first-paint:begin -->
+<script>(function(){var d=document.documentElement,s=null,c="dark";try{s=localStorage.getItem("fa-color-scheme")}catch(e){}if(s!=="light"&&s!=="dark"){s="light";try{if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)s="dark"}catch(e){}}try{var n=document.getElementById("fa-site-scheme");if(n)c=JSON.parse(n.textContent).scheme==="light"?"light":"dark"}catch(e){}d.setAttribute("data-fa-scheme",s);var j=window.jtd;if(s!==c&&j&&typeof j.setTheme==="function"){try{j.setTheme(s)}catch(e){}}})();</script>
+<style>html{background-color:#27262b}html[data-fa-scheme="light"]{background-color:#ffffff}</style>
+<!-- fa-first-paint:end --><meta name="fa-render-regions" content="1">
+<script>document.documentElement.setAttribute("data-fa-render","pending");</script><style>
+  .bpmn-figure {
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid rgba(128, 128, 128, 0.35);
+    border-radius: 6px;
+    margin: 1em 0 0.4em;
+  }
+  .bpmn-figure img {
+    display: block;
+    width: 100%;
+    min-width: 1200px;
+    max-width: none;
+  }
+  .bpmn-source {
+    margin-top: 0;
+    font-size: 0.75rem;
+  }
+</style><script type="application/json" id="fa-translation-meta">{
+  "lang": "en",
+  "translationStatus": "",
+  "translationSource": "",
+  "supportedLocales": ["ar","zh","en","fr","ru","es"],
+  "availableLocales": null,
+  "translationQa":{
+    "key": "page.translation",
+    "slug": "en-cat-harness-external-schemas-instance-smart-trust-tools-index",
+    "src": "../../../../../assets/qa/en-cat-harness-external-schemas-instance-smart-trust-tools-index/page.translation.json",
+    "index": "../../../../../assets/qa/en-cat-harness-external-schemas-instance-smart-trust-tools-index/qa-index.json",
+    "list": "../../../../../assets/qa/translation-qa-pages.json"
+  },
+  "sweep":{
+    "absent": "smart-trust-tools publishes no translation QA sweep on this site",
+    "run": false,
+    "sweptAt": "",
+    "totalPages": 0,
+    "pagesWithTranslations": 0,
+    "complete": false
+  },
+  "statusSrc":"../../../../../assets/translation-status/index.json",
+  "reviewSrc":"../../../../../assets/translation-status/review.json"
+}</script><script type="application/json" id="fa-navbar-row" data-fa-row-src="harness-data"></script><script type="application/json" id="fa-site-links">{"kg":"https://litlfred.github.io/folio-assistant/smart-trust-tools/","jsonld":"https://litlfred.github.io/folio-assistant/smart-trust-tools/smart-trust-tools.jsonld","source":"https://github.com/WorldHealthOrganization/smart-trust-tools"}</script><meta name="fa-site-index-src" content="../../../../../assets/harness/site.json">
+<meta name="fa-todo-src" content="../../../../../assets/todos/index.json"><meta name="fa-todo-graph" content="../../../../../todos.jsonld"><meta name="fa-zoom-src" content="../../../../../assets/semantic-zoom.json"><meta name="fa-tiles" content="" data-fa-src="harness-data">
+<meta name="fa-glass-strip" content="[&quot;glass-todos&quot;,&quot;glass-settings&quot;]"><meta name="fa-baseurl" content="../../../../.."><meta name="fa-staging" content=""><meta name="fa-search-index" content="">
+
+<meta name="fa-beans-src" content="../../../../../assets/beans/index.json"><meta name="fa-processes-src" content="../../../../../subgraph/index.jsonld"><meta name="fa-build-src" content="../../../../../build.json"><link rel="stylesheet" href="../../../../../assets/css/navbar-row.css?v=263225e79ed9">
+<link rel="stylesheet" href="../../../../../assets/css/docs-ui.css?v=eb56f2150b3d"><link rel="stylesheet" href="../../../../../assets/css/narrow-viewport.css?v=173ef819dbf2"><link rel="stylesheet" href="../../../../../assets/css/themes.css?v=5c199f8420d3"><link rel="stylesheet" href="../../../../../assets/css/uml.css?v=e677f91cbf66"><link rel="stylesheet" href="../../../../../assets/css/avatars.css?v=9923b8bfedd1"><script type="application/json" id="fa-declared-kinds">["beans","code","code-list","docs","external-schema","fhir-logical-models","glossary","hcert-contract","hcert-generated-contract","hcert-test-vectors","library","memory","payload-models","processes","references","scenarios","schemas","skills","test-plan","tools","typologies","upstream-patches"]</script><script src="../../../../../assets/js/harness-data.js" defer></script><script src="../../../../../assets/js/kg-render.js" defer></script><script src="../../../../../assets/js/navbar-row.js?v=fb3cd5c0d28c" defer></script>
+<script src="../../../../../assets/js/docs-ui.js?v=2abe761c2b06" defer></script><script src="../../../../../assets/js/edit-links.js?v=7b072444cbb5" defer></script><script src="../../../../../assets/js/translation-review.js?v=1902d883e072" defer></script><script src="../../../../../assets/js/code-highlight.js?v=0f94772226c3" defer></script><style>
+  .folio-landing { position: relative; margin: 0 0 2rem; }
+
+  /* WHAT IS LEFT HERE, AND WHY IT IS SO LITTLE.
+     `landing.html` emits exactly one folio-landing class —
+     `folio-landing folio-landing--plain` — the no-stickies fallback, which
+     renders the description and no art. The art path moved to the sticky
+     board (`fa-sticky--backdrop` in docs-ui.css), which composites text into
+     the picture through a declared `textRegion` and a scrim.
+
+     So this block used to carry fourteen selectors of which ELEVEN matched
+     nothing: every rule reaching for `folio-landing__art`,
+     `folio-landing__text` or `folio-landing--no-region`. Measured before they
+     were cut — those three classes appear in no markup in this repository and
+     on none of the 331 published pages that were inlining the CSS for them.
+     CSS has no error for a selector that matches nothing, which is the same
+     silence that let `.fa-sticky--backdrop > .fa-sticky-art` ship wrong.
+
+     The reasoning did not go with them. The blend-direction argument for the
+     fade is now at `.fa-sticky--backdrop::before`, where a scrim replaces it;
+     the region, overflow and breakpoint-parity lessons were already
+     re-derived and better stated on `.fa-landing-sticky--fixed`. What is NOT
+     carried over is the `cqw` container-query sizing: the successor scales
+     through `--fa-text-scale` rather than container queries, so a note about
+     `container-type` not being its own query container would be advice about
+     a mechanism nothing here uses. Bean `alox`, issue #873. */
+  .folio-landing--plain {
+    position: static; width: auto; height: auto; color: inherit;
+  }
+  .folio-landing--plain p { font-size: inherit; font-weight: inherit; }
+</style>
+
+<link rel="stylesheet" href="../../../../../assets/css/navbar.css"><script src="../../../../../assets/navbar/rail-j29dkqi0u1.js" defer></script><script src="../../../../../assets/js/navbar.js" defer></script><link rel="stylesheet" href="../../../../../assets/page-layout.css" data-fa-page-layout><script src="../../../../../assets/page-layout.js" defer data-fa-page-layout></script><meta name="fa-pinned-data" content="../../../../.."></head>
+
+<body><script type="application/json" id="fa-rail" data-fa-root="https://litlfred.github.io/folio-assistant" data-fa-to-root="../../../../..">{"data":"rail-j29dkqi0u1","here":"/en/cat-harness/external-schemas/instance/smart-trust-tools/","documentIndex":{"label":"On this page","icon":"§","items":[{"href":"#the-specifications","label":"The specifications"},{"href":"#who-declares-each-specification","label":"Who declares each specification"},{"href":"#each-specification","label":"Each specification","children":[{"href":"#bytecodealliance-jco","label":"jco, the JavaScript toolchain for WebAssembly components","depth":1},{"href":"#bytecodealliance-wit","label":"WIT, the WebAssembly Component Model interface definition language","depth":1},{"href":"#hl7-fhir-r5","label":"HL7 FHIR R5","depth":1},{"href":"#hl7-smart-health-links","label":"SMART Health Cards and Links: SMART Health Links","depth":1},{"href":"#ietf-draft-faltstrom-base45","label":"draft-faltstrom-base45 (became RFC 9285)","depth":1},{"href":"#ietf-rfc1950","label":"RFC 1950 ZLIB Compressed Data Format","depth":1},{"href":"#ietf-rfc1951","label":"RFC 1951 DEFLATE Compressed Data Format","depth":1},{"href":"#ietf-rfc4648","label":"RFC 4648 The Base16, Base32, and Base64 Data Encodings","depth":1},{"href":"#ietf-rfc5280","label":"RFC 5280 Internet X.509 PKI Certificate and CRL Profile","depth":1},{"href":"#ietf-rfc7049","label":"RFC 7049 CBOR (obsoleted by RFC 8949)","depth":1},{"href":"#ietf-rfc7493","label":"RFC 7493 The I-JSON Message Format","depth":1},{"href":"#ietf-rfc7516","label":"RFC 7516 JSON Web Encryption (JWE)","depth":1},{"href":"#ietf-rfc7517","label":"RFC 7517 JSON Web Key (JWK)","depth":1},{"href":"#ietf-rfc7518","label":"RFC 7518 JSON Web Algorithms (JWA)","depth":1},{"href":"#ietf-rfc8152","label":"RFC 8152 COSE (obsoleted by RFC 9052)","depth":1},{"href":"#ietf-rfc8230","label":"RFC 8230 Using RSA Algorithms with COSE Messages (PS256)","depth":1},{"href":"#ietf-rfc8392","label":"RFC 8392 CBOR Web Token (CWT)","depth":1},{"href":"#ietf-rfc8610","label":"RFC 8610 Concise Data Definition Language (CDDL)","depth":1},{"href":"#ietf-rfc8785","label":"RFC 8785 JSON Canonicalization Scheme (JCS)","depth":1},{"href":"#ietf-rfc8949","label":"RFC 8949 Concise Binary Object Representation (CBOR)","depth":1},{"href":"#ietf-rfc9052","label":"RFC 9052 CBOR Object Signing and Encryption (COSE): Structures and Process","depth":1},{"href":"#ietf-rfc9285","label":"RFC 9285 The Base45 Data Encoding","depth":1},{"href":"#ietf-rfc9421","label":"RFC 9421 HTTP Message Signatures","depth":1},{"href":"#ietf-rfc9530","label":"RFC 9530 Digest Fields","depth":1},{"href":"#ietf-rfc9682","label":"RFC 9682 Updates to the CDDL Grammar","depth":1},{"href":"#ihe-iti-vhl","label":"IHE ITI Verifiable Health Link (VHL)","depth":1},{"href":"#itu-t-x680","label":"ITU-T X.680 Abstract Syntax Notation One (ASN.1)","depth":1},{"href":"#w3c-ccg-jws-2020","label":"JSON Web Signature 2020 (JsonWebSignature2020 Linked Data Proof suite)","depth":1},{"href":"#w3c-did-core","label":"Decentralized Identifiers (DIDs) v1.0","depth":1},{"href":"#w3c-json-ld-1-1","label":"JSON-LD 1.1","depth":1},{"href":"#w3c-rdf-canon","label":"RDF Dataset Canonicalization (RDFC-1.0, formerly URDNA2015)","depth":1},{"href":"#w3c-shacl","label":"Shapes Constraint Language (SHACL)","depth":1},{"href":"#w3c-webcrypto","label":"Web Cryptography API","depth":1},{"href":"#w3c-xmlschema11-2","label":"XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes","depth":1},{"href":"#wasi-random","label":"WASI Random (wasi:random)","depth":1},{"href":"#who-gdhcn-did-trustlist","label":"WHO GDHCN DID trustlist v2","depth":1},{"href":"#who-smart-trust-hcert","label":"WHO SMART Trust: Electronic Health Certificate (HCERT) Specification","depth":1}],"fold":"37 sub-sections"}],"collapsible":true}}</script><nav class="fa-nav" aria-label="folio-assistant" data-fa-rail="pending"><a href="../../../../../">SMART Trust HCERT library tools</a></nav>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header fa-site-bar fa-page-bar"><a class="fa-page-bar-home" href="../../../../../">SMART Trust HCERT library tools</a>
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search SMART Trust HCERT library tools" autocomplete="off">
+    <label for="search-input" class="search-label">
+      <span class="sr-only">Search SMART Trust HCERT library tools</span>
+      <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+    </label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+<span class="fa-page-bar-locale" data-fa-slot="locale"></span></div>
+
+    <div class="main-content-wrap">
+      
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <style>
+h2, h3 { scroll-margin-top: 2rem; }
+.xs-tag{display:inline-block;padding:.05rem .4rem;border-radius:3px;font-size:.72rem;
+  font-weight:600;white-space:nowrap;border:1px solid currentColor}
+.xs-ok{color:#0d6e5e}
+.xs-na{color:#5b5f66}
+.xs-missing{color:#a8200f}
+@media (prefers-color-scheme: dark) { :root:not([data-fa-scheme="light"]) .xs-ok { color: #34d399; } :root:not([data-fa-scheme="light"]) .xs-na { color: #a1a1aa; } :root:not([data-fa-scheme="light"]) .xs-missing { color: #f87171; } }
+  :root[data-fa-scheme="dark"] .xs-ok { color: #34d399; } :root[data-fa-scheme="dark"] .xs-na { color: #a1a1aa; } :root[data-fa-scheme="dark"] .xs-missing { color: #f87171; }
+  :root[data-fa-scheme="light"] { color-scheme: light; } :root[data-fa-scheme="dark"] { color-scheme: dark; }
+.table-wrapper{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  mask-image:linear-gradient(to right,black calc(100% - 2rem),transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,black calc(100% - 2rem),transparent 100%)}
+.xs-scroll-cue{display:none;font-size:.75rem;opacity:.75;margin:-.5rem 0 .75rem;font-style:italic}
+@media (max-width: 640px){.xs-scroll-cue{display:block}}
+.xs-grid{display:flex;flex-wrap:wrap;gap:.75rem;margin:1rem 0}
+.xs-stat{flex:1 1 8rem;border:1px solid rgba(128,128,128,.35);border-radius:6px;padding:.5rem .7rem}
+.xs-stat b{display:block;font-size:1.25rem;line-height:1.2}
+.xs-stat span{font-size:.75rem;opacity:.75}
+</style>
+
+<p>The records <strong>SMART Trust HCERT library tools</strong> (<code class="language-plaintext highlighter-rouge">smart-trust-tools</code>) holds in <code class="language-plaintext highlighter-rouge">external-schemas</code>, read at this build’s pins. The platform’s own registry, and the namespaces the whole corpus uses compared against it, are on <a href="../../">the full page</a>.</p>
+
+<p>A specification here is <strong>referenced, not held</strong>: the edition is named and
+the terms this repository actually acts on are materialised into the graph,
+but the document itself stays at the authority. That split is the owner’s:
+<em>“dont need to materalize, but should reference specific version being
+used”</em>, and <em>“some schema that is operational should be in KG”</em>.</p>
+
+<p>So each record answers three questions — <strong>which edition</strong>, <strong>what here
+depends on it</strong>, and <strong>which of its terms this repository branches on</strong>.</p>
+
+<div class="xs-grid">
+<div class="xs-stat"><b>37</b><span>specifications</span></div>
+<div class="xs-stat"><b>0</b><span>operative terms in graph</span></div>
+<div class="xs-stat"><b>0</b><span>declared uses</span></div>
+<div class="xs-stat"><b>75</b><span>declarations naming no record</span></div>
+</div>
+
+<h2 id="the-specifications">
+  
+  
+    <a href="#the-specifications" class="anchor-heading" aria-labelledby="the-specifications"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> The specifications
+  
+  
+</h2>
+    
+
+<p class="xs-scroll-cue" role="note" aria-hidden="true">Scroll table horizontally to view all columns &rarr;</p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>specification</th>
+      <th>authority</th>
+      <th>edition</th>
+      <th>how it is used</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="#bytecodealliance-jco">jco, the JavaScript toolchain for WebAssembly components</a></strong><br /><code class="language-plaintext highlighter-rouge">bytecodealliance-jco</code></td>
+      <td>other</td>
+      <td><a href="https://github.com/bytecodealliance/jco">1.35.0</a></td>
+      <td><code class="language-plaintext highlighter-rouge">reads</code> — this repository parses documents written in it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#bytecodealliance-wit">WIT, the WebAssembly Component Model interface definition language</a></strong><br /><code class="language-plaintext highlighter-rouge">bytecodealliance-wit</code></td>
+      <td>other</td>
+      <td><a href="https://component-model.bytecodealliance.org/design/wit.html">Component Model</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#hl7-fhir-r5">HL7 FHIR R5</a></strong><br /><code class="language-plaintext highlighter-rouge">hl7-fhir-r5</code></td>
+      <td>HL7</td>
+      <td><a href="https://hl7.org/fhir/R5/">5.0.0</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#hl7-smart-health-links">SMART Health Cards and Links: SMART Health Links</a></strong><br /><code class="language-plaintext highlighter-rouge">hl7-smart-health-links</code></td>
+      <td>HL7</td>
+      <td><a href="https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html">STU1</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-draft-faltstrom-base45">draft-faltstrom-base45 (became RFC 9285)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-draft-faltstrom-base45</code></td>
+      <td>IETF</td>
+      <td><a href="https://datatracker.ietf.org/doc/draft-faltstrom-base45">draft</a></td>
+      <td><code class="language-plaintext highlighter-rouge">cites</code> — it is referenced, and nothing here is validated against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc1950">RFC 1950 ZLIB Compressed Data Format</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc1950</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc1950">RFC 1950</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc1951">RFC 1951 DEFLATE Compressed Data Format</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc1951</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc1951">RFC 1951</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc4648">RFC 4648 The Base16, Base32, and Base64 Data Encodings</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc4648</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc4648">RFC 4648</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc5280">RFC 5280 Internet X.509 PKI Certificate and CRL Profile</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc5280</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc5280">RFC 5280</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc7049">RFC 7049 CBOR (obsoleted by RFC 8949)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc7049</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc7049">RFC 7049</a></td>
+      <td><code class="language-plaintext highlighter-rouge">cites</code> — it is referenced, and nothing here is validated against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc7493">RFC 7493 The I-JSON Message Format</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc7493</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc7493">RFC 7493</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc7516">RFC 7516 JSON Web Encryption (JWE)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc7516</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc7516">RFC 7516</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc7517">RFC 7517 JSON Web Key (JWK)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc7517</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc7517">RFC 7517</a></td>
+      <td><code class="language-plaintext highlighter-rouge">reads</code> — this repository parses documents written in it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc7518">RFC 7518 JSON Web Algorithms (JWA)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc7518</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc7518">RFC 7518</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc8152">RFC 8152 COSE (obsoleted by RFC 9052)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc8152</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc8152">RFC 8152</a></td>
+      <td><code class="language-plaintext highlighter-rouge">cites</code> — it is referenced, and nothing here is validated against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc8230">RFC 8230 Using RSA Algorithms with COSE Messages (PS256)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc8230</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc8230">RFC 8230</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc8392">RFC 8392 CBOR Web Token (CWT)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc8392</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc8392">RFC 8392</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc8610">RFC 8610 Concise Data Definition Language (CDDL)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc8610</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc8610">RFC 8610</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc8785">RFC 8785 JSON Canonicalization Scheme (JCS)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc8785</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc8785">RFC 8785</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc8949">RFC 8949 Concise Binary Object Representation (CBOR)</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc8949</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc8949">RFC 8949</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc9052">RFC 9052 CBOR Object Signing and Encryption (COSE): Structures and Process</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc9052</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc9052">RFC 9052</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc9285">RFC 9285 The Base45 Data Encoding</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc9285</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc9285">RFC 9285</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc9421">RFC 9421 HTTP Message Signatures</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc9421</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc9421">RFC 9421</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc9530">RFC 9530 Digest Fields</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc9530</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc9530">RFC 9530</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ietf-rfc9682">RFC 9682 Updates to the CDDL Grammar</a></strong><br /><code class="language-plaintext highlighter-rouge">ietf-rfc9682</code></td>
+      <td>IETF</td>
+      <td><a href="https://www.rfc-editor.org/rfc/rfc9682">RFC 9682</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#ihe-iti-vhl">IHE ITI Verifiable Health Link (VHL)</a></strong><br /><code class="language-plaintext highlighter-rouge">ihe-iti-vhl</code></td>
+      <td>other</td>
+      <td><a href="https://profiles.ihe.net/ITI/VHL/volume-1.html">4820147 (source)</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#itu-t-x680">ITU-T X.680 Abstract Syntax Notation One (ASN.1)</a></strong><br /><code class="language-plaintext highlighter-rouge">itu-t-x680</code></td>
+      <td>other</td>
+      <td><a href="https://www.itu.int/rec/T-REC-X.680">X.680</a></td>
+      <td><code class="language-plaintext highlighter-rouge">reads</code> — this repository parses documents written in it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#w3c-ccg-jws-2020">JSON Web Signature 2020 (JsonWebSignature2020 Linked Data Proof suite)</a></strong><br /><code class="language-plaintext highlighter-rouge">w3c-ccg-jws-2020</code></td>
+      <td>W3C</td>
+      <td><a href="https://w3c-ccg.github.io/lds-jws2020/">CCG Report</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#w3c-did-core">Decentralized Identifiers (DIDs) v1.0</a></strong><br /><code class="language-plaintext highlighter-rouge">w3c-did-core</code></td>
+      <td>W3C</td>
+      <td><a href="https://www.w3.org/TR/did-core/">1.0</a></td>
+      <td><code class="language-plaintext highlighter-rouge">reads</code> — this repository parses documents written in it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#w3c-json-ld-1-1">JSON-LD 1.1</a></strong><br /><code class="language-plaintext highlighter-rouge">w3c-json-ld-1-1</code></td>
+      <td>W3C</td>
+      <td><a href="https://www.w3.org/TR/json-ld11/">1.1</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#w3c-rdf-canon">RDF Dataset Canonicalization (RDFC-1.0, formerly URDNA2015)</a></strong><br /><code class="language-plaintext highlighter-rouge">w3c-rdf-canon</code></td>
+      <td>W3C</td>
+      <td><a href="https://www.w3.org/TR/rdf-canon/">W3C Recommendation 2024-05-21</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#w3c-shacl">Shapes Constraint Language (SHACL)</a></strong><br /><code class="language-plaintext highlighter-rouge">w3c-shacl</code></td>
+      <td>W3C</td>
+      <td><a href="https://www.w3.org/TR/shacl/">W3C Recommendation 2017</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#w3c-webcrypto">Web Cryptography API</a></strong><br /><code class="language-plaintext highlighter-rouge">w3c-webcrypto</code></td>
+      <td>W3C</td>
+      <td><a href="https://www.w3.org/TR/WebCryptoAPI/">W3C Recommendation</a></td>
+      <td><code class="language-plaintext highlighter-rouge">cites</code> — it is referenced, and nothing here is validated against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#w3c-xmlschema11-2">XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes</a></strong><br /><code class="language-plaintext highlighter-rouge">w3c-xmlschema11-2</code></td>
+      <td>W3C</td>
+      <td><a href="https://www.w3.org/TR/xmlschema11-2/">1.1</a></td>
+      <td><code class="language-plaintext highlighter-rouge">reads</code> — this repository parses documents written in it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#wasi-random">WASI Random (wasi:random)</a></strong><br /><code class="language-plaintext highlighter-rouge">wasi-random</code></td>
+      <td>other</td>
+      <td><a href="https://github.com/WebAssembly/wasi-random/tree/v0.2.6">0.2.6</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#who-gdhcn-did-trustlist">WHO GDHCN DID trustlist v2</a></strong><br /><code class="language-plaintext highlighter-rouge">who-gdhcn-did-trustlist</code></td>
+      <td>other</td>
+      <td><a href="https://smart.who.int/trust/concepts_did_gdhcn.html">2.0.0</a></td>
+      <td><code class="language-plaintext highlighter-rouge">reads</code> — this repository parses documents written in it</td>
+    </tr>
+    <tr>
+      <td><strong><a href="#who-smart-trust-hcert">WHO SMART Trust: Electronic Health Certificate (HCERT) Specification</a></strong><br /><code class="language-plaintext highlighter-rouge">who-smart-trust-hcert</code></td>
+      <td>other</td>
+      <td><a href="https://smart.who.int/trust/hcert_spec.html">1.7.5 (ci-build, main e277cce)</a></td>
+      <td><code class="language-plaintext highlighter-rouge">conforms</code> — this repository’s artefacts are valid against it</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="who-declares-each-specification">
+  
+  
+    <a href="#who-declares-each-specification" class="anchor-heading" aria-labelledby="who-declares-each-specification"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Who declares each specification
+  
+  
+</h2>
+    
+
+<p>A user declares the specification it depends on; the record names no user.
+That is data-modelling step 8 — the dependent holds the pointer — and it is
+why this list cannot drift from the code: a file that stops declaring stops
+being listed. Four forms are read: a <code class="language-plaintext highlighter-rouge">@conformsTo</code> tag, a <code class="language-plaintext highlighter-rouge">conformsTo:</code>
+front-matter list, an <code class="language-plaintext highlighter-rouge">xmlns</code> binding, and a graph typology whose typing module
+declares the spec (bean <code class="language-plaintext highlighter-rouge">u63y</code>).</p>
+
+<p><strong>75 declaration(s) name a specification no record has.</strong></p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>user</th>
+      <th>names</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bootstrap-tools/scripts/export-graph.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-prov-o</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/archimate/schemas/archimate.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">opengroup-archimate-3.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/archimate/schemas/diagrams.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">opengroup-archimate-3.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/archimate/schemas/metamodel.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">opengroup-archimate-3.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/archimate/schemas/rules.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">opengroup-archimate-3.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/archimate/scripts/archimate-blocks.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">opengroup-archimate-3.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/archimate/scripts/archimate-diagrams.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">opengroup-archimate-3.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/archimate/scripts/archimate-metamodel.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">opengroup-archimate-3.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/archimate/scripts/gen-archimate-pages.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">opengroup-archimate-3.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/archimate/scripts/import-archi-relationships.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">opengroup-archimate-3.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/openapi/scripts/gen-openapi-pages.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-hydra</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/content/odrl.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-odrl</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/content/vocab-mapping.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">hl7-fhir</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/content/vocab-mapping.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-skos</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/content/vocabulary.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-skos</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">hl7-fhir</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">spar-doco-deo-cito</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-csvw</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-web-annotation</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">who-smart-base</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-prov-o</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-skos</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-xsd11-datatypes</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/nquads-distribution.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-n-quads</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/prov-jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-prov-jsonld</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/kg/prov-jsonld.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">ietf-handle-system</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/schemas/library/spdx-license-expression.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">spdx-license-list</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/code-lists.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-owl2</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/code-lists.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-rdf</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/glossary-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-owl2</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/glossary-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-rdfs</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/glossary-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-skos</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/kg-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">dcmi-terms</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/kg-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">omg-bpmn-2.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/kg-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">schema-org</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/kg-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-prov-o</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/kg-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-rdfs</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/kg-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-xsd11-datatypes</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/ns-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">dcmi-terms</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/ns-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-owl2</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/ns-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-rdf</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/ns-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-rdfs</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/ns-export.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-skos</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/render-bpmn.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">omg-bpmn-2.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/render-bpmn.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">omg-dd-1.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/todo-graph.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-rdf-calendar</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/todo-graph.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">schema-org</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/scripts/todo-graph.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">dcmi-terms</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness-tools/src/workflow/process-model.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">omg-bpmn-2.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/kg/graph-management/nquads-distribution.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-n-quads</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/kg/kg-core/vocabulary-authority.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-skos</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/kg/kg-core/vocabulary-authority.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">dcmi-terms</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/kg/kg-core/vocabulary-authority.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">hl7-fhir</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/kg/kg-core/vocabulary-authority.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">schema-org</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/kg/kg-core/vocabulary-authority.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-dcat-3</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/process/workflow/bpmn-authoring.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">omg-bpmn-2.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/process/workflow/bpmn-authoring.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">omg-dd-1.0</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/process/workflow/bpmn-authoring.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bpmn-io-di</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/process/workflow/dmn-authoring.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">omg-dmn-1.3</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">cat-harness/skills/process/workflow/dmn-authoring.md</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bpmn-io-di</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fhir-harness/schemas/iti-108-consent-client.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">hl7-fhir</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fhir-harness/schemas/odrl-to-fhir-r5-permission.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">hl7-fhir</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fhir-harness/schemas/odrl-to-fhir-r5-permission.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-odrl</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fhir-harness/schemas/pcf-consent.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">hl7-fhir</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fhir-harness/schemas/pcf-consent.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-odrl</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">fhir-harness/schemas/vocab-mapping-fhir.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">hl7-fhir</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folio-assistant-core/schemas/dublin-core-render.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">dcmi-terms</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folio-assistant-core/schemas/dublin-core-render.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-rdf</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folio-assistant-core/schemas/dublin-core-render.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-xsd11-structures</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folio-assistant-core/schemas/dublin-core.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">dcmi-terms</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folio-assistant-core/schemas/glossary.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">foaf</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folio-assistant-core/schemas/glossary.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">w3c-org</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folio-assistant-core/schemas/reference.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">dcmi-terms</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folio-assistant-core/schemas/reference.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">purl-bibo</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">folio-assistant-core/schemas/reference.ts</code></td>
+      <td><code class="language-plaintext highlighter-rouge">spar-fabio</code></td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p><strong>37 record(s) nothing declares.</strong> A version bump would move nothing that says so:</p>
+
+<ul>
+  <li><a href="#bytecodealliance-jco"><code class="language-plaintext highlighter-rouge">bytecodealliance-jco</code></a></li>
+  <li><a href="#bytecodealliance-wit"><code class="language-plaintext highlighter-rouge">bytecodealliance-wit</code></a></li>
+  <li><a href="#hl7-fhir-r5"><code class="language-plaintext highlighter-rouge">hl7-fhir-r5</code></a></li>
+  <li><a href="#hl7-smart-health-links"><code class="language-plaintext highlighter-rouge">hl7-smart-health-links</code></a></li>
+  <li><a href="#ietf-draft-faltstrom-base45"><code class="language-plaintext highlighter-rouge">ietf-draft-faltstrom-base45</code></a></li>
+  <li><a href="#ietf-rfc1950"><code class="language-plaintext highlighter-rouge">ietf-rfc1950</code></a></li>
+  <li><a href="#ietf-rfc1951"><code class="language-plaintext highlighter-rouge">ietf-rfc1951</code></a></li>
+  <li><a href="#ietf-rfc4648"><code class="language-plaintext highlighter-rouge">ietf-rfc4648</code></a></li>
+  <li><a href="#ietf-rfc5280"><code class="language-plaintext highlighter-rouge">ietf-rfc5280</code></a></li>
+  <li><a href="#ietf-rfc7049"><code class="language-plaintext highlighter-rouge">ietf-rfc7049</code></a></li>
+  <li><a href="#ietf-rfc7493"><code class="language-plaintext highlighter-rouge">ietf-rfc7493</code></a></li>
+  <li><a href="#ietf-rfc7516"><code class="language-plaintext highlighter-rouge">ietf-rfc7516</code></a></li>
+  <li><a href="#ietf-rfc7517"><code class="language-plaintext highlighter-rouge">ietf-rfc7517</code></a></li>
+  <li><a href="#ietf-rfc7518"><code class="language-plaintext highlighter-rouge">ietf-rfc7518</code></a></li>
+  <li><a href="#ietf-rfc8152"><code class="language-plaintext highlighter-rouge">ietf-rfc8152</code></a></li>
+  <li><a href="#ietf-rfc8230"><code class="language-plaintext highlighter-rouge">ietf-rfc8230</code></a></li>
+  <li><a href="#ietf-rfc8392"><code class="language-plaintext highlighter-rouge">ietf-rfc8392</code></a></li>
+  <li><a href="#ietf-rfc8610"><code class="language-plaintext highlighter-rouge">ietf-rfc8610</code></a></li>
+  <li><a href="#ietf-rfc8785"><code class="language-plaintext highlighter-rouge">ietf-rfc8785</code></a></li>
+  <li><a href="#ietf-rfc8949"><code class="language-plaintext highlighter-rouge">ietf-rfc8949</code></a></li>
+  <li><a href="#ietf-rfc9052"><code class="language-plaintext highlighter-rouge">ietf-rfc9052</code></a></li>
+  <li><a href="#ietf-rfc9285"><code class="language-plaintext highlighter-rouge">ietf-rfc9285</code></a></li>
+  <li><a href="#ietf-rfc9421"><code class="language-plaintext highlighter-rouge">ietf-rfc9421</code></a></li>
+  <li><a href="#ietf-rfc9530"><code class="language-plaintext highlighter-rouge">ietf-rfc9530</code></a></li>
+  <li><a href="#ietf-rfc9682"><code class="language-plaintext highlighter-rouge">ietf-rfc9682</code></a></li>
+  <li><a href="#ihe-iti-vhl"><code class="language-plaintext highlighter-rouge">ihe-iti-vhl</code></a></li>
+  <li><a href="#itu-t-x680"><code class="language-plaintext highlighter-rouge">itu-t-x680</code></a></li>
+  <li><a href="#w3c-ccg-jws-2020"><code class="language-plaintext highlighter-rouge">w3c-ccg-jws-2020</code></a></li>
+  <li><a href="#w3c-did-core"><code class="language-plaintext highlighter-rouge">w3c-did-core</code></a></li>
+  <li><a href="#w3c-json-ld-1-1"><code class="language-plaintext highlighter-rouge">w3c-json-ld-1-1</code></a></li>
+  <li><a href="#w3c-rdf-canon"><code class="language-plaintext highlighter-rouge">w3c-rdf-canon</code></a></li>
+  <li><a href="#w3c-shacl"><code class="language-plaintext highlighter-rouge">w3c-shacl</code></a></li>
+  <li><a href="#w3c-webcrypto"><code class="language-plaintext highlighter-rouge">w3c-webcrypto</code></a></li>
+  <li><a href="#w3c-xmlschema11-2"><code class="language-plaintext highlighter-rouge">w3c-xmlschema11-2</code></a></li>
+  <li><a href="#wasi-random"><code class="language-plaintext highlighter-rouge">wasi-random</code></a></li>
+  <li><a href="#who-gdhcn-did-trustlist"><code class="language-plaintext highlighter-rouge">who-gdhcn-did-trustlist</code></a></li>
+  <li><a href="#who-smart-trust-hcert"><code class="language-plaintext highlighter-rouge">who-smart-trust-hcert</code></a></li>
+</ul>
+<h2 id="each-specification">
+  
+  
+    <a href="#each-specification" class="anchor-heading" aria-labelledby="each-specification"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Each specification
+  
+  
+</h2>
+    
+<h3 id="bytecodealliance-jco">
+  
+  
+    <a href="#bytecodealliance-jco" class="anchor-heading" aria-labelledby="bytecodealliance-jco"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> jco, the JavaScript toolchain for WebAssembly components
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">bytecodealliance-jco</code> — other, edition <a href="https://github.com/bytecodealliance/jco">1.35.0</a> — <code class="language-plaintext highlighter-rouge">reads</code>, meaning this repository parses documents written in it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> Bytecode Alliance; pinned in toolchain/node.</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="bytecodealliance-wit">
+  
+  
+    <a href="#bytecodealliance-wit" class="anchor-heading" aria-labelledby="bytecodealliance-wit"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> WIT, the WebAssembly Component Model interface definition language
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">bytecodealliance-wit</code> — other, edition <a href="https://component-model.bytecodealliance.org/design/wit.html">Component Model</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> Bytecode Alliance.</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="hl7-fhir-r5">
+  
+  
+    <a href="#hl7-fhir-r5" class="anchor-heading" aria-labelledby="hl7-fhir-r5"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> HL7 FHIR R5
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">hl7-fhir-r5</code> — HL7, edition <a href="https://hl7.org/fhir/R5/">5.0.0</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="hl7-smart-health-links">
+  
+  
+    <a href="#hl7-smart-health-links" class="anchor-heading" aria-labelledby="hl7-smart-health-links"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> SMART Health Cards and Links: SMART Health Links
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">hl7-smart-health-links</code> — HL7, edition <a href="https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html">STU1</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-draft-faltstrom-base45">
+  
+  
+    <a href="#ietf-draft-faltstrom-base45" class="anchor-heading" aria-labelledby="ietf-draft-faltstrom-base45"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> draft-faltstrom-base45 (became RFC 9285)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-draft-faltstrom-base45</code> — IETF, edition <a href="https://datatracker.ietf.org/doc/draft-faltstrom-base45">draft</a> — <code class="language-plaintext highlighter-rouge">cites</code>, meaning it is referenced, and nothing here is validated against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> Cited by the HCERT Specification; the library follows RFC 9285.</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc1950">
+  
+  
+    <a href="#ietf-rfc1950" class="anchor-heading" aria-labelledby="ietf-rfc1950"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 1950 ZLIB Compressed Data Format
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc1950</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc1950">RFC 1950</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc1951">
+  
+  
+    <a href="#ietf-rfc1951" class="anchor-heading" aria-labelledby="ietf-rfc1951"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 1951 DEFLATE Compressed Data Format
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc1951</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc1951">RFC 1951</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc4648">
+  
+  
+    <a href="#ietf-rfc4648" class="anchor-heading" aria-labelledby="ietf-rfc4648"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 4648 The Base16, Base32, and Base64 Data Encodings
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc4648</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc4648">RFC 4648</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc5280">
+  
+  
+    <a href="#ietf-rfc5280" class="anchor-heading" aria-labelledby="ietf-rfc5280"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 5280 Internet X.509 PKI Certificate and CRL Profile
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc5280</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc5280">RFC 5280</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc7049">
+  
+  
+    <a href="#ietf-rfc7049" class="anchor-heading" aria-labelledby="ietf-rfc7049"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 7049 CBOR (obsoleted by RFC 8949)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc7049</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc7049">RFC 7049</a> — <code class="language-plaintext highlighter-rouge">cites</code>, meaning it is referenced, and nothing here is validated against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> Cited by the HCERT Specification; the library follows RFC 8949 (OI-05).</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc7493">
+  
+  
+    <a href="#ietf-rfc7493" class="anchor-heading" aria-labelledby="ietf-rfc7493"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 7493 The I-JSON Message Format
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc7493</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc7493">RFC 7493</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc7516">
+  
+  
+    <a href="#ietf-rfc7516" class="anchor-heading" aria-labelledby="ietf-rfc7516"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 7516 JSON Web Encryption (JWE)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc7516</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc7516">RFC 7516</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc7517">
+  
+  
+    <a href="#ietf-rfc7517" class="anchor-heading" aria-labelledby="ietf-rfc7517"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 7517 JSON Web Key (JWK)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc7517</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc7517">RFC 7517</a> — <code class="language-plaintext highlighter-rouge">reads</code>, meaning this repository parses documents written in it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> DID trustlist verificationMethod publicKeyJwk (x5c).</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc7518">
+  
+  
+    <a href="#ietf-rfc7518" class="anchor-heading" aria-labelledby="ietf-rfc7518"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 7518 JSON Web Algorithms (JWA)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc7518</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc7518">RFC 7518</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc8152">
+  
+  
+    <a href="#ietf-rfc8152" class="anchor-heading" aria-labelledby="ietf-rfc8152"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 8152 COSE (obsoleted by RFC 9052)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc8152</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc8152">RFC 8152</a> — <code class="language-plaintext highlighter-rouge">cites</code>, meaning it is referenced, and nothing here is validated against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> Cited by the HCERT Specification; the library follows RFC 9052.</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc8230">
+  
+  
+    <a href="#ietf-rfc8230" class="anchor-heading" aria-labelledby="ietf-rfc8230"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 8230 Using RSA Algorithms with COSE Messages (PS256)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc8230</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc8230">RFC 8230</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc8392">
+  
+  
+    <a href="#ietf-rfc8392" class="anchor-heading" aria-labelledby="ietf-rfc8392"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 8392 CBOR Web Token (CWT)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc8392</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc8392">RFC 8392</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc8610">
+  
+  
+    <a href="#ietf-rfc8610" class="anchor-heading" aria-labelledby="ietf-rfc8610"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 8610 Concise Data Definition Language (CDDL)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc8610</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc8610">RFC 8610</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc8785">
+  
+  
+    <a href="#ietf-rfc8785" class="anchor-heading" aria-labelledby="ietf-rfc8785"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 8785 JSON Canonicalization Scheme (JCS)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc8785</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc8785">RFC 8785</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc8949">
+  
+  
+    <a href="#ietf-rfc8949" class="anchor-heading" aria-labelledby="ietf-rfc8949"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 8949 Concise Binary Object Representation (CBOR)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc8949</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc8949">RFC 8949</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc9052">
+  
+  
+    <a href="#ietf-rfc9052" class="anchor-heading" aria-labelledby="ietf-rfc9052"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 9052 CBOR Object Signing and Encryption (COSE): Structures and Process
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc9052</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc9052">RFC 9052</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc9285">
+  
+  
+    <a href="#ietf-rfc9285" class="anchor-heading" aria-labelledby="ietf-rfc9285"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 9285 The Base45 Data Encoding
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc9285</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc9285">RFC 9285</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc9421">
+  
+  
+    <a href="#ietf-rfc9421" class="anchor-heading" aria-labelledby="ietf-rfc9421"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 9421 HTTP Message Signatures
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc9421</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc9421">RFC 9421</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc9530">
+  
+  
+    <a href="#ietf-rfc9530" class="anchor-heading" aria-labelledby="ietf-rfc9530"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 9530 Digest Fields
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc9530</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc9530">RFC 9530</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ietf-rfc9682">
+  
+  
+    <a href="#ietf-rfc9682" class="anchor-heading" aria-labelledby="ietf-rfc9682"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RFC 9682 Updates to the CDDL Grammar
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ietf-rfc9682</code> — IETF, edition <a href="https://www.rfc-editor.org/rfc/rfc9682">RFC 9682</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="ihe-iti-vhl">
+  
+  
+    <a href="#ihe-iti-vhl" class="anchor-heading" aria-labelledby="ihe-iti-vhl"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> IHE ITI Verifiable Health Link (VHL)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">ihe-iti-vhl</code> — other, edition <a href="https://profiles.ihe.net/ITI/VHL/volume-1.html">4820147 (source)</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> IHE. Text held at library/ihe-iti-vhl-*.</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="itu-t-x680">
+  
+  
+    <a href="#itu-t-x680" class="anchor-heading" aria-labelledby="itu-t-x680"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ITU-T X.680 Abstract Syntax Notation One (ASN.1)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">itu-t-x680</code> — other, edition <a href="https://www.itu.int/rec/T-REC-X.680">X.680</a> — <code class="language-plaintext highlighter-rouge">reads</code>, meaning this repository parses documents written in it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> ITU-T, freely available.</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="w3c-ccg-jws-2020">
+  
+  
+    <a href="#w3c-ccg-jws-2020" class="anchor-heading" aria-labelledby="w3c-ccg-jws-2020"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> JSON Web Signature 2020 (JsonWebSignature2020 Linked Data Proof suite)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">w3c-ccg-jws-2020</code> — W3C, edition <a href="https://w3c-ccg.github.io/lds-jws2020/">CCG Report</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> A W3C Credentials Community Group report, not a W3C Recommendation.</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="w3c-did-core">
+  
+  
+    <a href="#w3c-did-core" class="anchor-heading" aria-labelledby="w3c-did-core"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Decentralized Identifiers (DIDs) v1.0
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">w3c-did-core</code> — W3C, edition <a href="https://www.w3.org/TR/did-core/">1.0</a> — <code class="language-plaintext highlighter-rouge">reads</code>, meaning this repository parses documents written in it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="w3c-json-ld-1-1">
+  
+  
+    <a href="#w3c-json-ld-1-1" class="anchor-heading" aria-labelledby="w3c-json-ld-1-1"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> JSON-LD 1.1
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">w3c-json-ld-1-1</code> — W3C, edition <a href="https://www.w3.org/TR/json-ld11/">1.1</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="w3c-rdf-canon">
+  
+  
+    <a href="#w3c-rdf-canon" class="anchor-heading" aria-labelledby="w3c-rdf-canon"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> RDF Dataset Canonicalization (RDFC-1.0, formerly URDNA2015)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">w3c-rdf-canon</code> — W3C, edition <a href="https://www.w3.org/TR/rdf-canon/">W3C Recommendation 2024-05-21</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="w3c-shacl">
+  
+  
+    <a href="#w3c-shacl" class="anchor-heading" aria-labelledby="w3c-shacl"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Shapes Constraint Language (SHACL)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">w3c-shacl</code> — W3C, edition <a href="https://www.w3.org/TR/shacl/">W3C Recommendation 2017</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="w3c-webcrypto">
+  
+  
+    <a href="#w3c-webcrypto" class="anchor-heading" aria-labelledby="w3c-webcrypto"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Web Cryptography API
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">w3c-webcrypto</code> — W3C, edition <a href="https://www.w3.org/TR/WebCryptoAPI/">W3C Recommendation</a> — <code class="language-plaintext highlighter-rouge">cites</code>, meaning it is referenced, and nothing here is validated against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="w3c-xmlschema11-2">
+  
+  
+    <a href="#w3c-xmlschema11-2" class="anchor-heading" aria-labelledby="w3c-xmlschema11-2"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">w3c-xmlschema11-2</code> — W3C, edition <a href="https://www.w3.org/TR/xmlschema11-2/">1.1</a> — <code class="language-plaintext highlighter-rouge">reads</code>, meaning this repository parses documents written in it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="wasi-random">
+  
+  
+    <a href="#wasi-random" class="anchor-heading" aria-labelledby="wasi-random"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> WASI Random (wasi:random)
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">wasi-random</code> — other, edition <a href="https://github.com/WebAssembly/wasi-random/tree/v0.2.6">0.2.6</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> W3C WebAssembly Community Group. The random interface the hcert-verifier and hcert-issuer worlds import; held unmodified in api/wit/deps/random/ (SOURCE.yaml pins the commit).</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="who-gdhcn-did-trustlist">
+  
+  
+    <a href="#who-gdhcn-did-trustlist" class="anchor-heading" aria-labelledby="who-gdhcn-did-trustlist"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> WHO GDHCN DID trustlist v2
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">who-gdhcn-did-trustlist</code> — other, edition <a href="https://smart.who.int/trust/concepts_did_gdhcn.html">2.0.0</a> — <code class="language-plaintext highlighter-rouge">reads</code>, meaning this repository parses documents written in it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> WHO. Text held at library/who-smart-trust-did-gdhcn.</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+<h3 id="who-smart-trust-hcert">
+  
+  
+    <a href="#who-smart-trust-hcert" class="anchor-heading" aria-labelledby="who-smart-trust-hcert"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> WHO SMART Trust: Electronic Health Certificate (HCERT) Specification
+  
+  
+</h3>
+    
+
+<p><code class="language-plaintext highlighter-rouge">who-smart-trust-hcert</code> — other, edition <a href="https://smart.who.int/trust/hcert_spec.html">1.7.5 (ci-build, main e277cce)</a> — <code class="language-plaintext highlighter-rouge">conforms</code>, meaning this repository’s artefacts are valid against it.</p>
+
+<p><strong>Namespaces.</strong></p>
+
+<p><strong>Note.</strong> WHO. Text held at library/who-smart-trust-hcert-spec.</p>
+
+<p><strong>What depends on it.</strong> Nothing here declares it.</p>
+
+<p><strong>No operative terms.</strong> This repository conforms to the specification
+without branching on any of its terms, so none is materialised into the
+graph. That is a determined zero, not an unfilled field.</p>
+
+          
+
+          
+            
+          
+        </main>
+        
+<hr>
+<footer>
+  
+
+  <p class="text-small mb-0">SMART Trust HCERT library tools — built with <a href="https://litlfred.github.io/folio-assistant/">folio-assistant</a>.</p><p class="text-small mb-0 fa-build-stamp">
+  deployed
+  <a href="https://github.com/litlfred/folio-assistant/actions"><code>dev</code></a></p>
+
+
+  
+</footer>
+
+      </div>
+    </div>
+    
+      
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+    
+  
+</body>
+</html>

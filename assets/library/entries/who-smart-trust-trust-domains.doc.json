@@ -1,0 +1,268 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-trust-domains",
+  "title": "Trust Domains",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "headings",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-trust-domains",
+      "number": null,
+      "title": "Trust Domains",
+      "level": 3,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 124,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "trust domains",
+          "heading": true
+        },
+        {
+          "term": "trusted services",
+          "heading": false
+        },
+        {
+          "term": "verifiable digital",
+          "heading": false
+        },
+        {
+          "term": "digital health",
+          "heading": false
+        }
+      ],
+      "extract": "A Trust Domain consists of: Defined use cases and business processes related to the utilization of Verifiable Digital Health Certificates; These Verifiable Digital Health Certificates may be issued or verified through Trusted Services that are enabled by Trust Network Participants of the Digital Health Trust Network. the open, interoperable technical specifications that identify or define the applicable Trusted",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-trust-domains/blocks/prose-s001-trust-domains"
+      ]
+    },
+    {
+      "id": "s002-digital-documentation-of-covid-19-certificates-d",
+      "number": null,
+      "title": "Digital Documentation of COVID-19 Certificates (DDCC)",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 186,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "digital documentation",
+          "heading": true
+        },
+        {
+          "term": "covid certificates",
+          "heading": true
+        },
+        {
+          "term": "ddcc",
+          "heading": true
+        },
+        {
+          "term": "implementation guide",
+          "heading": false
+        },
+        {
+          "term": "data elements",
+          "heading": false
+        },
+        {
+          "term": "credential formats",
+          "heading": false
+        }
+      ],
+      "extract": "The Digital Documentation of COVID-19 Certificates (DDCC) published in August 2021 and similar guidance for test results (https://www.who.int/publications/i/item/WHO-2019-nCoV-Digital_certificates_diagnostic_test_results-2022.1) published in March 2022 serve as the reference for the associated FHIR Implementation Guide. This Implementation Guide (IG) acts as the computable representation of the core data elements in",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-trust-domains/blocks/prose-s002-digital-documentation-of-covid-19-certificates-d"
+      ]
+    },
+    {
+      "id": "s003-source-specifications",
+      "number": null,
+      "title": "Source specifications",
+      "level": 5,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 44,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "source",
+          "heading": true
+        },
+        {
+          "term": "specifications",
+          "heading": true
+        },
+        {
+          "term": "certificate formats",
+          "heading": false
+        }
+      ],
+      "extract": "It can be difficult to find the \"source of truth\" specifications for the certificate formats that are mapped to the DDCC core data sets. The references contains links to the best known documentation for each of the certificate formats listed above.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-trust-domains/blocks/prose-s003-source-specifications"
+      ]
+    },
+    {
+      "id": "s004-ph4h",
+      "number": null,
+      "title": "PH4H",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 21,
+      "summary": null,
+      "keywords": [],
+      "extract": "The Pan-American Highway for Digital Health (PH4H) implementation guide describes the usage of the GDHCN for the Americas region.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-trust-domains/blocks/prose-s004-ph4h"
+      ]
+    },
+    {
+      "id": "s005-ips-pilgrimage-ips-pilgrimage",
+      "number": null,
+      "title": "IPS Pilgrimage (IPS-Pilgrimage)",
+      "level": 4,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 46,
+      "summary": null,
+      "keywords": [
+        {
+          "term": "ips pilgrimage",
+          "heading": true
+        },
+        {
+          "term": "ips during",
+          "heading": false
+        },
+        {
+          "term": "logic",
+          "heading": false
+        }
+      ],
+      "extract": "The IPS Pilgrimage implementation guide includes a machine-readable representation of WHO guidelines for verifiable IPS during pilgrimage. It explicitly encodes computer-interoperable logic, including data models, terminologies, and logic expressions, in a computable language to support implementation of IPS during pilgrimage usage scenario.",
+      "extractCut": false,
+      "blocks": [
+        "library/who-smart-trust-trust-domains/blocks/prose-s005-ips-pilgrimage-ips-pilgrimage"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "keywords": [
+    {
+      "term": "digital documentation",
+      "heading": true
+    },
+    {
+      "term": "ips pilgrimage",
+      "heading": true
+    },
+    {
+      "term": "implementation guide",
+      "heading": false
+    },
+    {
+      "term": "covid certificates",
+      "heading": true
+    },
+    {
+      "term": "verifiable digital",
+      "heading": false
+    },
+    {
+      "term": "data models",
+      "heading": false
+    },
+    {
+      "term": "digital health",
+      "heading": false
+    },
+    {
+      "term": "core data",
+      "heading": false
+    },
+    {
+      "term": "credential formats",
+      "heading": false
+    },
+    {
+      "term": "ips during",
+      "heading": false
+    },
+    {
+      "term": "data elements",
+      "heading": false
+    },
+    {
+      "term": "ddcc",
+      "heading": true
+    }
+  ],
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 5,
+      "note": "3 levels"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 5 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-trust-domains"
+  }
+}

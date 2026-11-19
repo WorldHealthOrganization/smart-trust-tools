@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-phw-aliases",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-phw-aliases/blocks/prose-s001-input-fsh-aliases-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/fsh/Aliases.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-fsh-aliases-fsh.md",
+      "narrative": null,
+      "content": "```text\nAlias: $LOINC = http://loinc.org\nAlias: $ICD11 = http://id.who.int/icd/release/11/mms\nAlias: $SCT = http://snomed.info/sct\nAlias: $GENDER = http://hl7.org/fhir/administrative-gender\n\n\nAlias: $pubStatus = http://hl7.org/fhir/publication-status\nAlias: $actorType = http://hl7.org/fhir/examplescenario-actor-type\n\n\n\nAlias: $DisclosureStatements = http://smart.who.int/trust-phw/CodeSystem/DisclosureStatements\nAlias: $SelectiveDisclosure = http://smart.who.int/trust-phw/StructureDefinition/SelectiveDisclosure\nAlias: $nationality = http://hl7.org/fhir/StructureDefinition/patient-nationality\n\nA",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

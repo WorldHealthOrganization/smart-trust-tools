@@ -1,0 +1,78 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-phw-dvcmin-vaccine-details",
+  "title": "DVCMinVaccineDetails logical model (FSH)",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "files",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-input-fsh-models-dvcminvaccinedetails-fsh",
+      "number": null,
+      "title": "input/fsh/models/DVCMinVaccineDetails.fsh",
+      "level": 1,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 142,
+      "summary": null,
+      "keywords": [],
+      "extract": "```text Logical: DVCMinVaccineDetails Title: \"DVC HCert Vaccine Details (Minimal)\" Description: \"DVC Vaccine Details for a minimal DVC payload for use within an HCERT Payload\" * ^status = #active * ^abstract = true * vp 1..1 code \"Vaccine Product ID\" * ^code[+] = $ICVPCore#ICVP.C5.DE.11 * ^code[+] = $LOINC#39236-5 \"Vaccine code\" * ^code[+] = $SCT#787859002 \"Vaccine product (medicinal product)\" * dv 1..1 date \"Date",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-phw-dvcmin-vaccine-details/blocks/prose-s001-input-fsh-models-dvcminvaccinedetails-fsh"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 1,
+      "note": "one level"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 1 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-phw-dvcmin-vaccine-details"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-phw-dvcmin-vaccine-details",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-phw-dvcmin-vaccine-details/blocks/prose-s001-input-fsh-models-dvcminvaccinedetails-fsh",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/fsh/models/DVCMinVaccineDetails.fsh",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-fsh-models-dvcminvaccinedetails-fsh.md",
+      "narrative": null,
+      "content": "```text\nLogical: DVCMinVaccineDetails\nTitle:  \"DVC HCert Vaccine Details (Minimal)\"\nDescription:     \"DVC Vaccine Details for a minimal DVC payload for use within an HCERT Payload\"\n* ^status = #active\n* ^abstract = true\n* vp 1..1 code \"Vaccine Product ID\"\n  * ^code[+] = $ICVPCore#ICVP.C5.DE.11\n  * ^code[+] = $LOINC#39236-5 \"Vaccine code\"\n  * ^code[+] = $SCT#787859002 \"Vaccine product (medicinal product)\"\n* dv 1..1 date \"Date of vaccination\"\n  * ^code[+] = $ICVPCore#ICVP.C5.DE.13\n  * ^code[+] = $LOINC#30952-6 \"Date and time of vaccination\"\n* cn 0..1 string \"Name of supervising clinician\"\n  * ^c",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

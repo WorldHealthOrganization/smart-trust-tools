@@ -1,0 +1,78 @@
+{
+  "$schema": "folio-library-document/v1",
+  "id": "who-smart-trust-cwt-payload-model",
+  "title": "CWTPayload logical model (FSH)",
+  "variant": "text",
+  "pages": null,
+  "tocSource": "files",
+  "tocMethod": null,
+  "toc": [],
+  "sections": [
+    {
+      "id": "s001-input-fsh-models-cwt-payload-fsh",
+      "number": null,
+      "title": "input/fsh/models/cwt_payload.fsh",
+      "level": 1,
+      "pageStart": null,
+      "pageEnd": null,
+      "labelStart": null,
+      "labelEnd": null,
+      "words": 80,
+      "summary": null,
+      "keywords": [],
+      "extract": "```text Logical: CWTPayload Title: \"CBOR Web Token (CWT) Payload (Common)\" Description: \"Logical Model for CBOR Web Token (CWT) Payload Logical Modelin CWT Payload https://www.iana.org/assignments/cwt/cwt.xhtml \" * ^url = \"http://smart.who.int/trust/StructureDefinition/CWTPayload\" * ^status = #active * 1 0..1 Coding \"Issuer Code (iss)\" \"Issuer\" * 4 0..1 dateTime \"Expiration Date Time(exp)\" \"Expiration Time\" * 6 0..1",
+      "extractCut": true,
+      "blocks": [
+        "library/who-smart-trust-cwt-payload-model/blocks/prose-s001-input-fsh-models-cwt-payload-fsh"
+      ]
+    }
+  ],
+  "checks": {},
+  "withheld": false,
+  "coverage": [
+    {
+      "kind": "contents",
+      "state": "none",
+      "note": "no outline in the PDF and none inferred"
+    },
+    {
+      "kind": "sections",
+      "state": "found",
+      "count": 1,
+      "note": "one level"
+    },
+    {
+      "kind": "figures",
+      "state": "none"
+    },
+    {
+      "kind": "tables",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "references",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "glossary",
+      "state": "none",
+      "note": "no such heading in the text"
+    },
+    {
+      "kind": "footnotes",
+      "state": "not-extracted"
+    },
+    {
+      "kind": "summaries",
+      "state": "not-extracted",
+      "count": 0,
+      "note": "0 of 1 sections"
+    }
+  ],
+  "links": {
+    "repo": "WorldHealthOrganization/smart-trust-tools",
+    "branch": "main",
+    "dir": "library/who-smart-trust-cwt-payload-model"
+  }
+}

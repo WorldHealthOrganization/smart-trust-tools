@@ -1,0 +1,424 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "ihe-iti-vhl-iti-yy4",
+  "blocks": [
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s001-input-pagecontent-iti-yy4-md",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "input/pagecontent/ITI-YY4.md",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-input-pagecontent-iti-yy4-md.md",
+      "narrative": null,
+      "content": "{% assign linkvhlh = '<a href=\"ActorDefinition-VHLHolder.html\">VHL Holder</a>' %}\n{% assign linkvhlr = '<a href=\"ActorDefinition-VHLReceiver.html\">VHL Receiver</a>' %}\n\n {% assign provideVHL = site.data.Requirements-ProvideVHL %}\n {% assign provideVHLResp = site.data.Requirements-RespondtoProvideVHL %}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s002-2-3-yy4-1-scope",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.1 Scope",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-2-3-yy4-1-scope.md",
+      "narrative": null,
+      "content": "### 2:3.YY4.1 Scope\n\n{% assign provideVHLTitle = provideVHL.extension  | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.title\" | first %}\n{% assign provideVHLRespTitle = provideVHLResp.extension  | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.title\" | first %}\n\n\n{% assign provideVHLDescription = provideVHL.extension  | where: \"url\", \"http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.description\" | first %}\n{% assign provideVHLRespDescription = provideVHLResp.extension  | where: \"url\", \"http://hl7.org/fhir/",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s003-2-3-yy4-2-actor-roles",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.2 Actor Roles",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-2-3-yy4-2-actor-roles.md",
+      "narrative": null,
+      "content": "### 2:3.YY4.2 Actor Roles\n\n\n| Actor | Role |\n|-------|------|\n| {{ linkvhlh }} | Provides the VHL to a VHL Receiver through a supported transmission mechanism |\n| {{ linkvhlr }} | Receives the VHL from a VHL Holder and prepares to retrieve the referenced health documents |\n{: .grid}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s004-2-3-yy4-3-referenced-standards",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.3 Referenced Standards",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-2-3-yy4-3-referenced-standards.md",
+      "narrative": null,
+      "content": "### 2:3.YY4.3 Referenced Standards\n- **RFC 7515**: JSON Web Signature (JWS)\n- **RFC 7519**: JSON Web Token (JWT)  \n- **RFC 4648**: Base64url Encoding\n- **RFC 8392**: CBOR Web Token (CWT)\n- **RFC 8152**: CBOR Object Signing and Encryption (COSE)\n- **RFC 1950**: ZLIB Compressed Data Format\n- **RFC 1951**: DEFLATE Compressed Data Format\n- **ISO/IEC 18004:2015**: QR Code specification\n- **SMART Health Links Specification**: [VHL Payload Structure](https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html)\n- **WHO SMART Trust HCERT Specification**: [HCERT Structure](https://smar",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s005-2-3-yy4-4-messages",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4 Messages",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s005-2-3-yy4-4-messages.md",
+      "narrative": null,
+      "content": "### 2:3.YY4.4 Messages\n\n<figure >\n  <div style=\"width:35em; max-width:100%;\">\n     {%include ITI-YY4.svg%}\n  </div>\n  <p id=\"f2:3.YY4.4-1\" class=\"figureTitle\">Figure 2:3.YY4.4-1: Provide VHL Interaction Diagram</p>\n</figure>",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s006-2-3-yy4-4-1-provide-vhl-request-message",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4.1 Provide VHL Request Message",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s006-2-3-yy4-4-1-provide-vhl-request-message.md",
+      "narrative": null,
+      "content": "#### 2:3.YY4.4.1 Provide VHL Request Message",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s007-2-3-yy4-4-1-1-trigger-events",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4.1.1 Trigger Events",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s007-2-3-yy4-4-1-1-trigger-events.md",
+      "narrative": null,
+      "content": "##### 2:3.YY4.4.1.1 Trigger Events\n{{ provideVHLDescription.valueMarkdown}}\n\nA VHL Holder initiates the Provide VHL transaction when:\n- The VHL Holder wishes to grant access to their health documents to a VHL Receiver\n- The VHL Holder has obtained a valid VHL from a VHL Sharer (via ITI-YY3 Generate VHL transaction)\n- The VHL Holder encounters a VHL Receiver capable of processing VHLs in a relevant healthcare context",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s008-2-3-yy4-4-1-2-message-semantics",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4.1.2 Message Semantics",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s008-2-3-yy4-4-1-2-message-semantics.md",
+      "narrative": null,
+      "content": "##### 2:3.YY4.4.1.2 Message Semantics\n\nThe VHL payload structure is defined in [ITI-YY3](ITI-YY3.html) and aligns with the SMART Health Links specification.\n\n**QR Code Transmission**\n\nThe VHL is transmitted via QR code with the following characteristics:\n- VHL encoded as HCERT QR code with `HC1:` prefix\n- Suitable for in-person encounters, walk-in clinics, emergency departments\n- QR code contains HCERT/CWT structure with embedded VHL payload\n- Can be displayed on screen or printed on paper\n- Minimum recommended diagonal size: 35-60mm\n\n**Verifiable Credential Transmission (VC Enveloped VHL)**",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s009-2-3-yy4-4-1-3-expected-actions-vhl-holder",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4.1.3 Expected Actions - VHL Holder",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s009-2-3-yy4-4-1-3-expected-actions-vhl-holder.md",
+      "narrative": null,
+      "content": "##### 2:3.YY4.4.1.3 Expected Actions - VHL Holder\n\n**QR Code Transmission:**\n\nThe VHL Holder SHALL:\n1. Verify QR code validity (not expired, CWT signature valid)\n2. Display QR code on device screen or provide printed copy\n3. Ensure QR code is displayed at appropriate size for reliable scanning\n4. Provide passcode out-of-band if VHL is passcode-protected (P flag present)\n\n**Verifiable Credential Transmission (VC Enveloped VHL Option):**\n\nWhen the VHL Sharer supports the [VC Enveloped VHL Option](ITI-YY3.html#vc-enveloped-vhl-carrier-option--formatvc), the VHL Holder SHALL:\n1. Verify the VC is v",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s010-2-3-yy4-4-1-4-expected-actions-vhl-receiver",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4.1.4 Expected Actions - VHL Receiver",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s010-2-3-yy4-4-1-4-expected-actions-vhl-receiver.md",
+      "narrative": null,
+      "content": "##### 2:3.YY4.4.1.4 Expected Actions - VHL Receiver\n\n{{ provideVHLRespDescription.valueMarkdown }}\n\nThe VHL Receiver SHALL decode the received VHL using the appropriate path below. Upon receiving a VHL via QR code, the VHL Receiver SHALL perform the following 9-step decoding process. When the VHL is received as a Verifiable Credential (VC Enveloped VHL Option), see the VC Decoding section further below.\n\n1. **Scan QR Code**:\n   - Use QR code scanner (camera, dedicated scanner, or software library)\n   - Capture QR code image displayed on screen or printed on paper\n   - Decode the QR code per IS",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s011-2-3-yy4-4-2-provide-vhl-response-message",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4.2  Provide VHL Response Message",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s011-2-3-yy4-4-2-provide-vhl-response-message.md",
+      "narrative": null,
+      "content": "#### 2:3.YY4.4.2  Provide VHL Response Message",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s012-2-3-yy4-4-2-1-trigger-events",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4.2.1 Trigger Events",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s012-2-3-yy4-4-2-1-trigger-events.md",
+      "narrative": null,
+      "content": "##### 2:3.YY4.4.2.1 Trigger Events\nThe VHL Receiver MAY provide optional acknowledgment to VHL Holder confirming receipt and validation. This is transmission-mechanism dependent.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s013-2-3-yy4-4-2-2-message-semantics",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4.2.2 Message Semantics",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s013-2-3-yy4-4-2-2-message-semantics.md",
+      "narrative": null,
+      "content": "##### 2:3.YY4.4.2.2 Message Semantics\n\nFor transmission mechanisms supporting bidirectional communication, response MAY include:\n\n| Element | Cardinality | Description |\n|---------|-------------|-------------|\n| Acknowledgment | 0..1 | Confirmation VHL received and validated |\n| Receipt Identifier | 0..1 | Unique identifier for receipt transaction |\n| Receiver Identifier | 0..1 | Identifier of VHL Receiver organization |\n| Timestamp | 0..1 | ISO 8601 timestamp of receipt |\n{: .grid}",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s014-2-3-yy4-4-2-3-expected-actions",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.4.2.3 Expected Actions",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s014-2-3-yy4-4-2-3-expected-actions.md",
+      "narrative": null,
+      "content": "##### 2:3.YY4.4.2.3 Expected Actions\n\n**VHL Receiver:**\n- MAY send acknowledgment if supported\n- SHALL NOT include sensitive health information\n\n**VHL Holder:**\n- MAY receive and store receipts\n- SHALL NOT rely on acknowledgment for security decisions",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s015-2-3-yy4-5-security-considerations",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.5 Security Considerations",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s015-2-3-yy4-5-security-considerations.md",
+      "narrative": null,
+      "content": "### 2:3.YY4.5 Security Considerations",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s016-2-3-yy4-5-1-vhl-integrity-and-authenticity",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.5.1 VHL Integrity and Authenticity",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s016-2-3-yy4-5-1-vhl-integrity-and-authenticity.md",
+      "narrative": null,
+      "content": "#### 2:3.YY4.5.1 VHL Integrity and Authenticity\n- Digital signature ensures VHL issued by trusted VHL Sharer\n- VHL Receivers SHALL verify COSE signatures before trusting content\n- CWT signature provides end-to-end trust verification",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s017-2-3-yy4-5-2-vhl-confidentiality",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.5.2 VHL Confidentiality",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s017-2-3-yy4-5-2-vhl-confidentiality.md",
+      "narrative": null,
+      "content": "#### 2:3.YY4.5.2 VHL Confidentiality\n- VHL does NOT contain PHI\n- VHL only contains reference (URL) to retrieve documents\n- Actual documents retrieved over secure channel (ITI-YY5)",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s018-2-3-yy4-5-3-replay-attacks",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.5.3 Replay Attacks",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s018-2-3-yy4-5-3-replay-attacks.md",
+      "narrative": null,
+      "content": "#### 2:3.YY4.5.3 Replay Attacks\n- VHL Sharers SHOULD include expiration timestamps in both CWT and VHL payload\n- VHL Receivers SHOULD enforce expiration validation\n- VHL Sharers MAY implement single-use VHLs\n- Short expiration times reduce replay attack window",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s019-2-3-yy4-5-4-passcode-protection",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.5.4 Passcode Protection",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s019-2-3-yy4-5-4-passcode-protection.md",
+      "narrative": null,
+      "content": "#### 2:3.YY4.5.4 Passcode Protection\n- Passcode communicated out-of-band (not in VHL)\n- \"P\" flag indicates passcode required\n- Passcode validated during manifest retrieval (ITI-YY5 Part 2)\n- VHL Sharers SHOULD implement rate limiting on passcode attempts",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s020-2-3-yy4-5-5-trust-network-validation",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.5.5 Trust Network Validation",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s020-2-3-yy4-5-5-trust-network-validation.md",
+      "narrative": null,
+      "content": "#### 2:3.YY4.5.5 Trust Network Validation\nVHL Receivers SHALL:\n- Validate VHL Sharer is current participant in trust network\n- Retrieve DSC from trust list using kid from CWT protected header\n- Check certificate revocation status where applicable\n- Reject VHLs from untrusted participants",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s021-2-3-yy4-5-6-qr-code-security",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.5.6 QR Code Security",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s021-2-3-yy4-5-6-qr-code-security.md",
+      "narrative": null,
+      "content": "#### 2:3.YY4.5.6 QR Code Security\n\n**QR Code Characteristics:**\n- Can be photographed/copied - use time-limited expiration\n- Suitable for supervised encounters (in-person, on-screen display)\n- Digital signature provides authenticity verification\n- Recommended for higher security scenarios\n\n**Best Practices:**\n- Include short expiration times in CWT exp claim\n- Use passcode protection (P flag) for sensitive data\n- Display QR codes in controlled environments\n- Avoid printing QR codes for long-term use unless necessary\n- Implement single-use VHLs where appropriate",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/ihe-iti-vhl-iti-yy4/blocks/prose-s022-2-3-yy4-5-7-vc-enveloped-vhl-option-security",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "2:3.YY4.5.7 VC Enveloped VHL Option Security",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s022-2-3-yy4-5-7-vc-enveloped-vhl-option-security.md",
+      "narrative": null,
+      "content": "#### 2:3.YY4.5.7 VC Enveloped VHL Option Security\nWhen the VHL is carried as a Verifiable Credential:\n- The `DataIntegrityProof` SHALL chain to a trust anchor in the trust list (same framework used for CWT/HCERT verification)\n- The VC `expirationDate` and the VHL payload's `exp` SHALL both be honored — VHL Receivers SHALL reject if either has passed\n- Confidentiality is equivalent to the QR form: the VC carries the decryption `key` and MUST be treated as sensitive\n- VHL Sharers SHOULD issue VCs with short lifetimes; single-use VCs are RECOMMENDED for high-security scenarios",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}

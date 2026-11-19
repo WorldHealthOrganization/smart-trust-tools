@@ -1,0 +1,101 @@
+{
+  "$schema": "folio-library-entry/v1",
+  "id": "who-smart-trust-trust-domains",
+  "blocks": [
+    {
+      "id": "library/who-smart-trust-trust-domains/blocks/prose-s001-trust-domains",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Trust Domains",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s001-trust-domains.md",
+      "narrative": null,
+      "content": "###  Trust Domains\nA Trust Domain consists of:\n*\tDefined use cases and business processes related to the utilization of Verifiable Digital Health Certificates; These Verifiable Digital Health Certificates may be issued or verified through Trusted Services that are enabled by Trust Network Participants of the Digital Health Trust Network.\n*\tthe open, interoperable technical specifications that identify or define the applicable Trusted Services and Verifiable Digital Health Certificates; and\n*\ta set of policy and regulatory standards describing expected behavior of GDHCN Participants in relation",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-trust-domains/blocks/prose-s002-digital-documentation-of-covid-19-certificates-d",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Digital Documentation of COVID-19 Certificates (DDCC)",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s002-digital-documentation-of-covid-19-certificates-d.md",
+      "narrative": null,
+      "content": "#### Digital Documentation of COVID-19 Certificates (DDCC)\n\nThe [Digital Documentation of COVID-19 Certificates (DDCC)](https://www.who.int/publications/i/item/WHO-2019-nCoV-Digital_certificates-vaccination-2021.1) published in August 2021 and similar guidance for test results (https://www.who.int/publications/i/item/WHO-2019-nCoV-Digital_certificates_diagnostic_test_results-2022.1) published in March 2022 serve as the reference for the associated [FHIR Implementation Guide](https://smart.who.int/ddcc/). This Implementation Guide (IG) acts as the computable representation of the core data elem",
+      "truncated": true,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-trust-domains/blocks/prose-s003-source-specifications",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "Source specifications",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s003-source-specifications.md",
+      "narrative": null,
+      "content": "##### Source specifications\n\nIt can be difficult to find the \"source of truth\" specifications for the certificate formats that are mapped to the DDCC core data sets. The [references](references.html) contains links to the best known documentation for each of the certificate formats listed above.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-trust-domains/blocks/prose-s004-ph4h",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "PH4H",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s004-ph4h.md",
+      "narrative": null,
+      "content": "#### PH4H \n\nThe [Pan-American Highway for Digital Health (PH4H)](http://worldhealthorganization.github.iont/smart-ph4h) implementation guide describes the usage of the GDHCN for the Americas region.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    },
+    {
+      "id": "library/who-smart-trust-trust-domains/blocks/prose-s005-ips-pilgrimage-ips-pilgrimage",
+      "types": [
+        "folio-assistant-core:Prose",
+        "doco:Section"
+      ],
+      "kind": "prose",
+      "title": "IPS Pilgrimage (IPS-Pilgrimage)",
+      "pageStart": null,
+      "pageEnd": null,
+      "target": "../sections/s005-ips-pilgrimage-ips-pilgrimage.md",
+      "narrative": null,
+      "content": "#### IPS Pilgrimage (IPS-Pilgrimage)\n\nThe  [IPS Pilgrimage](http://smart.who.int/ips-pilgrimage) implementation guide includes a machine-readable representation of WHO guidelines for verifiable IPS during pilgrimage. It explicitly encodes computer-interoperable logic, including data models, terminologies, and logic expressions, in a computable language to support implementation of IPS during pilgrimage usage scenario.",
+      "truncated": false,
+      "provenance": "ingested",
+      "summary": {
+        "status": "not-summarised"
+      }
+    }
+  ]
+}
