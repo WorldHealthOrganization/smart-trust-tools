@@ -13,7 +13,7 @@
   "contains": [
     "library/who-smart-trust-cwt-payload-model/blocks/prose-s001-input-fsh-models-cwt-payload-fsh"
   ],
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-cwt-payload-model/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-cwt-payload-model/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-cwt-payload-model",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-cwt-payload-model",
   "provenance": "ingested"
 }

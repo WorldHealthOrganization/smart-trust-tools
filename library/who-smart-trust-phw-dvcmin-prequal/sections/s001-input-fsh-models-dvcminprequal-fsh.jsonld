@@ -13,7 +13,7 @@
   "contains": [
     "library/who-smart-trust-phw-dvcmin-prequal/blocks/prose-s001-input-fsh-models-dvcminprequal-fsh"
   ],
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-phw-dvcmin-prequal/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-phw-dvcmin-prequal/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-phw-dvcmin-prequal",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-phw-dvcmin-prequal",
   "provenance": "ingested"
 }

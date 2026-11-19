@@ -61,11 +61,21 @@ def gh(ref, path):
 # Page shell
 # ---------------------------------------------------------------------------
 
-def shell(current, title, body, ref, scripts=(), depth=0, fragment=False, head_extra=""):
-    up = "../" * depth
+def topbar(current, up, extra_class=""):
+    """The viewer top bar. `up` is the relative path from the page to the site
+    root; the TypeDoc pages get it too, through inject_topbar.py."""
     nav = "".join(
         '<a href="%s%s"%s>%s</a>' % (up, href, ' aria-current="page"' if href == current else "", esc(label))
         for href, label in NAV)
+    return (
+        '<header class="topbar%s"><div class="topbar-inner">'
+        '<a class="brand" href="%sindex.html"><span class="brand-mark" aria-hidden="true">%s</span>SMART Trust Tools</a>'
+        '<nav class="nav" aria-label="Viewers">%s</nav></div></header>\n'
+    ) % (" " + extra_class if extra_class else "", up, "<i></i>" * 9, nav)
+
+
+def shell(current, title, body, ref, scripts=(), depth=0, fragment=False, head_extra=""):
+    up = "../" * depth
     head = (
         '<title>%s</title>\n'
         '<meta name="claude:viewport-fit-sides" content="cover">\n'
@@ -74,11 +84,7 @@ def shell(current, title, body, ref, scripts=(), depth=0, fragment=False, head_e
         '<link rel="stylesheet" href="%s">\n'
         '<link rel="stylesheet" href="%sassets/site.css">\n%s'
     ) % (esc(title), FONTS, up, head_extra)
-    top = (
-        '<header class="topbar"><div class="topbar-inner">'
-        '<a class="brand" href="%sindex.html"><span class="brand-mark" aria-hidden="true">%s</span>SMART Trust Tools</a>'
-        '<nav class="nav" aria-label="Viewers">%s</nav></div></header>\n'
-    ) % (up, "<i></i>" * 9, nav)
+    top = topbar(current, up)
     tail = "".join('<script src="%s"></script>\n' % s for s in scripts)
     if fragment:
         return head + top + body + tail

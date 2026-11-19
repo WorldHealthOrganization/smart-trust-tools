@@ -6,6 +6,8 @@ import kotlin.test.assertIs
 import who.smart.trust.issuer.IssueError
 import who.smart.trust.issuer.Validity
 import who.smart.trust.payloads.Payload
+import who.smart.trust.types.FailureReason
+import who.smart.trust.types.Step
 import who.smart.trust.verifier.VerificationResult
 
 /** Skill `hcert-build-cwt`: QR Code Generation step 3. */
@@ -23,8 +25,9 @@ class BuildCwtTest {
 
     @Test fun `STT-CWT-003 an HCERT without exp is refused on issue and on verify`() {
         val req = Testkit.request(Payload.DvcMin(NEWBORN)).copy(validity = Validity(Testkit.now, Testkit.now))
-        assertIs<IssueError.PayloadInvalid>(HcertIssuer.prepare(req, reg).err())
-        assertIs<VerificationResult.Failed>(verify(signClaims(cwt(exp = null))))
+        assertEquals(listOf("exp-not-after-iat"), assertIs<IssueError.PayloadInvalid>(HcertIssuer.prepare(req, reg).err()).value.map { it.code })
+        val f = assertIs<VerificationResult.Failed>(verify(signClaims(cwt(exp = null)))).value
+        assertEquals(Step.CWT to FailureReason.COSE_MALFORMED, f.step to f.reason)
     }
 
     @Test fun `STT-CWT-004 the validity must fit inside the DSC's`() {
@@ -33,10 +36,14 @@ class BuildCwtTest {
     }
 
     @Test fun `STT-CWT-005 iss is optional, and alpha-2 when present`() {
-        assertIs<IssueError.PayloadInvalid>(HcertIssuer.prepare(Testkit.request(Payload.DvcMin(NEWBORN), iss = "Xx"), reg).err())
+        for (bad in listOf("Xx", "XXX", "x")) {
+            val e = assertIs<IssueError.PayloadInvalid>(HcertIssuer.prepare(Testkit.request(Payload.DvcMin(NEWBORN), iss = bad), reg).err(), bad)
+            assertEquals(listOf("not-alpha2"), e.value.map { it.code }, bad)
+        }
         val issued = Testkit.issue(Testkit.request(Payload.DvcMin(NEWBORN), iss = null))
         assertEquals(null, claimsOf(issued.cose)[1L])
         assertEquals(null, assertIs<VerificationResult.Verified>(verify(issued.cose)).value.iss)
+        assertEquals("XX", assertIs<VerificationResult.Verified>(verify(Testkit.issue(Payload.DvcMin(NEWBORN)).cose)).value.iss)
     }
 
     @Test fun `STT-CWT-006 claims this version does not know are kept`() {

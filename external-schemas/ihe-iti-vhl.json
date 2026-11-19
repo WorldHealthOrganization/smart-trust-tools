@@ -4,7 +4,7 @@
   "authority": "other",
   "title": "IHE ITI Verifiable Health Link (VHL)",
   "version": "4820147 (source)",
-  "specUrl": "https://profiles.ihe.net/ITI/VHL/",
+  "specUrl": "https://profiles.ihe.net/ITI/VHL/volume-1.html",
   "namespaces": [],
   "use": "conforms",
   "terms": [],

@@ -1,7 +1,7 @@
 ---
 name: vhl-receive
 description: >
-  Use a VHL: verify it, build the ITI-YY5 manifest request with its HTTP Message Signature, read the manifest Bundle and decrypt each document (journey J4.1).
+  Use a VHL: verify it, build the ITI-YY5 manifest request with its HTTP Message Signature, read the manifest Bundle and decrypt each document (journey J4.1). A plain SMART Health Link is received by the same steps, without the HCERT verification.
 satisfies:
   - "req:stt-vhl-002#statement"
   - "req:stt-vhl-005#statement"
@@ -33,3 +33,12 @@ In the WIT contract (`api/wit/`):
 ## Requirements
 
 This skill satisfies 7 requirement(s), listed in `satisfies` above; each is a `req:` node in `skills/requirements/`.
+
+## A SMART Health Link is the same receipt, with another carrier
+
+A plain [SMART Health Link](https://hl7.org/fhir/uv/smart-health-cards-and-links/links-specification.html) (`shlink:/`, from
+`receiver-scan-credential`) is followed by the same steps: the manifest
+request with the passcode when its `P` flag is set, the manifest, and each
+document decrypted. It carries no HCERT, so there is no signature to verify
+(`hcert-verify` is skipped) and the receiver cannot tell who issued the link.
+A "Verifiable SHL" (smart-ips-pilgrimage's term) is a VHL, verified as above.

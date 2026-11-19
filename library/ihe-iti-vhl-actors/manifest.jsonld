@@ -5,7 +5,7 @@
       "@base": "https://litlfred.github.io/folio/"
     }
   ],
-  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-actors/manifest.jsonld",
+  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-actors",
   "@type": [
     "cat-harness:SourceDocument"
   ],
@@ -14,7 +14,13 @@
     "library/ihe-iti-vhl-actors/sections/s001-actors-fsh"
   ],
   "provenance": "ingested",
-  "inSubgraph": "https://litlfred.github.io/folio-assistant/smart-trust-tools/smart-trust-tools.jsonld#directory/library",
+  "inSubgraph": "https://litlfred.github.io/folio-assistant/smart-trust-tools/directory/library",
+  "license": "CC-BY-4.0",
+  "licenceRecord": {
+    "status": "stated",
+    "id": "CC-BY-4.0",
+    "basis": "IHE/ITI.VHL LICENSE (Creative Commons Attribution 4.0 International) and sushi-config.yaml license: CC-BY-4.0 at the ingested commit. The text is held unmodified, with attribution."
+  },
   "meta": {
     "doc_id": "ihe-iti-vhl-actors",
     "title_source": "text-heading",

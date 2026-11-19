@@ -5,7 +5,7 @@
       "@base": "https://litlfred.github.io/folio/"
     }
   ],
-  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/ihe-iti-vhl-volume-1/manifest.jsonld",
+  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/ihe-iti-vhl-volume-1",
   "@type": [
     "cat-harness:SourceDocument"
   ],
@@ -51,7 +51,7 @@
     "library/ihe-iti-vhl-volume-1/sections/s038-1-xx-6-5-dsg-dsgj-document-digital-signature"
   ],
   "provenance": "ingested",
-  "inSubgraph": "https://litlfred.github.io/folio-assistant/cat-harness.jsonld#directory/library",
+  "inSubgraph": "https://litlfred.github.io/folio-assistant/smart-trust-tools/directory/library",
   "license": "CC-BY-4.0",
   "licenceRecord": {
     "status": "stated",

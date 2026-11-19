@@ -5,7 +5,7 @@
       "@base": "https://litlfred.github.io/folio/"
     }
   ],
-  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-hcert-spec/manifest.jsonld",
+  "@id": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-hcert-spec",
   "@type": [
     "cat-harness:SourceDocument"
   ],
@@ -41,7 +41,7 @@
     "library/who-smart-trust-hcert-spec/sections/s028-a-2-extended-key-usage-identifiers"
   ],
   "provenance": "ingested",
-  "inSubgraph": "https://litlfred.github.io/folio-assistant/smart-trust-tools/smart-trust-tools.jsonld#directory/library",
+  "inSubgraph": "https://litlfred.github.io/folio-assistant/smart-trust-tools/directory/library",
   "license": "CC-BY-NC-SA-3.0-IGO",
   "licenceRecord": {
     "status": "stated",

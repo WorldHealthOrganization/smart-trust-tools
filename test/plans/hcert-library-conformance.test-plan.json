@@ -155,7 +155,8 @@
           "expectation": "A test named after STT-PAY-010 passes in each implementation's suite (Kotlin: check_models.py)."
         }
       ],
-      "testData": []
+      "testData": [],
+      "feature": "test/features/hcert-assemble-payload.feature"
     },
     {
       "id": "hcert-build-cwt",
@@ -207,7 +208,8 @@
           "expectation": "Tests named after STT-SEL-004 pass in each implementation's suite (Kotlin: `STT-SEL-004 STT-ISS-004 a certificate with a DVC and a VHL verifies with both entries`, `STT-SEL-004 maxPayloads refuses more entries than the profile allows`, `STT-SEL-004 an invalid entry is left out and reported`, `STT-SEL-004 issuance refuses no payload and a duplicate subclaim` (SelectPayloadTest.kt)), and the cross-implementation DVC+VHL checks pass (tools/conformance-ts/cross.ts)."
         }
       ],
-      "testData": []
+      "testData": [],
+      "feature": "test/features/hcert-build-cwt.feature"
     },
     {
       "id": "hcert-compress",
@@ -238,7 +240,8 @@
           "kind": "fixed",
           "path": "vectors/smart-trust-pr129/dvc-qr-example-XXA-dsc.pem"
         }
-      ]
+      ],
+      "feature": "test/features/hcert-compress.feature"
     },
     {
       "id": "hcert-encode-base45",
@@ -269,7 +272,8 @@
           "kind": "fixed",
           "path": "vectors/smart-trust-pr129/dvc-qr-example-XXA-dsc.pem"
         }
-      ]
+      ],
+      "feature": "test/features/hcert-encode-base45.feature"
     },
     {
       "id": "hcert-encode-cbor",
@@ -310,7 +314,8 @@
           "kind": "fixed",
           "path": "vectors/smart-trust-pr129/dvc-qr-example-XXA-dsc.pem"
         }
-      ]
+      ],
+      "feature": "test/features/hcert-encode-cbor.feature"
     },
     {
       "id": "hcert-prefix-context",
@@ -341,7 +346,8 @@
           "kind": "fixed",
           "path": "vectors/smart-trust-pr129/dvc-qr-example-XXA-dsc.pem"
         }
-      ]
+      ],
+      "feature": "test/features/hcert-prefix-context.feature"
     },
     {
       "id": "hcert-select-payload",
@@ -378,7 +384,8 @@
           "expectation": "A test named after STT-SEL-006 passes in each implementation's suite (Kotlin: `STT-SEL-006 trust domains are read from the GDHCN code system, not a closed list` (TrustListTest.kt))."
         }
       ],
-      "testData": []
+      "testData": [],
+      "feature": "test/features/hcert-select-payload.feature"
     },
     {
       "id": "hcert-sign-cose",
@@ -445,7 +452,8 @@
           "expectation": "A test named after STT-KID-001 passes in each implementation's suite (Kotlin: `STT-TRU-001 STT-KID-001 a DSC is found by its kid, the first 8 bytes of its SHA-256` (TrustListTest.kt); `STT-TST-001 STT-KID-001 the vector's kid is the DSC's` (ConformanceVectorsTest.kt))."
         }
       ],
-      "testData": []
+      "testData": [],
+      "feature": "test/features/hcert-sign-cose.feature"
     },
     {
       "id": "hcert-trust-list",
@@ -515,7 +523,8 @@
           "kind": "fixed",
           "path": "vectors/gdhcn-trust-domains/CodeSystem-Domains.json"
         }
-      ]
+      ],
+      "feature": "test/features/hcert-trust-list.feature"
     },
     {
       "id": "hcert-verify",
@@ -660,7 +669,8 @@
           "kind": "fixed",
           "path": "vectors/negative/negative-vectors.json"
         }
-      ]
+      ],
+      "feature": "test/features/hcert-verify.feature"
     },
     {
       "id": "hcert-conformance-testing",
@@ -766,7 +776,8 @@
           },
           "seed": "the target's name (Kotlin: String.hashCode of it)"
         }
-      ]
+      ],
+      "feature": "test/features/hcert-conformance-testing.feature"
     },
     {
       "id": "hcert-contract-maintenance",
@@ -793,7 +804,8 @@
           "expectation": "A test named after STT-PAY-010 passes in each implementation's suite (Kotlin: check_models.py)."
         }
       ],
-      "testData": []
+      "testData": [],
+      "feature": "test/features/hcert-contract-maintenance.feature"
     },
     {
       "id": "hcert-library-architecture",
@@ -850,11 +862,12 @@
           "expectation": "A test named after STT-SEC-002 passes in each implementation's suite (Kotlin: `STT-SEC-002 STT-GEN-004 cryptography comes from the platform, with no third-party runtime dependency` (ArchitectureTest.kt))."
         }
       ],
-      "testData": []
+      "testData": [],
+      "feature": "test/features/hcert-library-architecture.feature"
     },
     {
       "id": "vhl-receive",
-      "description": "Use a VHL: verify it, build the ITI-YY5 manifest request with its HTTP Message Signature, read the manifest Bundle and decrypt each document (journey J4.1).",
+      "description": "Use a VHL: verify it, build the ITI-YY5 manifest request with its HTTP Message Signature, read the manifest Bundle and decrypt each document (journey J4.1). A plain SMART Health Link is received by the same steps, without the HCERT verification.",
       "assertions": [
         {
           "id": "req:stt-vhl-002#statement/test",
@@ -901,11 +914,12 @@
           "kind": "fixed",
           "path": "vectors/ihe-vhl/iti-yy5-manifest-case-b.json"
         }
-      ]
+      ],
+      "feature": "test/features/vhl-receive.feature"
     },
     {
       "id": "vhl-share",
-      "description": "Issue a VHL: a key, documents encrypted as JWE dir / A256GCM, and the payload as a CBOR map at HCERT key 5 (journey J4.0).",
+      "description": "Issue a VHL: a key, documents encrypted as JWE dir / A256GCM, and the payload as a CBOR map at HCERT key 5 (journey J4.0). A plain SMART Health Link is issued by the same steps with its own carrier.",
       "assertions": [
         {
           "id": "req:stt-vhl-001#statement/test",
@@ -943,7 +957,8 @@
           "kind": "fixed",
           "path": "vectors/ihe-vhl/jwe-dir-a256gcm.json"
         }
-      ]
+      ],
+      "feature": "test/features/vhl-share.feature"
     }
   ],
   "dependencies": [

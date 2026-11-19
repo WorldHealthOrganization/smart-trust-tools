@@ -21,6 +21,7 @@ export interface CrossFixtures {
 /** JSON with bigints, so payloads read back from either library compare as values. */
 const canon = (x: unknown) => JSON.stringify(x, (_, v) => (typeof v === "bigint" ? v.toString() : v));
 
+// @test-runner run — each run("title", …) below is a test (check:test-gherkin).
 export function runCross(impls: Record<string, Hcert>, f: CrossFixtures): Outcome[] {
   const out: Outcome[] = [];
   const [[aName, a], [bName, b]] = Object.entries(impls) as [[string, Hcert], [string, Hcert]];
@@ -48,7 +49,9 @@ export function runCross(impls: Record<string, Hcert>, f: CrossFixtures): Outcom
     for (const [label, list] of payloads) {
       const req: IssueRequest = { payloads: list, iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: dsc, alg, allowDevelopmentSubclaims: true };
       for (const [iName, issuer, vName, verifier] of [[aName, a, bName, b], [bName, b, aName, a]] as const) {
-        run(`STT-TST-003 STT-GEN-006 ${alg.toUpperCase()} ${label} issued by ${iName} verifies in ${vName}, from the same bytes`, () => {
+        // One test per case, named by the looped-id convention id[${key}].
+        const key = `${alg.toUpperCase()} ${label} ${iName}->${vName}`;
+        run(`STT-TST-003-STT-GEN-006-issued-verifies-across-from-the-same-bytes[${key}]`, () => {
           const regI = new issuer.subclaims.Registry();
           const regV = new verifier.subclaims.Registry();
           const pI = issuer.issuer.prepare(req, regI);
@@ -83,7 +86,8 @@ export function runCross(impls: Record<string, Hcert>, f: CrossFixtures): Outcom
     }
   }
 
-  run(`STT-TST-003 a signature over ${aName}'s bytes, attached by ${bName} to a different payload, is refused`, () => {
+  const pair = `${aName}->${bName}`;
+  run(`STT-TST-003-signature-over-other-bytes-refused[${pair}]`, () => {
     const reg = new a.subclaims.Registry();
     const pA = a.issuer.prepare({ payloads: [{ tag: "dvc-min", val: newborn }], iss: "XX", validity: { iat: TESTKIT_NOW, exp: TESTKIT_NOW + 86400n }, dscDer: f.testkitDsc, alg: "es256", allowDevelopmentSubclaims: true }, reg);
     const sig = f.signEs256Der(pA.toBeSigned());

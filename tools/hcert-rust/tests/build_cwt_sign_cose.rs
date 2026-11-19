@@ -39,21 +39,34 @@ fn stt_cwt_004_validity_outside_the_dsc_is_refused() {
 #[test]
 fn stt_iss_004_stt_cos_005_two_phase_issuance_with_es256_and_ps256_verifies() {
     for (alg, der) in [(CoseAlgorithm::Es256, es_der()), (CoseAlgorithm::Ps256, ps_der())] {
-        let issued = issue(alg);
+        // The PS256 testkit DSC's EKU is test certificates only (STT-VER-004),
+        // so under PS256 the payload is a test certificate (subclaim 4).
+        let payload = match alg {
+            CoseAlgorithm::Es256 => Payload::DvcMin(newborn()),
+            CoseAlgorithm::Ps256 => Payload::Raw { subclaim: 4, cbor: cbor::encode(&Item::Map(vec![(Item::Text("t".into()), Item::Text("x".into()))])).unwrap() },
+        };
+        let mut r = request(alg);
+        r.payloads = vec![payload.clone()];
+        let p = issuer::prepare(&r, &reg()).unwrap();
+        let issued = issuer::finish(&p, &sign(alg, &p.to_be_signed)).unwrap();
         assert!(issued.hc1.starts_with("HC1:"));
-        let r = verifier::verify(&issued.hc1, &store_with(&der), &reg(), TESTKIT_NOW, &options());
-        match (alg, r) {
-            (CoseAlgorithm::Es256, Ok(v)) => assert_eq!(only(&v).payload, Payload::DvcMin(newborn())),
-            // the PS256 testkit DSC's EKU is test certificates only (STT-VER-004)
-            (CoseAlgorithm::Ps256, Err(f)) => assert_eq!((f.step, f.reason), (Step::KeyUsage, FailureReason::KeyUsageMismatch)),
-            (a, r) => panic!("{a:?}: {r:?}"),
-        }
+        let v = verifier::verify(&issued.hc1, &store_with(&der), &reg(), TESTKIT_NOW, &options()).unwrap_or_else(|f| panic!("{alg:?}: {f:?}"));
+        assert_eq!(only(&v).payload, payload, "{alg:?}");
     }
+    // A DVC under the PS256 DSC is refused, by key usage.
+    let f = verifier::verify(&issue(CoseAlgorithm::Ps256).hc1, &store_with(&ps_der()), &reg(), TESTKIT_NOW, &options()).unwrap_err();
+    assert_eq!((f.step, f.reason), (Step::KeyUsage, FailureReason::KeyUsageMismatch));
 }
 
 #[test]
 fn stt_cos_006_finish_refuses_a_signature_from_another_key() {
+    use p256::ecdsa::signature::Signer;
     let p = issuer::prepare(&request(CoseAlgorithm::Es256), &reg()).unwrap();
+    // A well-formed signature over the right bytes, by a key that is not the DSC's.
+    let other = p256::ecdsa::SigningKey::from_slice(&[7u8; 32]).unwrap();
+    let other_sig: p256::ecdsa::Signature = other.sign(&p.to_be_signed);
+    assert!(matches!(issuer::finish(&p, &other_sig.to_bytes()), Err(IssueError::BadSignatureFormat(_))));
+    // and the DSC key's signature with one bit flipped
     let mut sig = sign(CoseAlgorithm::Es256, &p.to_be_signed);
     sig[10] ^= 1;
     assert!(matches!(issuer::finish(&p, &sig), Err(IssueError::BadSignatureFormat(_))));

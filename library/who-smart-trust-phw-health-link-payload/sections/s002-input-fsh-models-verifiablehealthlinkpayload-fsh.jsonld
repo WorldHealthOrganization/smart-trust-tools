@@ -13,7 +13,7 @@
   "contains": [
     "library/who-smart-trust-phw-health-link-payload/blocks/prose-s002-input-fsh-models-verifiablehealthlinkpayload-fsh"
   ],
-  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-phw-health-link-payload/manifest.jsonld",
-  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/who-smart-trust-phw-health-link-payload/manifest.jsonld",
+  "derivedFrom": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-phw-health-link-payload",
+  "sourceDocument": "https://litlfred.github.io/folio-assistant/assets/library/jsonld/smart-trust-tools/source/who-smart-trust-phw-health-link-payload",
   "provenance": "ingested"
 }

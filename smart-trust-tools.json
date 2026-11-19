@@ -6,6 +6,12 @@
   "iriBase": "https://litlfred.github.io/smart-trust-tools/",
   "title": "SMART Trust HCERT library tools",
   "description": "Requirements, API contract (WIT), wire format (CDDL), payload models and the Kotlin library for HCERT and Verifiable Health Links, derived from the WHO SMART Trust implementation guide and IHE ITI VHL.",
+  "avatar": {
+    "glyph": "M7 11V8a5 5 0 0110 0v3M5 11h14v10H5zM12 15v2",
+    "tone": 160,
+    "reads": "a padlock — signed, verifiable health credentials"
+  },
+  "_avatar_comment": "A padlock in a neutral green: the libraries sign and verify health credentials, and the mark claims no organisation's colour or emblem.",
   "needs": [
     "fhir-harness"
   ],
@@ -35,7 +41,7 @@
       "graphTypologies": [
         "skills"
       ],
-      "description": "The library requirements, one bootstrap req: node per requirement under skills/requirements/, and the skills that satisfy them in three packages: hcert (the pipeline of QR Code Generation, one skill per step, plus verification and the trust list), vhl (sharing and receiving a Verifiable Health Link) and hcert-library (architecture, contract maintenance, conformance testing, publishing the graph)."
+      "description": "The library requirements, one bootstrap req: node per requirement under skills/requirements/, and the skills that satisfy them in four packages: hcert (the pipeline of QR Code Generation, one skill per step, plus verification and the trust list), vhl (sharing and receiving a Verifiable Health Link), wallet (what the holder, and the health workers who hand a credential over and scan it, do with it) and hcert-library (architecture, contract maintenance, conformance testing, publishing the graph)."
     },
     {
       "id": "library",
@@ -91,7 +97,12 @@
       "graphTypologies": [
         "beans"
       ],
-      "description": "The open issues of this project, one bean each under beans/defs/, each naming the requirements it affects and the sources it concerns; tagged upstream when the fix belongs in a WHO or IHE repository."
+      "source": {
+        "kind": "branch",
+        "branch": "cat/smart-trust-tools/beans",
+        "keyedBy": "tip"
+      },
+      "description": "The open issues of this project, one bean each under beans/defs/, each naming the requirements it affects and the sources it concerns; tagged upstream when the fix belongs in a WHO or IHE repository. Kept on the state branch cat/smart-trust-tools/beans, not on main: `bun run cat state:mount` puts it on disk."
     },
     {
       "id": "processes",
@@ -115,7 +126,7 @@
       "graphTypologies": [
         "tools"
       ],
-      "description": "One Tool per folder (tools/<id>/<id>.ts), with its code beside it: hcert-kotlin (the Kotlin library) and hcert-rust (the Rust library); wit2kotlin, gen-api-types, fetch-lms and lm-derive, which write the contract's and the models' views; check-models, check-req-nodes, fhir-validate, conformance-ts, test-plan, negative-vectors and vhl-jwe-fixture, which check them or make what the checks read; release-packaging; and build-site. tools/index.ts loads them."
+      "description": "One Tool per folder (tools/<id>/<id>.ts), with its code beside it: hcert-kotlin (the Kotlin library) and hcert-rust (the Rust library); wit2kotlin, gen-api-types, fetch-lms and lm-derive, which write the contract's and the models' views; check-models, check-req-nodes, check-upstream-patches, fhir-validate, conformance-ts, test-plan, negative-vectors and vhl-jwe-fixture, which check them or make what the checks read; release-packaging; and build-site. tools/index.ts loads them."
     },
     {
       "id": "toolchain",
@@ -175,7 +186,7 @@
         "fhir-logical-models"
       ],
       "writer": [
-        "tools/lm-derive/lm_derive.py"
+        "smart-trust-tools/tools/lm-derive/lm_derive.py"
       ],
       "description": "The JSON-LD context, SHACL shapes and CDDL rules lm-derive writes from the logical models."
     },
@@ -193,7 +204,12 @@
       "graphTypologies": [
         "upstream-patches"
       ],
-      "description": "Patches proposed to IHE ITI VHL, for its maintainers to apply, and the QR Code Generation live-demo patch for litlfred/smart-trust."
+      "source": {
+        "kind": "branch",
+        "branch": "cat/smart-trust-tools/upstream-patches",
+        "keyedBy": "tip"
+      },
+      "description": "Patches proposed to IHE ITI VHL, for its maintainers to apply, and the QR Code Generation live-demo patch for litlfred/smart-trust. Kept on the state branch cat/smart-trust-tools/upstream-patches, not on main: `bun run cat state:mount` puts it on disk."
     },
     {
       "id": "test-plans",
@@ -202,6 +218,26 @@
       "graphTypologies": [
         "test-plan"
       ]
+    },
+    {
+      "id": "stt-skill-contracts",
+      "path": "schemas/",
+      "graphTypologies": [
+        "schemas"
+      ],
+      "description": "Each skill's input and output contracts, `schemas/skills/<skill>/{input,output}.schema.json` (JSON Schema draft-07), named by the skill's `input:` and `output:` front matter. The wallet package's three are the first."
+    },
+    {
+      "id": "glossary",
+      "path": "glossary/",
+      "description": "SMART Trust Tools' generated glossary (`glossary/generated/smart-trust-tools/`): candidate `folio-glossary/v1` schemes extracted from this layer's tools, skills and BPMN activities by core's `glossary:page`. A scheme is keyed by (instance, scheme), and each layer holds its own glossary.",
+      "graphTypologies": [
+        "glossary"
+      ]
     }
+  ],
+  "enableSubgraphs": [
+    "folio-assistant-core.collab",
+    "fhir-harness.collab"
   ]
 }
